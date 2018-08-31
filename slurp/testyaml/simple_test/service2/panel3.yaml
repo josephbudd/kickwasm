@@ -1,0 +1,16 @@
+name : ThreePanel
+note : p3 note
+buttons :
+  - label : Panel 3 Button 1
+    name : Panel31Button
+    heading : Panel 3 Button 1 Heading.
+    panelFiles :
+      - panel3-button1-panels/panel1.yaml
+      - panel3-button1-panels/panel2.yaml
+  - label : Panel 3 Button 2
+    name : Panel32Button
+    heading : Panel 3 Button 2 Heading.
+    panelFiles :
+      - panel3-button2-panels/panel1.yaml
+      - panel3-button2-panels/panel2.yaml
+

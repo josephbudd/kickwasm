@@ -1,0 +1,25 @@
+name: PurchaseOrderAddPriceDropPanel
+
+note: |
+  selected | select mapvlist Year, Live/Dead, Record
+  upon selection
+    * hide button PurchaseOrderAddPriceDropNotSelected
+    * fill, show button PurchaseOrderAddPriceDropSelected
+    * go back to vlist div 0
+    * open pd in new window.
+    * clicking on PurchaseOrderAddPriceDropSelected shows the pd.
+    * PurchaseOrderAddPriceDropSelect is always visible.
+
+markup: |
+  <button id="purchaseOrderAddPriceDropNotSelected" class="seen">
+    <p>Click here to select a Price Drop.</p>
+  </button>
+  <button id="purchaseOrderAddPriceDropSelected" class="unseen">
+    <p>
+      <b>Ship To</b>
+      <br/>
+      <span id="purchaseOrderAddPriceDropSelectedShipTo"></span>
+    </p>
+    <p>Click to view the selected Price Drop.</p>
+  </button>
+  <div id="purchaseOrderAddPriceDropSelect"></div>

@@ -1,0 +1,60 @@
+name: CustomerEditDoPanel
+
+note: |
+  A form to enter customer shipping info.
+  Accept button
+  * checks the form
+  * sends it to the main process with customer state edit
+  * clears the form.
+  Clear button clears the form.
+
+markup: |
+  <p>
+    <label for="customerEditDoFirstName">First Name</label>
+    <input type="text" id="customerEditDoFirstName">
+  </p>
+
+  <p>
+    <label for="customerEditDoLastName">Last Name</label>
+    <input type="text" id="customerEditDoLastName">
+  </p>
+
+  <p>
+    <label for="customerEditDoAddress1">Address 1</label>
+    <input type="text" id="customerEditDoAddress1">
+  </p>
+
+  <p>
+    <label for="customerEditDoAddress2">Address 2</label>
+    <input type="text" id="customerEditDoAddress2">
+  </p>
+
+  <p>
+    <label for="customerEditDoCity">City</label>
+    <input type="text" id="customerEditDoCity">
+  </p>
+
+  <p>
+    <label for="customerEditDoState">State</label>
+    <input type="text" id="customerEditDoState">
+  </p>
+
+  <p>
+    <label for="customerEditDoZip">Zip</label>
+    <input type="text" id="customerEditDoZip">
+  </p>
+
+  <p>
+    <label for="customerEditDoPhone">Phone</label>
+    <input type="text" id="customerEditDoPhone">
+  </p>
+
+  <p>
+    <label for="customerEditDoEmail">Email</label>
+    <input type="text" id="customerEditDoEmail">
+  </p>
+
+  <p>
+    <button id="customerEditDoAccept">Accept</button>
+    <button id="customerEditDoCancel">Cancel</button>
+  </p>

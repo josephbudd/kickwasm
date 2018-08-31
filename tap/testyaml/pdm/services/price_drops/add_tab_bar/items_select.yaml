@@ -1,0 +1,44 @@
+name: PriceDropAddItemsSelectPanel
+
+note: |
+  Selected Form | MapVList ( category, items )
+  Form
+    SKU, Desc, MAP, MyPrice, Quantity, SubTotal, Savings,
+    Accept, Cancel
+
+markup: |
+  <div id="priceDropAddItemsSelectWrapper">
+    <div id="priceDropAddItemsSelected">
+      <p>
+        <b>Category:</b> <span id="priceDropAddItemsSelectedCategory"></span>
+      <p>
+        <b>SKU</b>
+        <span id="priceDropAddItemsSelectedSKU"></span>
+      </p>
+      <p>
+        <b>Description</b>
+        <span id="priceDropAddItemsSelectedDescription"></span>
+      </p>
+      <p>
+        <b>MAP</b>
+        <span id="priceDropAddItemsSelectedMAP"></span>
+      </p>
+      <p>
+        <b>My Price</b>
+        <span id="priceDropAddItemsSelectedMyPrice"></span>
+      </p>
+      <p>
+        <b>Quantity</b>
+        <input id="priceDropAddItemsSelectedMyQuantity" type="number" min="0" max="100" value="0">
+      </p>
+      <p>
+        <b>Subtotal</b>
+        <span id="priceDropAddItemsSelectedSubtotal"></span>
+      </p>
+      <p>
+        <button id="priceDropAddItemsSelectedAccept">Accept</button>
+        <button id="priceDropAddItemsSelectedCancel">Cancel</button>
+      </p>
+    </div>
+    <div id="priceDropAddItemsSelect"></div>
+  </div>

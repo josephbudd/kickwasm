@@ -1,0 +1,8 @@
+name : LevelThreePanel
+note : LevelThreePanel note
+buttons :
+  - name : L3Button
+    label : Button 3
+    panelFiles :
+      - level4/panel.yaml
+

@@ -1,0 +1,6 @@
+name: PriceDropAddCustomerNotReadyPanel
+
+note: Displayed if a prices list has not been selected.
+
+markup: |
+  <p>You haven't selected a price list yet.</p>

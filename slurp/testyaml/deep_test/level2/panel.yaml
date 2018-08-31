@@ -1,0 +1,8 @@
+name : Level2Panel
+note : Level2Panel note
+buttons :
+  - name : L2Button
+    label : Button L2
+    panelFiles :
+      - level3/panel.yaml
+

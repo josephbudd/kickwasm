@@ -1,0 +1,14 @@
+name : FivePanel
+note : p5 note
+tabs :
+  - label : P5T1 Label
+    name : P51Tab
+    panelFiles :
+      - panel5-tab1-panels/panel1.yaml
+      - panel5-tab1-panels/panel2.yaml
+  - label : P5T2 Label
+    name : P52Tab
+    panelFiles :
+      - panel5-tab2-panels/panel1.yaml
+      - panel5-tab2-panels/panel2.yaml
+

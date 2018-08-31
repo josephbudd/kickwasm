@@ -1,0 +1,8 @@
+name : LevelFourPanel
+note : LevelFourPanel note
+buttons :
+  - label : Button 4
+    name : L4Button
+    panelFiles :
+      - level5/panel.yaml
+

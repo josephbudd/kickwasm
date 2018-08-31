@@ -1,0 +1,40 @@
+name: PriceListImportPanel
+
+note : |
+  Import a price list file.
+  Pre Check the file type at the file onchange,
+   success or errror the user,
+   get the column names so the user can select the Price Column.
+  Post Check the file on at accept on click.
+  Check Dates.
+
+markup: |
+  <p>
+    <label for="priceListImportFile">File</label>
+    <input type="file" id="priceListImportFile">
+  </p>
+  <p>
+    <label for="priceListImportPriceColumn">Whole Sale Column</label>
+    <select id="priceListImportPriceColumn"></select>
+  </p>
+  <p>
+    <label for="priceListImportTitle">Title</label>
+    <textarea id="priceListImportTitle"></textarea>
+  </p>
+  <p>
+    <label for="priceListImportNotes">Notes</label>
+    <textarea id="priceListImportNotes"></textarea>
+  </p>
+  <p>
+    <label for="priceListImportStartDate">Start Date</label>
+    <input type="date" id="priceListImportStartDate">
+  </p>
+  <p>
+    <label for="priceListImportEndDate">End Date</label>
+    <input type="date" id="priceListImportEndDate">
+  </p>
+  <p>
+    <button id="priceListImportAccept">Accept</button>
+    <button id="priceListImportCancel">Cancel</button>
+  </p>
+

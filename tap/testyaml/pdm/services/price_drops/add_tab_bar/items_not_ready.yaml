@@ -1,0 +1,6 @@
+name: PriceDropAddItemsNotReadyPanel
+
+note: Displayed if the dates have not been selected.
+
+markup: |
+  <p>You haven't selected start and end dates yet.</p>

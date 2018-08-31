@@ -1,0 +1,13 @@
+title : Test 1
+importPath : github.com/josephbudd/kickwasm/examples/test1
+repos :
+  - Test1
+services :
+  - name : Service1
+    button :
+      name : Button1Button
+      label : Button 1
+      heading : Button 1 Heading.
+      panelFiles :
+        - level2/panel.yaml
+

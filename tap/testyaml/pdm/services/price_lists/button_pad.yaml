@@ -1,0 +1,20 @@
+name : PriceListPanel
+buttons :
+  - name : ImportButton
+    label : Import
+    heading : Import A New Price List.
+    panelFiles : 
+      - import/import.yaml
+  - name : EditButton
+    label : Edit
+    heading : Edit A Price List.
+    panelFiles : 
+      - edit_button/edit_not_ready.yaml
+      - edit_button/edit_select.yaml
+      - edit_button/edit_do.yaml
+  - name : ViewButton
+    label : View
+    heading : View A Price List.
+    panelFiles : 
+      - view_button/view_not_ready.yaml
+      - view_button/view_select.yaml

@@ -1,0 +1,11 @@
+name: CustomerEditSelectPanel
+
+note: |
+  Simple VList.
+  Onclick gets the record for the edit panel.
+
+markup: |
+  <p>
+    <b>Select A Customer.</b>
+  </p>
+  <div id="customerEditSelect"></div>

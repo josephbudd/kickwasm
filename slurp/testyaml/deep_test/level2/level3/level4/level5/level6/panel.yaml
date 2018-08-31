@@ -1,0 +1,8 @@
+name : LevelSixPanel
+note : LevelSixPanel note
+buttons :
+  - label : Button 6
+    name : L6Button
+    panelFiles :
+      - level7/panel.yaml
+

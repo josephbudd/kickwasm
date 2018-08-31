@@ -1,0 +1,7 @@
+name: PurchaseOrderVoidNotReadyPanel
+
+note: |
+  to be displayed if there are no unvoided pos.
+
+markup: |
+  <p>You don't have any purchase orders.</p>

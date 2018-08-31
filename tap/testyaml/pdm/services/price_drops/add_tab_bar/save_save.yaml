@@ -1,0 +1,8 @@
+name: PriceDropSaveSavePanel
+
+note: |
+  Save and print a price drop contract.
+  So after the stuff is saved the mp should return the markup for printing.
+
+markup: |
+  <button id="priceDropSaveSaveSave">Save and Print</button>

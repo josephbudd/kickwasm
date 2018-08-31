@@ -1,0 +1,12 @@
+Updating C/C++ dependencies...
+
+Downloading package 'C/C++ language components (Linux / x86_64)'  Failed. Retrying... Failed. Retrying... Failed. Retrying...Waiting 8 seconds... Failed. Retrying...Waiting 16 seconds... Failed. Retrying... Done!
+Downloading package 'ClangFormat (Linux / x86_64)'  Failed. Retrying... Failed. Retrying... Failed. Retrying...Waiting 8 seconds... Failed. Retrying...Waiting 16 seconds... Failed. Retrying... Done!
+Downloading package 'Mono Framework Assemblies'  Failed. Retrying... Failed. Retrying... Failed. Retrying...Waiting 8 seconds... Failed. Retrying...Waiting 16 seconds... Failed. Retrying... Done!
+Downloading package 'Mono Runtime (Linux / x86_64)'  Failed. Retrying... Failed. Retrying... Failed. Retrying...Waiting 8 seconds... Failed. Retrying...Waiting 16 seconds... Failed. Retrying... Done!
+
+Installing package 'C/C++ language components (Linux / x86_64)'
+Failed at stage: installPackages
+Error: end of central directory record signature not found
+
+If you work in an offline environment or repeatedly see this error, try downloading a version of the extension with all the dependencies pre-included from https://github.com/Microsoft/vscode-cpptools/releases, then use the "Install from VSIX" command in VS Code to install it.

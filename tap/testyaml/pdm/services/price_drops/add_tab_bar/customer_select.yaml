@@ -1,0 +1,13 @@
+name: PriceDropAddCustomerSelectPanel
+
+note: |
+  A selected button with vlist.
+  Use onsize and onNoSize to show hide this and not ready.
+
+markup: |
+  <div id="priceDropAddCustomerSelectWrapper">
+    <button id="priceDropAddCustomerSelected">
+      <p>Click here to select a customer.</p>
+    </button>
+    <div id="priceDropAddCustomerSelect" class="unseen"></div>
+  </div>

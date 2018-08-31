@@ -1,0 +1,6 @@
+name: PriceDropAddDatesNotReadyPanel
+
+note: Displayed if a customer has not been selected.
+
+markup: |
+  <p>You haven't selected a customer yet.</p>

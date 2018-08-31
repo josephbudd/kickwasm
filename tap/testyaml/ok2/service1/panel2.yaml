@@ -1,0 +1,33 @@
+id : p2
+name : Panel2
+note : p2 note
+markup : <p>Panel 2-1</p>
+controlerData :
+  - id : p2cdid1
+    name : p2cdname1
+  - id : p2cdid2
+    name : p2cdname2
+controlerCode : |
+  p2cf1: function(){},
+  p2cf2: function(){},
+
+presenterData :
+  - id : p2pdid1
+    name : p2pdname1
+  - id : p2pdid2
+    name : p2pdname2
+presenterCode : |
+  p2pf1: function(){},
+  p2pf2: function(){},
+
+lpcCallIns :
+  - procedure : p2cip2
+    function : p2cif1
+  - procedure : p2cip2
+    function : p2cif2
+lpcCode : |
+  p2lpcf1: function(){},
+  p2lpcf2: function(){},
+lpcInitialCalls : |
+  p2lpcic1();
+  p2lpcic2();
