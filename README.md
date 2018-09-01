@@ -4,7 +4,7 @@ A rapid development, desktop application generator for go. It creates a browser 
 
 To summerize:
 
-It's [[kick|https://github.com/josephbudd/kick]] with wasm instead of javascript
+It's https://github.com/josephbudd/kick with wasm instead of javascript
 
 ## Version alpha
 
