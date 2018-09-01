@@ -20,5 +20,4 @@ Also I haven't begun the wiki yet.
 
 * Imports the boltdb package at https://github.com/boltdb/bolt.
 * Imports my notjs package at https://github.com/josephbudd/kicknotjs.
-* Does not import my lpc package because I rewrote it and embedded it into the generated code. The renderer and the main process still call each other's funcs in a way similar to how they are done in kick.
-* Each service now has it's own color. No more of the confusing color levels.
+
