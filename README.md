@@ -12,9 +12,13 @@ I'm working on the contacts example right now. That will help me make any change
 
 Also I haven't begun the wiki yet.
 
+### kickwasm
+
+* Imports the yaml package at https://gopkg.in/yaml.v2
+
 ### The generated application.
 
-* Imports the boltdb package.
-* Imports my notjs package.
+* Imports the boltdb package at https://github.com/boltdb/bolt.
+* Imports my notjs package at https://github.com/josephbudd/kicknotjs.
 * Does not import my lpc package because I rewrote it and embedded it into the generated code. The renderer and the main process still call each other's funcs in a way similar to how they are done in kick.
 * Each service now has it's own color. No more of the confusing color levels.
