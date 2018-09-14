@@ -6,8 +6,8 @@ const AboutPanel = `package AboutPanel
 import (
 	"github.com/josephbudd/kicknotjs"
 
-	"{{.ApplicationGitPath}}{{.ImportMainProcessTransportsCalls}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 // Panel is a panel
@@ -17,10 +17,10 @@ type Panel struct {
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, callsStruct *calls.Calls) *Panel {
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection types.RendererCallMap) *Panel {
 	v := &Panel{
 		presenter: newPresenter(notjs),
-		caller:    newCaller(quitCh, callsStruct, tools),
+		caller:    newCaller(quitCh, connection, tools),
 	}
 	v.caller.presenter = v.presenter
 	return v
@@ -43,10 +43,10 @@ func newPresenter(notjs *kicknotjs.NotJS) *Presenter {
 
 // newCaller constructs a new Caller.
 // Presenter and Controler must be set after this call
-func newCaller(quitCh chan struct{}, callsStruct *calls.Calls, tools *viewtools.Tools) *Caller {
+func newCaller(quitCh chan struct{}, connection types.RendererCallMap, tools *viewtools.Tools) *Caller {
 	v := &Caller{
 		quitCh:   quitCh,
-		callsStruct: callsStruct,
+		connection: connection,
 		tools:    tools,
 	}
 	v.addCallBacks()

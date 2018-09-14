@@ -8,8 +8,8 @@ import (
 
 	"github.com/josephbudd/kicknotjs"
 
-	"{{.ApplicationGitPath}}{{.ImportMainProcessTransportsCalls}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -25,14 +25,14 @@ type Panel struct {
 	controler *Controler
 	presenter *Presenter
 	caller    *Caller
-	tools     *viewtools.Tools // see {{.ImportRendererWASMViewTools}}
+	tools     *viewtools.Tools // see {{.ImportRendererViewTools}}
 	notjs     *kicknotjs.NotJS{{range $panel := .PanelGroup}}
 
 	{{call $Dot.LowerCamelCase $panel.Name}} js.Value{{end}}
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection *calls.Calls) *Panel {
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection types.RendererCallMap) *Panel {
 	panel := &Panel{
 		tools: tools,
 	}{{range $panel := .PanelGroup}}
@@ -45,13 +45,11 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.Not
 		tools:  tools,
 		notjs:  notjs,
 	}
-	controler.defineControlsSetHandlers()
 	presenter := &Presenter{
 		panel:   panel,
 		tools:   tools,
 		notjs:   notjs,
 	}
-	presenter.defineMembers()
 	caller := &Caller{
 		panel:      panel,
 		quitCh:     quitCh,
@@ -59,18 +57,20 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.Not
 		tools:      tools,
 		notjs:      notjs,
 	}
-	caller.addMainProcessCallBacks()
-	// finish controler, presenter, caller.
+	// settings
+	panel.controler = controler
+	panel.presenter = presenter
+	panel.caller = caller
 	controler.presenter = presenter
 	controler.caller = caller
 	presenter.controler = controler
 	presenter.caller = caller
 	caller.controler = controler
 	caller.presenter = presenter
-	// finish panel
-	panel.controler = controler
-	panel.presenter = presenter
-	panel.caller = caller
+	// completions
+	controler.defineControlsSetHandlers()
+	presenter.defineMembers()
+	caller.addMainProcessCallBacks()
 	return panel
 }
 
@@ -107,8 +107,8 @@ func (panel *Panel) show{{$panel.Name}}(force bool) {
 }{{end}}{{end}}
 
 // InitialCalls runs the first code that the panel needs to run.
-func (p *Panel) InitialCalls() {
-	p.controler.initialCalls()
-	p.caller.initialCalls()
+func (panel *Panel) InitialCalls() {
+	panel.controler.initialCalls()
+	panel.caller.initialCalls()
 }
 `

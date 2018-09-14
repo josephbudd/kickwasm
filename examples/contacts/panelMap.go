@@ -8,7 +8,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/josephbudd/kickwasm/examples/contacts/mainprocess/data/filepaths"
+	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/filepaths"
 )
 
 /*
@@ -25,7 +25,7 @@ const (
 )
 
 // serviceEmptyInsidePanelNamePathMap maps each markup panel template name to it's file path.
-var serviceEmptyInsidePanelNamePathMap = map[string]map[string][]string{"AddAContact": map[string][]string{"AddContactPanel": []string{"AddButton"}}, "EditAContact": map[string][]string{"EditContactNotReadyPanel": []string{"EditButton"}, "EditContactSelectPanel": []string{"EditButton"}, "EditContactEditPanel": []string{"EditButton"}}, "RemoveAContact": map[string][]string{"RemoveContactConfirmPanel": []string{"RemoveButton"}, "RemoveContactNotReadyPanel": []string{"RemoveButton"}, "RemoveContactSelectPanel": []string{"RemoveButton"}}}
+var serviceEmptyInsidePanelNamePathMap = map[string]map[string][]string{"AddAContact": map[string][]string{"AddContactPanel": []string{"AddButton"}}, "EditAContact": map[string][]string{"EditContactNotReadyPanel": []string{"EditButton"}, "EditContactSelectPanel": []string{"EditButton"}, "EditContactEditPanel": []string{"EditButton"}}, "RemoveAContact": map[string][]string{"RemoveContactNotReadyPanel": []string{"RemoveButton"}, "RemoveContactSelectPanel": []string{"RemoveButton"}, "RemoveContactConfirmPanel": []string{"RemoveButton"}}}
 
 // serveMainHTML only serves up main.tmpl with all of the templates for your markup panels.
 func serveMainHTML(w http.ResponseWriter) {
@@ -75,3 +75,4 @@ func serveMainHTML(w http.ResponseWriter) {
 		http.Error(w, err.Error(), 300)
 	}
 }
+

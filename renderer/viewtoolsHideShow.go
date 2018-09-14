@@ -10,6 +10,6 @@ import (
 func createViewToolsHideShowGo(appPaths paths.ApplicationPathsI) error {
 	folderpaths := appPaths.GetPaths()
 	fname := "hideshow.go"
-	oPath := filepath.Join(folderpaths.OutputRendererWASMViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return appPaths.WriteFile(oPath, []byte(templates.ViewToolsHideShow))
 }

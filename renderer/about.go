@@ -17,32 +17,34 @@ func createAboutFiles(appPaths paths.ApplicationPathsI, builder *tap.Builder) er
 	ids := builder.AboutIDs
 	folderpaths := appPaths.GetPaths()
 	data := struct {
-		ApplicationGitPath               string
-		ButtonName                       string
-		ButtonID                         string
-		ButtonPanelID                    string
-		DefaultPanelID                   string
-		ReleasesTabPanelInnerID          string
-		ContributorsTabPanelInnerID      string
-		CreditsTabPanelInnerID           string
-		LicensesTabPanelInnerID          string
-		ImportRendererWASMViewTools      string
-		ImportMainProcessServicesAbout   string
-		ImportMainProcessTransportsCalls string
+		ApplicationGitPath                 string
+		ButtonName                         string
+		ButtonID                           string
+		ButtonPanelID                      string
+		DefaultPanelID                     string
+		ReleasesTabPanelInnerID            string
+		ContributorsTabPanelInnerID        string
+		CreditsTabPanelInnerID             string
+		LicensesTabPanelInnerID            string
+		ImportDomainImplementationsCalling string
+		ImportDomainTypes                  string
+		ImportMainProcessServicesAbout     string
+		ImportRendererViewTools            string
 	}{
-		ApplicationGitPath:               builder.ImportPath,
-		ButtonName:                       ids.ButtonName,
-		ButtonID:                         ids.ButtonID,
-		DefaultPanelID:                   ids.DefaultPanelID,
-		ReleasesTabPanelInnerID:          ids.ReleasesTabPanelInnerID,
-		ContributorsTabPanelInnerID:      ids.ContributorsTabPanelInnerID,
-		CreditsTabPanelInnerID:           ids.CreditsTabPanelInnerID,
-		LicensesTabPanelInnerID:          ids.LicensesTabPanelInnerID,
-		ImportRendererWASMViewTools:      folderpaths.ImportRendererWASMViewTools,
-		ImportMainProcessServicesAbout:   folderpaths.ImportMainProcessServicesAbout,
-		ImportMainProcessTransportsCalls: folderpaths.ImportMainProcessTransportsCalls,
+		ApplicationGitPath:                 builder.ImportPath,
+		ButtonName:                         ids.ButtonName,
+		ButtonID:                           ids.ButtonID,
+		DefaultPanelID:                     ids.DefaultPanelID,
+		ReleasesTabPanelInnerID:            ids.ReleasesTabPanelInnerID,
+		ContributorsTabPanelInnerID:        ids.ContributorsTabPanelInnerID,
+		CreditsTabPanelInnerID:             ids.CreditsTabPanelInnerID,
+		LicensesTabPanelInnerID:            ids.LicensesTabPanelInnerID,
+		ImportDomainImplementationsCalling: folderpaths.ImportDomainImplementationsCalling,
+		ImportDomainTypes:                  folderpaths.ImportDomainTypes,
+		ImportMainProcessServicesAbout:     folderpaths.ImportMainProcessServicesAbout,
+		ImportRendererViewTools:            folderpaths.ImportRendererViewTools,
 	}
-	dirpath := filepath.Join(folderpaths.OutputRendererWASMPanels, "AboutButton", "AboutPanel")
+	dirpath := filepath.Join(folderpaths.OutputRendererPanels, "AboutButton", "AboutPanel")
 	if err := os.MkdirAll(dirpath, appPaths.GetDMode()); err != nil {
 		return err
 	}

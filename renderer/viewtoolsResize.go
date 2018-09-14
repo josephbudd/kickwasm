@@ -21,6 +21,6 @@ func createResizeGo(appPaths paths.ApplicationPathsI, builder *tap.Builder) erro
 	// execute the template
 	folderpaths := appPaths.GetPaths()
 	fname := "resize.go"
-	oPath := filepath.Join(folderpaths.OutputRendererWASMViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.ViewToolsResize, data, appPaths)
 }

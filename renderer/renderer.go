@@ -62,9 +62,6 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout, ad
 
 // createHTMLTemplates creates the main html template file.
 func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout, addLocations bool, headTemplateFile string) error {
-	if err := appPaths.CreateTemplateFolder(); err != nil {
-		return err
-	}
 	folderpaths := appPaths.GetPaths()
 	if addAbout {
 		builder.AddAbout()

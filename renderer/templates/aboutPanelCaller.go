@@ -1,40 +1,43 @@
 package templates
 
-// AboutPanelCaller is the main process about panel caller template.
+// AboutPanelCaller is the main process about panel panelCaller template.
 const AboutPanelCaller = `package AboutPanel
 
 import (
-	"{{.ApplicationGitPath}}{{.ImportMainProcessTransportsCalls}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 // Caller communicates with the main process.
 type Caller struct {
 	presenter *Presenter
 	quitCh    chan struct{}
-	callsStruct  *calls.Calls
+	connection types.RendererCallMap
 	tools     *viewtools.Tools
 }
 
-func (caller *Caller) addCallBacks() {
-	caller.callsStruct.GetAbout.AddCallBack(caller.getAboutCB)
+func (panelCaller *Caller) addCallBacks() {
+	getAboutCall := panelCaller.connection[calling.GetAboutCallID]
+	getAboutCall.AddCallBack(panelCaller.getAboutCB)
 }
 
-func (caller *Caller) initialCalls() {
-	caller.callsStruct.GetAbout.CallMainProcess(nil)
+func (panelCaller *Caller) initialCalls() {
+	getAboutCall := panelCaller.connection[calling.GetAboutCallID]
+	getAboutCall.CallMainProcess(nil)
 }
 
-func (caller *Caller) getAboutCB(params interface{}) {
+func (panelCaller *Caller) getAboutCB(params interface{}) {
 	switch params := params.(type) {
-	case *calls.MainProcessToRendererGetAboutParams:
+	case *calling.MainProcessToRendererGetAboutParams:
 		if params.Error {
-			caller.tools.Error(params.ErrorMessage)
+			panelCaller.tools.Error(params.ErrorMessage)
 			return
 		}
-		caller.presenter.displayReleases(params.Version, params.Releases)
-		caller.presenter.displayContributors(params.Contributors)
-		caller.presenter.displayCredits(params.Credits)
-		caller.presenter.displayLicenses(params.Licenses)
+		panelCaller.presenter.displayReleases(params.Version, params.Releases)
+		panelCaller.presenter.displayContributors(params.Contributors)
+		panelCaller.presenter.displayCredits(params.Credits)
+		panelCaller.presenter.displayLicenses(params.Licenses)
 	}
 }
 `

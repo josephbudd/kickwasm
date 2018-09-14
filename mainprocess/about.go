@@ -9,15 +9,9 @@ import (
 
 func createAboutGo(appPaths paths.ApplicationPathsI, data *templateData) error {
 	folderpaths := appPaths.GetPaths()
-	// mainprocess/about/about.go
-	contents := templates.GetAboutAboutGo()
+	// mainprocess/services/about.go
+	contents := templates.GetServicesAboutGo()
 	fname := "about.go"
 	oPath := filepath.Join(folderpaths.OutputMainProcessServicesAbout, fname)
-	if err := appPaths.WriteFile(oPath, []byte(contents)); err != nil {
-		return err
-	}
-	// mainprocess/calls/about.go
-	// execute the template
-	oPath = filepath.Join(folderpaths.OutputMainProcessTransportsCalls, fname)
-	return templates.ProcessTemplate(fname, oPath, templates.CallsAboutGo, data, appPaths)
+	return appPaths.WriteFile(oPath, []byte(contents))
 }

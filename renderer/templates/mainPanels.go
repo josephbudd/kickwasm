@@ -15,10 +15,10 @@ import ({{range .Imports}}
 
 */
 
-func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callsStruct *calls.Calls, notjs *kicknotjs.NotJS) {
+func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap types.RendererCallMap, notjs *kicknotjs.NotJS) {
 	// 1. Construct the panel code.{{range $name, $path := .PanelNamePathMap}}
-	{{call $Dot.LowerCamelCase $name}} := {{$name}}.NewPanel(quitCh, tools, notjs, callsStruct){{end}}{{if .AddAbout}}
-	aboutPanel := AboutPanel.NewPanel(quitCh, tools, notjs, callsStruct){{end}}
+	{{call $Dot.LowerCamelCase $name}} := {{$name}}.NewPanel(quitCh, tools, notjs, callMap){{end}}{{if .AddAbout}}
+	aboutPanel := AboutPanel.NewPanel(quitCh, tools, notjs, callMap){{end}}
 
 	// 2. Size the app.
 	tools.SizeApp()

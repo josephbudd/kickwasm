@@ -13,3 +13,17 @@ func createMainGo(appPaths paths.ApplicationPathsI, data *templateData) error {
 	oPath := filepath.Join(folderpaths.Output, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.MainGo, data, appPaths)
 }
+
+func createPanelMapGo(appPaths paths.ApplicationPathsI, data *templateData) error {
+	folderpaths := appPaths.GetPaths()
+	fname := "panelMap.go"
+	oPath := filepath.Join(folderpaths.Output, fname)
+	return templates.ProcessTemplate(fname, oPath, templates.PanelMapGo, data, appPaths)
+}
+
+func createServeGo(appPaths paths.ApplicationPathsI, data *templateData) error {
+	folderpaths := appPaths.GetPaths()
+	fname := "serve.go"
+	oPath := filepath.Join(folderpaths.Output, fname)
+	return templates.ProcessTemplate(fname, oPath, templates.ServeGo, data, appPaths)
+}

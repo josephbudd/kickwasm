@@ -17,6 +17,6 @@ func createViewToolsGroupsGo(appPaths paths.ApplicationPathsI, builder *tap.Buil
 	// execute the template
 	folderpaths := appPaths.GetPaths()
 	fname := "groups.go"
-	oPath := filepath.Join(folderpaths.OutputRendererWASMViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.ViewToolsGroups, data, appPaths)
 }

@@ -197,7 +197,6 @@ div.under-tab-bar .heading-of-panel
 #tabsMasterView-home-pad
 {
   overflow-y:auto;
-  width:*;
   border-radius: 20px;
   border-width:1px;
   border-style:solid;
@@ -226,7 +225,6 @@ div.under-tab-bar .heading-of-panel
 #tabsMasterView-home-slider
 {
   float:left;
-  width:*;
 }
 
 #tabsMasterView-home-slider-back
@@ -245,7 +243,6 @@ div.under-tab-bar .heading-of-panel
 #tabsMasterView-home-slider
 {
   float: left;
-  width:*;
 }
 
 #tabsMasterView-home-slider-collection
@@ -253,10 +250,11 @@ div.under-tab-bar .heading-of-panel
   float:right;
 }
 
+/*
 #tabsMasterView-home-slider-collection > .slider-panel
 {
-	width:*;
 }
+*/
 
 #tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner
 {

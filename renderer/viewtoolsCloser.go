@@ -10,6 +10,6 @@ import (
 func createViewToolsCloserGo(appPaths paths.ApplicationPathsI) error {
 	folderpaths := appPaths.GetPaths()
 	fname := "closer.go"
-	oPath := filepath.Join(folderpaths.OutputRendererWASMViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return appPaths.WriteFile(oPath, []byte(templates.ViewToolsCloser))
 }

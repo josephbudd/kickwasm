@@ -8,7 +8,7 @@ import (
 
 	"github.com/josephbudd/kicknotjs"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -23,7 +23,7 @@ type Presenter struct {
 	panel     *Panel
 	controler *Controler
 	caller    *Caller
-	tools     *viewtools.Tools // see {{.ImportRendererWASMViewTools}}
+	tools     *viewtools.Tools // see {{.ImportRendererViewTools}}
 	notjs     *kicknotjs.NotJS
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
@@ -37,14 +37,14 @@ type Presenter struct {
 }
 
 // defineMembers defines the Presenter members by their html elements.
-func (presenter *Presenter) defineMembers() {
+func (panelPresenter *Presenter) defineMembers() {
 
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
 	// Define your Presenter members.
 	// example:
 
-	presenter.customerName = presenter.notjs.GetElementByID("customerName")
+	panelPresenter.customerName = panelPresenter.notjs.GetElementByID("customerName")
 
 	*/
 }
@@ -55,8 +55,8 @@ func (presenter *Presenter) defineMembers() {
 // example:
 
 // displayCustomer displays the customer in the panel.
-func (presenter *Presenter) displayCustomer(record *records.CustomerRecord) {
-	presenter.notjs.SetInnerText(presenter.customerName, record.Name)
+func (panelPresenter *Presenter) displayCustomer(record *records.CustomerRecord) {
+	panelPresenter.notjs.SetInnerText(panelPresenter.customerName, record.Name)
 }
 
 */

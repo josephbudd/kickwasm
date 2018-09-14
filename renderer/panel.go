@@ -30,32 +30,32 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *tap.Builder) erro
 			// template data for each panel file in this group.
 			for panelName, panel := range buttonPanelGroups.PanelNamesIDMap {
 				folders := strings.Join(panelNamePathMap[panelName], string(os.PathSeparator))
-				folderpath := filepath.Join(folderpaths.OutputRendererWASMPanels, folders, panelName)
+				folderpath := filepath.Join(folderpaths.OutputRendererPanels, folders, panelName)
 				if err := os.MkdirAll(folderpath, appPaths.GetDMode()); err != nil {
 					return err
 				}
 				data := &struct {
-					PanelName                        string
-					PanelID                          string
-					PanelGroup                       []*tap.Panel
-					IsTabSiblingPanel                bool
-					ApplicationGitPath               string
-					ImportMainProcessTransportsCalls string
-					ImportRendererWASMViewTools      string
-					ImportMainProcessDataRecords     string
+					PanelName                          string
+					PanelID                            string
+					PanelGroup                         []*tap.Panel
+					IsTabSiblingPanel                  bool
+					ApplicationGitPath                 string
+					ImportRendererViewTools            string
+					ImportDomainTypes                  string
+					ImportDomainImplementationsCalling string
 
 					CamelCase      func(string) string
 					LowerCamelCase func(string) string
 					SplitTabJoin   func(string) string
 				}{
-					PanelName:                        panelName,
-					PanelID:                          panel.HTMLID,
-					PanelGroup:                       panelGroup,
-					IsTabSiblingPanel:                buttonPanelGroups.IsTabButton,
-					ApplicationGitPath:               builder.ImportPath,
-					ImportMainProcessTransportsCalls: folderpaths.ImportMainProcessTransportsCalls,
-					ImportRendererWASMViewTools:      folderpaths.ImportRendererWASMViewTools,
-					ImportMainProcessDataRecords:     folderpaths.ImportMainProcessDataRecords,
+					PanelName:                          panelName,
+					PanelID:                            panel.HTMLID,
+					PanelGroup:                         panelGroup,
+					IsTabSiblingPanel:                  buttonPanelGroups.IsTabButton,
+					ApplicationGitPath:                 builder.ImportPath,
+					ImportRendererViewTools:            folderpaths.ImportRendererViewTools,
+					ImportDomainTypes:                  folderpaths.ImportDomainTypes,
+					ImportDomainImplementationsCalling: folderpaths.ImportDomainImplementationsCalling,
 
 					CamelCase:      cases.CamelCase,
 					LowerCamelCase: cases.LowerCamelCase,

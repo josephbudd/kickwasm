@@ -10,6 +10,6 @@ import (
 func createViewToolsSliderGo(appPaths paths.ApplicationPathsI) error {
 	folderpaths := appPaths.GetPaths()
 	fname := "slider.go"
-	oPath := filepath.Join(folderpaths.OutputRendererWASMViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return appPaths.WriteFile(oPath, []byte(templates.ViewToolsSlider))
 }

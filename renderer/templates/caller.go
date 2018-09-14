@@ -10,8 +10,8 @@ import (
 
 	"github.com/josephbudd/kicknotjs"
 
-	"{{.ApplicationGitPath}}{{.ImportMainProcessTransportsCalls}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 // Client is a wasm local procedure call client.
@@ -24,9 +24,8 @@ type Client struct {
 	connection  js.Value
 	connected   bool
 	dispatching bool
-	queue       []calls.Payload
-	callsMap      map[int]*calls.LPC
-	callsStruct    *calls.Calls
+	queue       []types.Payload
+	callMap     types.RendererCallMap
 	initialCB   func()
 
 	// handlers
@@ -42,17 +41,16 @@ func NewClient(host string, port uint, tools *viewtools.Tools, notjs *kicknotjs.
 		location: fmt.Sprintf("ws://%s:%d/ws", host, port),
 		tools:    tools,
 		notjs:    notjs,
-		queue:    make([]calls.Payload, 0, 10),
+		queue:    make([]types.Payload, 0, 10),
 	}
 	// handlers
 	v.SetOnConnectionBreak(v.defaultOnConnectionBreak)
 	return v
 }
 
-// SetLpcMapLpcCalls sets the callsMap and callsStruct.
-func (client *Client) SetLpcMapLpcCalls(callsMap map[int]*calls.LPC, callsStruct *calls.Calls) {
-	client.callsStruct = callsStruct
-	client.callsMap = callsMap
+// SetCallMap sets the callMap and callsStruct.
+func (client *Client) SetCallMap(callMap types.RendererCallMap) {
+	client.callMap = callMap
 }
 
 // SetOnConnectionBreak set the handler for the connection break.
@@ -108,7 +106,7 @@ func (client *Client) onClose(args []js.Value) {
 func (client *Client) onMessage(args []js.Value) {
 	e := args[0]
 	data := e.Get("data").String()
-	payload := calls.Payload{}
+	payload := types.Payload{}
 	if err := json.Unmarshal([]byte(data), &payload); err != nil {
 		message := fmt.Sprintf("client.onMessage: json.Unmarshal([]byte(data), payload) error is %q.", err.Error())
 		client.notjs.Alert(message)
@@ -126,7 +124,7 @@ func (client *Client) dispatch() {
 	for client.dispatching {
 		payload := client.queue[0]
 		client.queue = client.queue[1:]
-		call, found := client.callsMap[payload.Procedure]
+		call, found := client.callMap[payload.Procedure]
 		if !found {
 			message := fmt.Sprintf("No CB found for procedure %d.", payload.Procedure)
 			client.notjs.Alert(message)

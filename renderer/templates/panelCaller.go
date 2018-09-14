@@ -6,9 +6,9 @@ const PanelCaller = `package {{.PanelName}}
 import (
 	"github.com/josephbudd/kicknotjs"
 
-	//"{{.ApplicationGitPath}}{{.ImportMainProcessDataRecords}}"
-	"{{.ApplicationGitPath}}{{.ImportMainProcessTransportsCalls}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+	//"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -24,20 +24,21 @@ type Caller struct {
 	presenter  *Presenter
 	controler  *Controler
 	quitCh     chan struct{} // send an empty struct to start the quit process.
-	connection *calls.Calls
-	tools      *viewtools.Tools // see {{.ImportRendererWASMViewTools}}
+	connection types.RendererCallMap
+	tools      *viewtools.Tools // see {{.ImportRendererViewTools}}
 	notjs      *kicknotjs.NotJS
 }
 
 // setMainProcessCallBacks tells the main process what funcs to call back to.
-func (caller *Caller) addMainProcessCallBacks() {
+func (panelCaller *Caller) addMainProcessCallBacks() {
 
 	/* NOTE TO DEVELOPER. Step 1 of 3.
 
 	// Tell the main processs to call back to your funcs.
 	// example:
 
-	caller.connection.AddCustomer.AddCallBack(caller.addCustomerCB)
+	addCustomerCall := panelCaller.connection[calling.AddCustomerCallId]
+	addCustomerCall.AddCallBack(panelCaller.addCustomerCB)
 
 	*/
 
@@ -50,29 +51,30 @@ func (caller *Caller) addMainProcessCallBacks() {
 
 // Add Customer.
 
-func (caller *Caller) addCustomer(record *records.CustomerRecord) {
+func (panelCaller *Caller) addCustomer(record *types.CustomerRecord) {
 	params := &calls.RendererToMainProcessAddCustomerParams{
 		Record: record,
 	}
-	caller.connection.AddCustomer.CallMainProcess(params)
+	addCustomerCall := panelCaller.connection[calling.AddCustomerCallId]
+	addCustomerCall.CallMainProcess(params)
 }
 
-func (caller *Caller) addCustomerCB(params interface{}) {
+func (panelCaller *Caller) addCustomerCB(params interface{}) {
 	switch params := params.(type) {
-	case *calls.MainProcessToRendererAddCustomerParams:
+	case *calling.MainProcessToRendererAddCustomerParams:
 		if params.Error {
-			caller.tools.Error(params.ErrorMessage)
+			panelCaller.tools.Error(params.ErrorMessage)
 			return
 		}
 		// no errors
-		caller.tools.Success("Customer Added.")
+		panelCaller.tools.Success("Customer Added.")
 	}
 }
 
 */
 
 // initialCalls makes the first calls to the main process.
-func (caller *Caller) initialCalls() {
+func (panelCaller *Caller) initialCalls() {
 
 	/* NOTE TO DEVELOPER. Step 3 of 3.
 
@@ -83,7 +85,8 @@ func (caller *Caller) initialCalls() {
 		Type: calls.LogTypeInfo,
 		Message: "Started",
 	}
-	caller.connection.Log.CallMainProcess(params)
+	logCall := panelCaller.connection[calling.LogCallID]
+	logCall.CallMainProcess(params)
 
 	*/
 

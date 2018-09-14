@@ -8,7 +8,7 @@ import (
 
 	"github.com/josephbudd/kicknotjs"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -24,7 +24,7 @@ type Controler struct {
 	presenter *Presenter
 	caller    *Caller
 	quitCh    chan struct{}    // send an empty struct to start the quit process.
-	tools     *viewtools.Tools // see {{.ImportRendererWASMViewTools}}
+	tools     *viewtools.Tools // see {{.ImportRendererViewTools}}
 	notjs     *kicknotjs.NotJS
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
@@ -39,7 +39,7 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
-func (controler *Controler) defineControlsSetHandlers() {
+func (panelControler *Controler) defineControlsSetHandlers() {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
@@ -48,13 +48,13 @@ func (controler *Controler) defineControlsSetHandlers() {
 	// example:
 
 	// Define controler members.
-	notjs := controler.notjs
-	controler.addCustomerName := notjs.GetElementByID("addCustomerName")
-	controler.addCustomerSubmit := notjs.GetElementByID("addCustomerSubmit")
+	notjs := panelControler.notjs
+	panelControler.addCustomerName := notjs.GetElementByID("addCustomerName")
+	panelControler.addCustomerSubmit := notjs.GetElementByID("addCustomerSubmit")
 
 	// Set handlers.
-	cb := notjs.RegisterCallBack(controler.handleSubmit)
-	notjs.SetOnClick(controler.addCustomerSubmit, cb)
+	cb := notjs.RegisterCallBack(panelControler.handleSubmit)
+	notjs.SetOnClick(panelControler.addCustomerSubmit, cb)
 
 	*/
 }
@@ -64,22 +64,22 @@ func (controler *Controler) defineControlsSetHandlers() {
 // Handlers and other functions.
 // example:
 
-func (controler *Controler) handleSubmit([]js.Value) {
-	name := strings.TrimSpace(controler.notjs.GetValue(controler.addCustomerName))
+func (panelControler *Controler) handleSubmit([]js.Value) {
+	name := strings.TrimSpace(panelControler.notjs.GetValue(panelControler.addCustomerName))
 	if len(name) == 0 {
-		controler.tools.Error("Customer Name is required.")
+		panelControler.tools.Error("Customer Name is required.")
 		return
 	}
 	record := &records.Customer{
 		Name: name,
 	}
-	controler.caller.AddCustomer(record)
+	panelControler.caller.AddCustomer(record)
 }
 
 */
 
 // initialCalls runs the first code that the controler needs to run.
-func (controler *Controler) initialCalls() {
+func (panelControler *Controler) initialCalls() {
 
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
@@ -87,7 +87,7 @@ func (controler *Controler) initialCalls() {
 	// I use this to start up widgets. For example a virtual list widget.
 	// example:
 
-	controler.customerSelectWidget.start()
+	panelControler.customerSelectWidget.start()
 
 	*/
 

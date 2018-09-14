@@ -9,35 +9,28 @@ import (
 	"github.com/josephbudd/kickwasm/tap"
 )
 
-const (
-	portFolderName = "ports"
-)
-
 type templateData struct {
-	Port                                  uint
-	Host                                  string
-	ApplicationName                       string
-	ApplicationGitPath                    string
-	Repos                                 []string
-	ServiceNames                          []string
-	LowerCamelCase                        func(string) string
-	CamelCase                             func(string) string
-	AddAbout                              bool
-	ServiceTemplatePanelNames             string
-	ServiceEmptyInsidePanelNamePathMap    string
-	HeadTemplateFile                      string
-	ImportMainProcessBehaviorRepoi        string
-	ImportMainProcessDataFilePaths        string
-	ImportMainProcessDataRecords          string
-	ImportMainProcessRepositoriesBolt     string
-	ImportMainProcessServices             string
-	ImportMainProcessServicesAbout        string
-	ImportMainProcessTransportsCalls      string
-	ImportMainProcessTransportsCallServer string
+	Port                               uint
+	Host                               string
+	ApplicationName                    string
+	ApplicationGitPath                 string
+	Repos                              []string
+	ServiceNames                       []string
+	LowerCamelCase                     func(string) string
+	CamelCase                          func(string) string
+	AddAbout                           bool
+	ServiceTemplatePanelNames          string
+	ServiceEmptyInsidePanelNamePathMap string
+	HeadTemplateFile                   string
 
-	ImportRendererWASMCall      string
-	ImportRendererWASMViewTools string
-	ImportRendererWASMPanels    string
+	ImportDomainInterfacesStorers          string
+	ImportDomainDataFilepaths              string
+	ImportDomainTypes                      string
+	ImportDomainImplementationsCalling     string
+	ImportDomainImplementationsStoringBolt string
+
+	ImportMainProcessServicesAbout string
+	ImportMainProcessCallServer    string
 }
 
 // Create creates main process folder files from templates.
@@ -59,18 +52,13 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout boo
 		ServiceTemplatePanelNames:          fmt.Sprintf("%#v", builder.GenerateServiceTemplatePanelName()),
 		HeadTemplateFile:                   headTemplateFile,
 
-		ImportMainProcessBehaviorRepoi:        folderpaths.ImportMainProcessBehaviorRepoi,
-		ImportMainProcessDataFilePaths:        folderpaths.ImportMainProcessDataFilePaths,
-		ImportMainProcessDataRecords:          folderpaths.ImportMainProcessDataRecords,
-		ImportMainProcessRepositoriesBolt:     folderpaths.ImportMainProcessRepositoriesBolt,
-		ImportMainProcessServices:             folderpaths.ImportMainProcessServices,
-		ImportMainProcessServicesAbout:        folderpaths.ImportMainProcessServicesAbout,
-		ImportMainProcessTransportsCalls:      folderpaths.ImportMainProcessTransportsCalls,
-		ImportMainProcessTransportsCallServer: folderpaths.ImportMainProcessTransportsCallServer,
-
-		ImportRendererWASMCall:      folderpaths.ImportRendererWASMCall,
-		ImportRendererWASMViewTools: folderpaths.ImportRendererWASMViewTools,
-		ImportRendererWASMPanels:    folderpaths.ImportRendererWASMPanels,
+		ImportDomainInterfacesStorers:          folderpaths.ImportDomainInterfacesStorers,
+		ImportDomainDataFilepaths:              folderpaths.ImportDomainDataFilepaths,
+		ImportDomainTypes:                      folderpaths.ImportDomainTypes,
+		ImportDomainImplementationsCalling:     folderpaths.ImportDomainImplementationsCalling,
+		ImportDomainImplementationsStoringBolt: folderpaths.ImportDomainImplementationsStoringBolt,
+		ImportMainProcessServicesAbout:         folderpaths.ImportMainProcessServicesAbout,
+		ImportMainProcessCallServer:            folderpaths.ImportMainProcessCallServer,
 	}
 	if err := createMainGo(appPaths, data); err != nil {
 		return err
@@ -78,26 +66,14 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout boo
 	if err := createPanelMapGo(appPaths, data); err != nil {
 		return err
 	}
+	if err := createServeGo(appPaths, data); err != nil {
+		return err
+	}
 	if addAbout {
 		appPaths.CreateAboutFolders()
 		if err := createAboutGo(appPaths, data); err != nil {
 			return err
 		}
-	}
-	if err := createFilePathsFilePathsGo(appPaths, data); err != nil {
-		return err
-	}
-	if err := createRecordsRecordsGo(appPaths, data); err != nil {
-		return err
-	}
-	if err := createRepoIGo(appPaths, data); err != nil {
-		return err
-	}
-	if err := createBoltDatabaseGo(appPaths, data); err != nil {
-		return err
-	}
-	if err := createCallsGo(appPaths, data); err != nil {
-		return err
 	}
 	if err := createCallServer(appPaths, data); err != nil {
 		return err

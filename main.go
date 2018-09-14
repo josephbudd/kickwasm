@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/josephbudd/kickwasm/domain"
 	"github.com/josephbudd/kickwasm/flagdata"
 	"github.com/josephbudd/kickwasm/foldercp"
 	"github.com/josephbudd/kickwasm/mainprocess"
@@ -27,7 +28,8 @@ const (
 var (
 	version = []string{
 		`kickwasm:`,
-		`  Version: 0.1.0`,
+		`  Version: 0.2.0`,
+		`  Test Driven Design.`,
 	}
 	nlSrcBB = []byte("\n")
 	nlRepBB = []byte("\\n")
@@ -127,6 +129,9 @@ func create(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
 		return err
 	}
 	if err := mainprocess.Create(appPaths, builder, AboutFlag, headTemplateFile, host, port); err != nil {
+		return err
+	}
+	if err := domain.Create(appPaths, builder, AboutFlag, headTemplateFile, host, port); err != nil {
 		return err
 	}
 	return nil

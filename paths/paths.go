@@ -11,19 +11,42 @@ import (
 
 // Import paths
 const (
-	ImportData                        = "/mainprocess/data"
-	ImportMainProcessRepositoriesBolt = "/mainprocess/repositories/bolt"
-	ImportMainProcessServices         = "/mainprocess/services"
-	ImportMainProcessDataRecords      = "/mainprocess/data/records"
-	ImportMainProcessBehaviorRepoi    = "/mainprocess/behavior/repos"
-	ImportTransports                  = "/mainprocess/transports"
+	// domain interfaces
+
+	ImportDomainInterfacesCallers = "/domain/interfaces/caller"
+	ImportDomainInterfacesStorers = "/domain/interfaces/storer"
+
+	// domain data
+
+	ImportDomainDataFilepaths  = "/domain/data/filepaths"
+	ImportDomainDataCallParams = "/domain/data/callParams"
+
+	// domain types
+
+	ImportDomainTypes = "/domain/types"
+
+	// domain implementations
+
+	ImportDomainImplementationsCalling     = "/domain/implementations/calling"
+	ImportDomainImplementationsStoringBolt = "/domain/implementations/storing/boltstoring"
+
+	// main process
+
+	ImportMainProcessCallServer    = "/mainprocess/callserver"
+	ImportMainProcessServices      = "/mainprocess/services"
+	ImportMainProcessServicesAbout = "/mainprocess/services/about"
+
+	// renderer
+
+	ImportRendererCall      = "/renderer/call"
+	ImportRendererPanels    = "/renderer/panels"
+	ImportRendererViewTools = "/renderer/viewtools"
 )
 
 // ApplicationPathsI is a test
 type ApplicationPathsI interface {
 	GetPaths() *Paths
 	CreateAboutFolders() error
-	CreateTemplateFolder() error
 	Copy(dest, src string) error
 	WriteFile(fpath string, data []byte) error
 	GetDMode() os.FileMode
@@ -55,6 +78,23 @@ func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 	ap.DMode = os.FileMode(0775)
 
 	ap.initializeOutput(pwd, outputFolder, appname)
+
+	// import paths
+	ap.paths.ImportDomainInterfacesCallers = ImportDomainInterfacesCallers
+	ap.paths.ImportDomainInterfacesStorers = ImportDomainInterfacesStorers
+	ap.paths.ImportDomainDataFilepaths = ImportDomainDataFilepaths
+	ap.paths.ImportDomainDataCallParams = ImportDomainDataCallParams
+	ap.paths.ImportDomainTypes = ImportDomainTypes
+	ap.paths.ImportDomainImplementationsCalling = ImportDomainImplementationsCalling
+	ap.paths.ImportDomainImplementationsStoringBolt = ImportDomainImplementationsStoringBolt
+
+	ap.paths.ImportMainProcessServices = ImportMainProcessServices
+	ap.paths.ImportMainProcessServicesAbout = ImportMainProcessServicesAbout
+	ap.paths.ImportMainProcessCallServer = ImportMainProcessCallServer
+
+	ap.paths.ImportRendererCall = ImportRendererCall
+	ap.paths.ImportRendererPanels = ImportRendererPanels
+	ap.paths.ImportRendererViewTools = ImportRendererViewTools
 }
 
 // GetDMode returns the file mode for directories.
@@ -75,44 +115,66 @@ func (ap *ApplicationPaths) GetPaths() *Paths {
 
 // Paths are the folder paths
 type Paths struct {
-	Output                      string
-	OutputDotKick               string
-	OutputDotKickYAML           string
-	OutputRenderer              string
-	OutputRendererWASMCaller    string
-	OutputRendererTemplates     string
-	OutputRendererWASMViewTools string
-	OutputRendererWASM          string
-	OutputRendererWASMPanels    string
-	OutputRendererCSS           string
+	Output            string
+	OutputDotKick     string
+	OutputDotKickYAML string
 
-	OutputMainProcess                 string
-	OutputMainProcessData             string
-	OutputMainProcessRepositories     string
-	OutputMainProcessRepositoriesBolt string
-	OutputMainProcessServices         string
-	OutputMainProcessServicesAbout    string
-	OutputMainProcessTransports       string
-	OutputMainProcessTransportsCalls  string
+	// output domain
 
-	OutputMainProcessTransportsCallServer string
-	OutputMainProcessDataFilePaths        string
-	OutputMainProcessDataRecords          string
-	OutputMainProcessBehavior             string
-	OutputMainProcessBehaviorRepoI        string
+	OutputDomain string
 
-	ImportMainProcessBehaviorRepoi        string
-	ImportMainProcessDataFilePaths        string
-	ImportMainProcessDataRecords          string
-	ImportMainProcessRepositoriesBolt     string
-	ImportMainProcessServices             string
-	ImportMainProcessServicesAbout        string
-	ImportMainProcessTransportsCalls      string
-	ImportMainProcessTransportsCallServer string
+	OutputDomainInterfaces        string
+	OutputDomainInterfacesCallers string
+	OutputDomainInterfacesStorers string
 
-	ImportRendererWASMCall      string
-	ImportRendererWASMPanels    string
-	ImportRendererWASMViewTools string
+	OutputDomainData           string
+	OutputDomainDataFilepaths  string
+	OutputDomainDataCallParams string
+
+	OutputDomainImplementations            string
+	OutputDomainImplementationsCalling     string
+	OutputDomainImplementationsStoring     string
+	OutputDomainImplementationsStoringBolt string
+
+	OutputDomainTypes string
+
+	// output main process
+
+	OutputMainProcess              string
+	OutputMainProcessCallServer    string
+	OutputMainProcessServices      string
+	OutputMainProcessServicesAbout string
+
+	// output renderer
+
+	OutputRenderer          string
+	OutputRendererCSS       string
+	OutputRendererTemplates string
+	OutputRendererCall      string
+	OutputRendererPanels    string
+	OutputRendererViewTools string
+
+	// import domain
+
+	ImportDomainInterfacesCallers          string
+	ImportDomainInterfacesStorers          string
+	ImportDomainDataFilepaths              string
+	ImportDomainDataCallParams             string
+	ImportDomainTypes                      string
+	ImportDomainImplementationsCalling     string
+	ImportDomainImplementationsStoringBolt string
+
+	// import main process
+
+	ImportMainProcessCallServer    string
+	ImportMainProcessServices      string
+	ImportMainProcessServicesAbout string
+
+	// import renderer
+
+	ImportRendererCall      string
+	ImportRendererPanels    string
+	ImportRendererViewTools string
 }
 
 // initializeOutput defines the output paths
@@ -123,43 +185,31 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	// output .kick folder and sub folders
 	ap.paths.OutputDotKick = filepath.Join(ap.paths.Output, ".kick")
 	ap.paths.OutputDotKickYAML = filepath.Join(ap.paths.OutputDotKick, "yaml")
+	// output domain folder and sub folders.
+	ap.paths.OutputDomain = filepath.Join(ap.paths.Output, "domain")
+	ap.paths.OutputDomainInterfaces = filepath.Join(ap.paths.OutputDomain, "interfaces")
+	ap.paths.OutputDomainInterfacesCallers = filepath.Join(ap.paths.OutputDomainInterfaces, "caller")
+	ap.paths.OutputDomainInterfacesStorers = filepath.Join(ap.paths.OutputDomainInterfaces, "storer")
+	ap.paths.OutputDomainData = filepath.Join(ap.paths.OutputDomain, "data")
+	ap.paths.OutputDomainDataFilepaths = filepath.Join(ap.paths.OutputDomainData, "filepaths")
+	ap.paths.OutputDomainDataCallParams = filepath.Join(ap.paths.OutputDomainData, "callParams")
+	ap.paths.OutputDomainImplementations = filepath.Join(ap.paths.OutputDomain, "implementations")
+	ap.paths.OutputDomainImplementationsCalling = filepath.Join(ap.paths.OutputDomainImplementations, "calling")
+	ap.paths.OutputDomainImplementationsStoring = filepath.Join(ap.paths.OutputDomainImplementations, "storing")
+	ap.paths.OutputDomainImplementationsStoringBolt = filepath.Join(ap.paths.OutputDomainImplementationsStoring, "boltstoring")
+	ap.paths.OutputDomainTypes = filepath.Join(ap.paths.OutputDomain, "types")
 	// output renderer folder and sub folders.
 	ap.paths.OutputRenderer = filepath.Join(ap.paths.Output, "renderer")
 	ap.paths.OutputRendererCSS = filepath.Join(ap.paths.OutputRenderer, "css")
 	ap.paths.OutputRendererTemplates = filepath.Join(ap.paths.OutputRenderer, "templates")
-	ap.paths.OutputRendererWASM = filepath.Join(ap.paths.OutputRenderer, "wasm")
-	ap.paths.OutputRendererWASMCaller = filepath.Join(ap.paths.OutputRendererWASM, "transports/call")
-	ap.paths.OutputRendererWASMPanels = filepath.Join(ap.paths.OutputRendererWASM, "panels")
-	ap.paths.OutputRendererWASMViewTools = filepath.Join(ap.paths.OutputRendererWASM, "viewtools")
+	ap.paths.OutputRendererCall = filepath.Join(ap.paths.OutputRenderer, "call")
+	ap.paths.OutputRendererPanels = filepath.Join(ap.paths.OutputRenderer, "panels")
+	ap.paths.OutputRendererViewTools = filepath.Join(ap.paths.OutputRenderer, "viewtools")
 	// output mainprocess folder and sub folders.
 	ap.paths.OutputMainProcess = filepath.Join(ap.paths.Output, "mainprocess")
-	ap.paths.OutputMainProcessBehavior = filepath.Join(ap.paths.OutputMainProcess, "behavior")
-	ap.paths.OutputMainProcessBehaviorRepoI = filepath.Join(ap.paths.OutputMainProcessBehavior, "repoi")
-	ap.paths.OutputMainProcessData = filepath.Join(ap.paths.OutputMainProcess, "data")
-	ap.paths.OutputMainProcessDataFilePaths = filepath.Join(ap.paths.OutputMainProcessData, "filepaths")
-	ap.paths.OutputMainProcessDataRecords = filepath.Join(ap.paths.OutputMainProcessData, "records")
-	ap.paths.OutputMainProcessRepositories = filepath.Join(ap.paths.OutputMainProcess, "repositories")
-	ap.paths.OutputMainProcessRepositoriesBolt = filepath.Join(ap.paths.OutputMainProcessRepositories, "bolt")
+	ap.paths.OutputMainProcessCallServer = filepath.Join(ap.paths.OutputMainProcess, "callserver")
 	ap.paths.OutputMainProcessServices = filepath.Join(ap.paths.OutputMainProcess, "services")
 	ap.paths.OutputMainProcessServicesAbout = filepath.Join(ap.paths.OutputMainProcessServices, "about")
-	ap.paths.OutputMainProcessTransports = filepath.Join(ap.paths.OutputMainProcess, "transports")
-	ap.paths.OutputMainProcessTransportsCalls = filepath.Join(ap.paths.OutputMainProcessTransports, "calls")
-	ap.paths.OutputMainProcessTransportsCallServer = filepath.Join(ap.paths.OutputMainProcessTransports, "callserver")
-
-	// import paths
-	ap.paths.ImportMainProcessBehaviorRepoi = "/mainprocess/behavior/repoi"
-	ap.paths.ImportMainProcessDataFilePaths = "/mainprocess/data/filepaths"
-	ap.paths.ImportMainProcessDataRecords = "/mainprocess/data/records"
-	ap.paths.ImportMainProcessRepositoriesBolt = "/mainprocess/repositories/bolt"
-	ap.paths.ImportMainProcessServices = "/mainprocess/services"
-	ap.paths.ImportMainProcessServicesAbout = "/mainprocess/services/about"
-	ap.paths.ImportMainProcessTransportsCalls = "/mainprocess/transports/calls"
-	ap.paths.ImportMainProcessTransportsCallServer = "/mainprocess/transports/callserver"
-
-	ap.paths.ImportRendererWASMCall = "/renderer/wasm/transports/call"
-	ap.paths.ImportRendererWASMViewTools = "/renderer/wasm/viewtools"
-	ap.paths.ImportRendererWASMPanels = "/renderer/wasm/panels"
-
 }
 
 // MakeOutput creates the output paths
@@ -171,45 +221,55 @@ func (ap *ApplicationPaths) MakeOutput() error {
 	if err := os.MkdirAll(ap.paths.OutputDotKickYAML, ap.DMode); err != nil {
 		return err
 	}
-	// output renderer folder and sub folders.
-	if err := os.MkdirAll(ap.paths.OutputRenderer, ap.DMode); err != nil {
+	// output domain interfaces
+	if err := os.MkdirAll(ap.paths.OutputDomainInterfaces, ap.DMode); err != nil {
 		return err
 	}
-	if err := os.MkdirAll(ap.paths.OutputRendererWASMCaller, ap.DMode); err != nil {
+	if err := os.MkdirAll(ap.paths.OutputDomainInterfacesCallers, ap.DMode); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(ap.paths.OutputDomainInterfacesStorers, ap.DMode); err != nil {
+		return err
+	}
+	// output domain data
+	if err := os.MkdirAll(ap.paths.OutputDomainDataFilepaths, ap.DMode); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(ap.paths.OutputDomainDataCallParams, ap.DMode); err != nil {
+		return err
+	}
+	// output domain implementations
+	if err := os.MkdirAll(ap.paths.OutputDomainImplementationsCalling, ap.DMode); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(ap.paths.OutputDomainImplementationsStoringBolt, ap.DMode); err != nil {
+		return err
+	}
+	// output domain types
+	if err := os.MkdirAll(ap.paths.OutputDomainTypes, ap.DMode); err != nil {
+		return err
+	}
+	// output mainprocess folder and sub folders.
+	if err := os.MkdirAll(ap.paths.OutputMainProcessCallServer, ap.DMode); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(ap.paths.OutputMainProcessServices, ap.DMode); err != nil {
+		return err
+	}
+	// output renderer folder and sub folders.
+	if err := os.MkdirAll(ap.paths.OutputRendererCSS, ap.DMode); err != nil {
 		return err
 	}
 	if err := os.MkdirAll(ap.paths.OutputRendererTemplates, ap.DMode); err != nil {
 		return err
 	}
-	if err := os.MkdirAll(ap.paths.OutputRendererWASMViewTools, ap.DMode); err != nil {
+	if err := os.MkdirAll(ap.paths.OutputRendererCall, ap.DMode); err != nil {
 		return err
 	}
-	if err := os.MkdirAll(ap.paths.OutputRendererWASMPanels, ap.DMode); err != nil {
+	if err := os.MkdirAll(ap.paths.OutputRendererPanels, ap.DMode); err != nil {
 		return err
 	}
-	if err := os.MkdirAll(ap.paths.OutputRendererCSS, ap.DMode); err != nil {
-		return err
-	}
-	// output mainprocess folder and sub folders.
-	if err := os.MkdirAll(ap.paths.OutputMainProcessTransportsCalls, ap.DMode); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(ap.paths.OutputMainProcessTransportsCallServer, ap.DMode); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(ap.paths.OutputMainProcessDataFilePaths, ap.DMode); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(ap.paths.OutputMainProcessDataRecords, ap.DMode); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(ap.paths.OutputMainProcessRepositoriesBolt, ap.DMode); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(ap.paths.OutputMainProcessBehaviorRepoI, ap.DMode); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(ap.paths.OutputMainProcessServices, ap.DMode); err != nil {
+	if err := os.MkdirAll(ap.paths.OutputRendererViewTools, ap.DMode); err != nil {
 		return err
 	}
 	return nil
@@ -220,7 +280,7 @@ func (ap *ApplicationPaths) CreateAboutFolders() error {
 	return os.MkdirAll(ap.paths.OutputMainProcessServicesAbout, ap.DMode)
 }
 
-// CreateTemplateFolder creates a template folder.
+// CreateTemplateFolder creates the generated source code folder for the mainprocess/about package.
 func (ap *ApplicationPaths) CreateTemplateFolder() error {
 	return os.MkdirAll(ap.paths.OutputRendererTemplates, ap.DMode)
 }

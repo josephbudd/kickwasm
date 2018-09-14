@@ -17,7 +17,7 @@ var (
 	lastDisconnect = time.Now()
 )
 
-func (callServer *CallServer) incConnectionCount() {
+func (callServer *Server) incConnectionCount() {
 	callServer.connectionCountMutex.Lock()
 	if connectionCount == -1 {
 		connectionCount = 1
@@ -27,7 +27,7 @@ func (callServer *CallServer) incConnectionCount() {
 	callServer.connectionCountMutex.Unlock()
 }
 
-func (callServer *CallServer) decConnectionCount() {
+func (callServer *Server) decConnectionCount() {
 	callServer.connectionCountMutex.Lock()
 	if connectionCount > 0 {
 		connectionCount--
@@ -36,26 +36,27 @@ func (callServer *CallServer) decConnectionCount() {
 }
 
 // GetConnectionCount returns the connection count.
-func (callServer *CallServer) GetConnectionCount() int {
+func (callServer *Server) GetConnectionCount() int {
 	callServer.connectionCountMutex.Lock()
 	cc := connectionCount
 	callServer.connectionCountMutex.Unlock()
 	return cc
 }
 
-func (callServer *CallServer) setLastDisconnect(t time.Time) {
+func (callServer *Server) setLastDisconnect(t time.Time) {
 	lastDisconnectMutex.Lock()
 	lastDisconnect = t
 	lastDisconnectMutex.Unlock()
 }
 
 // GetLastDisconnect returns the time of the last disconnect.
-func (callServer *CallServer) GetLastDisconnect() time.Time {
+func (callServer *Server) GetLastDisconnect() time.Time {
 	lastDisconnectMutex.Lock()
 	t := lastDisconnect
 	lastDisconnectMutex.Unlock()
 	return t
 }
+
 `
 
 // CallServerGo is the /mainprocess/tranpsports/callserver/callserver.go file.
@@ -71,17 +72,16 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	"{{.ApplicationGitPath}}{{.ImportMainProcessTransportsCalls}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 )
 
 const pongWait = 60 * time.Second
 
-// CallServer is a main process local procedure call.
-type CallServer struct {
+// Server is a main process local procedure call.
+type Server struct {
 	host          string
 	port          uint
-	callsMap        map[int]*calls.LPC
-	callsStruct      *calls.Calls
+	callMap       types.MainProcessCallsMap
 	DisconnectMax time.Duration
 
 	connectionCountMutex *sync.Mutex
@@ -98,13 +98,12 @@ type CallServer struct {
 	upgrader websocket.Upgrader
 }
 
-// NewCallServer constructs a new CallServer.
-func NewCallServer(host string, port uint, callsMap map[int]*calls.LPC, callsStruct *calls.Calls) *CallServer {
-	return &CallServer{
+// NewCallServer constructs a new Server.
+func NewCallServer(host string, port uint, callMap types.MainProcessCallsMap) *Server {
+	return &Server{
 		host:          host,
 		port:          port,
-		callsMap:        callsMap,
-		callsStruct:      callsStruct,
+		callMap:       callMap,
 		DisconnectMax: time.Millisecond * 500,
 
 		connectionCountMutex: &sync.Mutex{},
@@ -139,6 +138,7 @@ func NewCallServer(host string, port uint, callsMap map[int]*calls.LPC, callsStr
 		},
 	}
 }
+
 `
 
 // CallServerRunGo is /mainprocess/transports/callserver/run.go
@@ -173,7 +173,7 @@ var (
 // You will want your handlerFunc to do things like load your javascript, css and any other files.
 // Example HTML:
 //  <style> @import url(css/keyboard.css); </style>
-func (callServer *CallServer) Run(handlerFunc http.HandlerFunc) error {
+func (callServer *Server) Run(handlerFunc http.HandlerFunc) error {
 	appurl := fmt.Sprintf("http://%s:%d", callServer.host, callServer.port)
 	log.Println("listen and serve: ", appurl)
 	myServer = &http.Server{
@@ -247,7 +247,7 @@ func waitServer(url string) bool {
 //  * serves the web socket requests to func serveWebSocket.
 //  * serves the callserver javascript file request to func serveJS.
 //  * passes others to the handlerFunc func.
-func (callServer *CallServer) serve(w http.ResponseWriter, r *http.Request, handlerFunc http.HandlerFunc) {
+func (callServer *Server) serve(w http.ResponseWriter, r *http.Request, handlerFunc http.HandlerFunc) {
 	if r.Method == "GET" {
 		if strings.HasPrefix(r.URL.Path, "/ws") {
 			callServer.serveWebSocket(w, r)
@@ -267,7 +267,7 @@ func (callServer *CallServer) serve(w http.ResponseWriter, r *http.Request, hand
 //  * it closes myServer and returns
 //  * the closed server causes myServer.ListenAndServe() in func Run to end.
 //  * which causes func Run to end.
-func (callServer *CallServer) stillConnectedLoop(stopRunLoopCh chan os.Signal) {
+func (callServer *Server) stillConnectedLoop(stopRunLoopCh chan os.Signal) {
 	ticker := time.NewTicker(callServer.DisconnectMax / 2)
 	defer ticker.Stop()
 	for {
@@ -287,6 +287,7 @@ func (callServer *CallServer) stillConnectedLoop(stopRunLoopCh chan os.Signal) {
 		}
 	}
 }
+
 `
 
 //CallServerWebsocketGo is /mainprocess/transports/callserver/websocket.go
@@ -302,13 +303,13 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	"{{.ApplicationGitPath}}{{.ImportMainProcessTransportsCalls}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 )
 
 // Serve does
 //  * serves the web socket requests to func serveWebSocket.
 //  * passes others to the handlerFunc func.
-func (callServer *CallServer) Serve(w http.ResponseWriter, r *http.Request, handlerFunc http.HandlerFunc) {
+func (callServer *Server) Serve(w http.ResponseWriter, r *http.Request, handlerFunc http.HandlerFunc) {
 	if r.Method == "GET" {
 		if strings.HasPrefix(r.URL.Path, "/ws") {
 			callServer.serveWebSocket(w, r)
@@ -321,7 +322,7 @@ func (callServer *CallServer) Serve(w http.ResponseWriter, r *http.Request, hand
 // serveWebSocket handles a new web socket connection.
 // it keeps the web socket connection open until the ping loop or read loop tell it to stop.
 // it has a write loop which tells the ping and read loops to stop if there is a write error.
-func (callServer *CallServer) serveWebSocket(w http.ResponseWriter, r *http.Request) {
+func (callServer *Server) serveWebSocket(w http.ResponseWriter, r *http.Request) {
 	ws, err := callServer.upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		return
@@ -366,7 +367,7 @@ func (callServer *CallServer) serveWebSocket(w http.ResponseWriter, r *http.Requ
 // it sends messages to the message dispatcher.
 // if there is an error it sends via closeWSConnectionCh and returns.
 // if it receives via stopReadLoopCh it returns.
-func (callServer *CallServer) readLoop(ws *websocket.Conn,
+func (callServer *Server) readLoop(ws *websocket.Conn,
 	callCh chan []byte,
 	stopReadLoopCh chan struct{},
 	closeWSConnectionCh chan struct{}) {
@@ -392,7 +393,7 @@ func (callServer *CallServer) readLoop(ws *websocket.Conn,
 					log.Println("readLoop: len(payloadbb) == 0", err)
 				} else {
 					log.Println("main process incoming message")
-					payload := &calls.Payload{}
+					payload := &types.Payload{}
 					err := json.Unmarshal(payloadbb, payload)
 					if err != nil {
 						log.Println("readLoop: json.Unmarshal(payloadbb)", err)
@@ -400,9 +401,9 @@ func (callServer *CallServer) readLoop(ws *websocket.Conn,
 						return
 					}
 					// dispatch the message.
-					if lpc, ok := callServer.callsMap[payload.Procedure]; ok {
+					if lpc, ok := callServer.callMap[payload.Procedure]; ok {
 						callBack := func(paramsbb []byte) {
-							payload := &calls.Payload{
+							payload := &types.Payload{
 								Params:    string(paramsbb),
 								Procedure: payload.Procedure,
 							}
@@ -426,7 +427,7 @@ func (callServer *CallServer) readLoop(ws *websocket.Conn,
 // pingLoop periodically sends pings.
 // if there is an error it sends via closeWSConnectionCh and returns.
 // if it receives via stopPingLoopCh it returns.
-func (callServer *CallServer) pingLoop(ws *websocket.Conn, stopPingLoopCh, closeWSConnectionCh chan struct{}) {
+func (callServer *Server) pingLoop(ws *websocket.Conn, stopPingLoopCh, closeWSConnectionCh chan struct{}) {
 	ticker := time.NewTicker(callServer.pingPeriod)
 	defer ticker.Stop()
 	for {
@@ -443,4 +444,5 @@ func (callServer *CallServer) pingLoop(ws *websocket.Conn, stopPingLoopCh, close
 		}
 	}
 }
+
 `

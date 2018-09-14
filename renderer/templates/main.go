@@ -8,9 +8,9 @@ import (
 
 	"github.com/josephbudd/kicknotjs"
 
-	"{{.ApplicationGitPath}}{{.ImportMainProcessTransportsCalls}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMCall}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWASMViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererCall}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 // GOARCH=wasm GOOS=js go build -o app.wasm main.go panels.go
@@ -31,18 +31,18 @@ func main() {
 	tools := viewtools.NewTools(notjs)
 
 	// get the lpc client.
-	caller := call.NewClient(host, port, tools, notjs)
-	caller.SetOnConnectionBreak(
+	client := call.NewClient(host, port, tools, notjs)
+	client.SetOnConnectionBreak(
 		func([]js.Value) {
 			quitCh <- struct{}{}
 		},
 	)
 	// get the local procedure calls
-	callsStruct, callsMap := calls.NewCallsAndMap({{range .Repos}}nil, {{end}}caller.SendPayload)
+	callMap := calling.GetRendererCallMap(client.SendPayload)
 
 	// finish initializing the caller client.
-	caller.SetLpcMapLpcCalls(callsMap, callsStruct)
-	caller.Connect(func() { doPanels(quitCh, tools, callsStruct, notjs) })
+	client.SetCallMap(callMap)
+	client.Connect(func() { doPanels(quitCh, tools, callMap, notjs) })
 
 	// wait for the application to quit.
 	<-quitCh

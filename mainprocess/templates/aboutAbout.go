@@ -4,8 +4,8 @@ import (
 	"strings"
 )
 
-// GetAboutAboutGo returns the mainprocess/about/about.go file.
-func GetAboutAboutGo() string {
+// GetServicesAboutGo returns the mainprocess/services/about.go file.
+func GetServicesAboutGo() string {
 	return strings.Replace(aboutGo, "{{backTick}}", "`", -1)
 }
 
@@ -222,4 +222,5 @@ func GetLicenses() []License {
 		},
 	}
 }
+
 `
