@@ -4,7 +4,6 @@ import (
 	"github.com/josephbudd/kicknotjs"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
-	//"github.com/josephbudd/kickwasm/examples/contacts/domain/implementations/calling"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 

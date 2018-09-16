@@ -132,7 +132,7 @@ import (
 	"log"
 )
 
-// The Log call id.
+// LogCallID is the id for the Log call.
 var LogCallID = nextCallID()
 
 // Log types are the type message that is logged.
@@ -278,12 +278,12 @@ func rendererReceiveAndDispatchLog(params []byte, dispatch func(interface{})) {
 const CallingExampleGoTxt = `
 
 /*
-	Below is a GetCustomer example file.
-	It demonstrates how you need to define your own local procedure calls.
+	Below is a GetCustomer example file for a Customer Management CRUD (create, update, delete) application.
+	It demonstrates how you need to define your own Calls.
 
 	I would probably name it mainprocess/calling/getCustomer.go
 
-	In my application I would also have similar files for
+	In my CRUD customer application I would also have similar files for
 	  * GetCustomers
 	  * UpdateCustomer
 	  * RemoveCustomer
@@ -300,8 +300,8 @@ const CallingExampleGoTxt = `
 	     * In this case...
 	     1. "mainProcessReceiveGetCustomer" which is the complete main process job.
 		 2. "rendererReceiveAndDispatchGetCustomer" which is a simple renderer setup for the dispath process.
-	5. Add this Call to the map constructor in map.go func makeCallMap.
-		ex: GetCustomerID: newGetCustomerCall,
+	5. Add this Call to func makeCallMap in map.go.
+		ex: GetCustomerCallID: newGetCustomerCall(rendererSendPayload, contactStorer),
 */
 
 
@@ -316,14 +316,20 @@ import (
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 )
 
-// ID
+// STEP 1. Define the call id: 
+//
+// GetCustomerID is the GetCustomer call id.
 var GetCustomerID = nextCallID()
 
+// STEP 2. Define the params that the renderer sends to the mainprocess.
+//
 // RendererToMainProcessGetCustomerParams is the GetCustomer function parameters that the renderer sends to the main process.
 type RendererToMainProcessGetCustomerParams struct {
 	ID    uint64
 }
 
+// STEP 3. Define the params that the mainprocess sends to the renderer.
+//
 // MainProcessToRendererGetCustomerParams is the GetCustomer function parameters that the main process sends to the renderer.
 type MainProcessToRendererGetCustomerParams struct {
 	Error        bool
@@ -331,7 +337,9 @@ type MainProcessToRendererGetCustomerParams struct {
 	Record       *types.CustomerRecord
 }
 
-// newGetCustomerCall is the constructor for the GetCustomer local procedure call.
+// STEP 4. Define the constructor.
+//
+// newGetCustomerCall is the constructor for the GetCustomer Call.
 // It should only receive the repos that are needed. In this case the customer repo.
 // Param customerStorer storer.CustomerStorer is the customer repo needed to get a customer record.
 // Param rendererSendPayload: is a kickasm generated renderer func that sends data to the main process.
@@ -346,6 +354,8 @@ func newGetCustomerCall(customerStorer storer.CustomerStorer, rendererSendPayloa
 	)
 }
 
+// STEP 4.1. Define the mainProcessReceiveGetCustomer.
+//
 // mainProcessReceiveGetCustomer is a main process func.
 // This is how the main process receives a call from the renderer.
 // Param params is a []byte of a MainProcessToRendererGetCustomerParams
@@ -402,6 +412,8 @@ func mainProcessReceiveGetCustomer(params []byte, callBackToRenderer func(params
 	callBackToRenderer(txparamsbb)
 }
 
+// STEP 4.2. Define the rendererReceiveAndDispatchGetCustomer.
+//
 // rendererReceiveAndDispatchGetCustomer is a renderer func.
 // It receives and dispatches the params sent by the main process.
 // Param params is a []byte of a MainProcessToRendererGetCustomerParams
@@ -480,7 +492,7 @@ import (
 	"{{.ApplicationGitPath}}{{.ImportMainProcessServicesAbout}}"
 )
 
-// The GetAbout call id.
+// GetAbout call id for the GetAbout call.
 var GetAboutCallID = nextCallID()
 
 // MainProcessToRendererGetAboutParams are the GetAbout function parameters that the main process sends to the renderer.

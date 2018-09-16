@@ -7,6 +7,7 @@ import (
 
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/implementations/calling"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/call"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/states"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
@@ -39,7 +40,8 @@ func main() {
 
 	// finish initializing the caller client.
 	client.SetCallMap(callMap)
-	client.Connect(func() { doPanels(quitCh, tools, callMap, notjs) })
+	serviceStates := states.NewStates()
+	client.Connect(func() { doPanels(quitCh, tools, callMap, notjs, serviceStates) })
 
 	// wait for the application to quit.
 	<-quitCh

@@ -28,7 +28,7 @@ const (
 var (
 	version = []string{
 		`kickwasm:`,
-		`  Version: 0.2.0`,
+		`  Version: 0.2.1`,
 		`  Test Driven Design.`,
 	}
 	nlSrcBB = []byte("\n")

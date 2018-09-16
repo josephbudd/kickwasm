@@ -11,6 +11,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/RemoveContactConfirmPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/RemoveContactNotReadyPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/RemoveContactSelectPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/states"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
@@ -22,15 +23,15 @@ import (
 
 */
 
-func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap types.RendererCallMap, notjs *kicknotjs.NotJS) {
+func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap types.RendererCallMap, notjs *kicknotjs.NotJS, serviceStates *states.States) {
 	// 1. Construct the panel code.
-	addContactPanel := AddContactPanel.NewPanel(quitCh, tools, notjs, callMap)
-	editContactEditPanel := EditContactEditPanel.NewPanel(quitCh, tools, notjs, callMap)
+	addContactPanel := AddContactPanel.NewPanel(quitCh, tools, notjs, callMap, serviceStates)
+	editContactEditPanel := EditContactEditPanel.NewPanel(quitCh, tools, notjs, callMap, serviceStates)
 	editContactNotReadyPanel := EditContactNotReadyPanel.NewPanel(quitCh, tools, notjs, callMap)
-	editContactSelectPanel := EditContactSelectPanel.NewPanel(quitCh, tools, notjs, callMap)
-	removeContactConfirmPanel := RemoveContactConfirmPanel.NewPanel(quitCh, tools, notjs, callMap)
+	editContactSelectPanel := EditContactSelectPanel.NewPanel(quitCh, tools, notjs, callMap, serviceStates)
+	removeContactConfirmPanel := RemoveContactConfirmPanel.NewPanel(quitCh, tools, notjs, callMap, serviceStates)
 	removeContactNotReadyPanel := RemoveContactNotReadyPanel.NewPanel(quitCh, tools, notjs, callMap)
-	removeContactSelectPanel := RemoveContactSelectPanel.NewPanel(quitCh, tools, notjs, callMap)
+	removeContactSelectPanel := RemoveContactSelectPanel.NewPanel(quitCh, tools, notjs, callMap, serviceStates)
 	aboutPanel := AboutPanel.NewPanel(quitCh, tools, notjs, callMap)
 
 	// 2. Size the app.

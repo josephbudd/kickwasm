@@ -6,6 +6,7 @@ import (
 	"github.com/josephbudd/kicknotjs"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/states"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
@@ -29,7 +30,7 @@ type Panel struct {
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection types.RendererCallMap) *Panel {
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection types.RendererCallMap, serviceStates *states.States) *Panel {
 	panel := &Panel{
 		tools: tools,
 	}
@@ -43,16 +44,17 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.Not
 		notjs:  notjs,
 	}
 	presenter := &Presenter{
-		panel:   panel,
-		tools:   tools,
-		notjs:   notjs,
+		panel: panel,
+		tools: tools,
+		notjs: notjs,
 	}
 	caller := &Caller{
-		panel:      panel,
-		quitCh:     quitCh,
-		connection: connection,
-		tools:      tools,
-		notjs:      notjs,
+		panel:         panel,
+		quitCh:        quitCh,
+		connection:    connection,
+		tools:         tools,
+		notjs:         notjs,
+		serviceStates: serviceStates,
 	}
 	// settings
 	panel.controler = controler

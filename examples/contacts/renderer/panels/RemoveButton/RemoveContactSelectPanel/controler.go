@@ -1,11 +1,10 @@
 package RemoveContactSelectPanel
 
 import (
-	//"syscall/js"
-
 	"github.com/josephbudd/kicknotjs"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/widgets"
 )
 
 /*
@@ -27,12 +26,10 @@ type Controler struct {
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
 	// Declare your Controler members.
-	// example:
-
-	addCustomerName   js.Value
-	addCustomerSubmit js.Value
 
 	*/
+
+	contactRemoveSelect *widgets.ContactFVList
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
@@ -42,36 +39,39 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 
 	// Define the Controler members by their html elements.
 	// Set handlers.
-	// example:
-
-	// Define controler members.
-	notjs := panelControler.notjs
-	panelControler.addCustomerName := notjs.GetElementByID("addCustomerName")
-	panelControler.addCustomerSubmit := notjs.GetElementByID("addCustomerSubmit")
-
-	// Set handlers.
-	cb := notjs.RegisterCallBack(panelControler.handleSubmit)
-	notjs.SetOnClick(panelControler.addCustomerSubmit, cb)
 
 	*/
+
+	notjs := panelControler.notjs
+	panelControler.contactRemoveSelect = widgets.NewContactFVList(
+		// div
+		notjs.GetElementByID("contactRemoveSelect"),
+		// onSizeFunc
+		// Called when there are records in the db.
+		func() {
+			panelControler.panel.showRemoveContactSelectPanel(false)
+		},
+		// onNoSizeFunc
+		// Called when there are no records in the db.
+		func() {
+			panelControler.panel.showRemoveContactNotReadyPanel(false)
+		},
+		// hideFunc
+		panelControler.tools.ElementHide,
+		// showFunc
+		panelControler.tools.ElementShow,
+		// isShownFunc
+		panelControler.tools.ElementIsShown,
+		// notjs
+		panelControler.notjs,
+		// ContactGetter
+		panelControler.caller,
+	)
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
 
 // Handlers and other functions.
-// example:
-
-func (panelControler *Controler) handleSubmit([]js.Value) {
-	name := strings.TrimSpace(panelControler.notjs.GetValue(panelControler.addCustomerName))
-	if len(name) == 0 {
-		panelControler.tools.Error("Customer Name is required.")
-		return
-	}
-	record := &records.Customer{
-		Name: name,
-	}
-	panelControler.caller.AddCustomer(record)
-}
 
 */
 
@@ -82,10 +82,9 @@ func (panelControler *Controler) initialCalls() {
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
-	// example:
-
-	panelControler.customerSelectWidget.start()
 
 	*/
+
+	panelControler.contactRemoveSelect.Start()
 
 }

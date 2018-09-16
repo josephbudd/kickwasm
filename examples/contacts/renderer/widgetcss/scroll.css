@@ -1,0 +1,38 @@
+
+/* Custom Scrollbar */
+::-webkit-scrollbar
+{
+  width: 20px;
+  height:20px;
+}
+/*
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track
+{
+  background:white;
+}
+*/
+/* Turn on single button up on top, and down on bottom */
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+  display: block;
+  height:20px;
+}
+
+/* Turn off the down area up on top, and up area on bottom */
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement {
+  display: none;
+}
+
+/* Place The scroll down button at the bottom */
+::-webkit-scrollbar-button:end:increment {
+  background-image: url(/images/scroll_cntrl_dwn.png);
+  background-size:contain;
+}
+
+/* Place The scroll up button at the up */
+::-webkit-scrollbar-button:start:decrement {
+  background-image: url(/images/scroll_cntrl_up.png);
+  background-size:contain;
+}

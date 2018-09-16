@@ -350,12 +350,22 @@ div.under-tab-bar .heading-of-panel
   outline: none;
 }
 
-.user-content h3,
+.user-content h3
+{
+  font-size: 30px;
+  margin: 5px 0px;
+}
+// #tabsMasterView-home-pad-EditButton-EditContactSelectPanel-inner-user-content > h3
 .user-content h4,
+{
+  font-size: 24px;
+  margin: 5px 0px;
+}
 .user-content h5,
 .user-content h6
 {
   font-size:22px;
+  margin: 5px 0px;
 }
 
 /*

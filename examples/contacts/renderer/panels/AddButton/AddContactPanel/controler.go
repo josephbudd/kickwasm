@@ -1,10 +1,12 @@
 package AddContactPanel
 
 import (
-	//"syscall/js"
+	"fmt"
+	"syscall/js"
 
 	"github.com/josephbudd/kicknotjs"
 
+	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
@@ -27,64 +29,115 @@ type Controler struct {
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
 	// Declare your Controler members.
-	// example:
-
-	addCustomerName   js.Value
-	addCustomerSubmit js.Value
 
 	*/
+
+	contactAddName     js.Value
+	contactAddAddress1 js.Value
+	contactAddAddress2 js.Value
+	contactAddCity     js.Value
+	contactAddState    js.Value
+	contactAddZip      js.Value
+	contactAddPhone    js.Value
+	contactAddEmail    js.Value
+	contactAddSocial   js.Value
+	contactAddSubmit   js.Value
+	contactAddCancel   js.Value
 }
 
-// defineControlsSetHandlers defines controler members and sets their handlers.
+// defineControlsSetHandlers defines panelControler members and sets their handlers.
 func (panelControler *Controler) defineControlsSetHandlers() {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
 	// Define the Controler members by their html elements.
 	// Set handlers.
-	// example:
-
-	// Define controler members.
-	notjs := panelControler.notjs
-	panelControler.addCustomerName := notjs.GetElementByID("addCustomerName")
-	panelControler.addCustomerSubmit := notjs.GetElementByID("addCustomerSubmit")
-
-	// Set handlers.
-	cb := notjs.RegisterCallBack(panelControler.handleSubmit)
-	notjs.SetOnClick(panelControler.addCustomerSubmit, cb)
 
 	*/
+
+	notjs := panelControler.notjs
+	panelControler.contactAddName = notjs.GetElementByID("contactAddName")
+	panelControler.contactAddAddress1 = notjs.GetElementByID("contactAddAddress1")
+	panelControler.contactAddAddress2 = notjs.GetElementByID("contactAddAddress2")
+	panelControler.contactAddCity = notjs.GetElementByID("contactAddCity")
+	panelControler.contactAddState = notjs.GetElementByID("contactAddState")
+	panelControler.contactAddZip = notjs.GetElementByID("contactAddZip")
+	panelControler.contactAddPhone = notjs.GetElementByID("contactAddPhone")
+	panelControler.contactAddEmail = notjs.GetElementByID("contactAddEmail")
+	panelControler.contactAddSocial = notjs.GetElementByID("contactAddSocial")
+
+	panelControler.contactAddSubmit = notjs.GetElementByID("contactAddSubmit")
+	panelControler.contactAddCancel = notjs.GetElementByID("contactAddCancel")
+
+	cb := notjs.RegisterCallBack(panelControler.handleSubmit)
+	notjs.SetOnClick(panelControler.contactAddSubmit, cb)
+	cb = notjs.RegisterCallBack(panelControler.handleCancel)
+	notjs.SetOnClick(panelControler.contactAddCancel, cb)
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
 
 // Handlers and other functions.
-// example:
-
-func (panelControler *Controler) handleSubmit([]js.Value) {
-	name := strings.TrimSpace(panelControler.notjs.GetValue(panelControler.addCustomerName))
-	if len(name) == 0 {
-		panelControler.tools.Error("Customer Name is required.")
-		return
-	}
-	record := &records.Customer{
-		Name: name,
-	}
-	panelControler.caller.AddCustomer(record)
-}
 
 */
 
-// initialCalls runs the first code that the controler needs to run.
+func (panelControler *Controler) handleSubmit(args []js.Value) {
+	record := panelControler.getRecord()
+	tools := panelControler.tools
+	if len(record.Name) == 0 {
+		tools.Alert(fmt.Sprintf("len(record.Name) is %d, %q", len(record.Name), record.Name))
+		tools.Error("Name is required.")
+		return
+	}
+	if len(record.Address1) == 0 {
+		tools.Error("Address1 is required.")
+		return
+	}
+	if len(record.City) == 0 {
+		tools.Error("City is required.")
+		return
+	}
+	if len(record.State) == 0 {
+		tools.Error("State is required.")
+		return
+	}
+	if len(record.Zip) == 0 {
+		tools.Error("Zip is required.")
+		return
+	}
+	if len(record.Email) == 0 && len(record.Phone) == 0 {
+		tools.Error("Either Email or Phone is required.")
+		return
+	}
+	panelControler.caller.updateContact(record)
+}
+
+func (panelControler *Controler) handleCancel(args []js.Value) {
+	panelControler.tools.Back()
+}
+
+func (panelControler *Controler) getRecord() *types.ContactRecord {
+	notjs := panelControler.notjs
+	return &types.ContactRecord{
+		Name:     notjs.GetValue(panelControler.contactAddName),
+		Address1: notjs.GetValue(panelControler.contactAddAddress1),
+		Address2: notjs.GetValue(panelControler.contactAddAddress2),
+		City:     notjs.GetValue(panelControler.contactAddCity),
+		State:    notjs.GetValue(panelControler.contactAddState),
+		Zip:      notjs.GetValue(panelControler.contactAddZip),
+		Phone:    notjs.GetValue(panelControler.contactAddPhone),
+		Email:    notjs.GetValue(panelControler.contactAddEmail),
+		Social:   notjs.GetValue(panelControler.contactAddSocial),
+	}
+}
+
+// initialCalls runs the first code that the panelControler needs to run.
 func (panelControler *Controler) initialCalls() {
 
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
-	// example:
-
-	panelControler.customerSelectWidget.start()
 
 	*/
 

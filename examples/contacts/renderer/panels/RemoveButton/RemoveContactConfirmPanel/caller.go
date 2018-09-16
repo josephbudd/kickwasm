@@ -3,8 +3,10 @@ package RemoveContactConfirmPanel
 import (
 	"github.com/josephbudd/kicknotjs"
 
+	"github.com/josephbudd/kickwasm/examples/contacts/domain/implementations/calling"
+	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
-	//"github.com/josephbudd/kickwasm/examples/contacts/domain/implementations/calling"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/states"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
@@ -24,6 +26,9 @@ type Caller struct {
 	connection types.RendererCallMap
 	tools      *viewtools.Tools // see /renderer/viewtools
 	notjs      *kicknotjs.NotJS
+	// my added members
+	serviceStates       *states.States
+	removeContactCaller caller.Renderer
 }
 
 // setMainProcessCallBacks tells the main process what funcs to call back to.
@@ -32,43 +37,57 @@ func (panelCaller *Caller) addMainProcessCallBacks() {
 	/* NOTE TO DEVELOPER. Step 1 of 3.
 
 	// Tell the main processs to call back to your funcs.
-	// example:
-
-	addCustomerCall := panelCaller.connection[calling.AddCustomerCallId]
-	addCustomerCall.AddCallBack(panelCaller.addCustomerCB)
 
 	*/
+
+	getContact := panelCaller.connection[calling.GetContactCallID]
+	getContact.AddCallBack(panelCaller.getContactCB)
+
+	panelCaller.removeContactCaller = panelCaller.connection[calling.RemoveContactCallID]
+	panelCaller.removeContactCaller.AddCallBack(panelCaller.removeContactCB)
 
 }
 
 /* NOTE TO DEVELOPER. Step 2 of 3.
 
 // Define calls to the main process and their and call backs.
-// example:
 
-// Add Customer.
+*/
 
-func (panelCaller *Caller) addCustomer(record *types.CustomerRecord) {
-	params := &calls.RendererToMainProcessAddCustomerParams{
-		Record: record,
+// Get Contact
+
+func (panelCaller *Caller) getContactCB(params interface{}) {
+	switch params := params.(type) {
+	case *calling.MainProcessToRendererGetContactParams:
+		if params.State&panelCaller.serviceStates.Remove == panelCaller.serviceStates.Remove {
+			if params.Error {
+				return
+			}
+			// no error so let the remove confirm panel handle the call back.
+			panelCaller.controler.handleGetContact(params.Record)
+		}
 	}
-	addCustomerCall := panelCaller.connection[calling.AddCustomerCallId]
-	addCustomerCall.CallMainProcess(params)
 }
 
-func (panelCaller *Caller) addCustomerCB(params interface{}) {
+// Remove Contact
+
+func (panelCaller *Caller) removeContact(id uint64) {
+	params := &calling.RendererToMainProcessRemoveContactParams{
+		ID: id,
+	}
+	panelCaller.removeContactCaller.CallMainProcess(params)
+}
+
+func (panelCaller *Caller) removeContactCB(params interface{}) {
 	switch params := params.(type) {
-	case *calling.MainProcessToRendererAddCustomerParams:
+	case *calling.MainProcessToRendererRemoveContactParams:
 		if params.Error {
 			panelCaller.tools.Error(params.ErrorMessage)
 			return
 		}
-		// no errors
-		panelCaller.tools.Success("Customer Added.")
+		// the select panelCaller needs to handle this.
 	}
 }
-
-*/
 
 // initialCalls makes the first calls to the main process.
 func (panelCaller *Caller) initialCalls() {
@@ -76,14 +95,6 @@ func (panelCaller *Caller) initialCalls() {
 	/* NOTE TO DEVELOPER. Step 3 of 3.
 
 	// Make any initial calls to the main process that must be made when the app starts.
-	// example:
-
-	params := calls.RendererToMainProcessLogParams{
-		Type: calls.LogTypeInfo,
-		Message: "Started",
-	}
-	logCall := panelCaller.connection[calling.LogCallID]
-	logCall.CallMainProcess(params)
 
 	*/
 

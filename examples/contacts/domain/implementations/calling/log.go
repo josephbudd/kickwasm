@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-// The Log call id.
+// LogCallID is the id for the Log call.
 var LogCallID = nextCallID()
 
 // Log types are the type message that is logged.
@@ -145,4 +145,3 @@ func rendererReceiveAndDispatchLog(params []byte, dispatch func(interface{})) {
 	}
 
 */
-

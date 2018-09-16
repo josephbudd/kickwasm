@@ -4,13 +4,11 @@ A rapid development, desktop application generator for go. It creates a browser 
 
 To summerize, it's https://github.com/josephbudd/kick with wasm instead of javascript.
 
-## Version alpha 0.2.0
+## Version alpha 0.2.1
 
 ### The generated application code has a TDD architecture
 
-TDD ( test driven design ) is very simple. So simple you won't even notice it. This always begins in the main process's and render's **main.go** which intentionally abstracts away the production dependencies with interfaces defined at the domain level.
-
-So, in order to test your code you will want to **inject dependencies**. That simply means that you will use the same interfaces defined at the domain level but replace the production dependencies with your own test dependencies.
+TDD ( test driven design ) is very simple to do in go. It involves the implementation of principles that already belong to go. So, it's just idiomatic go and unit tests. Kickwasm creates the idiomatic go and the code archetecture. You create the unit tests if you want.
 
 #### The application is constructed with separate 2 processes
 
@@ -23,12 +21,6 @@ So, in order to test your code you will want to **inject dependencies**. That si
 2. The mainprocess folder contains the main process level logic.
 3. The renderer folder contains the renderer level logic.
 
-#### Inner Dependencies
-
-Dependencies between the domain level and the main process level are abstracted away with the interfaces defined at the domain level.
-
-Likewise, dependencies between the domain level and the renderer level are abstracted away with interfaces defined at the domain level.
-
 ### Kickwasm imports
 
 * The yaml package at https://gopkg.in/yaml.v2
@@ -37,14 +29,13 @@ Likewise, dependencies between the domain level and the renderer level are abstr
 
 * Imports the boltdb package at https://github.com/boltdb/bolt.
 * Imports my notjs package at https://github.com/josephbudd/kicknotjs.
+  * The kicknotjs package is only needed by the framework. You don't have to use it in your own renderer code. I use it now because I wrote it.
 
 ### Wiki
 
 I haven't begun the wiki yet.
 
 ### To do
-
-* Finish the contacts example.
 
 * Start the wiki.
 

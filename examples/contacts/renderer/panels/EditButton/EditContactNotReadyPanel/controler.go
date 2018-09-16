@@ -1,8 +1,6 @@
 package EditContactNotReadyPanel
 
 import (
-	//"syscall/js"
-
 	"github.com/josephbudd/kicknotjs"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"

@@ -10,7 +10,16 @@ package types
 
 // ContactRecord is a Contact record.
 type ContactRecord struct {
-	ID uint64
+	ID       uint64
+	Name     string
+	Address1 string
+	Address2 string
+	City     string
+	State    string
+	Zip      string
+	Phone    string
+	Email    string
+	Social   string
 }
 
 // NewContactRecord constructs a new Contact record.

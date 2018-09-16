@@ -78,22 +78,15 @@ type Credit struct {
 }
 
 // GetCredits returns the credits.
-// Do not remove the kick or lpc references.
-// Only remove the bolt reference if you remove bolt from this application.
 // Be verbose! Show how appreciatative and good natured you are.
 // Mention any software, speakers and writers that helped you build this application in any way.
 // Don't forget people and things that helped you in more remote ways as well.
 func GetCredits() []Credit {
 	return []Credit{
 		Credit{
-			Name:        "kick",
+			Name:        "kickwasm",
 			Description: "A way to kick start your golang application.",
-			URL:         "https://www.github.com/josephbudd/kick",
-		},
-		Credit{
-			Name:        "lpc",
-			Description: "local procedure calls between a golang main process and a browser renderer.",
-			URL:         "https://www.github.com/josephbudd/lpc",
+			URL:         "https://www.github.com/josephbudd/kickwasm",
 		},
 		Credit{
 			Name:        "bolt",
@@ -171,32 +164,7 @@ func GetLicenses() []License {
 			Location: "https://www.github.com/boltdb/bolt",
 		},
 		License{
-			Software: "lpc",
-			License: {{backTick}}MIT License
-			
-			Copyright (c) 2017 Joseph Budd
-			
-			Permission is hereby granted, free of charge, to any person obtaining a copy
-			of this software and associated documentation files (the "Software"), to deal
-			in the Software without restriction, including without limitation the rights
-			to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-			copies of the Software, and to permit persons to whom the Software is
-			furnished to do so, subject to the following conditions:
-			
-			The above copyright notice and this permission notice shall be included in all
-			copies or substantial portions of the Software.
-			
-			THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-			IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-			FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-			AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-			LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-			OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-			SOFTWARE.{{backTick}},
-			Location: "https://www.github.com/josephbudd/lpc",
-		},
-		License{
-			Software: "kick",
+			Software: "kickwasm",
 			License: {{backTick}}The MIT License (MIT)
 			
 			Copyright (c) 2017 Joseph Budd
@@ -218,7 +186,7 @@ func GetLicenses() []License {
 			IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 			CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			{{backTick}},
-			Location: "https://www.github.com/josephbudd/kick",
+			Location: "https://www.github.com/josephbudd/kickwasm",
 		},
 	}
 }

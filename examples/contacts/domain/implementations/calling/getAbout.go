@@ -7,7 +7,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/mainprocess/services/about"
 )
 
-// The GetAbout call id.
+// GetAboutCallID is the GetAbout call.
 var GetAboutCallID = nextCallID()
 
 // MainProcessToRendererGetAboutParams are the GetAbout function parameters that the main process sends to the renderer.
@@ -66,4 +66,3 @@ func rendererReceiveAndDispatchGetAbout(params []byte, dispatch func(interface{}
 	For renderer code see github.com/josephbudd/kickwasm/examples/contacts/home/user1/kick/output/contacts/renderer/panels/AboutButton/AboutPanel/caller.go
 
 */
-

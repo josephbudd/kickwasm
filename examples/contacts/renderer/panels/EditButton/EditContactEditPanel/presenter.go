@@ -3,8 +3,11 @@ package EditContactEditPanel
 import (
 	//"syscall/js"
 
+	"syscall/js"
+
 	"github.com/josephbudd/kicknotjs"
 
+	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
@@ -26,11 +29,18 @@ type Presenter struct {
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
 	// Declare your Presenter members here.
-	// example:
-
-	customerName js.Value
 
 	*/
+
+	contactEditName     js.Value
+	contactEditAddress1 js.Value
+	contactEditAddress2 js.Value
+	contactEditCity     js.Value
+	contactEditState    js.Value
+	contactEditZip      js.Value
+	contactEditPhone    js.Value
+	contactEditEmail    js.Value
+	contactEditSocial   js.Value
 }
 
 // defineMembers defines the Presenter members by their html elements.
@@ -39,21 +49,36 @@ func (panelPresenter *Presenter) defineMembers() {
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
 	// Define your Presenter members.
-	// example:
-
-	panelPresenter.customerName = panelPresenter.notjs.GetElementByID("customerName")
 
 	*/
+
+	notjs := panelPresenter.notjs
+	panelPresenter.contactEditName = notjs.GetElementByID("contactEditName")
+	panelPresenter.contactEditAddress1 = notjs.GetElementByID("contactEditAddress1")
+	panelPresenter.contactEditAddress2 = notjs.GetElementByID("contactEditAddress2")
+	panelPresenter.contactEditCity = notjs.GetElementByID("contactEditCity")
+	panelPresenter.contactEditState = notjs.GetElementByID("contactEditState")
+	panelPresenter.contactEditZip = notjs.GetElementByID("contactEditZip")
+	panelPresenter.contactEditPhone = notjs.GetElementByID("contactEditPhone")
+	panelPresenter.contactEditEmail = notjs.GetElementByID("contactEditEmail")
+	panelPresenter.contactEditSocial = notjs.GetElementByID("contactEditSocial")
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 3.
 
 // Define your Presenter functions.
-// example:
-
-// displayCustomer displays the customer in the panel.
-func (panelPresenter *Presenter) displayCustomer(record *records.CustomerRecord) {
-	panelPresenter.notjs.SetInnerText(panelPresenter.customerName, record.Name)
-}
 
 */
+
+func (panelPresenter *Presenter) fillForm(record *types.ContactRecord) {
+	notjs := panelPresenter.notjs
+	notjs.SetValue(panelPresenter.contactEditName, record.Name)
+	notjs.SetValue(panelPresenter.contactEditAddress1, record.Address1)
+	notjs.SetValue(panelPresenter.contactEditAddress2, record.Address2)
+	notjs.SetValue(panelPresenter.contactEditCity, record.City)
+	notjs.SetValue(panelPresenter.contactEditState, record.State)
+	notjs.SetValue(panelPresenter.contactEditZip, record.Zip)
+	notjs.SetValue(panelPresenter.contactEditPhone, record.Phone)
+	notjs.SetValue(panelPresenter.contactEditEmail, record.Email)
+	notjs.SetValue(panelPresenter.contactEditSocial, record.Social)
+}

@@ -18,6 +18,13 @@ func makeCallMap(rendererSendPayload func(payload []byte) error, contactStorer s
 	return map[types.CallID]interface{}{
 		LogCallID:      newLogCall(rendererSendPayload),
 		GetAboutCallID: newGetAboutCall(rendererSendPayload),
+		// Calls I added.
+		GetContactsPageStatesCallID:                newGetContactsPageStatesCall(contactStorer, rendererSendPayload),
+		GetContactsPageCitiesMatchStateCallID:      newGetContactsPageCitiesMatchStateCall(contactStorer, rendererSendPayload),
+		GetContactsPageRecordsMatchStateCityCallID: newGetContactsPageRecordsMatchStateCityCall(contactStorer, rendererSendPayload),
+		GetContactCallID:                           newGetContactCall(contactStorer, rendererSendPayload),
+		RemoveContactCallID:                        newRemoveContactCall(contactStorer, rendererSendPayload),
+		UpdateContactCallID:                        newUpdateContactCall(contactStorer, rendererSendPayload),
 	}
 }
 
@@ -47,4 +54,3 @@ func GetRendererCallMap(rendererSendPayload func(payload []byte) error) map[type
 	}
 	return rmap
 }
-

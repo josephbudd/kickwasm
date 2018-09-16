@@ -6,6 +6,7 @@ import (
 
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/filepaths"
 )
+
 /*
 
 	TODO: Modify func serve for your special needs.
@@ -40,6 +41,10 @@ func serve(w http.ResponseWriter, r *http.Request) {
 		withDefaultHeaders(w, r, serveURLPath)
 	case strings.HasPrefix(r.URL.Path, "/wasm"):
 		withDefaultWASMHeaders(w, r, serveWASMURLPath)
+	case strings.HasPrefix(r.URL.Path, "/widgetcss"):
+		withDefaultHeaders(w, r, serveURLPath)
+	case strings.HasPrefix(r.URL.Path, "/images"):
+		withDefaultHeaders(w, r, serveURLPath)
 	default:
 		http.Error(w, "Not found", 404)
 	}
@@ -74,4 +79,3 @@ func serveURLPath(w http.ResponseWriter, r *http.Request) {
 func serveWASMURLPath(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, filepaths.BuildRendererPath(r.URL.Path[5:]))
 }
-

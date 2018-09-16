@@ -1,0 +1,39 @@
+/*
+  Class VList.
+  Visual Description:
+    A vertical list of verbose buttons.
+  The 3 Styles for a VList.
+  1. div.VList is the container div.
+     It contains a padded list of buttons.
+     It scrolls vertically.
+  2. div.VList > p
+     The top and bottom padding of the scrolling list.
+  3. div.VList.button
+     The button's in the scrolling list.
+*/
+
+div.VList
+{
+  height: 380px;
+  width: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+div.VList > p
+{
+  height:5px;
+  padding:0px;
+  margin:0px;
+  width: 100%;
+}
+
+div.VList > button
+{
+  height: 340px; /* div.VList height -40px for margins and smaller size. */
+  width: 370px;  /* div.VList width -10px for margins. */
+  margin:5px;    /* Margins make the individual buttons easier to recognize. */
+  padding:5px;
+  border-radius: 5px;
+  overflow: hidden; /* No scroll bars inside buttons. */
+}
