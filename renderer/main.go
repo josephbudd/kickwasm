@@ -14,16 +14,18 @@ func createMainGo(host string, port uint, appPaths paths.ApplicationPathsI, buil
 		ApplicationGitPath                 string
 		Host                               string
 		Port                               uint
-		Repos                              []string
-		ImportRendererCall                 string
+		Stores                             []string
+		ImportRendererCallClient           string
+		ImportRendererCalls                string
 		ImportRendererViewTools            string
 		ImportDomainImplementationsCalling string
 	}{
-		ApplicationGitPath:                 builder.ImportPath,
-		Host:                               host,
-		Port:                               port,
-		Repos:                              builder.Repos,
-		ImportRendererCall:                 folderpaths.ImportRendererCall,
+		ApplicationGitPath: builder.ImportPath,
+		Host:               host,
+		Port:               port,
+		Stores:             builder.Stores,
+		ImportRendererCallClient:           folderpaths.ImportRendererCallClient,
+		ImportRendererCalls:                folderpaths.ImportRendererCalls,
 		ImportRendererViewTools:            folderpaths.ImportRendererViewTools,
 		ImportDomainImplementationsCalling: folderpaths.ImportDomainImplementationsCalling,
 	}

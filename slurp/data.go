@@ -27,7 +27,7 @@ type ApplicationInfo struct {
 	SourcePath string         `yaml:"sourcePath"`
 	Title      string         `yaml:"title"`
 	ImportPath string         `yaml:"importPath"`
-	Repos      []string       `yaml:"repos"`
+	Stores     []string       `yaml:"stores"`
 	Services   []*ServiceInfo `yaml:"services"`
 }
 

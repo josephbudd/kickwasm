@@ -17,7 +17,7 @@ type Panel struct {
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection types.RendererCallMap) *Panel {
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection map[types.CallID]caller.MainProcesser) *Panel {
 	v := &Panel{
 		presenter: newPresenter(notjs),
 		caller:    newCaller(quitCh, connection, tools),
@@ -43,7 +43,7 @@ func newPresenter(notjs *kicknotjs.NotJS) *Presenter {
 
 // newCaller constructs a new Caller.
 // Presenter and Controler must be set after this call
-func newCaller(quitCh chan struct{}, connection types.RendererCallMap, tools *viewtools.Tools) *Caller {
+func newCaller(quitCh chan struct{}, connection map[types.CallID]caller.MainProcesser, tools *viewtools.Tools) *Caller {
 	v := &Caller{
 		quitCh:   quitCh,
 		connection: connection,

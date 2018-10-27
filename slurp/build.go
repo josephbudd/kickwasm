@@ -22,7 +22,7 @@ func (sl *Slurper) Gulp(yamlPath string) (*tap.Builder, error) {
 	builder := tap.NewBuilder()
 	builder.Title = appInfo.Title
 	builder.ImportPath = appInfo.ImportPath
-	builder.Repos = appInfo.Repos
+	builder.Stores = appInfo.Stores
 	services := make([]*tap.Service, 0, len(appInfo.Services))
 	for _, sinfo := range appInfo.Services {
 		service := &tap.Service{

@@ -1,7 +1,7 @@
 package templates
 
 // MainGo is the main.go template.
-const MainGo = `{{$Dot := .}}{{$repo0 := index .Repos 0}}package main
+const MainGo = `{{$Dot := .}}{{$store0 := index .Stores 0}}package main
 
 import (
 	"log"
@@ -11,8 +11,8 @@ import (
 
 	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainImplementationsStoringBolt}}"
-	"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainInterfacesStorers}}"
+	"{{.ApplicationGitPath}}{{.ImportMainProcessCalls}}"
 	"{{.ApplicationGitPath}}{{.ImportMainProcessCallServer}}"
 )
 
@@ -45,19 +45,19 @@ const (
 
 */
 
-var ({{range .Repos}}
+var ({{range .Stores}}
 	{{call $Dot.LowerCamelCase .}}Store storer.{{.}}Storer{{end}}
 )
 
 func main() {
 	buildBoltStores()
-	defer {{call .LowerCamelCase $repo0}}Store.Close()
-	callMap := calling.GetMainProcessCallsMap({{range $i, $repo0 := .Repos}}{{if ne $i 0}}, {{end}}{{call $Dot.LowerCamelCase $repo0}}Store{{end}})
+	defer {{call .LowerCamelCase $store0}}Store.Close()
+	callMap := calls.GetCallMap({{range $i, $store0 := .Stores}}{{if ne $i 0}}, {{end}}{{call $Dot.LowerCamelCase $store0}}Store{{end}})
 	callServer := callserver.NewCallServer(host, port, callMap)
 	callServer.Run(serve)
 }
 
-// buildBoltRepos makes bolt data stores.
+// buildBoltStores makes bolt data stores.
 // Each store is the implementation of an interface defined in package repoi.
 // Each store uses the same bolt database so closing one will close all.
 func buildBoltStores() {
@@ -65,11 +65,11 @@ func buildBoltStores() {
 	if err != nil {
 		log.Fatalf("filepaths.BuildFolderPath error is %q.", err.Error())
 	}
-	path = filepath.Join(path, "allrepos.nosql")
+	path = filepath.Join(path, "allstores.nosql")
 	db, err := bolt.Open(path, filepaths.GetFmode(), nil)
 	if err != nil {
 		log.Fatalf("bolt.Open error is %q.", err.Error())
-	}{{range .Repos}}
+	}{{range .Stores}}
 	{{call $Dot.LowerCamelCase .}}Store = boltstoring.New{{.}}BoltDB(db, path, filepaths.GetFmode()){{end}}
 }
 

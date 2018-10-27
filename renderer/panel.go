@@ -29,6 +29,9 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *tap.Builder) erro
 			}
 			// template data for each panel file in this group.
 			for panelName, panel := range buttonPanelGroups.PanelNamesIDMap {
+				if len(panel.Buttons) > 0 || len(panel.Tabs) > 0 {
+					continue
+				}
 				folders := strings.Join(panelNamePathMap[panelName], string(os.PathSeparator))
 				folderpath := filepath.Join(folderpaths.OutputRendererPanels, folders, panelName)
 				if err := os.MkdirAll(folderpath, appPaths.GetDMode()); err != nil {
@@ -41,8 +44,10 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *tap.Builder) erro
 					IsTabSiblingPanel                  bool
 					ApplicationGitPath                 string
 					ImportRendererViewTools            string
+					ImportDomainDataCallIDs            string
 					ImportDomainTypes                  string
 					ImportDomainImplementationsCalling string
+					ImportDomainInterfacesCallers      string
 
 					CamelCase      func(string) string
 					LowerCamelCase func(string) string
@@ -54,8 +59,10 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *tap.Builder) erro
 					IsTabSiblingPanel:                  buttonPanelGroups.IsTabButton,
 					ApplicationGitPath:                 builder.ImportPath,
 					ImportRendererViewTools:            folderpaths.ImportRendererViewTools,
+					ImportDomainDataCallIDs:            folderpaths.ImportDomainDataCallIDs,
 					ImportDomainTypes:                  folderpaths.ImportDomainTypes,
 					ImportDomainImplementationsCalling: folderpaths.ImportDomainImplementationsCalling,
+					ImportDomainInterfacesCallers:      folderpaths.ImportDomainInterfacesCallers,
 
 					CamelCase:      cases.CamelCase,
 					LowerCamelCase: cases.LowerCamelCase,

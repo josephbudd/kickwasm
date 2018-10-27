@@ -42,8 +42,8 @@ func (sl *Slurper) checkApplicationInfo(yamlbb []byte, fpath string) (*Applicati
 		return nil, errors.New("importPath is required in " + fpath)
 	}
 	// make sure there are resos
-	if len(appInfo.Repos) == 0 {
-		return nil, errors.New("repos is missing in " + fpath)
+	if len(appInfo.Stores) == 0 {
+		return nil, errors.New("stores is missing in " + fpath)
 	}
 	// make sure there are services
 	if len(appInfo.Services) == 0 {

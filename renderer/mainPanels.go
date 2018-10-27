@@ -15,10 +15,12 @@ func createMainDoPanelsGo(addAbout bool, appPaths paths.ApplicationPathsI, build
 	folderpaths := appPaths.GetPaths()
 	servicePanelNamePathMap := builder.GenerateServiceEmptyInsidePanelNamePathMap()
 	namePathMap := make(map[string]string)
-	imports := make([]string, 3, 20)
+	imports := make([]string, 4, 20)
 	imports[0] = builder.ImportPath + folderpaths.ImportDomainTypes
 	imports[1] = builder.ImportPath + folderpaths.ImportRendererViewTools
 	imports[2] = "github.com/josephbudd/kicknotjs"
+	imports[3] = builder.ImportPath + folderpaths.ImportDomainInterfacesCallers
+
 	if addAbout {
 		importPath := filepath.Join(builder.ImportPath+folderpaths.ImportRendererPanels, "AboutButton", "AboutPanel")
 		imports = append(imports, importPath)

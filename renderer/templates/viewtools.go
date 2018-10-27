@@ -34,6 +34,7 @@ const (
 	PanelHeadingLevelPrefixClassName = "{{.Classes.PanelHeadingLevelPrefix}}"
 	InnerPanelClassName              = "{{.Classes.InnerPanel}}"
 	UserContentClassName             = "{{.Classes.UserContent}}"
+	ResizeMeWidthClassName           = "{{.Classes.ResizeMeWidth}}"
 
 	SliderClassName                  = "{{.Classes.Slider}}"
 	SliderPanelClassName             = "{{.Classes.SliderPanel}}"

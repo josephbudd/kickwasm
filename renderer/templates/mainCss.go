@@ -216,6 +216,7 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   border-radius: 20px 20px 20px 20px;
   border-width:1px;
   border-style:solid;
+  cursor:pointer;
 }
 #{{.IDHomePad}} > button:focus { outline: none; }
 
@@ -240,6 +241,7 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   border-style:solid;
   font-size:200%;
   font-weight:bold;
+  cursor:pointer;
 }
 #{{.IDSliderBack}}:focus { outline: none; }
 
@@ -270,8 +272,7 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   border-radius: 20px;
 }
 
-#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelInner}} > .{{.SliderButtonPad}},
-#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelInner}} > .{{.UserContent}}
+#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelInner}} > .{{.SliderButtonPad}}
 {
   overflow-x:hidden;
   overflow-y:auto;
@@ -325,6 +326,15 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   user content
 
 ******************************************************************************/
+
+.{{.UserContent}}
+{
+  overflow-x:hidden;
+  overflow-y:auto;
+  padding-right:10px;
+  letter-spacing: 2px;
+  word-spacing: 4px;
+}
 
 .{{.UserContent}} button,
 .{{.UserContent}} input,

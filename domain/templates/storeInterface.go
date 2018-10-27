@@ -7,8 +7,8 @@ import (
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 )
 
-// {{.Repo}}Storer defines the behavior of a {{.Repo}} database.
-type {{.Repo}}Storer interface {
+// {{.Store}}Storer defines the behavior of a {{.Store}} database.
+type {{.Store}}Storer interface {
 
 	// Open opens the database.
 	// Returns the error.
@@ -18,27 +18,27 @@ type {{.Repo}}Storer interface {
 	// Returns the error.
 	Close() error
 
-	// Get{{.Repo}} retrieves one *types.{{.Repo}}Record from the db.
+	// Get{{.Store}} retrieves one *types.{{.Store}}Record from the db.
 	// Param id [in] is the record id.
 	// Returns a record pointer and error.
 	// Returns (nil, nil) when the record is not found.
-	Get{{.Repo}}(id uint64) (*types.{{.Repo}}Record, error)
+	Get{{.Store}}(id uint64) (*types.{{.Store}}Record, error)
 
-	// Get{{.Repo}}s retrieves all of the *types.{{.Repo}}Records from the db.
+	// Get{{.Store}}s retrieves all of the *types.{{.Store}}Records from the db.
 	// Returns a slice of record pointers and error.
 	// When no records found, the slice length is 0 and error is nil.
-	Get{{.Repo}}s() ([]*types.{{.Repo}}Record, error)
+	Get{{.Store}}s() ([]*types.{{.Store}}Record, error)
 
-	// Update{{.Repo}} updates the *types.{{.Repo}}Record in the database.
+	// Update{{.Store}} updates the *types.{{.Store}}Record in the database.
 	// Param r [in-out] the pointer to the record to be updated.
 	// If r is a new record then r.ID is updated as well.
 	// Returns the error.
-	Update{{.Repo}}(r *types.{{.Repo}}Record) error
+	Update{{.Store}}(r *types.{{.Store}}Record) error
 
-	// Remove{{.Repo}} removes the types.{{.Repo}}Record from the database.
+	// Remove{{.Store}} removes the types.{{.Store}}Record from the database.
 	// Param id [in] the key of the record to be removed.
 	// Returns the error.
-	Remove{{.Repo}}(id uint64) error
+	Remove{{.Store}}(id uint64) error
 }
 
 `

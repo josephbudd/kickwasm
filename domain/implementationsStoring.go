@@ -17,7 +17,7 @@ func createStoreBoltStoresGo(appPaths paths.ApplicationPathsI, data *templateDat
 		return err
 	}
 	data2 := struct {
-		Repo               string
+		Store              string
 		ApplicationGitPath string
 		ImportDomainTypes  string
 		LowerCamelCase     func(string) string
@@ -26,9 +26,9 @@ func createStoreBoltStoresGo(appPaths paths.ApplicationPathsI, data *templateDat
 		ImportDomainTypes:  data.ImportDomainTypes,
 		LowerCamelCase:     data.LowerCamelCase,
 	}
-	for _, repo := range data.Repos {
-		data2.Repo = repo
-		fname := fmt.Sprintf("%sStore.go", repo)
+	for _, store := range data.Stores {
+		data2.Store = store
+		fname := fmt.Sprintf("%sStore.go", store)
 		oPath := filepath.Join(folderpaths.OutputDomainImplementationsStoringBolt, fname)
 		if err := templates.ProcessTemplate(fname, oPath, templates.ImplementationsStoringBoltStoringGo, data2, appPaths); err != nil {
 			return err

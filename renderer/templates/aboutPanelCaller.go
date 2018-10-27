@@ -4,7 +4,7 @@ package templates
 const AboutPanelCaller = `package AboutPanel
 
 import (
-	"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainDataCallIDs}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
@@ -13,23 +13,23 @@ import (
 type Caller struct {
 	presenter *Presenter
 	quitCh    chan struct{}
-	connection types.RendererCallMap
+	connection map[types.CallID]caller.MainProcesser
 	tools     *viewtools.Tools
 }
 
 func (panelCaller *Caller) addCallBacks() {
-	getAboutCall := panelCaller.connection[calling.GetAboutCallID]
+	getAboutCall := panelCaller.connection[callids.GetAboutCallID]
 	getAboutCall.AddCallBack(panelCaller.getAboutCB)
 }
 
 func (panelCaller *Caller) initialCalls() {
-	getAboutCall := panelCaller.connection[calling.GetAboutCallID]
+	getAboutCall := panelCaller.connection[callids.GetAboutCallID]
 	getAboutCall.CallMainProcess(nil)
 }
 
 func (panelCaller *Caller) getAboutCB(params interface{}) {
 	switch params := params.(type) {
-	case *calling.MainProcessToRendererGetAboutParams:
+	case *types.MainProcessToRendererGetAboutParams:
 		if params.Error {
 			panelCaller.tools.Error(params.ErrorMessage)
 			return

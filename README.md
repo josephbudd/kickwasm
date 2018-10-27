@@ -1,12 +1,16 @@
 # kickwasm
 
-A rapid development, desktop application generator for go. It creates a browser based GUI and most of the main process golang and renderer html, golang and css code for you.
+A rapid development, desktop application framework generator for go. It creates a browser based GUI and most of the main process golang and renderer html, golang and css code for you.
 
 To summerize, it's https://github.com/josephbudd/kick with wasm instead of javascript.
 
-## Version alpha 0.2.1
+## Version alpha 0.2.2
 
-Still not stable but working. There are just some minor changes that I want to make.
+Major changes. For example Repos are now Stores. Continued changes as I use kickwasm to create a programs and as I create the wiki.
+
+I removed the contacts example because I have to rewrite it with the new framework.
+
+Kickwasm works and I will be making more changes to it's code. So this code is still unstable.
 
 ### The generated application code has a TDD architecture
 

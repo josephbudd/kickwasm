@@ -26,6 +26,7 @@ func createAboutFiles(appPaths paths.ApplicationPathsI, builder *tap.Builder) er
 		ContributorsTabPanelInnerID        string
 		CreditsTabPanelInnerID             string
 		LicensesTabPanelInnerID            string
+		ImportDomainDataCallIDs            string
 		ImportDomainImplementationsCalling string
 		ImportDomainTypes                  string
 		ImportMainProcessServicesAbout     string
@@ -39,6 +40,7 @@ func createAboutFiles(appPaths paths.ApplicationPathsI, builder *tap.Builder) er
 		ContributorsTabPanelInnerID:        ids.ContributorsTabPanelInnerID,
 		CreditsTabPanelInnerID:             ids.CreditsTabPanelInnerID,
 		LicensesTabPanelInnerID:            ids.LicensesTabPanelInnerID,
+		ImportDomainDataCallIDs:            folderpaths.ImportDomainDataCallIDs,
 		ImportDomainImplementationsCalling: folderpaths.ImportDomainImplementationsCalling,
 		ImportDomainTypes:                  folderpaths.ImportDomainTypes,
 		ImportMainProcessServicesAbout:     folderpaths.ImportMainProcessServicesAbout,

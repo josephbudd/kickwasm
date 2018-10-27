@@ -6,8 +6,8 @@ const CallInterfaceGo = `package caller
 // MainProcesser is the behavior for the main process.
 type MainProcesser interface{
 
-	// MainProcessReceive is a main process func which is called to receive params after they are received from the renderer.
-	MainProcessReceive(params []byte, callback func(params []byte))
+	// Process is a main process func which is called to process the params after they are received from the renderer.
+	Process(params []byte, callback func(params []byte))
 }
 
 // Renderer is the behavior for the renderer.
@@ -21,8 +21,8 @@ type Renderer interface{
 	// Your panel caller code will use this func to send params to the main process.
 	CallMainProcess(params interface{})
 
-	// RendererReceiveAndDispatch a renderer func which is called to receive and dispatche params after they are received from the main process.
-	RendererReceiveAndDispatch(params []byte)
+	// Dispatch a renderer func which is called to receive and dispatche params after they are received from the main process.
+	Dispatch(params []byte)
 
 }
 

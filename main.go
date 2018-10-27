@@ -28,7 +28,7 @@ const (
 var (
 	version = []string{
 		`kickwasm:`,
-		`  Version: 0.2.1`,
+		`  Version: 0.2.2`,
 		`  Test Driven Design.`,
 	}
 	nlSrcBB = []byte("\n")
@@ -41,7 +41,7 @@ var (
 type info struct {
 	Title      string               `yaml:"title"`
 	ImportPath string               `yaml:"importPath"`
-	Repos      []string             `yaml:"repos"`
+	Stores     []string             `yaml:"stores"`
 	Services   []*slurp.ServiceInfo `yaml:"services"`
 }
 

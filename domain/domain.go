@@ -14,7 +14,7 @@ type templateData struct {
 	Host                               string
 	ApplicationName                    string
 	ApplicationGitPath                 string
-	Repos                              []string
+	Stores                             []string
 	ServiceNames                       []string
 	LowerCamelCase                     func(string) string
 	CamelCase                          func(string) string
@@ -46,7 +46,7 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout boo
 		Host:               host,
 		ApplicationName:    appname,
 		ApplicationGitPath: builder.ImportPath,
-		Repos:              builder.Repos,
+		Stores:             builder.Stores,
 		ServiceNames:       builder.GenerateServiceNames(),
 		LowerCamelCase:     cases.LowerCamelCase,
 		CamelCase:          cases.CamelCase,

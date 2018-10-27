@@ -10,6 +10,7 @@ import (
 
 	"github.com/josephbudd/kicknotjs"
 
+	"{{.ApplicationGitPath}}{{.ImportDomainInterfacesCallers}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
@@ -25,7 +26,7 @@ type Client struct {
 	connected   bool
 	dispatching bool
 	queue       []types.Payload
-	callMap     types.RendererCallMap
+	callMap     map[types.CallID]caller.MainProcesser
 	initialCB   func()
 
 	// handlers
@@ -49,7 +50,7 @@ func NewClient(host string, port uint, tools *viewtools.Tools, notjs *kicknotjs.
 }
 
 // SetCallMap sets the callMap and callsStruct.
-func (client *Client) SetCallMap(callMap types.RendererCallMap) {
+func (client *Client) SetCallMap(callMap map[types.CallID]caller.MainProcesser) {
 	client.callMap = callMap
 }
 
@@ -130,7 +131,7 @@ func (client *Client) dispatch() {
 			client.notjs.Alert(message)
 			return
 		}
-		call.RendererReceiveAndDispatch([]byte(payload.Params))
+		call.Dispatch([]byte(payload.Params))
 		client.dispatching = len(client.queue) > 0
 	}
 }

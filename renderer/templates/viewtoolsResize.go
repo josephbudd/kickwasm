@@ -230,14 +230,27 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 		h -= notjs.HeightExtras(userContent)
 		notjs.SetStyleHeight(userContent, h)
 		notjs.SetStyleWidth(userContent, w)
+		children := notjs.ChildrenSlice(userContent)
+		for _, ch := range children {
+			if !notjs.ClassListContains(ch, UnSeenClassName) {
+				if notjs.ClassListContains(ch, ResizeMeWidthClassName) {
+					tools.resizeMe(ch, w, h)
+				}
+			}
+		}
 		return
 	}
 	if tabbar != js.Undefined() && underTabbar != js.Undefined() {
 		// a tab bar is inside the inner panel
 		seen := js.Undefined()
+		// set the under tab bar height
 		h -= notjs.OuterHeight(tabbar)
 		h -= notjs.HeightExtras(underTabbar)
 		notjs.SetStyleHeight(underTabbar, h)
+		// set the under tab bar width
+		w -= notjs.WidthExtras(underTabbar)
+		notjs.SetStyleWidth(underTabbar, w)
+
 		// find the visible panel under the tab bar
 		children := notjs.ChildrenSlice(underTabbar)
 		for _, ch := range children {
@@ -253,8 +266,7 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 			return
 		}
 		// size the visible panel under the tab bar
-		seenwx := notjs.WidthExtras(seen)
-		w -= seenwx
+		w -= notjs.WidthExtras(seen)
 		notjs.SetStyleWidth(seen, w)
 		notjs.SetStyleHeight(seen, h)
 
@@ -263,11 +275,34 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 		children = notjs.ChildrenSlice(seen)
 		for _, ch := range children {
 			if notjs.ClassListContains(ch, PanelHeadingClassName) {
-				chwx := notjs.WidthExtras(ch)
-				notjs.SetStyleWidth(ch, w-chwx)
+				// size the heading
+				chwx1 := notjs.WidthExtras(ch)
+				notjs.SetStyleWidth(ch, w-chwx1)
 				h -= notjs.OuterHeight(ch)
 			} else if notjs.ClassListContains(ch, InnerPanelClassName) {
+				// size the innner panel
+				chwx1 := notjs.WidthExtras(ch)
 				notjs.SetStyleHeight(ch, h)
+				notjs.SetStyleWidth(ch, w-chwx1)
+				children2 := notjs.ChildrenSlice(ch)
+				for _, ch := range children2 {
+					if !notjs.ClassListContains(ch, UnSeenClassName) {
+						if notjs.ClassListContains(ch, SliderPanelInnerSiblingClassName) {
+							// size the visible inner panel sibling
+							chwx2 := notjs.WidthExtras(ch)
+							notjs.SetStyleWidth(ch, w-chwx1-chwx2)
+							// size all children with the ResizeMeWidthClassName
+							children3 := notjs.ChildrenSlice(ch)
+							for _, ch := range children3 {
+								if !notjs.ClassListContains(ch, UnSeenClassName) {
+									if notjs.ClassListContains(ch, ResizeMeWidthClassName) {
+										tools.resizeMe(ch, w-chwx1-chwx2, h)
+									}
+								}
+							}
+						}
+					}
+				}
 				break
 			}
 		}
@@ -275,89 +310,18 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 	}
 }
 
-func (tools *Tools) sizeTabBarPanel(tabBarPanel js.Value, h float64) {
-	// finds and sets the ht of div.under-tab-bar
-	// find and subtract the div.tab-bar height
+func (tools *Tools) resizeMe(mine js.Value, w, h float64) {
 	notjs := tools.notjs
-	children := notjs.ChildrenSlice(tabBarPanel)
+	w = w - notjs.WidthExtras(mine)
+	notjs.SetStyleWidth(mine, w)
+	children := notjs.ChildrenSlice(mine)
 	for _, ch := range children {
-		if notjs.ClassListContains(ch, TabBarClassName) {
-			h -= notjs.OuterHeight(ch)
-			break
-		}
-	}
-	// subtract top and bottom borders of the div.under-tab-bar
-	// find and size the under tab bar panel
-	for _, ch := range children {
-		if notjs.ClassListContains(ch, UnderTabBarClassName) {
-			// style.height is the inner height so remove the extra measurments.
-			h -= notjs.HeightExtras(ch)
-			notjs.SetStyleHeight(ch, h)
-			// size the childs sub panels
-			tools.sizeSubPanels(ch, h)
-			break
-		}
-	}
-}
-
-func (tools *Tools) sizePanelWithHeading(panelWithHeading js.Value, h float64) {
-	// finds and sets the ht of div.inner-panel
-	// ht = parent ht - ht of h?.heading-of-panel - size of scroll arrow.
-	// find and subtract the size of the h?.heading-of-panel
-	notjs := tools.notjs
-	children := notjs.ChildrenSlice(panelWithHeading)
-	for _, ch := range children {
-		if notjs.ClassListContains(ch, PanelHeadingClassName) {
-			h -= notjs.OuterHeight(ch)
-			break
-		}
-	}
-	// find and size the inner
-	for _, ch := range children {
-		if notjs.ClassListContains(ch, InnerPanelClassName) {
-			if tools.hasSubPanels(ch) {
-				h -= notjs.HeightExtras(ch)
-				notjs.SetStyleHeight(ch, h)
-				tools.sizeSubPanels(ch, h)
-			} else {
-				// no sub panels so possible scroll arrow at lower right.
-				style := ch.Get("style")
-				style.Set("padding-bottom", "10px")
-				style.Set("height", fmt.Sprintf("%fpx", (h-float64(30))))
-			}
-			break
-		}
-	}
-}
-
-func (tools *Tools) sizeSubPanels(panel js.Value, h float64) {
-	notjs := tools.notjs
-	children := notjs.ChildrenSlice(panel)
-	for _, ch := range children {
-		tagName := notjs.TagName(ch)
-		if tagName == "DIV" && !notjs.ClassListContains(ch, UnSeenClassName) {
-			if notjs.ClassListContains(ch, PanelWithTabBarClassName) {
-				h -= notjs.HeightExtras(ch)
-				tools.sizeTabBarPanel(ch, h)
-				return
-			}
-			if notjs.ClassListContains(ch, PanelWithHeadingClassName) {
-				h -= notjs.HeightExtras(ch)
-				tools.sizePanelWithHeading(ch, h)
-				return
+		if !notjs.ClassListContains(ch, UnSeenClassName) {
+			if notjs.ClassListContains(ch, ResizeMeWidthClassName) {
+				tools.resizeMe(ch, w, h)
 			}
 		}
 	}
 }
 
-func (tools *Tools) hasSubPanels(panel js.Value) bool {
-	notjs := tools.notjs
-	children := notjs.ChildrenSlice(panel)
-	for _, ch := range children {
-		if notjs.TagName(ch) == "DIV" && notjs.ClassListContainsOr(ch, PanelWithTabBarClassName, PanelWithHeadingClassName) {
-			return true
-		}
-	}
-	return false
-}
 `

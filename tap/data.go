@@ -79,7 +79,8 @@ const (
 	classCookieCrumb            = "cookie-crumb"
 	classCookieCrumbLevelPrefix = "cookie-crumb-level-"
 
-	classUserContent = "user-content"
+	classUserContent            = "user-content"
+	classResizeMeWidthClassName = "resize-me-width"
 
 	attributeBackID         = "backid"
 	attributeBackColorLevel = "backColorLevel"

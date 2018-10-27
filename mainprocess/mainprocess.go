@@ -14,7 +14,7 @@ type templateData struct {
 	Host                               string
 	ApplicationName                    string
 	ApplicationGitPath                 string
-	Repos                              []string
+	Stores                             []string
 	ServiceNames                       []string
 	LowerCamelCase                     func(string) string
 	CamelCase                          func(string) string
@@ -24,12 +24,16 @@ type templateData struct {
 	HeadTemplateFile                   string
 
 	ImportDomainInterfacesStorers          string
+	ImportDomainInterfacesCallers          string
 	ImportDomainDataFilepaths              string
+	ImportDomainDataCallIDs                string
+	ImportDomainDataLogLevels              string
 	ImportDomainTypes                      string
 	ImportDomainImplementationsCalling     string
 	ImportDomainImplementationsStoringBolt string
 
 	ImportMainProcessServicesAbout string
+	ImportMainProcessCalls         string
 	ImportMainProcessCallServer    string
 }
 
@@ -43,7 +47,7 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout boo
 		Host:               host,
 		ApplicationName:    appname,
 		ApplicationGitPath: builder.ImportPath,
-		Repos:              builder.Repos,
+		Stores:             builder.Stores,
 		ServiceNames:       builder.GenerateServiceNames(),
 		LowerCamelCase:     cases.LowerCamelCase,
 		CamelCase:          cases.CamelCase,
@@ -53,11 +57,15 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout boo
 		HeadTemplateFile:                   headTemplateFile,
 
 		ImportDomainInterfacesStorers:          folderpaths.ImportDomainInterfacesStorers,
+		ImportDomainInterfacesCallers:          folderpaths.ImportDomainInterfacesCallers,
 		ImportDomainDataFilepaths:              folderpaths.ImportDomainDataFilepaths,
+		ImportDomainDataCallIDs:                folderpaths.ImportDomainDataCallIDs,
+		ImportDomainDataLogLevels:              folderpaths.ImportDomainDataLogLevels,
 		ImportDomainTypes:                      folderpaths.ImportDomainTypes,
 		ImportDomainImplementationsCalling:     folderpaths.ImportDomainImplementationsCalling,
 		ImportDomainImplementationsStoringBolt: folderpaths.ImportDomainImplementationsStoringBolt,
 		ImportMainProcessServicesAbout:         folderpaths.ImportMainProcessServicesAbout,
+		ImportMainProcessCalls:                 folderpaths.ImportMainProcessCalls,
 		ImportMainProcessCallServer:            folderpaths.ImportMainProcessCallServer,
 	}
 	if err := createMainGo(appPaths, data); err != nil {
@@ -76,6 +84,9 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout boo
 		}
 	}
 	if err := createCallServer(appPaths, data); err != nil {
+		return err
+	}
+	if err := createCalls(appPaths, data); err != nil {
 		return err
 	}
 	return nil

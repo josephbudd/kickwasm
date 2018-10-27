@@ -16,5 +16,20 @@ func createTypesCallsGo(appPaths paths.ApplicationPathsI, data *templateData) er
 	}
 	fname = "records.go"
 	oPath = filepath.Join(folderpaths.OutputDomainTypes, fname)
-	return templates.ProcessTemplate(fname, oPath, templates.TypesRecordsGo, data, appPaths)
+	if err := templates.ProcessTemplate(fname, oPath, templates.TypesRecordsGo, data, appPaths); err != nil {
+		return err
+	}
+	fname = "logCallParams.go"
+	oPath = filepath.Join(folderpaths.OutputDomainTypes, fname)
+	if err := templates.ProcessTemplate(fname, oPath, templates.TypesLogGo, data, appPaths); err != nil {
+		return err
+	}
+	if data.AddAbout {
+		fname = "getAboutCallParams.go"
+		oPath = filepath.Join(folderpaths.OutputDomainTypes, fname)
+		if err := templates.ProcessTemplate(fname, oPath, templates.TypesGetAboutParamsGo, data, appPaths); err != nil {
+			return err
+		}
+	}
+	return nil
 }

@@ -19,7 +19,9 @@ const (
 	// domain data
 
 	ImportDomainDataFilepaths  = "/domain/data/filepaths"
+	ImportDomainDataCallIDs    = "/domain/data/callids"
 	ImportDomainDataCallParams = "/domain/data/callParams"
+	ImportDomainDataLogLevels  = "/domain/data/loglevels"
 
 	// domain types
 
@@ -32,15 +34,17 @@ const (
 
 	// main process
 
+	ImportMainProcessCalls         = "/mainprocess/calls"
 	ImportMainProcessCallServer    = "/mainprocess/callserver"
 	ImportMainProcessServices      = "/mainprocess/services"
 	ImportMainProcessServicesAbout = "/mainprocess/services/about"
 
 	// renderer
 
-	ImportRendererCall      = "/renderer/call"
-	ImportRendererPanels    = "/renderer/panels"
-	ImportRendererViewTools = "/renderer/viewtools"
+	ImportRendererCallClient = "/renderer/callClient"
+	ImportRendererCalls      = "/renderer/calls"
+	ImportRendererPanels     = "/renderer/panels"
+	ImportRendererViewTools  = "/renderer/viewtools"
 )
 
 // ApplicationPathsI is a test
@@ -83,16 +87,20 @@ func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 	ap.paths.ImportDomainInterfacesCallers = ImportDomainInterfacesCallers
 	ap.paths.ImportDomainInterfacesStorers = ImportDomainInterfacesStorers
 	ap.paths.ImportDomainDataFilepaths = ImportDomainDataFilepaths
+	ap.paths.ImportDomainDataCallIDs = ImportDomainDataCallIDs
 	ap.paths.ImportDomainDataCallParams = ImportDomainDataCallParams
+	ap.paths.ImportDomainDataLogLevels = ImportDomainDataLogLevels
 	ap.paths.ImportDomainTypes = ImportDomainTypes
 	ap.paths.ImportDomainImplementationsCalling = ImportDomainImplementationsCalling
 	ap.paths.ImportDomainImplementationsStoringBolt = ImportDomainImplementationsStoringBolt
 
 	ap.paths.ImportMainProcessServices = ImportMainProcessServices
 	ap.paths.ImportMainProcessServicesAbout = ImportMainProcessServicesAbout
+	ap.paths.ImportMainProcessCalls = ImportMainProcessCalls
 	ap.paths.ImportMainProcessCallServer = ImportMainProcessCallServer
 
-	ap.paths.ImportRendererCall = ImportRendererCall
+	ap.paths.ImportRendererCallClient = ImportRendererCallClient
+	ap.paths.ImportRendererCalls = ImportRendererCalls
 	ap.paths.ImportRendererPanels = ImportRendererPanels
 	ap.paths.ImportRendererViewTools = ImportRendererViewTools
 }
@@ -127,9 +135,10 @@ type Paths struct {
 	OutputDomainInterfacesCallers string
 	OutputDomainInterfacesStorers string
 
-	OutputDomainData           string
-	OutputDomainDataFilepaths  string
-	OutputDomainDataCallParams string
+	OutputDomainData          string
+	OutputDomainDataFilepaths string
+	OutputDomainDataCallIDs   string
+	OutputDomainDataLogLevels string
 
 	OutputDomainImplementations            string
 	OutputDomainImplementationsCalling     string
@@ -141,40 +150,46 @@ type Paths struct {
 	// output main process
 
 	OutputMainProcess              string
+	OutputMainProcessCalls         string
 	OutputMainProcessCallServer    string
 	OutputMainProcessServices      string
 	OutputMainProcessServicesAbout string
 
 	// output renderer
 
-	OutputRenderer          string
-	OutputRendererCSS       string
-	OutputRendererTemplates string
-	OutputRendererCall      string
-	OutputRendererPanels    string
-	OutputRendererViewTools string
+	OutputRenderer           string
+	OutputRendererCSS        string
+	OutputRendererTemplates  string
+	OutputRendererCallClient string
+	OutputRendererCalls      string
+	OutputRendererPanels     string
+	OutputRendererViewTools  string
 
 	// import domain
 
 	ImportDomainInterfacesCallers          string
 	ImportDomainInterfacesStorers          string
 	ImportDomainDataFilepaths              string
+	ImportDomainDataCallIDs                string
 	ImportDomainDataCallParams             string
+	ImportDomainDataLogLevels              string
 	ImportDomainTypes                      string
 	ImportDomainImplementationsCalling     string
 	ImportDomainImplementationsStoringBolt string
 
 	// import main process
 
+	ImportMainProcessCalls         string
 	ImportMainProcessCallServer    string
 	ImportMainProcessServices      string
 	ImportMainProcessServicesAbout string
 
 	// import renderer
 
-	ImportRendererCall      string
-	ImportRendererPanels    string
-	ImportRendererViewTools string
+	ImportRendererCallClient string
+	ImportRendererCalls      string
+	ImportRendererPanels     string
+	ImportRendererViewTools  string
 }
 
 // initializeOutput defines the output paths
@@ -192,7 +207,8 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	ap.paths.OutputDomainInterfacesStorers = filepath.Join(ap.paths.OutputDomainInterfaces, "storer")
 	ap.paths.OutputDomainData = filepath.Join(ap.paths.OutputDomain, "data")
 	ap.paths.OutputDomainDataFilepaths = filepath.Join(ap.paths.OutputDomainData, "filepaths")
-	ap.paths.OutputDomainDataCallParams = filepath.Join(ap.paths.OutputDomainData, "callParams")
+	ap.paths.OutputDomainDataCallIDs = filepath.Join(ap.paths.OutputDomainData, "callids")
+	ap.paths.OutputDomainDataLogLevels = filepath.Join(ap.paths.OutputDomainData, "loglevels")
 	ap.paths.OutputDomainImplementations = filepath.Join(ap.paths.OutputDomain, "implementations")
 	ap.paths.OutputDomainImplementationsCalling = filepath.Join(ap.paths.OutputDomainImplementations, "calling")
 	ap.paths.OutputDomainImplementationsStoring = filepath.Join(ap.paths.OutputDomainImplementations, "storing")
@@ -202,11 +218,13 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	ap.paths.OutputRenderer = filepath.Join(ap.paths.Output, "renderer")
 	ap.paths.OutputRendererCSS = filepath.Join(ap.paths.OutputRenderer, "css")
 	ap.paths.OutputRendererTemplates = filepath.Join(ap.paths.OutputRenderer, "templates")
-	ap.paths.OutputRendererCall = filepath.Join(ap.paths.OutputRenderer, "call")
+	ap.paths.OutputRendererCallClient = filepath.Join(ap.paths.OutputRenderer, "callClient")
+	ap.paths.OutputRendererCalls = filepath.Join(ap.paths.OutputRenderer, "calls")
 	ap.paths.OutputRendererPanels = filepath.Join(ap.paths.OutputRenderer, "panels")
 	ap.paths.OutputRendererViewTools = filepath.Join(ap.paths.OutputRenderer, "viewtools")
 	// output mainprocess folder and sub folders.
 	ap.paths.OutputMainProcess = filepath.Join(ap.paths.Output, "mainprocess")
+	ap.paths.OutputMainProcessCalls = filepath.Join(ap.paths.OutputMainProcess, "calls")
 	ap.paths.OutputMainProcessCallServer = filepath.Join(ap.paths.OutputMainProcess, "callserver")
 	ap.paths.OutputMainProcessServices = filepath.Join(ap.paths.OutputMainProcess, "services")
 	ap.paths.OutputMainProcessServicesAbout = filepath.Join(ap.paths.OutputMainProcessServices, "about")
@@ -235,7 +253,10 @@ func (ap *ApplicationPaths) MakeOutput() error {
 	if err := os.MkdirAll(ap.paths.OutputDomainDataFilepaths, ap.DMode); err != nil {
 		return err
 	}
-	if err := os.MkdirAll(ap.paths.OutputDomainDataCallParams, ap.DMode); err != nil {
+	if err := os.MkdirAll(ap.paths.OutputDomainDataCallIDs, ap.DMode); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(ap.paths.OutputDomainDataLogLevels, ap.DMode); err != nil {
 		return err
 	}
 	// output domain implementations
@@ -250,6 +271,9 @@ func (ap *ApplicationPaths) MakeOutput() error {
 		return err
 	}
 	// output mainprocess folder and sub folders.
+	if err := os.MkdirAll(ap.paths.OutputMainProcessCalls, ap.DMode); err != nil {
+		return err
+	}
 	if err := os.MkdirAll(ap.paths.OutputMainProcessCallServer, ap.DMode); err != nil {
 		return err
 	}
@@ -263,7 +287,10 @@ func (ap *ApplicationPaths) MakeOutput() error {
 	if err := os.MkdirAll(ap.paths.OutputRendererTemplates, ap.DMode); err != nil {
 		return err
 	}
-	if err := os.MkdirAll(ap.paths.OutputRendererCall, ap.DMode); err != nil {
+	if err := os.MkdirAll(ap.paths.OutputRendererCallClient, ap.DMode); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(ap.paths.OutputRendererCalls, ap.DMode); err != nil {
 		return err
 	}
 	if err := os.MkdirAll(ap.paths.OutputRendererPanels, ap.DMode); err != nil {

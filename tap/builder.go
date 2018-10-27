@@ -44,6 +44,7 @@ type Classes struct {
 	PanelHeadingLevelPrefix string
 	InnerPanel              string
 	UserContent             string
+	ResizeMeWidth           string
 
 	Slider                  string
 	SliderBack              string
@@ -51,6 +52,7 @@ type Classes struct {
 	SliderPanelInner        string
 	SliderButtonPad         string
 	SliderPanelInnerSibling string
+	ResizeMeWidthClassName  string
 
 	CookieCrumb            string
 	CookieCrumbLevelPrefix string
@@ -67,7 +69,7 @@ type Builder struct {
 	Name              string
 	Title             string
 	ImportPath        string
-	Repos             []string
+	Stores            []string
 	Services          []*Service
 	panel             *Panel
 	indentAmount      uint
@@ -102,6 +104,7 @@ func NewBuilder() *Builder {
 			PanelHeadingLevelPrefix: classPanelHeadingLevelPrefix,
 			InnerPanel:              classInnerPanel,
 			UserContent:             classUserContent,
+			ResizeMeWidth:           classResizeMeWidthClassName,
 
 			Slider:                  classSlider,
 			SliderPanel:             classSliderPanel,
@@ -234,14 +237,13 @@ func (builder *Builder) toSliderCollectionHTML(indent uint, addLocations bool) s
 
 func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) string {
 	colorLevelUint := uint(len(locations))
-	colorLevel := serviceName
 	var backLevel string
 	if colorLevelUint == 1 {
 		backLevel = "0"
 	} else {
-		backLevel = colorLevel
+		backLevel = serviceName
 	}
-	//backLevel := colorLevel - 1 // color level of the previous button pad
+	//backLevel := serviceName - 1 // color level of the previous button pad
 	// keep track how far the color levels go for css.
 	if builder.Colors.LastColorLevel < colorLevelUint {
 		builder.Colors.LastColorLevel = colorLevelUint
@@ -259,24 +261,24 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 	indent2 := builder.incIndent(builder.sliderPanelIndent)
 	// cookie crumbs
 	if addLocations {
-		lines = append(lines, builder.cookieCrumbs(locations, indent2))
+		lines = append(lines, builder.cookieCrumbs(serviceName, locations, indent2))
 	}
 	// under the cookie crumbs is the heading
-	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<h2 class="%s %s%s">%s</h2>`, classPanelHeading, classPanelHeadingLevelPrefix, colorLevel, heading))
+	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<h2 class="%s %s%s">%s</h2>`, classPanelHeading, classPanelHeadingLevelPrefix, serviceName, heading))
 	// under the header is the inner panel
 	// inner panels can scroll if needed.
 	innerID := panel.HTMLID + dashInnerString
 	// open inner
-	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<div id="%s" class="%s  %s%s">`, innerID, classSliderPanelInner, classPadColorLevelPrefix, colorLevel))
+	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<div id="%s" class="%s  %s%s">`, innerID, classSliderPanelInner, classPadColorLevelPrefix, serviceName))
 	indent3 := builder.incIndent(indent2)
 	// make the button pad
 	// open button pad
 	buttonPadID := innerID + dashButtonPadString
-	lines = append(lines, indentationString[:indent3]+fmt.Sprintf(`<div id="%s" class="%s %s%s">`, buttonPadID, classSliderButtonPad, classPadColorLevelPrefix, colorLevel))
+	lines = append(lines, indentationString[:indent3]+fmt.Sprintf(`<div id="%s" class="%s %s%s">`, buttonPadID, classSliderButtonPad, classPadColorLevelPrefix, serviceName))
 	// buttons
 	indent4 := builder.incIndent(indent3)
 	for _, b := range panel.Buttons {
-		lines = append(lines, b.toButtonHTML(panel.HTMLID, indent4, panel.HTMLID, colorLevel))
+		lines = append(lines, b.toButtonHTML(panel.HTMLID, indent4, panel.HTMLID, serviceName))
 	}
 	// close button pad
 	lines = append(lines, indentationString[:indent3]+fmt.Sprintf(`</div> <!-- end of #%s -->`, buttonPadID))
@@ -289,12 +291,11 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 
 func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel, button *Button, locations []string, seen bool, addLocations bool) (string, string) {
 	colorLevelUint := uint(len(locations))
-	colorLevel := serviceName
 	var backLevel string
 	if colorLevelUint == 1 {
 		backLevel = "0"
 	} else {
-		backLevel = colorLevel
+		backLevel = serviceName
 	}
 	// keep track how far the color levels go for css.
 	if builder.Colors.LastColorLevel < colorLevelUint {
@@ -313,16 +314,16 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 	indent2 := builder.incIndent(builder.sliderPanelIndent)
 	// cookie crumbs
 	if addLocations {
-		lines = append(lines, builder.cookieCrumbs(locations, indent2))
+		lines = append(lines, builder.cookieCrumbs(serviceName, locations, indent2))
 	}
 	// under the cookie crumbs is the heading
-	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<h2 class="%s %s%s">%s</h2>`, classPanelHeading, classPanelHeadingLevelPrefix, colorLevel, button.Heading))
+	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<h2 class="%s %s%s">%s</h2>`, classPanelHeading, classPanelHeadingLevelPrefix, serviceName, button.Heading))
 	// under the header is the inner panel
 	indent3 := builder.incIndent(indent2)
 	// inner panels have the rounded shape
 	innerID := panel.HTMLID + dashInnerString
 	// open inner
-	lines = append(lines, indentationString[:indent3]+fmt.Sprintf(`<div id="%s" class="%s %s%s">`, innerID, classSliderPanelInner, classPadColorLevelPrefix, colorLevel))
+	lines = append(lines, indentationString[:indent3]+fmt.Sprintf(`<div id="%s" class="%s %s%s">`, innerID, classSliderPanelInner, classPadColorLevelPrefix, serviceName))
 	// under the inner panel is the user content panel
 	indent4 := builder.incIndent(indent3)
 	contentID := innerID + dashContentString
@@ -353,12 +354,11 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 
 func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) string {
 	colorLevelUint := uint(len(locations))
-	colorLevel := serviceName
 	var backLevel string
 	if colorLevelUint == 1 {
 		backLevel = "0"
 	} else {
-		backLevel = colorLevel
+		backLevel = serviceName
 	}
 
 	// this panel is a slider panel
@@ -374,15 +374,15 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 	indent2 := builder.incIndent(builder.sliderPanelIndent)
 	// cookie crumbs
 	if addLocations && len(locations) > 0 {
-		lines = append(lines, builder.cookieCrumbs(locations, indent2))
+		lines = append(lines, builder.cookieCrumbs(serviceName, locations, indent2))
 	}
 	// under the cookie crumbs is the heading
-	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<h2 class="%s %s%s">%s</h2>`, classPanelHeading, classPanelHeadingLevelPrefix, colorLevel, heading))
+	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<h2 class="%s %s%s">%s</h2>`, classPanelHeading, classPanelHeadingLevelPrefix, serviceName, heading))
 	// under the header is the inner panel
 	// inner panels can scroll if needed.
 	innerID := panel.HTMLID + dashInnerString
 	// open inner
-	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<div id="%s" class="%s %s%s">`, innerID, classSliderPanelInner, classPadColorLevelPrefix, colorLevel))
+	lines = append(lines, indentationString[:indent2]+fmt.Sprintf(`<div id="%s" class="%s %s%s">`, innerID, classSliderPanelInner, classPadColorLevelPrefix, serviceName))
 	indent3 := builder.incIndent(indent2)
 	// make the tab bar
 	lines = append(lines, builder.toTabBarHTML(panel, indent3, true))
@@ -422,7 +422,7 @@ func (builder *Builder) toTabBarHTML(panel *Panel, indent uint, seen bool) strin
 	return strings.Join(lines, newline)
 }
 
-func (builder *Builder) cookieCrumbs(locations []string, indent uint) string {
+func (builder *Builder) cookieCrumbs(serviceName string, locations []string, indent uint) string {
 	if len(locations) < 1 {
 		return emptyString
 	}
@@ -433,7 +433,7 @@ func (builder *Builder) cookieCrumbs(locations []string, indent uint) string {
 	innerLines[0] = indentationString[:indent2-1]
 	l := len(locations)
 	for i := 0; i < l; i++ {
-		lines = append(lines, fmt.Sprintf(`<h2 class="%s %s%d">%s</h2>`, classCookieCrumb, classCookieCrumbLevelPrefix, (i+1), locations[i]))
+		lines = append(lines, fmt.Sprintf(`<h2 class="%s %s%s">%s</h2>`, classCookieCrumb, classCookieCrumbLevelPrefix, serviceName, locations[i]))
 	}
 	lines = append(lines, strings.Join(innerLines, spaceString))
 	lines = append(lines, indentationString[:indent]+`</div> <!-- end of cookie crumbs -->`)

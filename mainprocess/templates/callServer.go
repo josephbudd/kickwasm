@@ -72,16 +72,17 @@ import (
 
 	"github.com/gorilla/websocket"
 
+	"{{.ApplicationGitPath}}{{.ImportDomainInterfacesCallers}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 )
 
 const pongWait = 60 * time.Second
 
-// Server is a main process local procedure call.
+// Server is a main process local client call.
 type Server struct {
 	host          string
 	port          uint
-	callMap       types.MainProcessCallsMap
+	callMap       map[types.CallID]caller.MainProcesser
 	DisconnectMax time.Duration
 
 	connectionCountMutex *sync.Mutex
@@ -99,7 +100,7 @@ type Server struct {
 }
 
 // NewCallServer constructs a new Server.
-func NewCallServer(host string, port uint, callMap types.MainProcessCallsMap) *Server {
+func NewCallServer(host string, port uint, callMap map[types.CallID]caller.MainProcesser) *Server {
 	return &Server{
 		host:          host,
 		port:          port,
@@ -400,8 +401,8 @@ func (callServer *Server) readLoop(ws *websocket.Conn,
 						// don't stop the server because the pingloop will.
 						return
 					}
-					// dispatch the message.
-					if lpc, ok := callServer.callMap[payload.Procedure]; ok {
+					// get the client and start it to process the message.
+					if client, ok := callServer.callMap[payload.Procedure]; ok {
 						callBack := func(paramsbb []byte) {
 							payload := &types.Payload{
 								Params:    string(paramsbb),
@@ -410,8 +411,7 @@ func (callServer *Server) readLoop(ws *websocket.Conn,
 							payloadbb, _ := json.Marshal(payload)
 							callCh <- payloadbb
 						}
-						log.Println("calling go lpc.MainProcessReceive")
-						go lpc.MainProcessReceive([]byte(payload.Params), callBack)
+						go client.Process([]byte(payload.Params), callBack)
 					} else {
 						log.Printf("payload.Procedure %d not found", payload.Procedure)
 					}

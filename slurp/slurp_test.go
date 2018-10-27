@@ -313,7 +313,7 @@ func TestDo(t *testing.T) {
 			wantAppInfo: &ApplicationInfo{
 				Title:      "Test 1",
 				ImportPath: "github.com/josephbudd/kickwasm/examples/test1",
-				Repos:      []string{"Test1"},
+				Stores:     []string{"Test1"},
 				Services: []*ServiceInfo{
 					&ServiceInfo{
 						Name: "Service1",
@@ -406,7 +406,7 @@ func Test_slurpApplication(t *testing.T) {
 				SourcePath: "testyaml/simple_test/app.yaml",
 				Title:      "Test 1",
 				ImportPath: "github.com/josephbudd/kickwasm/examples/test1",
-				Repos:      []string{"Test1"},
+				Stores:     []string{"Test1"},
 				Services: []*ServiceInfo{
 					&ServiceInfo{
 						SourcePath: "testyaml/simple_test/app.yaml",

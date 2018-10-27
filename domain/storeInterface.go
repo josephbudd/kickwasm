@@ -11,7 +11,7 @@ import (
 func createInterfacesStoreInterfaceGo(appPaths paths.ApplicationPathsI, data *templateData) error {
 	folderpaths := appPaths.GetPaths()
 	rdata := &struct {
-		Repo               string
+		Store              string
 		LowerCamelCase     func(string) string
 		ApplicationGitPath string
 		ImportDomainTypes  string
@@ -20,10 +20,10 @@ func createInterfacesStoreInterfaceGo(appPaths paths.ApplicationPathsI, data *te
 		ApplicationGitPath: data.ApplicationGitPath,
 		ImportDomainTypes:  folderpaths.ImportDomainTypes,
 	}
-	for _, repo := range data.Repos {
-		fname := fmt.Sprintf("%s.go", data.LowerCamelCase(repo))
+	for _, store := range data.Stores {
+		fname := fmt.Sprintf("%s.go", data.LowerCamelCase(store))
 		oPath := filepath.Join(folderpaths.OutputDomainInterfacesStorers, fname)
-		rdata.Repo = repo
+		rdata.Store = store
 		if err := templates.ProcessTemplate(fname, oPath, templates.StorerGo, rdata, appPaths); err != nil {
 			return err
 		}

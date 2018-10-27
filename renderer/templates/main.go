@@ -8,8 +8,8 @@ import (
 
 	"github.com/josephbudd/kicknotjs"
 
-	"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererCall}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererCallClient}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererCalls}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
@@ -30,7 +30,7 @@ func main() {
 
 	tools := viewtools.NewTools(notjs)
 
-	// get the lpc client.
+	// get the renderer's connection client.
 	client := call.NewClient(host, port, tools, notjs)
 	client.SetOnConnectionBreak(
 		func([]js.Value) {
@@ -38,7 +38,7 @@ func main() {
 		},
 	)
 	// get the local procedure calls
-	callMap := calling.GetRendererCallMap(client.SendPayload)
+	callMap := calls.GetCallMap(client.SendPayload)
 
 	// finish initializing the caller client.
 	client.SetCallMap(callMap)
@@ -48,4 +48,5 @@ func main() {
 	<-quitCh
 	tools.Quit()
 }
+
 `

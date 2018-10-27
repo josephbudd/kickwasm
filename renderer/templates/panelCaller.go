@@ -6,8 +6,8 @@ const PanelCaller = `package {{.PanelName}}
 import (
 	"github.com/josephbudd/kicknotjs"
 
+	"{{.ApplicationGitPath}}{{.ImportDomainInterfacesCallers}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
-	//"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
@@ -24,7 +24,7 @@ type Caller struct {
 	presenter  *Presenter
 	controler  *Controler
 	quitCh     chan struct{} // send an empty struct to start the quit process.
-	connection types.RendererCallMap
+	connection map[types.CallID]caller.MainProcesser
 	tools      *viewtools.Tools // see {{.ImportRendererViewTools}}
 	notjs      *kicknotjs.NotJS
 }
@@ -49,19 +49,22 @@ func (panelCaller *Caller) addMainProcessCallBacks() {
 // Define calls to the main process and their and call backs.
 // example:
 
+import "{{.ApplicationGitPath}}{{.ImportDomainDataCallIDs}}"
+
+
 // Add Customer.
 
 func (panelCaller *Caller) addCustomer(record *types.CustomerRecord) {
 	params := &calls.RendererToMainProcessAddCustomerParams{
 		Record: record,
 	}
-	addCustomerCall := panelCaller.connection[calling.AddCustomerCallId]
+	addCustomerCall := panelCaller.connection[callids.AddCustomerCallId]
 	addCustomerCall.CallMainProcess(params)
 }
 
 func (panelCaller *Caller) addCustomerCB(params interface{}) {
 	switch params := params.(type) {
-	case *calling.MainProcessToRendererAddCustomerParams:
+	case *types.MainProcessToRendererAddCustomerParams:
 		if params.Error {
 			panelCaller.tools.Error(params.ErrorMessage)
 			return
@@ -81,14 +84,15 @@ func (panelCaller *Caller) initialCalls() {
 	// Make any initial calls to the main process that must be made when the app starts.
 	// example:
 
-	params := calls.RendererToMainProcessLogParams{
-		Type: calls.LogTypeInfo,
+	params := types.RendererToMainProcessLogParams{
+		Level:   loglevels.LogLevelInfo,
 		Message: "Started",
 	}
-	logCall := panelCaller.connection[calling.LogCallID]
+	logCall := panelCaller.connection[callids.LogCallID]
 	logCall.CallMainProcess(params)
 
 	*/
 
 }
+
 `

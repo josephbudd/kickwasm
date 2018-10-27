@@ -54,6 +54,9 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addAbout, ad
 	if err := createCallerGo(appPaths, builder); err != nil {
 		return err
 	}
+	if err := createCalls(addAbout, appPaths, builder); err != nil {
+		return err
+	}
 	if err := createWASMExecJS(appPaths); err != nil {
 		return err
 	}
