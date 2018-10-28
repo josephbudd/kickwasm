@@ -15,7 +15,7 @@ import ({{range .Imports}}
 
 */
 
-func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.MainProcesser, notjs *kicknotjs.NotJS) {
+func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notjs *kicknotjs.NotJS) {
 	// 1. Construct the panel code.{{range $name, $path := .PanelNamePathMap}}
 	{{call $Dot.LowerCamelCase $name}} := {{$name}}.NewPanel(quitCh, tools, notjs, callMap){{end}}{{if .AddAbout}}
 	aboutPanel := AboutPanel.NewPanel(quitCh, tools, notjs, callMap){{end}}

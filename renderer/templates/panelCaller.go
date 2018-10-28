@@ -24,7 +24,7 @@ type Caller struct {
 	presenter  *Presenter
 	controler  *Controler
 	quitCh     chan struct{} // send an empty struct to start the quit process.
-	connection map[types.CallID]caller.MainProcesser
+	connection map[types.CallID]caller.Renderer
 	tools      *viewtools.Tools // see {{.ImportRendererViewTools}}
 	notjs      *kicknotjs.NotJS
 }

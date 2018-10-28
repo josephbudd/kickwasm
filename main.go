@@ -28,8 +28,8 @@ const (
 var (
 	version = []string{
 		`kickwasm:`,
-		`  Version: 0.2.2`,
-		`  Test Driven Design.`,
+		`  Version: 0.2.3`,
+		`  Unstable`,
 	}
 	nlSrcBB = []byte("\n")
 	nlRepBB = []byte("\\n")
@@ -58,10 +58,10 @@ var VersionFlag bool
 var LocationsFlag bool
 
 func init() {
-	flag.StringVar(&FileFlag, "gf", "", "The name of your application yaml file. Kick will generate source code using that file.")
-	flag.BoolVar(&AboutFlag, "about", false, "Kick will add it's default About section to the generated source code. Use with -gf or -gx.")
-	flag.BoolVar(&VersionFlag, "v", false, "Kick will display it's version information.")
-	flag.BoolVar(&LocationsFlag, "cc", false, "Kick will add cookie crumbs to the generated source code. Use with -gf or -gx.")
+	flag.StringVar(&FileFlag, "gf", "", "The name of your application YAML file. Kickwasm will generate the framework source code using that file.")
+	flag.BoolVar(&AboutFlag, "about", false, "Add the default About section. Use with -gf.")
+	flag.BoolVar(&LocationsFlag, "cc", false, "Add cookie crumbs. Use with -gf.")
+	flag.BoolVar(&VersionFlag, "v", false, "Version information.")
 }
 
 func main() {
@@ -77,7 +77,7 @@ func main() {
 		return
 	}
 	if filepath.Ext(FileFlag) != ".yaml" {
-		log.Println("Kick needs a YAML file to build your application so the file extension must be .yaml")
+		log.Println("Kickwasm needs a YAML file to build your application so the file extension must be .yaml")
 	}
 	// initialize paths
 	pwd, err := os.Getwd()
@@ -88,7 +88,7 @@ func main() {
 	sl := slurp.NewSlurper()
 	builder, err := sl.Gulp(FileFlag)
 	if err != nil {
-		log.Println("Tried to slurp the yaml file(s) but counldn't, ", err)
+		log.Println("Tried to slurp the YAML file(s) but counldn't, ", err)
 		return
 	}
 	parts := strings.Split(builder.ImportPath, "/")

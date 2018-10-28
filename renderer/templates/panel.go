@@ -33,7 +33,7 @@ type Panel struct {
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection map[types.CallID]caller.MainProcesser) *Panel {
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection map[types.CallID]caller.Renderer) *Panel {
 	panel := &Panel{
 		tools: tools,
 	}{{range $panel := .PanelGroup}}

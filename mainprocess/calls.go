@@ -24,10 +24,12 @@ func createCalls(appPaths paths.ApplicationPathsI, data *templateData) error {
 	if err := templates.ProcessTemplate(fname, oPath, templates.CallsExampleGoTxt, data, appPaths); err != nil {
 		return err
 	}
-	fname = "getAbout.go"
-	oPath = filepath.Join(folderpaths.OutputMainProcessCalls, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.CallsGetAboutGo, data, appPaths); err != nil {
-		return err
+	if data.AddAbout {
+		fname = "getAbout.go"
+		oPath = filepath.Join(folderpaths.OutputMainProcessCalls, fname)
+		if err := templates.ProcessTemplate(fname, oPath, templates.CallsGetAboutGo, data, appPaths); err != nil {
+			return err
+		}
 	}
 	return nil
 }

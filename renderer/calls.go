@@ -42,10 +42,12 @@ func createCalls(addAbout bool, appPaths paths.ApplicationPathsI, builder *tap.B
 	if err := templates.ProcessTemplate(fname, oPath, templates.CallsExampleGoTxt, data, appPaths); err != nil {
 		return err
 	}
-	fname = "getAbout.go"
-	oPath = filepath.Join(folderpaths.OutputRendererCalls, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.CallsGetAboutGo, data, appPaths); err != nil {
-		return err
+	if addAbout {
+		fname = "getAbout.go"
+		oPath = filepath.Join(folderpaths.OutputRendererCalls, fname)
+		if err := templates.ProcessTemplate(fname, oPath, templates.CallsGetAboutGo, data, appPaths); err != nil {
+			return err
+		}
 	}
 	return nil
 }

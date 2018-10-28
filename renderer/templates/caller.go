@@ -26,7 +26,7 @@ type Client struct {
 	connected   bool
 	dispatching bool
 	queue       []types.Payload
-	callMap     map[types.CallID]caller.MainProcesser
+	callMap     map[types.CallID]caller.Renderer
 	initialCB   func()
 
 	// handlers
@@ -50,7 +50,7 @@ func NewClient(host string, port uint, tools *viewtools.Tools, notjs *kicknotjs.
 }
 
 // SetCallMap sets the callMap and callsStruct.
-func (client *Client) SetCallMap(callMap map[types.CallID]caller.MainProcesser) {
+func (client *Client) SetCallMap(callMap map[types.CallID]caller.Renderer) {
 	client.callMap = callMap
 }
 

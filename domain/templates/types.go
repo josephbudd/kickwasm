@@ -3,8 +3,6 @@ package templates
 // TypesCallsGo the file at domain/types/calls.go
 const TypesCallsGo = `package types
 
-import "{{.ApplicationGitPath}}{{.ImportDomainInterfacesCallers}}"
-
 // CallID is the unique id for a map[CallID]caller.Renderer or a map[CallID]caller.MainProcessor
 type CallID uint64
 

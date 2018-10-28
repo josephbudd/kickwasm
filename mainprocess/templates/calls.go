@@ -49,7 +49,7 @@ func newLogCall() *calling.MainProcess {
 }
 
 func processLog(params []byte, callBackToRenderer func(params []byte)) {
-	rxparams := &types.RendererToMainProcessLogParams{}
+	rxparams := &types.RendererToMainProcessLogCallParams{}
 	if err := json.Unmarshal(params, rxparams); err != nil {
 		log.Println("processLog error is ", err.Error())
 		message := fmt.Sprintf("mainProcessLog: json.Unmarshal(params, rxparams): error is %s\n", err.Error())
