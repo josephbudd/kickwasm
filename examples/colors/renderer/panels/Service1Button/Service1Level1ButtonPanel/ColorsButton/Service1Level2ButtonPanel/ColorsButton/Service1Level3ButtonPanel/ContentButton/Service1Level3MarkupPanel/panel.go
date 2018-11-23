@@ -3,10 +3,10 @@ package Service1Level3MarkupPanel
 import (
 	"syscall/js"
 
-	"github.com/josephbudd/kicknotjs"
-
 	"github.com/josephbudd/kickwasm/examples/colors/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/interfaces/panelHelper"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
 )
 
@@ -24,36 +24,35 @@ type Panel struct {
 	presenter *Presenter
 	caller    *Caller
 	tools     *viewtools.Tools // see /renderer/viewtools
-	notjs     *kicknotjs.NotJS
 
 	service1Level3MarkupPanel js.Value
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.NotJS, connection map[types.CallID]caller.Renderer) *Panel {
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) *Panel {
 	panel := &Panel{
 		tools: tools,
 	}
 
-	panel.service1Level3MarkupPanel = notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ContentButton-Service1Level3MarkupPanel")
+	panel.service1Level3MarkupPanel = notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ContentButton-Service1Level3MarkupPanel")
 	// initialize controler, presenter, caller.
 	controler := &Controler{
 		panel:  panel,
 		quitCh: quitCh,
 		tools:  tools,
-		notjs:  notjs,
+		notJS:  notJS,
 	}
 	presenter := &Presenter{
 		panel:   panel,
 		tools:   tools,
-		notjs:   notjs,
+		notJS:   notJS,
 	}
 	caller := &Caller{
 		panel:      panel,
 		quitCh:     quitCh,
 		connection: connection,
 		tools:      tools,
-		notjs:      notjs,
+		notJS:      notJS,
 	}
 	// settings
 	panel.controler = controler
@@ -75,18 +74,17 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notjs *kicknotjs.Not
 /*
 	Show panel funcs.
 
-	Calls these from the controler, presenter and caller.
+	Call these from the controler, presenter and caller.
 */
 
 // showService1Level3MarkupPanel shows the panel you named Service1Level3MarkupPanel while hiding any other panels in it's group.
-// The panel will become visible only when this group of panels becomes visible.
-// Param force boolean
-//  * if force is true and the currently displayed panel is a descendent of div #tabsMasterView-home-slider-collection,
-//    ( like a button pad (but not the home button pad), or a tab bar or one of your content panels)
-//    Then this function
-//     * immediately hides that currently displayed panel.
-//     * immediately shows this panels group which means that
-//          this panel #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ContentButton-Service1Level3MarkupPanel, which you named Service1Level3MarkupPanel, becomes visible.
+// This panel's id is tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ContentButton-Service1Level3MarkupPanel.
+// This panel either becomes visible immediately or whenever it's panel group is made visible for whatever reason.  Whenever could be immediately if this panel group is currently visible.
+// Param force boolean effects when this panel becomes visible.
+//  * if force is true then
+//    immediately if the home button pad is not currently displayed;
+//    whenever if the home button pad is currently displayed.
+//  * if force is false then whenever.
 /* Your note for this panel is:
 This is the only content.
 Brought to you in the first service color.

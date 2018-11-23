@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/mainprocess/templates"
-	"github.com/josephbudd/kickwasm/paths"
+	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
 func createCallServer(appPaths paths.ApplicationPathsI, data *templateData) error {

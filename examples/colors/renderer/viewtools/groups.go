@@ -39,10 +39,10 @@ func (tools *Tools) ShowPanelInTabGroup(panel js.Value) {
 // 1. if param target has an ancestor which is the slider collections. ( panels shown with the back button on the left side. )
 // 2. if the param target becomes visible.
 func (tools *Tools) ShowInGroup(target js.Value, showClass, hideClass string) (isSliderSub, isVisible bool) {
-	notjs := tools.notjs
-	isSliderSub = notjs.ParentNode(target) == tools.tabsMasterviewHomeSliderCollection
+	notJS := tools.notJS
+	isSliderSub = notJS.ParentNode(target) == tools.tabsMasterviewHomeSliderCollection
 	// tab sibling panels are in sliders but they are special.
-	isTabSibling := notjs.ClassListContains(target, "slider-panel-inner-sibling")
+	isTabSibling := notJS.ClassListContains(target, "slider-panel-inner-sibling")
 	if !(isSliderSub || isTabSibling) {
 		// not in the slider collection
 		isSliderSub = (isSliderSub || isTabSibling)
@@ -72,13 +72,13 @@ func (tools *Tools) ShowInGroup(target js.Value, showClass, hideClass string) (i
 	tools.setInGroup(divs, target, showClass, hideClass)
 	// check for visibility
 	for _, div := range divs {
-		if notjs.ClassListContains(div, SeenClassName) {
+		if notJS.ClassListContains(div, SeenClassName) {
 			isVisible = true
 			break
 		}
 	}
 	// only really visible if slider is visible
-	isVisible = notjs.ClassListContains(tools.tabsMasterviewHomeSlider, SeenClassName) && isVisible
+	isVisible = notJS.ClassListContains(tools.tabsMasterviewHomeSlider, SeenClassName) && isVisible
 	if isVisible {
 		// target is the new here
 		tools.here = target
@@ -98,15 +98,15 @@ func (tools *Tools) ShowInGroup(target js.Value, showClass, hideClass string) (i
 // both panels must have the parentNode == SliderPresenter.sliderCollection.
 func (tools *Tools) HideShow(hideDiv, showDiv js.Value) {
 	// hide the hide div
-	notjs := tools.notjs
+	notJS := tools.notJS
 	isSliderH := tools.hideInGroup(hideDiv, SeenClassName, UnSeenClassName)
 	// show the show div
 	isSliderS, isVisibleS := tools.ShowInGroup(showDiv, SeenClassName, UnSeenClassName)
 	if isSliderS {
 		// reset the back button's color class.
 		backColorLevel := showDiv.Call("getAttribute", "backColorLevel").String()
-		firstClass := notjs.ClassListGetClassAt(tools.tabsMasterviewHomeSliderBack, 0)
-		notjs.ClassListReplaceClass(tools.tabsMasterviewHomeSliderBack, firstClass, backColorLevel)
+		firstClass := notJS.ClassListGetClassAt(tools.tabsMasterviewHomeSliderBack, 0)
+		notJS.ClassListReplaceClass(tools.tabsMasterviewHomeSliderBack, firstClass, backColorLevel)
 	}
 	if isSliderH && isSliderS {
 		// the slider was visible for the hideDiv and so it still is for the showDiv
@@ -151,26 +151,26 @@ func (tools *Tools) toBeHiddenInGroup(target js.Value) bool {
 // It sets target's to setClass and removes unSetClass.
 // It sets the other panel's to unSetClass and removes setClass.
 func (tools *Tools) setInGroup(group []js.Value, target js.Value, setClass, unSetClass string) {
-	notjs := tools.notjs
+	notJS := tools.notJS
 	for _, panel := range group {
 		if panel != target {
-			notjs.ClassListReplaceClass(panel, setClass, unSetClass)
+			notJS.ClassListReplaceClass(panel, setClass, unSetClass)
 		}
 	}
-	notjs.ClassListReplaceClass(target, unSetClass, setClass)
+	notJS.ClassListReplaceClass(target, unSetClass, setClass)
 }
 
 // hideInGroup hides target in a group.
 // Returns is the target is a slider sub panel, a child of the slider collection div.
 func (tools *Tools) hideInGroup(target js.Value, showClass, hideClass string) (isSliderSub bool) {
-	notjs := tools.notjs
-	parentNode := notjs.ParentNode(target)
+	notJS := tools.notJS
+	parentNode := notJS.ParentNode(target)
 	isSliderSub = parentNode == tools.tabsMasterviewHomeSliderCollection
 	if !isSliderSub {
 		// not in the slider collection.
 		return
 	}
-	notjs.ClassListReplaceClass(target, showClass, hideClass)
+	notJS.ClassListReplaceClass(target, showClass, hideClass)
 	return
 }
 
@@ -181,7 +181,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 Service1Button button.
 	buttonid = "tabsMasterView-home-pad-Service1Button"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel"
 		tools.alert.Invoke(message)
@@ -191,7 +191,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ContentButton-Service1Level1MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ContentButton-Service1Level1MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ContentButton-Service1Level1MarkupPanel"
 		tools.alert.Invoke(message)
@@ -201,7 +201,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel"
 		tools.alert.Invoke(message)
@@ -211,7 +211,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ContentButton-Service1Level2MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ContentButton-Service1Level2MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ContentButton-Service1Level2MarkupPanel"
 		tools.alert.Invoke(message)
@@ -221,7 +221,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel"
 		tools.alert.Invoke(message)
@@ -231,7 +231,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ContentButton-Service1Level3MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ContentButton-Service1Level3MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ContentButton-Service1Level3MarkupPanel"
 		tools.alert.Invoke(message)
@@ -241,7 +241,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel"
 		tools.alert.Invoke(message)
@@ -251,7 +251,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ContentButton-Service1Level4MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ContentButton-Service1Level4MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ContentButton-Service1Level4MarkupPanel"
 		tools.alert.Invoke(message)
@@ -261,7 +261,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ColorsButton-Service1Level5ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ColorsButton-Service1Level5ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ColorsButton-Service1Level5ButtonPanel"
 		tools.alert.Invoke(message)
@@ -271,7 +271,7 @@ func (tools *Tools) initializeGroups() {
 	// Service1 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ColorsButton-Service1Level5ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ColorsButton-Service1Level5ButtonPanel-ContentButton-Service1Level5MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ColorsButton-Service1Level5ButtonPanel-ContentButton-Service1Level5MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ColorsButton-Service1Level2ButtonPanel-ColorsButton-Service1Level3ButtonPanel-ColorsButton-Service1Level4ButtonPanel-ColorsButton-Service1Level5ButtonPanel-ContentButton-Service1Level5MarkupPanel"
 		tools.alert.Invoke(message)
@@ -281,7 +281,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 Service2Button button.
 	buttonid = "tabsMasterView-home-pad-Service2Button"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel"
 		tools.alert.Invoke(message)
@@ -291,7 +291,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ContentButton-Service2Level1MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ContentButton-Service2Level1MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ContentButton-Service2Level1MarkupPanel"
 		tools.alert.Invoke(message)
@@ -301,7 +301,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel"
 		tools.alert.Invoke(message)
@@ -311,7 +311,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ContentButton-Service2Level2MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ContentButton-Service2Level2MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ContentButton-Service2Level2MarkupPanel"
 		tools.alert.Invoke(message)
@@ -321,7 +321,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel"
 		tools.alert.Invoke(message)
@@ -331,7 +331,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ContentButton-Service2Level3MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ContentButton-Service2Level3MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ContentButton-Service2Level3MarkupPanel"
 		tools.alert.Invoke(message)
@@ -341,7 +341,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel"
 		tools.alert.Invoke(message)
@@ -351,7 +351,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ContentButton-Service2Level4MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ContentButton-Service2Level4MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ContentButton-Service2Level4MarkupPanel"
 		tools.alert.Invoke(message)
@@ -361,7 +361,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton-Service2Level5ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton-Service2Level5ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton-Service2Level5ButtonPanel"
 		tools.alert.Invoke(message)
@@ -371,7 +371,7 @@ func (tools *Tools) initializeGroups() {
 	// Service2 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton-Service2Level5ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton-Service2Level5ButtonPanel-ContentButton-Service2Level5MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton-Service2Level5ButtonPanel-ContentButton-Service2Level5MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton-Service2Level5ButtonPanel-ContentButton-Service2Level5MarkupPanel"
 		tools.alert.Invoke(message)
@@ -381,7 +381,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 Service3Button button.
 	buttonid = "tabsMasterView-home-pad-Service3Button"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel"
 		tools.alert.Invoke(message)
@@ -391,7 +391,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ContentButton-Service3Level1MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ContentButton-Service3Level1MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ContentButton-Service3Level1MarkupPanel"
 		tools.alert.Invoke(message)
@@ -401,7 +401,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel"
 		tools.alert.Invoke(message)
@@ -411,7 +411,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ContentButton-Service3Level2MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ContentButton-Service3Level2MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ContentButton-Service3Level2MarkupPanel"
 		tools.alert.Invoke(message)
@@ -421,7 +421,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel"
 		tools.alert.Invoke(message)
@@ -431,7 +431,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ContentButton-Service3Level3MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ContentButton-Service3Level3MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ContentButton-Service3Level3MarkupPanel"
 		tools.alert.Invoke(message)
@@ -441,7 +441,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel"
 		tools.alert.Invoke(message)
@@ -451,7 +451,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ContentButton-Service3Level4MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ContentButton-Service3Level4MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ContentButton-Service3Level4MarkupPanel"
 		tools.alert.Invoke(message)
@@ -461,7 +461,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ColorsButton-Service3Level5ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ColorsButton-Service3Level5ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ColorsButton-Service3Level5ButtonPanel"
 		tools.alert.Invoke(message)
@@ -471,7 +471,7 @@ func (tools *Tools) initializeGroups() {
 	// Service3 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ColorsButton-Service3Level5ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ColorsButton-Service3Level5ButtonPanel-ContentButton-Service3Level5MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ColorsButton-Service3Level5ButtonPanel-ContentButton-Service3Level5MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service3Button-Service3Level1ButtonPanel-ColorsButton-Service3Level2ButtonPanel-ColorsButton-Service3Level3ButtonPanel-ColorsButton-Service3Level4ButtonPanel-ColorsButton-Service3Level5ButtonPanel-ContentButton-Service3Level5MarkupPanel"
 		tools.alert.Invoke(message)
@@ -481,7 +481,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 Service4Button button.
 	buttonid = "tabsMasterView-home-pad-Service4Button"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel"
 		tools.alert.Invoke(message)
@@ -491,7 +491,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ContentButton-Service4Level1MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ContentButton-Service4Level1MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ContentButton-Service4Level1MarkupPanel"
 		tools.alert.Invoke(message)
@@ -501,7 +501,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel"
 		tools.alert.Invoke(message)
@@ -511,7 +511,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ContentButton-Service4Level2MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ContentButton-Service4Level2MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ContentButton-Service4Level2MarkupPanel"
 		tools.alert.Invoke(message)
@@ -521,7 +521,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel"
 		tools.alert.Invoke(message)
@@ -531,7 +531,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ContentButton-Service4Level3MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ContentButton-Service4Level3MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ContentButton-Service4Level3MarkupPanel"
 		tools.alert.Invoke(message)
@@ -541,7 +541,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel"
 		tools.alert.Invoke(message)
@@ -551,7 +551,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ContentButton-Service4Level4MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ContentButton-Service4Level4MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ContentButton-Service4Level4MarkupPanel"
 		tools.alert.Invoke(message)
@@ -561,7 +561,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ColorsButton-Service4Level5ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ColorsButton-Service4Level5ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ColorsButton-Service4Level5ButtonPanel"
 		tools.alert.Invoke(message)
@@ -571,7 +571,7 @@ func (tools *Tools) initializeGroups() {
 	// Service4 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ColorsButton-Service4Level5ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ColorsButton-Service4Level5ButtonPanel-ContentButton-Service4Level5MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ColorsButton-Service4Level5ButtonPanel-ContentButton-Service4Level5MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service4Button-Service4Level1ButtonPanel-ColorsButton-Service4Level2ButtonPanel-ColorsButton-Service4Level3ButtonPanel-ColorsButton-Service4Level4ButtonPanel-ColorsButton-Service4Level5ButtonPanel-ContentButton-Service4Level5MarkupPanel"
 		tools.alert.Invoke(message)
@@ -581,7 +581,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 Service5Button button.
 	buttonid = "tabsMasterView-home-pad-Service5Button"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel"
 		tools.alert.Invoke(message)
@@ -591,7 +591,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ContentButton-Service5Level1MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ContentButton-Service5Level1MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ContentButton-Service5Level1MarkupPanel"
 		tools.alert.Invoke(message)
@@ -601,7 +601,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel"
 		tools.alert.Invoke(message)
@@ -611,7 +611,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ContentButton-Service5Level2MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ContentButton-Service5Level2MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ContentButton-Service5Level2MarkupPanel"
 		tools.alert.Invoke(message)
@@ -621,7 +621,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel"
 		tools.alert.Invoke(message)
@@ -631,7 +631,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ContentButton-Service5Level3MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ContentButton-Service5Level3MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ContentButton-Service5Level3MarkupPanel"
 		tools.alert.Invoke(message)
@@ -641,7 +641,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel"
 		tools.alert.Invoke(message)
@@ -651,7 +651,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ContentButton-Service5Level4MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ContentButton-Service5Level4MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ContentButton-Service5Level4MarkupPanel"
 		tools.alert.Invoke(message)
@@ -661,7 +661,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ColorsButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ColorsButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ColorsButton-Service5Level5ButtonPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ColorsButton-Service5Level5ButtonPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ColorsButton-Service5Level5ButtonPanel"
 		tools.alert.Invoke(message)
@@ -671,7 +671,7 @@ func (tools *Tools) initializeGroups() {
 	// Service5 ContentButton button.
 	buttonid = "tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ColorsButton-Service5Level5ButtonPanel-ContentButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notjs.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ColorsButton-Service5Level5ButtonPanel-ContentButton-Service5Level5MarkupPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ColorsButton-Service5Level5ButtonPanel-ContentButton-Service5Level5MarkupPanel")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ColorsButton-Service5Level5ButtonPanel-ContentButton-Service5Level5MarkupPanel"
 		tools.alert.Invoke(message)

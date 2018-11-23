@@ -3,7 +3,7 @@ package viewtools
 import (
 	"syscall/js"
 
-	"github.com/josephbudd/kicknotjs"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
 )
 
 /*
@@ -96,11 +96,11 @@ type Tools struct {
 	tabberLastPanelID     string
 	tabberLastPanelLevels map[string]string
 
-	notjs *kicknotjs.NotJS
+	notJS *notjs.NotJS
 }
 
 // NewTools constructs a new Tools
-func NewTools(notjs *kicknotjs.NotJS) *Tools {
+func NewTools(notJS *notjs.NotJS) *Tools {
 	g := js.Global()
 	v := &Tools{
 		Document:        g.Get("document"),
@@ -109,28 +109,28 @@ func NewTools(notjs *kicknotjs.NotJS) *Tools {
 		here:            js.Undefined(),
 		alert:           g.Get("alert"),
 		console:         g.Get("console"),
+		notJS:           notJS,
 	}
-	v.notjs = notjs
-	bodies := v.GetElementsByTagName("body")
+	bodies := notJS.GetElementsByTagName("body")
 	v.body = bodies[0]
-	v.tabsMasterview = v.GetElementByID(MasterID)
-	v.tabsMasterviewHome = v.GetElementByID(HomeID)
-	v.tabsMasterviewHomeButtonPad = v.GetElementByID(HomePadID)
-	v.tabsMasterviewHomeSlider = v.GetElementByID(SliderID)
-	v.tabsMasterviewHomeSliderBack = v.GetElementByID(SliderBackID)
-	v.tabsMasterviewHomeSliderCollection = v.GetElementByID(SliderCollectionID)
+	v.tabsMasterview = notJS.GetElementByID(MasterID)
+	v.tabsMasterviewHome = notJS.GetElementByID(HomeID)
+	v.tabsMasterviewHomeButtonPad = notJS.GetElementByID(HomePadID)
+	v.tabsMasterviewHomeSlider = notJS.GetElementByID(SliderID)
+	v.tabsMasterviewHomeSliderBack = notJS.GetElementByID(SliderBackID)
+	v.tabsMasterviewHomeSliderCollection = notJS.GetElementByID(SliderCollectionID)
 	// closer
-	v.closerMasterView = v.GetElementByID("closerMasterView")
+	v.closerMasterView = notJS.GetElementByID("closerMasterView")
 	// modal
-	v.modalMasterView = v.GetElementByID("modalInformationMasterView")
-	v.modalMasterViewCenter = v.GetElementByID("modalInformationMasterView-center")
-	v.modalMasterViewH1 = v.GetElementByID("modalInformationMasterView-h1")
-	v.modalMasterViewMessage = v.GetElementByID("modalInformationMasterView-message")
-	v.modalMasterViewClose = v.GetElementByID("modalInformationMasterView-close")
+	v.modalMasterView = notJS.GetElementByID("modalInformationMasterView")
+	v.modalMasterViewCenter = notJS.GetElementByID("modalInformationMasterView-center")
+	v.modalMasterViewH1 = notJS.GetElementByID("modalInformationMasterView-h1")
+	v.modalMasterViewMessage = notJS.GetElementByID("modalInformationMasterView-message")
+	v.modalMasterViewClose = notJS.GetElementByID("modalInformationMasterView-close")
 	v.modalQueue = make([]*modalViewData, 5, 5)
 	v.modalQueueLastIndex = -1
-	cb := notjs.RegisterCallBack(v.handleModalMasterViewClose)
-	notjs.SetOnClick(v.modalMasterViewClose, cb)
+	cb := notJS.RegisterCallBack(v.handleModalMasterViewClose)
+	notJS.SetOnClick(v.modalMasterViewClose, cb)
 
 	// misc
 	v.initializeGroups()

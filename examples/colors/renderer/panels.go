@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/josephbudd/kicknotjs"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/interfaces/panelHelper"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service1Button/Service1Level1ButtonPanel/ColorsButton/Service1Level2ButtonPanel/ColorsButton/Service1Level3ButtonPanel/ColorsButton/Service1Level4ButtonPanel/ColorsButton/Service1Level5ButtonPanel/ContentButton/Service1Level5MarkupPanel"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service1Button/Service1Level1ButtonPanel/ColorsButton/Service1Level2ButtonPanel/ColorsButton/Service1Level3ButtonPanel/ColorsButton/Service1Level4ButtonPanel/ContentButton/Service1Level4MarkupPanel"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service1Button/Service1Level1ButtonPanel/ColorsButton/Service1Level2ButtonPanel/ColorsButton/Service1Level3ButtonPanel/ContentButton/Service1Level3MarkupPanel"
@@ -40,33 +41,33 @@ import (
 
 */
 
-func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notjs *kicknotjs.NotJS) {
+func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) {
 	// 1. Construct the panel code.
-	service1Level1MarkupPanel := Service1Level1MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service1Level2MarkupPanel := Service1Level2MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service1Level3MarkupPanel := Service1Level3MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service1Level4MarkupPanel := Service1Level4MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service1Level5MarkupPanel := Service1Level5MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service2Level1MarkupPanel := Service2Level1MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service2Level2MarkupPanel := Service2Level2MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service2Level3MarkupPanel := Service2Level3MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service2Level4MarkupPanel := Service2Level4MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service2Level5MarkupPanel := Service2Level5MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service3Level1MarkupPanel := Service3Level1MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service3Level2MarkupPanel := Service3Level2MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service3Level3MarkupPanel := Service3Level3MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service3Level4MarkupPanel := Service3Level4MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service3Level5MarkupPanel := Service3Level5MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service4Level1MarkupPanel := Service4Level1MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service4Level2MarkupPanel := Service4Level2MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service4Level3MarkupPanel := Service4Level3MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service4Level4MarkupPanel := Service4Level4MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service4Level5MarkupPanel := Service4Level5MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service5Level1MarkupPanel := Service5Level1MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service5Level2MarkupPanel := Service5Level2MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service5Level3MarkupPanel := Service5Level3MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service5Level4MarkupPanel := Service5Level4MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
-	service5Level5MarkupPanel := Service5Level5MarkupPanel.NewPanel(quitCh, tools, notjs, callMap)
+	service1Level1MarkupPanel := Service1Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service1Level2MarkupPanel := Service1Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service1Level3MarkupPanel := Service1Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service1Level4MarkupPanel := Service1Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service1Level5MarkupPanel := Service1Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service2Level1MarkupPanel := Service2Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service2Level2MarkupPanel := Service2Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service2Level3MarkupPanel := Service2Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service2Level4MarkupPanel := Service2Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service2Level5MarkupPanel := Service2Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service3Level1MarkupPanel := Service3Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service3Level2MarkupPanel := Service3Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service3Level3MarkupPanel := Service3Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service3Level4MarkupPanel := Service3Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service3Level5MarkupPanel := Service3Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service4Level1MarkupPanel := Service4Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service4Level2MarkupPanel := Service4Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service4Level3MarkupPanel := Service4Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service4Level4MarkupPanel := Service4Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service4Level5MarkupPanel := Service4Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service5Level1MarkupPanel := Service5Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service5Level2MarkupPanel := Service5Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service5Level3MarkupPanel := Service5Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service5Level4MarkupPanel := Service5Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	service5Level5MarkupPanel := Service5Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
 
 	// 2. Size the app.
 	tools.SizeApp()

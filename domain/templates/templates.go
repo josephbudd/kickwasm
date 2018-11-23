@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/josephbudd/kickwasm/paths"
+	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
 // ProcessTemplate processes a template.

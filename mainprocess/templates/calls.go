@@ -17,8 +17,7 @@ import (
 // GetCallMap returns a map of each mainprocess call.
 func GetCallMap({{range $i, $store := .Stores}}{{if ne $i 0}}, {{end}}{{call $Dot.LowerCamelCase $store}}Store storer.{{$store}}Storer{{end}}) map[types.CallID]caller.MainProcesser {
 	return map[types.CallID]caller.MainProcesser{
-		callids.LogCallID:           newLogCall(),{{if .AddAbout}}
-		callids.GetAboutCallID:      newGetAboutCall(),{{end}}
+		callids.LogCallID:           newLogCall(),
 	}
 }
 
@@ -151,8 +150,33 @@ import (
 
 	STEP 1: See domain/implementations/data/callids/exampleGo.txt for what you must first defined in the domain/data/callids package.
 
-	STEP 2: See domain/types.exampleGo.txt for what must be done in domain/types.
+	STEP 2: Define the call parameter types in domain/types.
 
+		1. The param which is passed from the renderer to the main process.
+		2. The param which is passed from the main process to the renderer.
+	
+		The folder **domain/types/** contains files which define the call params. You will create the 2 params for each of your calls.
+		
+		Below is the file **domain/types/updateContactCallParams.go** from the example/contacts program. I always give the MainProcessToRenderer param an **Error** and **ErrorMessage** so that I know if there was any error. In this case the params also contain a **State** which indictates adding or editing a contact record.
+
+		==================================================================================================================================
+		package types
+		
+		// RendererToMainProcessUpdateContactParams are the UpdateContact function parameters that the renderer sends to the main process.
+		type RendererToMainProcessUpdateContactParams struct {
+			Record       *ContactRecord
+			State        uint64
+		}
+		
+		// MainProcessToRendererUpdateContactParams are the UpdateContact function parameters that the main process sends to the renderer.
+		type MainProcessToRendererUpdateContactParams struct {
+			Error        bool
+			ErrorMessage string
+			Record       *ContactRecord
+			State        uint64
+		}
+		===================================================================================================================================
+	
 	STEPS 3 & 4:
 		3. Define the constructor.
 		* In this case: newGetCustomerCall
@@ -239,48 +263,5 @@ func processGetCustomer(params []byte, callBackToRenderer func(params []byte), c
 	txparamsbb, _ := json.Marshal(txparams)
 	callBackToRenderer(txparamsbb)
 }
-
-`
-
-// CallsGetAboutGo is the mainprocess/calls/getAbout.go template.
-const CallsGetAboutGo = `package calls
-
-import (
-	"encoding/json"
-	"log"
-
-	"{{.ApplicationGitPath}}{{.ImportDomainDataCallIDs}}"
-	"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
-	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
-	"{{.ApplicationGitPath}}{{.ImportMainProcessServicesAbout}}"
-)
-
-func newGetAboutCall() *calling.MainProcess {
-	return calling.NewMainProcess(
-		callids.GetAboutCallID,
-		func(params []byte, call func([]byte)) {
-			processGetAbout(params, call)
-		},
-	)
-}
-
-func processGetAbout(params []byte, callBack func(params []byte)) {
-	log.Println("processGetAbout")
-	txparams := &types.MainProcessToRendererGetAboutParams{
-		Version:      about.String(),
-		Releases:     about.GetReleases(),
-		Contributors: about.GetContributors(),
-		Credits:      about.GetCredits(),
-		Licenses:     about.GetLicenses(),
-	}
-	txparamsbb, _ := json.Marshal(txparams)
-	callBack(txparamsbb)
-}
-
-/*
-
-	For renderer code see /renderer/panels/AboutButton/AboutPanel/caller.go
-
-*/
 
 `

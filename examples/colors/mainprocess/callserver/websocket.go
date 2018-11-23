@@ -99,7 +99,6 @@ func (callServer *Server) readLoop(ws *websocket.Conn,
 				if len(payloadbb) == 0 {
 					log.Println("readLoop: len(payloadbb) == 0", err)
 				} else {
-					log.Println("main process incoming message")
 					payload := &types.Payload{}
 					err := json.Unmarshal(payloadbb, payload)
 					if err != nil {

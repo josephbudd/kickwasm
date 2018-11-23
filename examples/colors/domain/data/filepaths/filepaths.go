@@ -8,6 +8,8 @@ import (
 )
 
 var userHomeDataPath string
+
+// applicationRendererPath is where the application settings yaml file is.
 var applicationRendererPath string
 
 // faviconPath is where the favicon is.
@@ -27,6 +29,8 @@ var initerr error
 var initialized bool
 
 var testing bool
+
+var appSettingsPath string
 
 // Testing sets testing to true so that the test db is used not the normal database.
 // Returns if in using test db.
@@ -48,9 +52,18 @@ func initialize() {
 		initerr = fmt.Errorf("os.Getwd() error is %s", initerr.Error())
 		return
 	}
+	appSettingsPath = filepath.Join(pwd, "httpSettings.yaml")
 	applicationRendererPath = filepath.Join(pwd, "renderer")
 	faviconPath = filepath.Join(applicationRendererPath, "favicon.ico")
 	templatePath = filepath.Join(applicationRendererPath, "templates")
+}
+
+// GetSettingsPath returns the settings yaml path.
+func GetSettingsPath() string {
+	if !initialized {
+		initialize()
+	}
+	return appSettingsPath
 }
 
 // GetFaviconPath returns the path of the favicon.
@@ -116,9 +129,9 @@ func buildUserHomeDataPath() {
 		home = os.Getenv("HOME")
 	}
 	if testing {
-		userHomeDataPath = filepath.Join(home, "colors+kwga_tests")
+		userHomeDataPath = filepath.Join(home, "colors_kwga_tests")
 	} else {
-		userHomeDataPath = filepath.Join(home, ".colors+kwga")
+		userHomeDataPath = filepath.Join(home, ".colors_kwga")
 	}
 	if err := os.MkdirAll(userHomeDataPath, dmode); err != nil {
 		initerr = fmt.Errorf("os.MkdirAll(userHomeDataPath, dmode) error is %s", initerr.Error())

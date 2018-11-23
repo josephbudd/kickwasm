@@ -1,10 +1,7 @@
 package Service3Level3MarkupPanel
 
 import (
-	//"syscall/js"
-
-	"github.com/josephbudd/kicknotjs"
-
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
 )
 
@@ -21,7 +18,7 @@ type Presenter struct {
 	controler *Controler
 	caller    *Caller
 	tools     *viewtools.Tools // see /renderer/viewtools
-	notjs     *kicknotjs.NotJS
+	notJS     *notjs.NotJS
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
@@ -41,7 +38,7 @@ func (panelPresenter *Presenter) defineMembers() {
 	// Define your Presenter members.
 	// example:
 
-	panelPresenter.customerName = panelPresenter.notjs.GetElementByID("customerName")
+	panelPresenter.customerName = panelPresenter.notJS.GetElementByID("customerName")
 
 	*/
 }
@@ -53,7 +50,7 @@ func (panelPresenter *Presenter) defineMembers() {
 
 // displayCustomer displays the customer in the panel.
 func (panelPresenter *Presenter) displayCustomer(record *records.CustomerRecord) {
-	panelPresenter.notjs.SetInnerText(panelPresenter.customerName, record.Name)
+	panelPresenter.notJS.SetInnerText(panelPresenter.customerName, record.Name)
 }
 
 */

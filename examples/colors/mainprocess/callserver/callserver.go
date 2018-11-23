@@ -19,7 +19,7 @@ const pongWait = 60 * time.Second
 // Server is a main process local client call.
 type Server struct {
 	host          string
-	port          uint
+	port          uint64
 	callMap       map[types.CallID]caller.MainProcesser
 	DisconnectMax time.Duration
 
@@ -38,7 +38,7 @@ type Server struct {
 }
 
 // NewCallServer constructs a new Server.
-func NewCallServer(host string, port uint, callMap map[types.CallID]caller.MainProcesser) *Server {
+func NewCallServer(host string, port uint64, callMap map[types.CallID]caller.MainProcesser) *Server {
 	return &Server{
 		host:          host,
 		port:          port,

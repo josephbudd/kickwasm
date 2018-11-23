@@ -24,6 +24,8 @@ import (
 )
 
 var userHomeDataPath string
+
+// applicationRendererPath is where the application settings yaml file is.
 var applicationRendererPath string
 
 // faviconPath is where the favicon is.
@@ -43,6 +45,8 @@ var initerr error
 var initialized bool
 
 var testing bool
+
+var appSettingsPath string
 
 // Testing sets testing to true so that the test db is used not the normal database.
 // Returns if in using test db.
@@ -64,9 +68,18 @@ func initialize() {
 		initerr = fmt.Errorf("os.Getwd() error is %s", initerr.Error())
 		return
 	}
+	appSettingsPath = filepath.Join(pwd, "httpSettings.yaml")
 	applicationRendererPath = filepath.Join(pwd, "renderer")
 	faviconPath = filepath.Join(applicationRendererPath, "favicon.ico")
 	templatePath = filepath.Join(applicationRendererPath, "templates")
+}
+
+// GetSettingsPath returns the settings yaml path.
+func GetSettingsPath() string {
+	if !initialized {
+		initialize()
+	}
+	return appSettingsPath
 }
 
 // GetFaviconPath returns the path of the favicon.
@@ -132,22 +145,14 @@ func buildUserHomeDataPath() {
 		home = os.Getenv("HOME")
 	}
 	if testing {
-		userHomeDataPath = filepath.Join(home, "{{.ApplicationName}}+kwga_tests")
+		userHomeDataPath = filepath.Join(home, "{{.ApplicationName}}_kwga_tests")
 	} else {
-		userHomeDataPath = filepath.Join(home, ".{{.ApplicationName}}+kwga")
+		userHomeDataPath = filepath.Join(home, ".{{.ApplicationName}}_kwga")
 	}
 	if err := os.MkdirAll(userHomeDataPath, dmode); err != nil {
 		initerr = fmt.Errorf("os.MkdirAll(userHomeDataPath, dmode) error is %s", initerr.Error())
 	}
 }
-
-`
-
-// DataCallIDsGetAboutGo is the domain/data/callids/about.go template.
-const DataCallIDsGetAboutGo = `package callids
-
-// GetAbout call id for the GetAbout call.
-var GetAboutCallID = nextCallID()
 
 `
 
@@ -170,6 +175,43 @@ func nextCallID() types.CallID {
 	id := nextid
 	nextid++
 	return id
+}
+
+`
+
+// DataSettingsGo is the /domain/data/settings.go file.
+const DataSettingsGo = `package settings
+
+import (
+	"os"
+
+	yaml "gopkg.in/yaml.v2"
+
+	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+)
+
+func NewApplicationSettings() (*types.ApplicationSettings, error) {
+	fpath := filepaths.GetSettingsPath()
+	f, err := os.Open(fpath)
+	if err != nil {
+		return nil, err
+	}
+	stat, err := f.Stat()
+	if err != nil {
+		return nil, err
+	}
+	l := stat.Size()
+	yamlbb := make([]byte, l, l)
+	_, err = f.Read(yamlbb)
+	if err != nil {
+		return nil, err
+	}
+	v := &types.ApplicationSettings{}
+	if err := yaml.Unmarshal(yamlbb, v); err != nil {
+		return nil, err
+	}
+	return v, nil
 }
 
 `

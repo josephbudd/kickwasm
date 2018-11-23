@@ -1,0 +1,413 @@
+
+
+/******************************************************************************
+
+    WARNING:
+
+    Back this file up before editing it.
+
+    Colors are in css/colors.css, not this file.
+
+******************************************************************************/
+
+/******************************************************************************
+
+    general
+
+******************************************************************************/
+
+body {
+  margin:0;
+  padding:10px;
+  overflow:hidden;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size:20px;
+}
+
+.unseen { display:none !important; }
+.seen { display:block !important; }
+
+/******************************************************************************
+
+    master views
+
+******************************************************************************/
+
+#tabsMasterView
+{
+  height:inherit;
+  overflow:hidden;
+}
+
+#modalInformationMasterView
+{
+  z-index:2;
+  top:10px;
+  left:10px;
+  position:absolute;
+  border-width:1px;
+  border-style:solid;
+  border-radius: 20px;
+  padding: 50px;
+}
+
+#modalInformationMasterView-center
+{
+  position:relative;
+  border-width:1px;
+  border-style:solid;
+  border-radius: 20px;
+  padding:10px;
+}
+
+#modalInformationMasterView-center > h2
+{
+  margin-top:0;
+  margin-bottom:5px;
+  font-size:36px;
+}
+
+#modalInformationMasterView-message
+{
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#closerMasterView
+{
+  position: relative;
+  z-index:2;
+  top:0px;
+  left:0px;
+  position:absolute;
+  border-width:1px;
+  border-style:solid;
+  border-radius: 20px;
+  padding:50px;
+}
+
+#closerMasterView-center
+{
+  position:relative;
+  border-width:1px;
+  border-style:solid;
+  border-radius: 20px;
+  padding:10px;
+}
+
+#closerMasterView-center > h2
+{
+  margin-top:0;
+  margin-bottom:5px;
+  font-size:36px;
+}
+
+/******************************************************************************
+
+    panels
+
+******************************************************************************/
+
+div.under-tab-bar  
+{
+  border-width: 1px;
+  border-style: solid;
+  padding:0px;
+  overflow:hidden;
+  margin-top:-1px;
+}
+
+div.panel-with-heading,
+div.panel-with-tab-bar
+{
+  overflow:hidden;
+}
+
+div.panel-bound-to-tab
+{
+  padding:0px 2px 0px 2px;
+}
+
+div.inner-panel
+{
+  overflow-y:auto;
+  padding-left:20px;
+}
+
+/******************************************************************************
+
+    tabs
+
+******************************************************************************/
+
+div.tab-bar
+{
+  align-content: baseline;
+  height:fit-content;
+}
+div.tab-bar > button
+{
+  width: max-intrinsic;
+  border-width: 1px;
+  border-style: solid;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  padding:4px 12px;
+  margin:3px 0 0 0;
+  font-size:16px;
+  cursor:pointer;
+  border-spacing: 4px;
+}
+div.tab-bar > button:focus { outline: none; }
+div.tab-bar > button.selected-tab 
+{
+  position:relative;
+  margin:0 0 -1px 0;
+  padding:4px 12px 6px 12px;
+  font-size:20px;
+  cursor:default;
+}
+
+div.under-tab-bar .heading-of-panel
+{
+	margin-top:5px;
+  margin-bottom:5px;
+  padding: 10px;
+}
+
+/******************************************************************************
+
+    tabs master view
+
+******************************************************************************/
+
+#tabsMasterView > h1.heading-of-panel
+{
+  margin-top:0;
+  margin-bottom:5px;
+  font-size:36px;
+}
+
+/******************************************************************************
+
+    home
+
+******************************************************************************/
+
+#tabsMasterView-home-pad
+{
+  overflow-y:auto;
+  border-radius: 20px;
+  border-width:1px;
+  border-style:solid;
+}
+
+#tabsMasterView-home-pad > button
+{
+  height:200px;
+  width:300px;
+  font-size: 200%;
+  text-align: center;
+  vertical-align: middle;
+  margin:40px;
+  border-radius: 20px 20px 20px 20px;
+  border-width:1px;
+  border-style:solid;
+  cursor:pointer;
+}
+#tabsMasterView-home-pad > button:focus { outline: none; }
+
+/******************************************************************************
+
+    slider
+
+******************************************************************************/
+
+#tabsMasterView-home-slider
+{
+  float:left;
+}
+
+#tabsMasterView-home-slider-back
+{
+  width:50px;
+  float: left;
+  margin-right:10px;
+  border-radius:50px 0px 0px 50px;
+  border-width:1px;
+  border-style:solid;
+  font-size:200%;
+  font-weight:bold;
+  cursor:pointer;
+}
+#tabsMasterView-home-slider-back:focus { outline: none; }
+
+#tabsMasterView-home-slider
+{
+  float: left;
+}
+
+#tabsMasterView-home-slider-collection
+{
+  float:right;
+}
+
+/*
+#tabsMasterView-home-slider-collection > .slider-panel
+{
+}
+*/
+
+#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner
+{
+  overflow:hidden;
+  /* top and bottom padding for scroll bars */
+  padding-top:20px;
+  padding-bottom:20px;
+  padding-left:10px;
+  padding-right:10px;
+  border-radius: 20px;
+}
+
+#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner > .slider-button-pad
+{
+  overflow-x:hidden;
+  overflow-y:auto;
+  padding-right:10px;
+  letter-spacing: 2px;
+  word-spacing: 4px;
+}
+
+#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner > .slider-button-pad > button
+{
+  height:200px;
+  width:300px;
+  font-size: 200%;
+  text-align: center;
+  vertical-align: middle;
+  margin:40px;
+  border-width:1px;
+  border-style:solid;
+  border-radius: 20px 0px 20px 0px;
+}
+#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner > .slider-button-pad > button:focus { outline: none; }
+
+#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel
+{
+  margin-top:0;
+  margin-bottom:0px;
+  font-size:34px;
+}
+
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel
+{
+  margin-bottom:10px;
+}
+
+/* cookie crumbs */
+
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-AddAContact,
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-EditAContact,
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-RemoveAContact
+{
+  /* margin-top:0;
+  margin-bottom:5px; */
+  font-size:24px;
+  display:inline;
+}
+
+/******************************************************************************
+
+  user content
+
+******************************************************************************/
+
+.user-content,
+.modal-user-content,
+.closer-user-content
+{
+  overflow-x:hidden;
+  overflow-y:auto;
+  padding-right:10px;
+  letter-spacing: 2px;
+  word-spacing: 4px;
+}
+
+.user-content button,
+.user-content input,
+.user-content label,
+.user-content legend,
+.user-content select,
+.user-content textarea,
+.user-content th,
+.user-content td,
+.modal-user-content button,
+.modal-user-content input,
+.modal-user-content label,
+.modal-user-content legend,
+.modal-user-content select,
+.modal-user-content textarea,
+.modal-user-content th,
+.modal-user-content td,
+.closer-user-content button,
+.closer-user-content input,
+.closer-user-content label,
+.closer-user-content legend,
+.closer-user-content select,
+.closer-user-content textarea,
+.closer-user-content th,
+.closer-user-content td
+{
+  font-size:20px
+}
+
+.user-content button,
+.modal-user-content button,
+.closer-user-content button
+{
+  border-width:1px;
+  border-style:solid;
+  cursor:pointer;
+}
+.user-content button:hover,
+.modal-user-content button:hover,
+.closer-user-content button:hover
+{
+  cursor:pointer;
+}
+.user-content button:focus,
+.modal-user-content button:focus,
+.closer-user-content button:focus
+{
+  outline: none;
+}
+
+.user-content h3,
+.user-content h4,
+.user-content h5,
+.user-content h6,
+.modal-user-content h3,
+.modal-user-content h4,
+.modal-user-content h5,
+.modal-user-content h6,
+.closer-user-content h3,
+.closer-user-content h4,
+.closer-user-content h5,
+.closer-user-content h6
+{
+  font-size:22px;
+}
+
+/*
+	right margin limits the width and brings it away from the scroll bar.
+*/
+.user-content p,
+.modal-user-content p,
+.closer-user-content p
+{
+  display:block;
+  clear:both;
+  width:100%;
+  margin-right:20px;
+}
+

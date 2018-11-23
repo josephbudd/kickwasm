@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/domain/templates"
-	"github.com/josephbudd/kickwasm/paths"
+	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
 func createDataFilePathsGo(appPaths paths.ApplicationPathsI, data *templateData) error {
@@ -13,13 +13,6 @@ func createDataFilePathsGo(appPaths paths.ApplicationPathsI, data *templateData)
 	oPath := filepath.Join(folderpaths.OutputDomainDataFilepaths, fname)
 	if err := templates.ProcessTemplate(fname, oPath, templates.DataFilePathsGo, data, appPaths); err != nil {
 		return err
-	}
-	if data.AddAbout {
-		fname = "getAbout.go"
-		oPath = filepath.Join(folderpaths.OutputDomainDataCallIDs, fname)
-		if err := templates.ProcessTemplate(fname, oPath, templates.DataCallIDsGetAboutGo, data, appPaths); err != nil {
-			return err
-		}
 	}
 	fname = "log.go"
 	oPath = filepath.Join(folderpaths.OutputDomainDataCallIDs, fname)
@@ -34,6 +27,11 @@ func createDataFilePathsGo(appPaths paths.ApplicationPathsI, data *templateData)
 	fname = "loglevels.go"
 	oPath = filepath.Join(folderpaths.OutputDomainDataLogLevels, fname)
 	if err := templates.ProcessTemplate(fname, oPath, templates.DataLogLevelsGo, data, appPaths); err != nil {
+		return err
+	}
+	fname = "settings.go"
+	oPath = filepath.Join(folderpaths.OutputDomainDataSettings, fname)
+	if err := templates.ProcessTemplate(fname, oPath, templates.DataSettingsGo, data, appPaths); err != nil {
 		return err
 	}
 	return nil

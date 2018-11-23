@@ -1,10 +1,7 @@
 package Service4Level3MarkupPanel
 
 import (
-	//"syscall/js"
-
-	"github.com/josephbudd/kicknotjs"
-
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
 )
 
@@ -22,7 +19,7 @@ type Controler struct {
 	caller    *Caller
 	quitCh    chan struct{}    // send an empty struct to start the quit process.
 	tools     *viewtools.Tools // see /renderer/viewtools
-	notjs     *kicknotjs.NotJS
+	notJS     *notjs.NotJS
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -45,13 +42,13 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 	// example:
 
 	// Define controler members.
-	notjs := panelControler.notjs
-	panelControler.addCustomerName := notjs.GetElementByID("addCustomerName")
-	panelControler.addCustomerSubmit := notjs.GetElementByID("addCustomerSubmit")
+	notJS := panelControler.notJS
+	panelControler.addCustomerName := notJS.GetElementByID("addCustomerName")
+	panelControler.addCustomerSubmit := notJS.GetElementByID("addCustomerSubmit")
 
 	// Set handlers.
-	cb := notjs.RegisterCallBack(panelControler.handleSubmit)
-	notjs.SetOnClick(panelControler.addCustomerSubmit, cb)
+	cb := notJS.RegisterCallBack(panelControler.handleSubmit)
+	notJS.SetOnClick(panelControler.addCustomerSubmit, cb)
 
 	*/
 }
@@ -62,7 +59,7 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 // example:
 
 func (panelControler *Controler) handleSubmit([]js.Value) {
-	name := strings.TrimSpace(panelControler.notjs.GetValue(panelControler.addCustomerName))
+	name := strings.TrimSpace(panelControler.notJS.GetValue(panelControler.addCustomerName))
 	if len(name) == 0 {
 		panelControler.tools.Error("Customer Name is required.")
 		return

@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/domain/templates"
-	"github.com/josephbudd/kickwasm/paths"
+	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
 // Create the files in the domain/implementations/store/boltstoring/ folder.

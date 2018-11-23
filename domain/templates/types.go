@@ -56,28 +56,13 @@ type MainProcessToRendererLogCallParams struct {
 
 `
 
-// TypesGetAboutParamsGo is the domain/types/getAboutCallParams.go template.
-const TypesGetAboutParamsGo = `package types
+// SettingsGo is the domain/types/settings.go template.
+const SettingsGo = `package types
 
-import (
-	"{{.ApplicationGitPath}}{{.ImportMainProcessServicesAbout}}"
-)
-
-// MainProcessToRendererGetAboutParams are the GetAbout function parameters that the main process sends to the renderer.
-type MainProcessToRendererGetAboutParams struct {
-	Error        bool
-	ErrorMessage string
-	Version      string
-	Releases     map[string]map[string][]string
-	Contributors map[string]string
-	Credits      []about.Credit
-	Licenses     []about.License
+// ApplicationSettings are the settings for this application.
+type ApplicationSettings struct {
+	Host string {{.BackTick}}yaml:"host"{{.BackTick}}
+	Port uint64 {{.BackTick}}yaml:"port"{{.BackTick}}
 }
-
-/*
-
-	For renderer code see {{.ApplicationGitPath}}{{.OutputRendererPanels}}/AboutButton/AboutPanel/caller.go
-
-*/
 
 `

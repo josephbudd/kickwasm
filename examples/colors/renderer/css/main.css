@@ -306,16 +306,17 @@ div.under-tab-bar .heading-of-panel
 
 /* cookie crumbs */
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-1,
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-2,
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-3,
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-4,
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-5
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Service1,
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Service2,
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Service3,
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Service4,
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Service5
 {
   /* margin-top:0;
   margin-bottom:5px; */
   font-size:24px;
   display:inline;
+  margin-right: 4px;
 }
 
 /******************************************************************************
@@ -324,7 +325,9 @@ div.under-tab-bar .heading-of-panel
 
 ******************************************************************************/
 
-.user-content
+.user-content,
+.modal-user-content,
+.closer-user-content
 {
   overflow-x:hidden;
   overflow-y:auto;
@@ -340,22 +343,44 @@ div.under-tab-bar .heading-of-panel
 .user-content select,
 .user-content textarea,
 .user-content th,
-.user-content td
+.user-content td,
+.modal-user-content button,
+.modal-user-content input,
+.modal-user-content label,
+.modal-user-content legend,
+.modal-user-content select,
+.modal-user-content textarea,
+.modal-user-content th,
+.modal-user-content td,
+.closer-user-content button,
+.closer-user-content input,
+.closer-user-content label,
+.closer-user-content legend,
+.closer-user-content select,
+.closer-user-content textarea,
+.closer-user-content th,
+.closer-user-content td
 {
   font-size:20px
 }
 
-.user-content button
+.user-content button,
+.modal-user-content button,
+.closer-user-content button
 {
   border-width:1px;
   border-style:solid;
   cursor:pointer;
 }
-.user-content button:hover
+.user-content button:hover,
+.modal-user-content button:hover,
+.closer-user-content button:hover
 {
   cursor:pointer;
 }
-.user-content button:focus
+.user-content button:focus,
+.modal-user-content button:focus,
+.closer-user-content button:focus
 {
   outline: none;
 }
@@ -363,7 +388,15 @@ div.under-tab-bar .heading-of-panel
 .user-content h3,
 .user-content h4,
 .user-content h5,
-.user-content h6
+.user-content h6,
+.modal-user-content h3,
+.modal-user-content h4,
+.modal-user-content h5,
+.modal-user-content h6,
+.closer-user-content h3,
+.closer-user-content h4,
+.closer-user-content h5,
+.closer-user-content h6
 {
   font-size:22px;
 }
@@ -371,7 +404,9 @@ div.under-tab-bar .heading-of-panel
 /*
 	right margin limits the width and brings it away from the scroll bar.
 */
-.user-content p
+.user-content p,
+.modal-user-content p,
+.closer-user-content p
 {
   display:block;
   clear:both;

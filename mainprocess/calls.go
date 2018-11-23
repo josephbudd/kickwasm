@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/mainprocess/templates"
-	"github.com/josephbudd/kickwasm/paths"
+	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
 func createCalls(appPaths paths.ApplicationPathsI, data *templateData) error {
@@ -23,13 +23,6 @@ func createCalls(appPaths paths.ApplicationPathsI, data *templateData) error {
 	oPath = filepath.Join(folderpaths.OutputMainProcessCalls, fname)
 	if err := templates.ProcessTemplate(fname, oPath, templates.CallsExampleGoTxt, data, appPaths); err != nil {
 		return err
-	}
-	if data.AddAbout {
-		fname = "getAbout.go"
-		oPath = filepath.Join(folderpaths.OutputMainProcessCalls, fname)
-		if err := templates.ProcessTemplate(fname, oPath, templates.CallsGetAboutGo, data, appPaths); err != nil {
-			return err
-		}
 	}
 	return nil
 }

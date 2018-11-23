@@ -1,0 +1,1339 @@
+title : Example of the Different Service Colors
+
+importPath : github.com/josephbudd/kickwasm/examples/colors
+
+stores :
+  - Color
+
+services :
+  - name : Service1
+    button :
+      name : Service1Button
+      label : Service 1 Colors
+      heading : Default Service 1 Colors.
+      cc : Service 1 Level 1
+      panels :
+        - name : Service1Level1ButtonPanel
+          buttons :
+            - name : ContentButton
+              label : Click here for level 1 content.
+              heading : Markup In Service 1 colors.
+              cc : A Markup Panel
+              panels :
+                - name : Service1Level1MarkupPanel
+                  note : |
+                    This is the only content.
+                    Brought to you in the first service color.
+                  markup : |
+                    <h3>A view of Service 1 content.</h3>
+                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                    <p>
+                    This is an example of content that you would provide.
+                    It has the same shape and the same background color as this level's button pad.
+                    </p>
+                    <p>
+                    You can see this level's button pad by clicking the tall back button at the left.
+                    The tall back button at the left always has the same background color as the level that it goes back to.
+                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                    </p>
+                    <p>
+                    This interface offers few distraction because it
+                    <ul>
+                      <li>is very minimal and simple in its presentation,</li>
+                      <li>is very minimal and simple in its functions,</li>
+                      <li>
+                        is consistent with colors and shapes.
+                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                        See for yourself. Switch back and forth between this content and this level's button pad.
+                      </li>
+                    </ul>
+                    </p>
+                    <p>
+                    It allows the user to focus on
+                    <ul>
+                      <li>your content,</li>
+                      <li>the complexity of your services.</li>
+                    </ul>
+                    </p>
+                    <p>
+                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                      The cookie crumbs are only intended to help orientate the user in an application.
+                      The cookie crumbs are not clickable and are off by default.
+                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                    </p>
+            - name : ColorsButton
+              label : Click here for level 2.
+              heading : Continuing with Service 1 colors.
+              cc : Level 2
+              panels :
+                - name : Service1Level2ButtonPanel
+                  buttons :
+                    - name : ContentButton
+                      label : Click here for level 2 content.
+                      heading : More Markup In Service 1 colors.
+                      cc : A Markup Panel
+                      panels :
+                        - name : Service1Level2MarkupPanel
+                          note : |
+                            This is the only content.
+                            Brought to you in the first service color.
+                          markup : |
+                            <h3>A view of Service 1 Level 2 content.</h3>
+                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                            <p>
+                            This is an example of content that you would provide.
+                            It has the same shape and the same background color as this level's button pad.
+                            </p>
+                            <p>
+                            You can see this level's button pad by clicking the tall back button at the left.
+                            The tall back button at the left always has the same background color as the level that it goes back to.
+                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                            </p>
+                            <p>
+                            This interface offers few distraction because it
+                            <ul>
+                              <li>is very minimal and simple in its presentation,</li>
+                              <li>is very minimal and simple in its functions,</li>
+                              <li>
+                                is consistent with colors and shapes.
+                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                See for yourself. Switch back and forth between this content and this level's button pad.
+                              </li>
+                            </ul>
+                            </p>
+                            <p>
+                            It allows the user to focus on
+                            <ul>
+                              <li>your content,</li>
+                              <li>the complexity of your services.</li>
+                            </ul>
+                            </p>
+                            <p>
+                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                              The cookie crumbs are only intended to help orientate the user in an application.
+                              The cookie crumbs are not clickable and are off by default.
+                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                            </p>
+                    - name : ColorsButton
+                      label : Click here for level 3.
+                      heading : Continuing with Service 1 colors..
+                      cc : Level 3
+                      panels :
+                        - name : Service1Level3ButtonPanel
+                          buttons :
+                            - name : ContentButton
+                              label : Click here for level 3 content.
+                              heading : Still More Markup In Service 1 colors.
+                              cc : A Markup Panel
+                              panels :
+                                - name : Service1Level3MarkupPanel
+                                  note : |
+                                    This is the only content.
+                                    Brought to you in the first service color.
+                                  markup : |
+                                    <h3>A view of Service 1 Level 3 content.</h3>
+                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                    <p>
+                                    This is an example of content that you would provide.
+                                    It has the same shape and the same background color as this level's button pad.
+                                    </p>
+                                    <p>
+                                    You can see this level's button pad by clicking the tall back button at the left.
+                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                    </p>
+                                    <p>
+                                    This interface offers few distraction because it
+                                    <ul>
+                                      <li>is very minimal and simple in its presentation,</li>
+                                      <li>is very minimal and simple in its functions,</li>
+                                      <li>
+                                        is consistent with colors and shapes.
+                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                      </li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                    It allows the user to focus on
+                                    <ul>
+                                      <li>your content,</li>
+                                      <li>the complexity of your services.</li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                      The cookie crumbs are not clickable and are off by default.
+                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                    </p>
+                            - name : ColorsButton
+                              label : Click here for level 4.
+                              heading : Continuing with Service 1 colors...
+                              cc : Level 4
+                              panels :
+                                - name : Service1Level4ButtonPanel
+                                  buttons :
+                                    - name : ContentButton
+                                      label : Click here for level 4 content.
+                                      heading : And Still, More Markup In Service 1 colors.
+                                      cc : A Markup Panel
+                                      panels :
+                                        - name : Service1Level4MarkupPanel
+                                          note : |
+                                            This is the only content.
+                                            Brought to you in the first service color.
+                                          markup : |
+                                            <h3>A view of Service 1 Level 4 content.</h3>
+                                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                                            <p>
+                                            This is an example of content that you would provide.
+                                            It has the same shape and the same background color as this level's button pad.
+                                            </p>
+                                            <p>
+                                            You can see this level's button pad by clicking the tall back button at the left.
+                                            The tall back button at the left always has the same background color as the level that it goes back to.
+                                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                                            </p>
+                                            <p>
+                                            This interface offers few distraction because it
+                                            <ul>
+                                              <li>is very minimal and simple in its presentation,</li>
+                                              <li>is very minimal and simple in its functions,</li>
+                                              <li>
+                                                is consistent with colors and shapes.
+                                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                See for yourself. Switch back and forth between this content and this level's button pad.
+                                              </li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                            It allows the user to focus on
+                                            <ul>
+                                              <li>your content,</li>
+                                              <li>the complexity of your services.</li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                              The cookie crumbs are only intended to help orientate the user in an application.
+                                              The cookie crumbs are not clickable and are off by default.
+                                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                            </p>
+                                    - name : ColorsButton
+                                      label : Click here for level 5.
+                                      heading : Continuing with Service 1 colors....
+                                      cc : Level 5
+                                      panels :
+                                        - name : Service1Level5ButtonPanel
+                                          buttons :
+                                            - name : ContentButton
+                                              label : Click here for level 5 content.
+                                              heading : Finally, More Markup In Service 1 colors.
+                                              cc : A Markup Panel
+                                              panels :
+                                                - name : Service1Level5MarkupPanel
+                                                  note : |
+                                                    This is the only content.
+                                                    Brought to you in the first service color.
+                                                  markup : |
+                                                    <h3>A view of Service 1 Level 5 content.</h3>
+                                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                                    <p>
+                                                    This is an example of content that you would provide.
+                                                    It has the same shape and the same background color as this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    You can see this level's button pad by clicking the tall back button at the left.
+                                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    This interface offers few distraction because it
+                                                    <ul>
+                                                      <li>is very minimal and simple in its presentation,</li>
+                                                      <li>is very minimal and simple in its functions,</li>
+                                                      <li>
+                                                        is consistent with colors and shapes.
+                                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                                      </li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                    It allows the user to focus on
+                                                    <ul>
+                                                      <li>your content,</li>
+                                                      <li>the complexity of your services.</li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                                      The cookie crumbs are not clickable and are off by default.
+                                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                                    </p>
+  - name : Service2
+    button :
+      name : Service2Button
+      label : Service 2 Colors
+      heading : Default Service 2 Colors.
+      cc : Service 2 Level 1
+      panels :
+        - name : Service2Level1ButtonPanel
+          buttons :
+            - name : ContentButton
+              label : Click here for level 1 content.
+              heading : Markup In Service 2 colors.
+              cc : A Markup Panel
+              panels :
+                - name : Service2Level1MarkupPanel
+                  note : |
+                    This is the only content.
+                    Brought to you in the first service color.
+                  markup : |
+                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                    <p>
+                    This is an example of content that you would provide.
+                    It has the same shape and the same background color as this level's button pad.
+                    </p>
+                    <p>
+                    You can see this level's button pad by clicking the tall back button at the left.
+                    The tall back button at the left always has the same background color as the level that it goes back to.
+                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                    </p>
+                    <p>
+                    This interface offers few distraction because it
+                    <ul>
+                      <li>is very minimal and simple in its presentation,</li>
+                      <li>is very minimal and simple in its functions,</li>
+                      <li>
+                        is consistent with colors and shapes.
+                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                        See for yourself. Switch back and forth between this content and this level's button pad.
+                      </li>
+                    </ul>
+                    </p>
+                    <p>
+                    It allows the user to focus on
+                    <ul>
+                      <li>your content,</li>
+                      <li>the complexity of your services.</li>
+                    </ul>
+                    </p>
+                    <p>
+                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                      The cookie crumbs are only intended to help orientate the user in an application.
+                      The cookie crumbs are not clickable and are off by default.
+                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                    </p>
+            - name : ColorsButton
+              label : Click here for level 2.
+              heading : Continuing with Service 2 colors.
+              cc : Level 2
+              panels :
+                - name : Service2Level2ButtonPanel
+                  buttons :
+                    - name : ContentButton
+                      label : Click here for level 2 content.
+                      heading : More Markup In Service 2 colors.
+                      cc : A Markup Panel
+                      panels :
+                        - name : Service2Level2MarkupPanel
+                          note : |
+                            This is the only content.
+                            Brought to you in the first service color.
+                          markup : |
+                            <h3>A view of Service 2 Level 2 content.</h3>
+                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                            <p>
+                            This is an example of content that you would provide.
+                            It has the same shape and the same background color as this level's button pad.
+                            </p>
+                            <p>
+                            You can see this level's button pad by clicking the tall back button at the left.
+                            The tall back button at the left always has the same background color as the level that it goes back to.
+                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                            </p>
+                            <p>
+                            This interface offers few distraction because it
+                            <ul>
+                              <li>is very minimal and simple in its presentation,</li>
+                              <li>is very minimal and simple in its functions,</li>
+                              <li>
+                                is consistent with colors and shapes.
+                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                See for yourself. Switch back and forth between this content and this level's button pad.
+                              </li>
+                            </ul>
+                            </p>
+                            <p>
+                            It allows the user to focus on
+                            <ul>
+                              <li>your content,</li>
+                              <li>the complexity of your services.</li>
+                            </ul>
+                            </p>
+                            <p>
+                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                              The cookie crumbs are only intended to help orientate the user in an application.
+                              The cookie crumbs are not clickable and are off by default.
+                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                            </p>
+                    - name : ColorsButton
+                      label : Click here for level 3.
+                      heading : Continuing with Service 2 colors..
+                      cc : Level 3
+                      panels :
+                        - name : Service2Level3ButtonPanel
+                          buttons :
+                            - name : ContentButton
+                              label : Click here for level 3 content.
+                              heading : Still More Markup In Service 2 colors.
+                              cc : A Markup Panel
+                              panels :
+                                - name : Service2Level3MarkupPanel
+                                  note : |
+                                    This is the only content.
+                                    Brought to you in the first service color.
+                                  markup : |
+                                    <h3>A view of Service 2 Level 3 content.</h3>
+                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                    <p>
+                                    This is an example of content that you would provide.
+                                    It has the same shape and the same background color as this level's button pad.
+                                    </p>
+                                    <p>
+                                    You can see this level's button pad by clicking the tall back button at the left.
+                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                    </p>
+                                    <p>
+                                    This interface offers few distraction because it
+                                    <ul>
+                                      <li>is very minimal and simple in its presentation,</li>
+                                      <li>is very minimal and simple in its functions,</li>
+                                      <li>
+                                        is consistent with colors and shapes.
+                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                      </li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                    It allows the user to focus on
+                                    <ul>
+                                      <li>your content,</li>
+                                      <li>the complexity of your services.</li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                      The cookie crumbs are not clickable and are off by default.
+                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                    </p>
+                            - name : ColorsButton
+                              label : Click here for level 4.
+                              heading : Continuing with Service 2 colors...
+                              cc : Level 4
+                              panels :
+                                - name : Service2Level4ButtonPanel
+                                  buttons :
+                                    - name : ContentButton
+                                      label : Click here for level 4 content.
+                                      heading : And Still, More Markup In Service 2 colors.
+                                      cc : A Markup Panel
+                                      panels :
+                                        - name : Service2Level4MarkupPanel
+                                          note : |
+                                            This is the only content.
+                                            Brought to you in the first service color.
+                                          markup : |
+                                            <h3>A view of Service 2 Level 4 content.</h3>
+                                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                                            <p>
+                                            This is an example of content that you would provide.
+                                            It has the same shape and the same background color as this level's button pad.
+                                            </p>
+                                            <p>
+                                            You can see this level's button pad by clicking the tall back button at the left.
+                                            The tall back button at the left always has the same background color as the level that it goes back to.
+                                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                                            </p>
+                                            <p>
+                                            This interface offers few distraction because it
+                                            <ul>
+                                              <li>is very minimal and simple in its presentation,</li>
+                                              <li>is very minimal and simple in its functions,</li>
+                                              <li>
+                                                is consistent with colors and shapes.
+                                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                See for yourself. Switch back and forth between this content and this level's button pad.
+                                              </li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                            It allows the user to focus on
+                                            <ul>
+                                              <li>your content,</li>
+                                              <li>the complexity of your services.</li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                              The cookie crumbs are only intended to help orientate the user in an application.
+                                              The cookie crumbs are not clickable and are off by default.
+                                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                            </p>
+                                    - name : ColorsButton
+                                      label : Click here for level 5.
+                                      heading : Continuing with Service 2 colors....
+                                      cc : Level 5
+                                      panels :
+                                        - name : Service2Level5ButtonPanel
+                                          buttons :
+                                            - name : ContentButton
+                                              label : Click here for level 5 content.
+                                              heading : Finally, More Markup In Service 2 colors.
+                                              cc : A Markup Panel
+                                              panels :
+                                                - name : Service2Level5MarkupPanel
+                                                  note : |
+                                                    This is the only content.
+                                                    Brought to you in the first service color.
+                                                  markup : |
+                                                    <h3>A view of Service 2 Level 5 content.</h3>
+                                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                                    <p>
+                                                    This is an example of content that you would provide.
+                                                    It has the same shape and the same background color as this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    You can see this level's button pad by clicking the tall back button at the left.
+                                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    This interface offers few distraction because it
+                                                    <ul>
+                                                      <li>is very minimal and simple in its presentation,</li>
+                                                      <li>is very minimal and simple in its functions,</li>
+                                                      <li>
+                                                        is consistent with colors and shapes.
+                                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                                      </li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                    It allows the user to focus on
+                                                    <ul>
+                                                      <li>your content,</li>
+                                                      <li>the complexity of your services.</li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                                      The cookie crumbs are not clickable and are off by default.
+                                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                                    </p>
+  - name : Service3
+    button :
+      name : Service3Button
+      label : Service 3 Colors
+      heading : Default Service 3 Colors.
+      cc : Service 3 Level 1
+      panels :
+        - name : Service3Level1ButtonPanel
+          buttons :
+            - name : ContentButton
+              label : Click here for level 1 content.
+              heading : Markup In Service 3 colors.
+              cc : A Markup Panel
+              panels :
+                - name : Service3Level1MarkupPanel
+                  note : |
+                    This is the only content.
+                    Brought to you in the first service color.
+                  markup : |
+                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                    <p>
+                    This is an example of content that you would provide.
+                    It has the same shape and the same background color as this level's button pad.
+                    </p>
+                    <p>
+                    You can see this level's button pad by clicking the tall back button at the left.
+                    The tall back button at the left always has the same background color as the level that it goes back to.
+                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                    </p>
+                    <p>
+                    This interface offers few distraction because it
+                    <ul>
+                      <li>is very minimal and simple in its presentation,</li>
+                      <li>is very minimal and simple in its functions,</li>
+                      <li>
+                        is consistent with colors and shapes.
+                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                        See for yourself. Switch back and forth between this content and this level's button pad.
+                      </li>
+                    </ul>
+                    </p>
+                    <p>
+                    It allows the user to focus on
+                    <ul>
+                      <li>your content,</li>
+                      <li>the complexity of your services.</li>
+                    </ul>
+                    </p>
+                    <p>
+                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                      The cookie crumbs are only intended to help orientate the user in an application.
+                      The cookie crumbs are not clickable and are off by default.
+                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                    </p>
+            - name : ColorsButton
+              label : Click here for level 2.
+              heading : Continuing with Service 3 colors.
+              cc : Level 2
+              panels :
+                - name : Service3Level2ButtonPanel
+                  buttons :
+                    - name : ContentButton
+                      label : Click here for level 2 content.
+                      heading : More Markup In Service 3 colors.
+                      cc : A Markup Panel
+                      panels :
+                        - name : Service3Level2MarkupPanel
+                          note : |
+                            This is the only content.
+                            Brought to you in the first service color.
+                          markup : |
+                            <h3>A view of Service 3 Level 2 content.</h3>
+                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                            <p>
+                            This is an example of content that you would provide.
+                            It has the same shape and the same background color as this level's button pad.
+                            </p>
+                            <p>
+                            You can see this level's button pad by clicking the tall back button at the left.
+                            The tall back button at the left always has the same background color as the level that it goes back to.
+                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                            </p>
+                            <p>
+                            This interface offers few distraction because it
+                            <ul>
+                              <li>is very minimal and simple in its presentation,</li>
+                              <li>is very minimal and simple in its functions,</li>
+                              <li>
+                                is consistent with colors and shapes.
+                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                See for yourself. Switch back and forth between this content and this level's button pad.
+                              </li>
+                            </ul>
+                            </p>
+                            <p>
+                            It allows the user to focus on
+                            <ul>
+                              <li>your content,</li>
+                              <li>the complexity of your services.</li>
+                            </ul>
+                            </p>
+                            <p>
+                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                              The cookie crumbs are only intended to help orientate the user in an application.
+                              The cookie crumbs are not clickable and are off by default.
+                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                            </p>
+                    - name : ColorsButton
+                      label : Click here for level 3.
+                      heading : Continuing with Service 3 colors..
+                      cc : Level 3
+                      panels :
+                        - name : Service3Level3ButtonPanel
+                          buttons :
+                            - name : ContentButton
+                              label : Click here for level 3 content.
+                              heading : Still More Markup In Service 3 colors.
+                              cc : A Markup Panel
+                              panels :
+                                - name : Service3Level3MarkupPanel
+                                  note : |
+                                    This is the only content.
+                                    Brought to you in the first service color.
+                                  markup : |
+                                    <h3>A view of Service 3 Level 3 content.</h3>
+                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                    <p>
+                                    This is an example of content that you would provide.
+                                    It has the same shape and the same background color as this level's button pad.
+                                    </p>
+                                    <p>
+                                    You can see this level's button pad by clicking the tall back button at the left.
+                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                    </p>
+                                    <p>
+                                    This interface offers few distraction because it
+                                    <ul>
+                                      <li>is very minimal and simple in its presentation,</li>
+                                      <li>is very minimal and simple in its functions,</li>
+                                      <li>
+                                        is consistent with colors and shapes.
+                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                      </li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                    It allows the user to focus on
+                                    <ul>
+                                      <li>your content,</li>
+                                      <li>the complexity of your services.</li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                      The cookie crumbs are not clickable and are off by default.
+                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                    </p>
+                            - name : ColorsButton
+                              label : Click here for level 4.
+                              heading : Continuing with Service 3 colors...
+                              cc : Level 4
+                              panels :
+                                - name : Service3Level4ButtonPanel
+                                  buttons :
+                                    - name : ContentButton
+                                      label : Click here for level 4 content.
+                                      heading : And Still, More Markup In Service 3 colors.
+                                      cc : A Markup Panel
+                                      panels :
+                                        - name : Service3Level4MarkupPanel
+                                          note : |
+                                            This is the only content.
+                                            Brought to you in the first service color.
+                                          markup : |
+                                            <h3>A view of Service 3 Level 4 content.</h3>
+                                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                                            <p>
+                                            This is an example of content that you would provide.
+                                            It has the same shape and the same background color as this level's button pad.
+                                            </p>
+                                            <p>
+                                            You can see this level's button pad by clicking the tall back button at the left.
+                                            The tall back button at the left always has the same background color as the level that it goes back to.
+                                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                                            </p>
+                                            <p>
+                                            This interface offers few distraction because it
+                                            <ul>
+                                              <li>is very minimal and simple in its presentation,</li>
+                                              <li>is very minimal and simple in its functions,</li>
+                                              <li>
+                                                is consistent with colors and shapes.
+                                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                See for yourself. Switch back and forth between this content and this level's button pad.
+                                              </li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                            It allows the user to focus on
+                                            <ul>
+                                              <li>your content,</li>
+                                              <li>the complexity of your services.</li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                              The cookie crumbs are only intended to help orientate the user in an application.
+                                              The cookie crumbs are not clickable and are off by default.
+                                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                            </p>
+                                    - name : ColorsButton
+                                      label : Click here for level 5.
+                                      heading : Continuing with Service 3 colors....
+                                      cc : Level 5
+                                      panels :
+                                        - name : Service3Level5ButtonPanel
+                                          buttons :
+                                            - name : ContentButton
+                                              label : Click here for level 5 content.
+                                              heading : Finally, More Markup In Service 3 colors.
+                                              cc : A Markup Panel
+                                              panels :
+                                                - name : Service3Level5MarkupPanel
+                                                  note : |
+                                                    This is the only content.
+                                                    Brought to you in the first service color.
+                                                  markup : |
+                                                    <h3>A view of Service 3 Level 5 content.</h3>
+                                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                                    <p>
+                                                    This is an example of content that you would provide.
+                                                    It has the same shape and the same background color as this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    You can see this level's button pad by clicking the tall back button at the left.
+                                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    This interface offers few distraction because it
+                                                    <ul>
+                                                      <li>is very minimal and simple in its presentation,</li>
+                                                      <li>is very minimal and simple in its functions,</li>
+                                                      <li>
+                                                        is consistent with colors and shapes.
+                                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                                      </li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                    It allows the user to focus on
+                                                    <ul>
+                                                      <li>your content,</li>
+                                                      <li>the complexity of your services.</li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                                      The cookie crumbs are not clickable and are off by default.
+                                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                                    </p>
+  - name : Service4
+    button :
+      name : Service4Button
+      label : Service 4 Colors
+      heading : Default Service 4 Colors.
+      cc : Service 4 Level 1
+      panels :
+        - name : Service4Level1ButtonPanel
+          buttons :
+            - name : ContentButton
+              label : Click here for level 1 content.
+              heading : Markup In Service 4 colors.
+              cc : A Markup Panel
+              panels :
+                - name : Service4Level1MarkupPanel
+                  note : |
+                    This is the only content.
+                    Brought to you in the first service color.
+                  markup : |
+                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                    <p>
+                    This is an example of content that you would provide.
+                    It has the same shape and the same background color as this level's button pad.
+                    </p>
+                    <p>
+                    You can see this level's button pad by clicking the tall back button at the left.
+                    The tall back button at the left always has the same background color as the level that it goes back to.
+                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                    </p>
+                    <p>
+                    This interface offers few distraction because it
+                    <ul>
+                      <li>is very minimal and simple in its presentation,</li>
+                      <li>is very minimal and simple in its functions,</li>
+                      <li>
+                        is consistent with colors and shapes.
+                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                        See for yourself. Switch back and forth between this content and this level's button pad.
+                      </li>
+                    </ul>
+                    </p>
+                    <p>
+                    It allows the user to focus on
+                    <ul>
+                      <li>your content,</li>
+                      <li>the complexity of your services.</li>
+                    </ul>
+                    </p>
+                    <p>
+                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                      The cookie crumbs are only intended to help orientate the user in an application.
+                      The cookie crumbs are not clickable and are off by default.
+                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                    </p>
+            - name : ColorsButton
+              label : Click here for level 2.
+              heading : Continuing with Service 4 colors.
+              cc : Level 2
+              panels :
+                - name : Service4Level2ButtonPanel
+                  buttons :
+                    - name : ContentButton
+                      label : Click here for level 2 content.
+                      heading : More Markup In Service 4 colors.
+                      cc : A Markup Panel
+                      panels :
+                        - name : Service4Level2MarkupPanel
+                          note : |
+                            This is the only content.
+                            Brought to you in the first service color.
+                          markup : |
+                            <h3>A view of Service 4 Level 2 content.</h3>
+                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                            <p>
+                            This is an example of content that you would provide.
+                            It has the same shape and the same background color as this level's button pad.
+                            </p>
+                            <p>
+                            You can see this level's button pad by clicking the tall back button at the left.
+                            The tall back button at the left always has the same background color as the level that it goes back to.
+                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                            </p>
+                            <p>
+                            This interface offers few distraction because it
+                            <ul>
+                              <li>is very minimal and simple in its presentation,</li>
+                              <li>is very minimal and simple in its functions,</li>
+                              <li>
+                                is consistent with colors and shapes.
+                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                See for yourself. Switch back and forth between this content and this level's button pad.
+                              </li>
+                            </ul>
+                            </p>
+                            <p>
+                            It allows the user to focus on
+                            <ul>
+                              <li>your content,</li>
+                              <li>the complexity of your services.</li>
+                            </ul>
+                            </p>
+                            <p>
+                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                              The cookie crumbs are only intended to help orientate the user in an application.
+                              The cookie crumbs are not clickable and are off by default.
+                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                            </p>
+                    - name : ColorsButton
+                      label : Click here for level 3.
+                      heading : Continuing with Service 4 colors..
+                      cc : Level 3
+                      panels :
+                        - name : Service4Level3ButtonPanel
+                          buttons :
+                            - name : ContentButton
+                              label : Click here for level 3 content.
+                              heading : Still More Markup In Service 4 colors.
+                              cc : A Markup Panel
+                              panels :
+                                - name : Service4Level3MarkupPanel
+                                  note : |
+                                    This is the only content.
+                                    Brought to you in the first service color.
+                                  markup : |
+                                    <h3>A view of Service 4 Level 3 content.</h3>
+                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                    <p>
+                                    This is an example of content that you would provide.
+                                    It has the same shape and the same background color as this level's button pad.
+                                    </p>
+                                    <p>
+                                    You can see this level's button pad by clicking the tall back button at the left.
+                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                    </p>
+                                    <p>
+                                    This interface offers few distraction because it
+                                    <ul>
+                                      <li>is very minimal and simple in its presentation,</li>
+                                      <li>is very minimal and simple in its functions,</li>
+                                      <li>
+                                        is consistent with colors and shapes.
+                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                      </li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                    It allows the user to focus on
+                                    <ul>
+                                      <li>your content,</li>
+                                      <li>the complexity of your services.</li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                      The cookie crumbs are not clickable and are off by default.
+                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                    </p>
+                            - name : ColorsButton
+                              label : Click here for level 4.
+                              heading : Continuing with Service 4 colors...
+                              cc : Level 4
+                              panels :
+                                - name : Service4Level4ButtonPanel
+                                  buttons :
+                                    - name : ContentButton
+                                      label : Click here for level 4 content.
+                                      heading : And Still, More Markup In Service 4 colors.
+                                      cc : A Markup Panel
+                                      panels :
+                                        - name : Service4Level4MarkupPanel
+                                          note : |
+                                            This is the only content.
+                                            Brought to you in the first service color.
+                                          markup : |
+                                            <h3>A view of Service 4 Level 4 content.</h3>
+                                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                                            <p>
+                                            This is an example of content that you would provide.
+                                            It has the same shape and the same background color as this level's button pad.
+                                            </p>
+                                            <p>
+                                            You can see this level's button pad by clicking the tall back button at the left.
+                                            The tall back button at the left always has the same background color as the level that it goes back to.
+                                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                                            </p>
+                                            <p>
+                                            This interface offers few distraction because it
+                                            <ul>
+                                              <li>is very minimal and simple in its presentation,</li>
+                                              <li>is very minimal and simple in its functions,</li>
+                                              <li>
+                                                is consistent with colors and shapes.
+                                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                See for yourself. Switch back and forth between this content and this level's button pad.
+                                              </li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                            It allows the user to focus on
+                                            <ul>
+                                              <li>your content,</li>
+                                              <li>the complexity of your services.</li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                              The cookie crumbs are only intended to help orientate the user in an application.
+                                              The cookie crumbs are not clickable and are off by default.
+                                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                            </p>
+                                    - name : ColorsButton
+                                      label : Click here for level 5.
+                                      heading : Continuing with Service 4 colors....
+                                      cc : Level 5
+                                      panels :
+                                        - name : Service4Level5ButtonPanel
+                                          buttons :
+                                            - name : ContentButton
+                                              label : Click here for level 5 content.
+                                              heading : Finally, More Markup In Service 4 colors.
+                                              cc : A Markup Panel
+                                              panels :
+                                                - name : Service4Level5MarkupPanel
+                                                  note : |
+                                                    This is the only content.
+                                                    Brought to you in the first service color.
+                                                  markup : |
+                                                    <h3>A view of Service 4 Level 5 content.</h3>
+                                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                                    <p>
+                                                    This is an example of content that you would provide.
+                                                    It has the same shape and the same background color as this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    You can see this level's button pad by clicking the tall back button at the left.
+                                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    This interface offers few distraction because it
+                                                    <ul>
+                                                      <li>is very minimal and simple in its presentation,</li>
+                                                      <li>is very minimal and simple in its functions,</li>
+                                                      <li>
+                                                        is consistent with colors and shapes.
+                                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                                      </li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                    It allows the user to focus on
+                                                    <ul>
+                                                      <li>your content,</li>
+                                                      <li>the complexity of your services.</li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                                      The cookie crumbs are not clickable and are off by default.
+                                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                                    </p>
+  - name : Service5
+    button :
+      name : Service5Button
+      label : Service 5 Colors
+      heading : Default Service 5 Colors.
+      cc : Service 5 Level 1
+      panels :
+        - name : Service5Level1ButtonPanel
+          buttons :
+            - name : ContentButton
+              label : Click here for level 1 content.
+              heading : Markup In Service 5 colors.
+              cc : A Markup Panel
+              panels :
+                - name : Service5Level1MarkupPanel
+                  note : |
+                    This is the only content.
+                    Brought to you in the first service color.
+                  markup : |
+                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                    <p>
+                    This is an example of content that you would provide.
+                    It has the same shape and the same background color as this level's button pad.
+                    </p>
+                    <p>
+                    You can see this level's button pad by clicking the tall back button at the left.
+                    The tall back button at the left always has the same background color as the level that it goes back to.
+                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                    </p>
+                    <p>
+                    This interface offers few distraction because it
+                    <ul>
+                      <li>is very minimal and simple in its presentation,</li>
+                      <li>is very minimal and simple in its functions,</li>
+                      <li>
+                        is consistent with colors and shapes.
+                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                        See for yourself. Switch back and forth between this content and this level's button pad.
+                      </li>
+                    </ul>
+                    </p>
+                    <p>
+                    It allows the user to focus on
+                    <ul>
+                      <li>your content,</li>
+                      <li>the complexity of your services.</li>
+                    </ul>
+                    </p>
+                    <p>
+                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                      The cookie crumbs are only intended to help orientate the user in an application.
+                      The cookie crumbs are not clickable and are off by default.
+                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                    </p>
+            - name : ColorsButton
+              label : Click here for level 2.
+              heading : Continuing with Service 5 colors.
+              cc : Level 2
+              panels :
+                - name : Service5Level2ButtonPanel
+                  buttons :
+                    - name : ContentButton
+                      label : Click here for level 2 content.
+                      heading : More Markup In Service 5 colors.
+                      cc : A Markup Panel
+                      panels :
+                        - name : Service5Level2MarkupPanel
+                          note : |
+                            This is the only content.
+                            Brought to you in the first service color.
+                          markup : |
+                            <h3>A view of Service 5 Level 2 content.</h3>
+                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                            <p>
+                            This is an example of content that you would provide.
+                            It has the same shape and the same background color as this level's button pad.
+                            </p>
+                            <p>
+                            You can see this level's button pad by clicking the tall back button at the left.
+                            The tall back button at the left always has the same background color as the level that it goes back to.
+                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                            </p>
+                            <p>
+                            This interface offers few distraction because it
+                            <ul>
+                              <li>is very minimal and simple in its presentation,</li>
+                              <li>is very minimal and simple in its functions,</li>
+                              <li>
+                                is consistent with colors and shapes.
+                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                See for yourself. Switch back and forth between this content and this level's button pad.
+                              </li>
+                            </ul>
+                            </p>
+                            <p>
+                            It allows the user to focus on
+                            <ul>
+                              <li>your content,</li>
+                              <li>the complexity of your services.</li>
+                            </ul>
+                            </p>
+                            <p>
+                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                              The cookie crumbs are only intended to help orientate the user in an application.
+                              The cookie crumbs are not clickable and are off by default.
+                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                            </p>
+                    - name : ColorsButton
+                      label : Click here for level 3.
+                      heading : Continuing with Service 5 colors..
+                      cc : Level 3
+                      panels :
+                        - name : Service5Level3ButtonPanel
+                          buttons :
+                            - name : ContentButton
+                              label : Click here for level 3 content.
+                              heading : Still More Markup In Service 5 colors.
+                              cc : A Markup Panel
+                              panels :
+                                - name : Service5Level3MarkupPanel
+                                  note : |
+                                    This is the only content.
+                                    Brought to you in the first service color.
+                                  markup : |
+                                    <h3>A view of Service 5 Level 3 content.</h3>
+                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                    <p>
+                                    This is an example of content that you would provide.
+                                    It has the same shape and the same background color as this level's button pad.
+                                    </p>
+                                    <p>
+                                    You can see this level's button pad by clicking the tall back button at the left.
+                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                    </p>
+                                    <p>
+                                    This interface offers few distraction because it
+                                    <ul>
+                                      <li>is very minimal and simple in its presentation,</li>
+                                      <li>is very minimal and simple in its functions,</li>
+                                      <li>
+                                        is consistent with colors and shapes.
+                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                      </li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                    It allows the user to focus on
+                                    <ul>
+                                      <li>your content,</li>
+                                      <li>the complexity of your services.</li>
+                                    </ul>
+                                    </p>
+                                    <p>
+                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                      The cookie crumbs are not clickable and are off by default.
+                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                    </p>
+                            - name : ColorsButton
+                              label : Click here for level 4.
+                              heading : Continuing with Service 5 colors...
+                              cc : Level 4
+                              panels :
+                                - name : Service5Level4ButtonPanel
+                                  buttons :
+                                    - name : ContentButton
+                                      label : Click here for level 4 content.
+                                      heading : And Still, More Markup In Service 5 colors.
+                                      cc : A Markup Panel
+                                      panels :
+                                        - name : Service5Level4MarkupPanel
+                                          note : |
+                                            This is the only content.
+                                            Brought to you in the first service color.
+                                          markup : |
+                                            <h3>A view of Service 5 Level 4 content.</h3>
+                                            <h4>The User Experiences Your Services Not This Interface.</h4>
+                                            <p>
+                                            This is an example of content that you would provide.
+                                            It has the same shape and the same background color as this level's button pad.
+                                            </p>
+                                            <p>
+                                            You can see this level's button pad by clicking the tall back button at the left.
+                                            The tall back button at the left always has the same background color as the level that it goes back to.
+                                            At the moment is has the background color of this level because it goes back to this level's button pad.
+                                            </p>
+                                            <p>
+                                            This interface offers few distraction because it
+                                            <ul>
+                                              <li>is very minimal and simple in its presentation,</li>
+                                              <li>is very minimal and simple in its functions,</li>
+                                              <li>
+                                                is consistent with colors and shapes.
+                                                Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                See for yourself. Switch back and forth between this content and this level's button pad.
+                                              </li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                            It allows the user to focus on
+                                            <ul>
+                                              <li>your content,</li>
+                                              <li>the complexity of your services.</li>
+                                            </ul>
+                                            </p>
+                                            <p>
+                                              I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                              The cookie crumbs are only intended to help orientate the user in an application.
+                                              The cookie crumbs are not clickable and are off by default.
+                                              If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                            </p>
+                                    - name : ColorsButton
+                                      label : Click here for level 5.
+                                      heading : Continuing with Service 5 colors....
+                                      cc : Level 5
+                                      panels :
+                                        - name : Service5Level5ButtonPanel
+                                          buttons :
+                                            - name : ContentButton
+                                              label : Click here for level 5 content.
+                                              heading : Finally, More Markup In Service 5 colors.
+                                              cc : A Markup Panel
+                                              panels :
+                                                - name : Service5Level5MarkupPanel
+                                                  note : |
+                                                    This is the only content.
+                                                    Brought to you in the first service color.
+                                                  markup : |
+                                                    <h3>A view of Service 5 Level 5 content.</h3>
+                                                    <h4>The User Experiences Your Services Not This Interface.</h4>
+                                                    <p>
+                                                    This is an example of content that you would provide.
+                                                    It has the same shape and the same background color as this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    You can see this level's button pad by clicking the tall back button at the left.
+                                                    The tall back button at the left always has the same background color as the level that it goes back to.
+                                                    At the moment is has the background color of this level because it goes back to this level's button pad.
+                                                    </p>
+                                                    <p>
+                                                    This interface offers few distraction because it
+                                                    <ul>
+                                                      <li>is very minimal and simple in its presentation,</li>
+                                                      <li>is very minimal and simple in its functions,</li>
+                                                      <li>
+                                                        is consistent with colors and shapes.
+                                                        Even the switch from a button pad to your content is less dramatic because content area is the same color and shape as the button pad.
+                                                        See for yourself. Switch back and forth between this content and this level's button pad.
+                                                      </li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                    It allows the user to focus on
+                                                    <ul>
+                                                      <li>your content,</li>
+                                                      <li>the complexity of your services.</li>
+                                                    </ul>
+                                                    </p>
+                                                    <p>
+                                                      I built this example application with kick's <b>-cc</b>  flag which added the cookie crumb like headings under the application name.
+                                                      The cookie crumbs are only intended to help orientate the user in an application.
+                                                      The cookie crumbs are not clickable and are off by default.
+                                                      If like me, you think that they might be a distraction more then an aid, you don't have to add them.
+                                                    </p>

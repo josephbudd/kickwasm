@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/josephbudd/kickwasm/paths"
+	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
 // CopyYAML copies the yaml files.
@@ -17,7 +17,7 @@ func CopyYAML(appPaths *paths.ApplicationPaths, appYamlFilePath string, panelFil
 	srcFolder := filepath.Dir(appYamlFilePath)
 	srcFile := filepath.Base(appYamlFilePath)
 	// copy the application yaml file.
-	if err := copyYaml(appPaths, appYamlFilePath, filepath.Join(folderPaths.OutputDotKickYAML, srcFile)); err != nil {
+	if err := copyYaml(appPaths, appYamlFilePath, filepath.Join(folderPaths.OutputDotKickwasmYAML, srcFile)); err != nil {
 		return err
 	}
 	// copy the panel yaml files.
@@ -26,7 +26,7 @@ func CopyYAML(appPaths *paths.ApplicationPaths, appYamlFilePath string, panelFil
 		if err != nil {
 			return err
 		}
-		destPath := filepath.Join(folderPaths.OutputDotKickYAML, relPath)
+		destPath := filepath.Join(folderPaths.OutputDotKickwasmYAML, relPath)
 		if err := copyYaml(appPaths, srcPath, destPath); err != nil {
 			return err
 		}

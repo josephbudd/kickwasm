@@ -1,42 +1,67 @@
 # kickwasm
 
-A rapid development, desktop application framework generator for go. Kickwasm creates a browser based GUI and most of the main process golang and renderer html, golang and css code for you.
+A rapid development, desktop application framework generator for go. Kickwasm creates
 
-To summerize, it's https://github.com/josephbudd/kick with wasm instead of javascript and TDD.
+* a browser based GUI framework source code written in html, css and go.
+* a main process framework source code written in go.
 
-## Version alpha 0.2.3 ( Unstable and Buggy ) Oct 28 2018
-
-Major changes. Continued changes as I use kickwasm to create a the color and contact examples and as I create the wiki.
+## The frame work
 
 ### The framework code has a TDD architecture
 
-TDD ( test driven design ) is very simple to do in go. It involves the implementation of principles that already belong to go. So, it's just idiomatic go and unit tests. Kickwasm creates the idiomatic go and the code architecture. You create the unit tests if you want.
+TDD ( test driven design ) is very simple to do in go because TDD involves the implementation of principles that already belong to go. Kickwasm attempts to create a framework with idiomatic go and a TDD friendly code architecture. You create the unit tests if you want.
 
-#### The framework is constructed with separate 2 processes
+The framework works as soon as you build it. The colors example is only a framework without anything added to it. See the colors example video.
 
-1. The renderer process with its main.go. It's compiled with **GOARCH=wasm GOOS=js go build -o app.wasm main.go panels.go**
-2. The main process with it's main.go. It's compiled with **go build**
+On the contrary, the contacts example is a framework with code added. The contacts example is an actual program, a simple CRUD. See the contacts example video.
 
-#### The framework code is physically and logically organized into 3 main levels
+### The framework has a 2 step build
+
+1. Build the renderer process with **GOARCH=wasm GOOS=js go build -o app.wasm main.go panels.go**
+1. Build the main process with **go build**
+1. The framework is run like any other simple program with **./my-app-name**
+
+### The framework code is physically and logically organized into 3 main levels
 
 1. The domain folder contains domain ( application ) level logic.
-2. The mainprocess folder contains the main process level logic.
-3. The renderer folder contains the renderer level logic.
+1. The mainprocess folder contains the main process level logic.
+1. The renderer folder contains the renderer level logic.
+
+### The framework imports
+
+* Imports the boltdb package at https://github.com/boltdb/bolt.
+
+## This is version 0.2.4
+
+### Not yet stable and possibly buggy
+
+#### Update: Nov 23 2018
+
+Building the contacts CRUD example resulted in major changes and corrections to
+
+* kickwasm,
+* the framework kickwasm generates,
+
+Following that, my focus has been on rekickwasm. Rekickwasm is the refactoring tool for kickwasm. Building rekickwasm resulted in other major changes to kickwasm and the framework it generates.
 
 ### Kickwasm imports
 
 * The yaml package at https://gopkg.in/yaml.v2
 
-### The framework
+## Installation
 
-* Imports the boltdb package at https://github.com/boltdb/bolt.
-* Imports my notjs package at https://github.com/josephbudd/kicknotjs.
-  * The kicknotjs package is only needed by the framework. You don't have to use it in your own renderer code. I use it because I wrote it.
+``` bash
+
+  go get -u github.com/josephbudd/kickwasm
+  go get -u gopkg.in/yaml.v2
+
+  cd $GOPATH/src/github.com/josephbudd/kickwasm/
+  go install
+
+```
 
 ### To do
 
-The wiki, the contacts example and its video.
-
-### Examples
-
-The contacts example is not finished yet. After it is finished I'll make the video.
+* The videos for both examples.
+* The rest of the wiki.
+* Start from scratch installing kickwasm source code and building the examples on linux and windows so that I can correctly define the procedures.
