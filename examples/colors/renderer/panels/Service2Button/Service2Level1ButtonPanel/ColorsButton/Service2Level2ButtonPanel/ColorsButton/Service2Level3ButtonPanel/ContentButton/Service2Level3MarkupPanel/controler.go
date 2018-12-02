@@ -8,7 +8,6 @@ import (
 /*
 
 	Panel name: Service2Level3MarkupPanel
-	Panel id:   tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ContentButton-Service2Level3MarkupPanel
 
 */
 

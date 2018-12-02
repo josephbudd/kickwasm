@@ -29,13 +29,18 @@ On the contrary, the contacts example is a framework with code added. The contac
 
 ### The framework imports
 
-* Imports the boltdb package at https://github.com/boltdb/bolt.
+* the boltdb package at https://github.com/boltdb/bolt.
+* the yaml package at https://gopkg.in/yaml.v2
 
-## This is version 0.2.4
+## This is version 0.3.0
 
 ### Not yet stable and possibly buggy
 
-#### Update: Nov 23 2018
+#### Update: Dec 1, 2018
+
+I'm still building rekickwasm and that means more big changes to kickwasm and the framework it generates.
+
+#### Update: Nov 23, 2018
 
 Building the contacts CRUD example resulted in major changes and corrections to
 

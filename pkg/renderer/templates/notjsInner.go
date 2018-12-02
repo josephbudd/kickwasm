@@ -25,4 +25,9 @@ func (notjs *NotJS) GetInnerHTML(element js.Value) string {
 	return element.Get(innerHTMLMemberName).String()
 }
 
+// GetOuterHTML sets an element's outerHTML
+func (notjs *NotJS) GetOuterHTML(element js.Value) string {
+	return element.Get(outerHTMLMemberName).String()
+}
+
 `

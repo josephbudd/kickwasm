@@ -13,7 +13,6 @@ import (
 /*
 
 	Panel name: {{.PanelName}}
-	Panel id:   {{.PanelID}}
 
 */
 
@@ -29,7 +28,8 @@ type Caller struct {
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
-	// Declare your Caller members.
+	// 1: Declare your Caller members.
+
 	// example:
 
 	addCustomerCall caller.Renderer
@@ -42,11 +42,13 @@ func (panelCaller *Caller) addMainProcessCallBacks() {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// Define your added Caller members.
-	// Tell the main processs to call back to your funcs.
+	// 2.1: Define each one of your added Caller members.
+	// 2.2: Tell the main processs to add a call back to each of your call back funcs.
+
 	// example:
 
 	panelCaller.addCustomerCall = panelCaller.connection[calling.AddCustomerCallId]
+
 	panelCaller.addCustomerCall.AddCallBack(panelCaller.addCustomerCB)
 
 	*/
@@ -55,7 +57,9 @@ func (panelCaller *Caller) addMainProcessCallBacks() {
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
 
-// Define calls to the main process and their and call backs.
+// 3.1: Define your funcs which call to the main process.
+// 3.2: Define your funcs which the main process calls back to.
+
 // example:
 
 import "{{.ApplicationGitPath}}{{.ImportDomainDataCallIDs}}"
@@ -89,7 +93,8 @@ func (panelCaller *Caller) initialCalls() {
 
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
-	// Make any initial calls to the main process that must be made when the app starts.
+	//4: Make any initial calls to the main process that must be made when the app starts.
+
 	// example:
 
 	params := types.RendererToMainProcessLogParams{

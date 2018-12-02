@@ -79,7 +79,7 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 
 // showService2Level5MarkupPanel shows the panel you named Service2Level5MarkupPanel while hiding any other panels in it's group.
 // This panel's id is tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ColorsButton-Service2Level3ButtonPanel-ColorsButton-Service2Level4ButtonPanel-ColorsButton-Service2Level5ButtonPanel-ContentButton-Service2Level5MarkupPanel.
-// This panel either becomes visible immediately or whenever it's panel group is made visible for whatever reason.  Whenever could be immediately if this panel group is currently visible.
+// This panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
 // Param force boolean effects when this panel becomes visible.
 //  * if force is true then
 //    immediately if the home button pad is not currently displayed;

@@ -20,6 +20,7 @@ const (
 	setAttributeMethodName  = "setAttribute"
 
 	innerHTMLMemberName = "innerHTML"
+	outerHTMLMemberName = "outerHTML"
 	innerTextMemberName = "innerText"
 	styleMemberName     = "style"
 

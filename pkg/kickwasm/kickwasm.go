@@ -7,8 +7,8 @@ import (
 
 	"github.com/josephbudd/kickwasm/domain"
 	"github.com/josephbudd/kickwasm/foldercp"
-	"github.com/josephbudd/kickwasm/mainprocess"
 	"github.com/josephbudd/kickwasm/pkg/flagdata"
+	"github.com/josephbudd/kickwasm/pkg/mainprocess"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/renderer"
 	"github.com/josephbudd/kickwasm/pkg/slurp"

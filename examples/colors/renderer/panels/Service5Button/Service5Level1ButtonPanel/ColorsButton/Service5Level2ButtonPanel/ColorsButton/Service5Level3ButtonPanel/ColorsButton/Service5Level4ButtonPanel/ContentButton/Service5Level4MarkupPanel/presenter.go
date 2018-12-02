@@ -8,7 +8,6 @@ import (
 /*
 
 	Panel name: Service5Level4MarkupPanel
-	Panel id:   tabsMasterView-home-pad-Service5Button-Service5Level1ButtonPanel-ColorsButton-Service5Level2ButtonPanel-ColorsButton-Service5Level3ButtonPanel-ColorsButton-Service5Level4ButtonPanel-ContentButton-Service5Level4MarkupPanel
 
 */
 

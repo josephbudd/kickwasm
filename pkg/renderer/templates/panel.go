@@ -81,8 +81,8 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 */{{if .IsTabSiblingPanel}}{{range $panel := .PanelGroup}}
 
 // show{{$panel.Name}} shows the panel you named {{$panel.Name}} while hiding any other panels in it's group.
-// The panel will become visible only when this group of panels becomes visible.
-/* Your note for this panel is:
+// {{if eq $Dot.PanelName $panel.Name}}This{{else}}That{{end}} panel will become visible only when this group of panels becomes visible.
+/* Your note for {{if eq $Dot.PanelName $panel.Name}}this{{else}}that{{end}} panel is:
 {{$panel.Note}}
 */
 func (panel *Panel) show{{$panel.Name}}() {
@@ -91,14 +91,14 @@ func (panel *Panel) show{{$panel.Name}}() {
 {{end}}{{else}}{{range $panel := .PanelGroup}}
 
 // show{{$panel.Name}} shows the panel you named {{$panel.Name}} while hiding any other panels in it's group.
-// This panel's id is {{$panel.HTMLID}}.
-// This panel either becomes visible immediately or whenever it's panel group is made visible for whatever reason.  Whenever could be immediately if this panel group is currently visible.
-// Param force boolean effects when this panel becomes visible.
+// {{if eq $Dot.PanelName $panel.Name}}This{{else}}That{{end}} panel's id is {{$panel.HTMLID}}.
+// {{if eq $Dot.PanelName $panel.Name}}This{{else}}That{{end}} panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
+// Param force boolean effects when {{if eq $Dot.PanelName $panel.Name}}this{{else}}that{{end}} panel becomes visible.
 //  * if force is true then
 //    immediately if the home button pad is not currently displayed;
 //    whenever if the home button pad is currently displayed.
 //  * if force is false then whenever.
-/* Your note for this panel is:
+/* Your note for {{if eq $Dot.PanelName $panel.Name}}this{{else}}that{{end}} panel is:
 {{$panel.Note}}
 */
 func (panel *Panel) show{{$panel.Name}}(force bool) {

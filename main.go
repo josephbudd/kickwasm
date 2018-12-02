@@ -14,13 +14,15 @@ import (
 
 const (
 	outputFolder = "output"
+	yamlExt      = ".yaml"
+	ymlExt       = ".yml"
 )
 
 var (
 	version = []string{
 		`kickwasm:`,
-		`  Version: 0.2.4`,
-		`  Unstable and probably buggy. 8^)`,
+		`  Version: 0.3.0`,
+		`  Unstable and probably buggy. 8^(`,
 	}
 	nlSrcBB = []byte("\n")
 	nlRepBB = []byte("\\n")
@@ -63,8 +65,9 @@ func main() {
 		flag.PrintDefaults()
 		return
 	}
-	if filepath.Ext(YAMLFileFlag) != ".yaml" {
-		log.Println("Kickwasm needs a YAML file to build the framework so the file extension must be .yaml")
+	if ext := filepath.Ext(YAMLFileFlag); ext != yamlExt && ext != ymlExt {
+		log.Printf("Kickwasm needs a YAML file to build the framework so the file extension must be %q or %q, not %q", yamlExt, ymlExt, ext)
+		return
 	}
 	// initialize paths
 	pwd, err := os.Getwd()

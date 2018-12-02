@@ -1,0 +1,4 @@
+name : RemoveContactNotReadyPanel
+note : there are no contacts
+markup : |
+  <p>You don't have any contacts to remove.</p>

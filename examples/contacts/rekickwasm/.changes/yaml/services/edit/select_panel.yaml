@@ -1,0 +1,7 @@
+name : EditContactSelectPanel
+note : A mapvlist allowing the user to select a contact to edit.
+markup : |
+  <p>
+    <b>Select A Contact.</b>
+  </p>
+  <div id="contact-edit-select"></div>
