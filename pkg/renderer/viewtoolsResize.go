@@ -4,15 +4,15 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
-func createResizeGo(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createResizeGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	data := &struct {
-		IDs        *tap.IDs
-		Classes    *tap.Classes
-		Attributes *tap.Attributes
+		IDs        *project.IDs
+		Classes    *project.Classes
+		Attributes *project.Attributes
 	}{
 		IDs:        builder.IDs,
 		Classes:    builder.Classes,

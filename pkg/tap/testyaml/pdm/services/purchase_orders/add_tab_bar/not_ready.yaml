@@ -1,8 +1,0 @@
-name: PurchaseOrderAddNotReadyPanel
-
-note: Display if there are no price drops.
-
-markup: |
-  <p>
-    You haven't added any price drops yet.
-  </p>

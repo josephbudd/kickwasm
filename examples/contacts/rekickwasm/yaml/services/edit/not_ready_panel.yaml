@@ -1,4 +1,0 @@
-name : EditContactNotReadyPanel
-note : tell the user that he/she has not added any contacts yet.
-markup : |
-  <p>You don't have any contacts to edit.</p>

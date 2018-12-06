@@ -1,0 +1,20 @@
+name: PriceDropAddDatesEnterPanel
+
+note: |
+  A form to enter the start and end dates.
+  * Start should be preset to today.
+  * End should be preset to Start + 35 days.
+  Make sure
+  * Start precedes End.
+  * the dates are within price list dates.
+
+markup: |
+  <p>
+    <label for="priceDropAddDatesEnterStart">Start Date</label>
+    <input type="date" id="priceDropAddDatesEnterStart">
+  </p>
+
+  <p>
+    <label for="priceDropAddDatesEnterEnd">End Date</label>
+    <input type="date" id="priceDropAddDatesEnterEnd">
+  </p>

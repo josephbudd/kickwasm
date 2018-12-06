@@ -4,13 +4,13 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
-func createViewToolsGroupsGo(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createViewToolsGroupsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	data := &struct {
-		ServiceButtonPanelGroups map[string][]*tap.ButtonPanelGroup
+		ServiceButtonPanelGroups map[string][]*project.ButtonPanelGroup
 	}{
 		ServiceButtonPanelGroups: builder.GenerateServiceButtonPanelGroups(),
 	}

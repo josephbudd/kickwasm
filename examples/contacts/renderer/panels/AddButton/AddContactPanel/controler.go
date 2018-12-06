@@ -1,7 +1,6 @@
 package AddContactPanel
 
 import (
-	"fmt"
 	"syscall/js"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
@@ -84,7 +83,6 @@ func (panelControler *Controler) handleSubmit(args []js.Value) {
 	record := panelControler.getRecord()
 	tools := panelControler.tools
 	if len(record.Name) == 0 {
-		tools.Alert(fmt.Sprintf("len(record.Name) is %d, %q", len(record.Name), record.Name))
 		tools.Error("Name is required.")
 		return
 	}

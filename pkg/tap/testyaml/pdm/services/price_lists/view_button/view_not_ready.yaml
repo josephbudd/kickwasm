@@ -1,8 +1,0 @@
-name: PriceListViewNotReadyPanel
-
-note: |
-  If there are no price lists then this must be displayed.
-  ViewSelect must handle this with view states.
-
-markup: |
-  <p>You have not imported any price lists.</p>

@@ -191,23 +191,23 @@ func (tools *Tools) initializeGroups() {
 	// EditAContact EditButton button.
 	buttonid = "tabsMasterView-home-pad-EditButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-EditButton-RemoveContactConfirmPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-EditButton-EditContactEditPanel")
 	if panel == js.Undefined() {
-		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-EditButton-RemoveContactConfirmPanel"
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-EditButton-EditContactEditPanel"
 		tools.alert.Invoke(message)
 		return
 	}
 	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
-	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-EditButton-RemoveContactNotReadyPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-EditButton-EditContactNotReadyPanel")
 	if panel == js.Undefined() {
-		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-EditButton-RemoveContactNotReadyPanel"
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-EditButton-EditContactNotReadyPanel"
 		tools.alert.Invoke(message)
 		return
 	}
 	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
-	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-EditButton-RemoveContactSelectPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-EditButton-EditContactSelectPanel")
 	if panel == js.Undefined() {
-		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-EditButton-RemoveContactSelectPanel"
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-EditButton-EditContactSelectPanel"
 		tools.alert.Invoke(message)
 		return
 	}
@@ -215,23 +215,23 @@ func (tools *Tools) initializeGroups() {
 	// RemoveAContact RemoveButton button.
 	buttonid = "tabsMasterView-home-pad-RemoveButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
-	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-RemoveButton-EditContactEditPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-RemoveButton-RemoveContactConfirmPanel")
 	if panel == js.Undefined() {
-		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-RemoveButton-EditContactEditPanel"
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-RemoveButton-RemoveContactConfirmPanel"
 		tools.alert.Invoke(message)
 		return
 	}
 	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
-	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-RemoveButton-EditContactNotReadyPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-RemoveButton-RemoveContactNotReadyPanel")
 	if panel == js.Undefined() {
-		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-RemoveButton-EditContactNotReadyPanel"
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-RemoveButton-RemoveContactNotReadyPanel"
 		tools.alert.Invoke(message)
 		return
 	}
 	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
-	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-RemoveButton-EditContactSelectPanel")
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-RemoveButton-RemoveContactSelectPanel")
 	if panel == js.Undefined() {
-		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-RemoveButton-EditContactSelectPanel"
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-RemoveButton-RemoveContactSelectPanel"
 		tools.alert.Invoke(message)
 		return
 	}

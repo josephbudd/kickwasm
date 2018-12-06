@@ -1,0 +1,39 @@
+name: PriceDropAddItemsEditPanel
+
+note: |
+  Show the Description and prices.
+  Edit the quantity.
+  Accept button save.
+  Remove button remove.
+
+markup: |
+  <p>
+    <b>Category:</b> <span id="priceDropAddItemsEditCategory"></span>
+  <p>
+    <b>SKU</b>
+    <span id="priceDropAddItemsEditSKU"></span>
+  </p>
+  <p>
+    <b>Description</b>
+    <span id="priceDropAddItemsEditDescription"></span>
+  </p>
+  <p>
+    <b>MAP</b>
+    <span id="priceDropAddItemsEditMAP"></span>
+  </p>
+  <p>
+    <b>My Price</b>
+    <span id="priceDropAddItemsEditMyPrice"></span>
+  </p>
+  <p>
+    <b>Quantity</b>
+    <input id="priceDropAddItemsEditQuantity" type="number" min="0" max="100" value="0">
+  </p>
+  <p>
+    <b>Subtotal</b>
+    <span id="priceDropAddItemsEditSubtotal"></span>
+  </p>
+  <p>
+    <button id="priceDropAddItemsEditAccept">Accept</button>
+    <button id="priceDropAddItemsEditCancel">Cancel</button>
+  </p>

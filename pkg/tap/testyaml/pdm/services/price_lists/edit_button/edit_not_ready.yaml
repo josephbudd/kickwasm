@@ -1,8 +1,0 @@
-name: PriceListEditNotReadyPanel
-
-note: |
-  If there are no price lists then this must be displayed.
-  Edit Select must handle this with edit states.
-
-markup: |
-  <p>You have not imported any price lists.</p>

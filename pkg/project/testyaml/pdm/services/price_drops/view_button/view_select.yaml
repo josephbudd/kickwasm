@@ -1,0 +1,10 @@
+name: PriceDropViewSelectPanel
+
+note: |
+  mapvlist Year, Live/Dead/Void, Record
+  upon selection
+    * go back to vlist div 0
+    * open pd in new window.
+
+markup: |
+  <div id="priceDropViewSelect"></div>

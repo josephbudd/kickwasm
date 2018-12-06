@@ -4,11 +4,11 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
-func createMainGo(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
 	data := &struct {
 		ApplicationGitPath                       string

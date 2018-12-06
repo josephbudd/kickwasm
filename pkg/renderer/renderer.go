@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
-	"github.com/josephbudd/kickwasm/pkg/tap"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"golang.org/x/net/html"
 )
 
@@ -29,7 +29,7 @@ func GetInitialIndent() uint {
 }
 
 // Create creates all of the renderer files.
-func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addLocations bool, headTemplateFile string) (err error) {
+func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool, headTemplateFile string) (err error) {
 	if err = createHTMLTemplates(appPaths, builder, addLocations, headTemplateFile); err != nil {
 		return
 	}
@@ -67,7 +67,7 @@ func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addLocations
 }
 
 // createHTMLTemplates creates the main html template file.
-func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *tap.Builder, addLocations bool, headTemplateFile string) error {
+func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool, headTemplateFile string) error {
 	folderpaths := appPaths.GetPaths()
 	doc := buildIndexHTMLNode(builder, addLocations, headTemplateFile)
 	bbuf := &bytes.Buffer{}

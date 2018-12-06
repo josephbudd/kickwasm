@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
 type colorLevel struct {
@@ -54,7 +54,7 @@ type cssTemplateData struct {
 	Mod5             func(int) int
 }
 
-func createCSS(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	n := 1
 	if builder.Colors.LastColorLevel > 5 {
 		n = int(builder.Colors.LastColorLevel) / 5

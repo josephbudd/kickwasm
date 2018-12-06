@@ -4,11 +4,11 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
-func createViewToolsTabBarGo(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createViewToolsTabBarGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	data := &struct {
 		TabBarIDs          []string
 		LastPanelID        string

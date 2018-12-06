@@ -1,9 +1,0 @@
-name: CustomerEditNotReadyPanel
-
-note: |
-  Displayed if there are no customers.
-  Edit Select should handle if this is displayed or not.
-  Use EditPanel states.
-
-markup: |
-  <p>You have not added any customers yet.</p>

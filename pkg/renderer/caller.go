@@ -4,11 +4,11 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
-func createCallerGo(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createCallerGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
 	fname := "client.go"
 	oPath := filepath.Join(folderpaths.OutputRendererCallClient, fname)

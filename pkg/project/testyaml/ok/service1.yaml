@@ -1,0 +1,14 @@
+name : Service1
+
+button :
+  id : b1
+  name : OneButton
+  label : One
+  heading : Button 1 Heading.
+  panels :
+    - name : OnePanel
+      note : p1 note
+      markup : <p>Panel 1-1</p>
+    - name : TwoPanel
+      note : p2 note
+      markup : <p>Panel 2-1</p>

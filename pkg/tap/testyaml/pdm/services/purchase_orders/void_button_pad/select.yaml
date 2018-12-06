@@ -1,9 +1,0 @@
-name: PurchaseOrderVoidVoidPanel
-
-note: |
-  select ( voided, year, record)
-  upon selection
-   * lpc.getPO, state void ( for confirm panel)
-
-markup: |
-  <div id="purchaseOrderVoidVoidSelect"></div>

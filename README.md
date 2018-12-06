@@ -32,13 +32,15 @@ On the contrary, the contacts example is a framework with code added. The contac
 * the boltdb package at https://github.com/boltdb/bolt.
 * the yaml package at https://gopkg.in/yaml.v2
 
-## This is version 0.3.0
+## This is version 0.4.0
 
 ### Not yet stable and possibly buggy
 
-#### Update: Dec 1, 2018
+#### Update: Dec 1-5, 2018
 
 I'm still building rekickwasm and that means more big changes to kickwasm and the framework it generates.
+
+I'll have the example videos done soon.
 
 #### Update: Nov 23, 2018
 
@@ -70,3 +72,4 @@ Following that, my focus has been on rekickwasm. Rekickwasm is the refactoring t
 * The videos for both examples.
 * The rest of the wiki.
 * Start from scratch installing kickwasm source code and building the examples on linux and windows so that I can correctly define the procedures.
+

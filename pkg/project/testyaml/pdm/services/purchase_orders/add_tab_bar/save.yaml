@@ -1,0 +1,11 @@
+name: PurchaseOrderAddSavePanel
+
+note: |
+  Save the PO.
+  Hide the save button.
+  Show the PO in another window.
+
+markup: |
+  <p>
+    <button id="purchaseOrderAddSaveSave">Save</button>
+  </p>

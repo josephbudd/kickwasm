@@ -6,7 +6,7 @@ import (
 
 	"github.com/josephbudd/kickwasm/cases"
 	"github.com/josephbudd/kickwasm/pkg/paths"
-	"github.com/josephbudd/kickwasm/pkg/tap"
+	"github.com/josephbudd/kickwasm/pkg/project"
 )
 
 type templateData struct {
@@ -35,7 +35,7 @@ type templateData struct {
 }
 
 // Create creates main process folder files from templates.
-func Create(appPaths paths.ApplicationPathsI, builder *tap.Builder, headTemplateFile string) error {
+func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, headTemplateFile string) error {
 	folderpaths := appPaths.GetPaths()
 	parts := strings.Split(builder.ImportPath, "/")
 	appname := parts[len(parts)-1]

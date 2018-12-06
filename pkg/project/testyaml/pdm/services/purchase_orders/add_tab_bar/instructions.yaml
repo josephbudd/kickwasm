@@ -1,0 +1,9 @@
+name: PurchaseOrderAddInstructionsPanel
+
+note: Display the instructions.
+
+markup: |
+  <ol>
+    <li>Select a Price Drop.</li>
+    <li>Save and Print.</li>
+  </ol>

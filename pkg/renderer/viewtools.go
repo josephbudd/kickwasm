@@ -4,11 +4,11 @@ import (
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
-func createViewTools(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	if err := createViewToolsGo(appPaths, builder); err != nil {
 		return err
 	}
@@ -39,12 +39,12 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *tap.Builder) err
 	return nil
 }
 
-func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
 	data := &struct {
-		IDs                 *tap.IDs
-		Classes             *tap.Classes
-		Attributes          *tap.Attributes
+		IDs                 *project.IDs
+		Classes             *project.Classes
+		Attributes          *project.Attributes
 		ApplicationGitPath  string
 		ImportRendererNotJS string
 	}{

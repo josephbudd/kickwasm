@@ -1,7 +1,0 @@
-name: PriceDropAddSecondDropNotReadyPanel
-
-note: |
- Displayed if there are no items.
-
-markup: |
-  <p>You haven't selected any items yet.</p>

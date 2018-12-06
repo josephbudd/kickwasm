@@ -10,9 +10,9 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/flagdata"
 	"github.com/josephbudd/kickwasm/pkg/mainprocess"
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer"
 	"github.com/josephbudd/kickwasm/pkg/slurp"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
 // Do builds the source code and .kickwasm/ into the output folder.
@@ -51,7 +51,7 @@ func Do(pwd, outputFolder, yamlpath string, addLocations bool, host string, port
 	return
 }
 
-func create(appPaths paths.ApplicationPathsI, builder *tap.Builder, addLocations bool, headTemplateFile string) (err error) {
+func create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool, headTemplateFile string) (err error) {
 	// get the framework name from the import path.
 	if err = renderer.Create(appPaths, builder, addLocations, headTemplateFile); err != nil {
 		return

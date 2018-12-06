@@ -1,6 +1,6 @@
 package slurp
 
-import "github.com/josephbudd/kickwasm/pkg/tap"
+import "github.com/josephbudd/kickwasm/pkg/project"
 
 // GetPanelFilePaths return the path of every panel file.
 // Other than the starting yaml file these are the only other yaml files.
@@ -10,31 +10,31 @@ func (sl *Slurper) GetPanelFilePaths() []string {
 }
 
 // Gulp reads the application yaml file at path and processes it.
-// It constructs a slice of tab.Services and uses them to build the tap.Builder.
+// It constructs a slice of tab.Services and uses them to build the project.Builder.
 // It returns the builder and the error.
-func (sl *Slurper) Gulp(yamlPath string) (*tap.Builder, error) {
+func (sl *Slurper) Gulp(yamlPath string) (*project.Builder, error) {
 	appInfo, err := sl.slurpApplication(yamlPath)
 	if err != nil {
 		return nil, err
 	}
 	// have all the slurp info from the yaml files.
-	// convert this slurp info into tap data.
-	builder := tap.NewBuilder()
+	// convert this slurp info into project data.
+	builder := project.NewBuilder()
 	builder.Title = appInfo.Title
 	builder.ImportPath = appInfo.ImportPath
 	builder.Stores = appInfo.Stores
-	services := make([]*tap.Service, 0, len(appInfo.Services))
+	services := make([]*project.Service, 0, len(appInfo.Services))
 	for _, sinfo := range appInfo.Services {
-		service := &tap.Service{
+		service := &project.Service{
 			Name: sinfo.Name,
 		}
 		binfo := sinfo.Button
-		button := &tap.Button{
+		button := &project.Button{
 			ID:       binfo.ID,
 			Label:    binfo.Label,
 			Heading:  binfo.Heading,
 			Location: binfo.CC,
-			Panels:   make([]*tap.Panel, 0, 5),
+			Panels:   make([]*project.Panel, 0, 5),
 		}
 		service.Button = button
 		for _, pinfo := range binfo.Panels {
@@ -50,14 +50,14 @@ func (sl *Slurper) Gulp(yamlPath string) (*tap.Builder, error) {
 	return builder, nil
 }
 
-func constructButtonPanel(button *tap.Button, pinfo *PanelInfo) error {
-	panel := &tap.Panel{
+func constructButtonPanel(button *project.Button, pinfo *PanelInfo) error {
+	panel := &project.Panel{
 		ID:      pinfo.ID,
 		Name:    pinfo.Name,
 		Note:    pinfo.Note,
 		Markup:  pinfo.Markup,
-		Buttons: make([]*tap.Button, 0, 5),
-		Tabs:    make([]*tap.Tab, 0, 5),
+		Buttons: make([]*project.Button, 0, 5),
+		Tabs:    make([]*project.Tab, 0, 5),
 	}
 	for _, binfo := range pinfo.Buttons {
 		if err := constructButton(panel, binfo); err != nil {
@@ -73,14 +73,14 @@ func constructButtonPanel(button *tap.Button, pinfo *PanelInfo) error {
 	return nil
 }
 
-func constructTabPanel(tab *tap.Tab, pinfo *PanelInfo) error {
-	panel := &tap.Panel{
+func constructTabPanel(tab *project.Tab, pinfo *PanelInfo) error {
+	panel := &project.Panel{
 		ID:      pinfo.ID,
 		Name:    pinfo.Name,
 		Note:    pinfo.Note,
 		Markup:  pinfo.Markup,
-		Buttons: make([]*tap.Button, 0, 5),
-		Tabs:    make([]*tap.Tab, 0, 5),
+		Buttons: make([]*project.Button, 0, 5),
+		Tabs:    make([]*project.Tab, 0, 5),
 	}
 	for _, binfo := range pinfo.Buttons {
 		if err := constructButton(panel, binfo); err != nil {
@@ -96,13 +96,13 @@ func constructTabPanel(tab *tap.Tab, pinfo *PanelInfo) error {
 	return nil
 }
 
-func constructButton(panel *tap.Panel, binfo *ButtonInfo) error {
-	button := &tap.Button{
+func constructButton(panel *project.Panel, binfo *ButtonInfo) error {
+	button := &project.Button{
 		ID:       binfo.ID,
 		Label:    binfo.Label,
 		Heading:  binfo.Heading,
 		Location: binfo.CC,
-		Panels:   make([]*tap.Panel, 0, 5),
+		Panels:   make([]*project.Panel, 0, 5),
 	}
 	for _, pinfo := range binfo.Panels {
 		if err := constructButtonPanel(button, pinfo); err != nil {
@@ -113,11 +113,11 @@ func constructButton(panel *tap.Panel, binfo *ButtonInfo) error {
 	return nil
 }
 
-func constructTab(panel *tap.Panel, t *TabInfo) error {
-	tab := &tap.Tab{
+func constructTab(panel *project.Panel, t *TabInfo) error {
+	tab := &project.Tab{
 		ID:     t.ID,
 		Label:  t.Label,
-		Panels: make([]*tap.Panel, 0, 5),
+		Panels: make([]*project.Panel, 0, 5),
 	}
 	for _, p := range t.Panels {
 		if err := constructTabPanel(tab, p); err != nil {

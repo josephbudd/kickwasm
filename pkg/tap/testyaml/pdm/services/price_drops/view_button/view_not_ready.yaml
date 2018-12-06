@@ -1,7 +1,0 @@
-name: PriceDropViewNotReadyPanel
-
-note: |
-  To be displayed if there are no price drops.
-
-markup: |
-  <p>You haven't created any price drops yet.</p>

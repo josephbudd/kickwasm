@@ -129,12 +129,11 @@ func buildUserHomeDataPath() {
 		home = os.Getenv("HOME")
 	}
 	if testing {
-		userHomeDataPath = filepath.Join(home, "colors_kwga_tests")
+		userHomeDataPath = filepath.Join(home, "colors_kwfw_tests")
 	} else {
-		userHomeDataPath = filepath.Join(home, ".colors_kwga")
+		userHomeDataPath = filepath.Join(home, ".colors_kwfw")
 	}
 	if err := os.MkdirAll(userHomeDataPath, dmode); err != nil {
 		initerr = fmt.Errorf("os.MkdirAll(userHomeDataPath, dmode) error is %s", initerr.Error())
 	}
 }
-

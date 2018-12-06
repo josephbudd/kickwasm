@@ -170,23 +170,102 @@ func (contactdb *ContactBoltDB) updateContactBucket(r *types.ContactRecord) erro
 	})
 }
 
-// initialize is only useful if you want to add the default records to the db.
-// otherwise you don't need it to do anything.
+// initialize add 2 default records to the db.
 func (contactdb *ContactBoltDB) initialize() error {
-	/*
-		example code:
-
-		defaults := somepackage.GetContactDefaults()
-		for _, default := range defaults {
-			r := types.NewContactRecord()
-			r.Name = default.Name
-			r.Price = default.Price
-			r.SKU = default.SKU
-			err := contactdb.updateContactBucket(r)
-			if err != nil {
-				return err
-			}
+	fakes := []*types.ContactRecord{
+		&types.ContactRecord{
+			Name:     "Joseph Budd",
+			Address1: "123 Main St.",
+			Address2: "Apt. 1",
+			City:     "Small Town",
+			State:    "MI",
+			Zip:      "12345",
+			Phone:    "123-123-1234",
+			Email:    "joebudd@smalltown.com",
+			Social:   "http://fakebook.com/joebudd\nhttp://www.twitcher.com/joebudd",
+		},
+		&types.ContactRecord{
+			Name:     "Josette Flower",
+			Address1: "123 Main St.",
+			Address2: "Apt. 2",
+			City:     "Small Town",
+			State:    "MI",
+			Zip:      "12345",
+			Phone:    "123-123-2345",
+			Email:    "josetteflower@smalltown.com",
+			Social:   "http://fakebook.com/josetteflower\nhttp://www.twitcher.com/josetteflower",
+		},
+		&types.ContactRecord{
+			Name:     "Juan Carpenter",
+			Address1: "234 Main St.",
+			Address2: "Apt. 1",
+			City:     "Big Town",
+			State:    "MI",
+			Zip:      "23456",
+			Phone:    "234-123-1234",
+			Email:    "johncarpenter@smalltown.com",
+			Social:   "http://fakebook.com/johncarpenter\nhttp://www.twitcher.com/johncarpenter",
+		},
+		&types.ContactRecord{
+			Name:     "Juanita Gardner",
+			Address1: "234 Main St.",
+			Address2: "Apt. 2",
+			City:     "Big Town",
+			State:    "MI",
+			Zip:      "23456",
+			Phone:    "234-123-2345",
+			Email:    "juanitagardner@smalltown.com",
+			Social:   "http://fakebook.com/juanitagardner\nhttp://www.twitcher.com/juanitagardner",
+		},
+		&types.ContactRecord{
+			Name:     "James Driver",
+			Address1: "345 Main St.",
+			Address2: "Apt. 1",
+			City:     "Tiny Town",
+			State:    "MI",
+			Zip:      "34567",
+			Phone:    "345-123-1234",
+			Email:    "jamesdriver@smalltown.com",
+			Social:   "http://fakebook.com/jamesdriver\nhttp://www.twitcher.com/jamesdriver",
+		},
+		&types.ContactRecord{
+			Name:     "Jamie Navigator",
+			Address1: "345 Main St.",
+			Address2: "Apt. 2",
+			City:     "Tiny Town",
+			State:    "MI",
+			Zip:      "34567",
+			Phone:    "345-123-2345",
+			Email:    "jamienavigator@smalltown.com",
+			Social:   "http://fakebook.com/jamienavigator\nhttp://www.twitcher.com/jamienavigator",
+		},
+		&types.ContactRecord{
+			Name:     "Jack Drummer",
+			Address1: "456 Main St.",
+			Address2: "Apt. 1",
+			City:     "No Town",
+			State:    "MI",
+			Zip:      "45678",
+			Phone:    "456-123-1234",
+			Email:    "jackdrummer@smalltown.com",
+			Social:   "http://fakebook.com/jackdrummer\nhttp://www.twitcher.com/jackdrummer",
+		},
+		&types.ContactRecord{
+			Name:     "Jackie Singer",
+			Address1: "456 Main St.",
+			Address2: "Apt. 2",
+			City:     "No Town",
+			State:    "MI",
+			Zip:      "45678",
+			Phone:    "456-123-2345",
+			Email:    "jackiesinger@smalltown.com",
+			Social:   "http://fakebook.com/jackiesinger\nhttp://www.twitcher.com/jackiesinger",
+		},
+	}
+	for _, fake := range fakes {
+		if err := contactdb.updateContactBucket(fake); err != nil {
+			return err
 		}
-	*/
+	}
 	return nil
 }

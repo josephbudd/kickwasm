@@ -4,27 +4,27 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/josephbudd/kickwasm/pkg/tap"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	yaml "gopkg.in/yaml.v2"
 )
 
 func Test_constructButton(t *testing.T) {
 	type args struct {
-		panel *tap.Panel
+		panel *project.Panel
 		b     *ButtonInfo
 	}
 	tests := []struct {
 		name        string
 		args        args
 		wantErr     bool
-		wantButtons []*tap.Button
+		wantButtons []*project.Button
 	}{
 		// TODO: Add test cases.
 		{
 			name: "test",
 			args: args{
-				panel: &tap.Panel{
-					Buttons: make([]*tap.Button, 0, 5),
+				panel: &project.Panel{
+					Buttons: make([]*project.Button, 0, 5),
 				},
 				b: &ButtonInfo{
 					ID:      "id",
@@ -34,13 +34,13 @@ func Test_constructButton(t *testing.T) {
 				},
 			},
 			wantErr: false,
-			wantButtons: []*tap.Button{
-				&tap.Button{
+			wantButtons: []*project.Button{
+				&project.Button{
 					ID:               "id",
 					Label:            "Label",
 					Heading:          "Heading",
 					Location:         "CC",
-					Panels:           []*tap.Panel{},
+					Panels:           []*project.Panel{},
 					HTMLID:           "",
 					PanelHTMLID:      "",
 					PanelInnerHTMLID: "",
@@ -62,21 +62,21 @@ func Test_constructButton(t *testing.T) {
 
 func Test_constructTab(t *testing.T) {
 	type args struct {
-		panel *tap.Panel
+		panel *project.Panel
 		t     *TabInfo
 	}
 	tests := []struct {
 		name     string
 		args     args
 		wantErr  bool
-		wantTabs []*tap.Tab
+		wantTabs []*project.Tab
 	}{
 		// TODO: Add test cases.
 		{
 			name: "test",
 			args: args{
-				panel: &tap.Panel{
-					Buttons: make([]*tap.Button, 0, 5),
+				panel: &project.Panel{
+					Buttons: make([]*project.Button, 0, 5),
 				},
 				t: &TabInfo{
 					ID:    "id",
@@ -84,11 +84,11 @@ func Test_constructTab(t *testing.T) {
 				},
 			},
 			wantErr: false,
-			wantTabs: []*tap.Tab{
-				&tap.Tab{
+			wantTabs: []*project.Tab{
+				&project.Tab{
 					ID:     "id",
 					Label:  "Label",
-					Panels: []*tap.Panel{},
+					Panels: []*project.Panel{},
 				},
 			},
 		},
@@ -107,23 +107,23 @@ func Test_constructTab(t *testing.T) {
 
 func Test_constructTabPanel(t *testing.T) {
 	type args struct {
-		tab *tap.Tab
+		tab *project.Tab
 		pi  *PanelInfo
 	}
 	tests := []struct {
 		name       string
 		args       args
 		wantErr    bool
-		wantPanels []*tap.Panel
+		wantPanels []*project.Panel
 	}{
 		// TODO: Add test cases.
 		{
 			name: "simple",
 			args: args{
-				tab: &tap.Tab{
+				tab: &project.Tab{
 					ID:     "id",
 					Label:  "Label",
-					Panels: []*tap.Panel{},
+					Panels: []*project.Panel{},
 				},
 				pi: &PanelInfo{
 					ID:     "id",
@@ -133,14 +133,14 @@ func Test_constructTabPanel(t *testing.T) {
 				},
 			},
 			wantErr: false,
-			wantPanels: []*tap.Panel{
+			wantPanels: []*project.Panel{
 				{
 					ID:      "id",
 					Name:    "name",
 					Note:    "note",
 					Markup:  "markup",
-					Tabs:    make([]*tap.Tab, 0, 5),
-					Buttons: make([]*tap.Button, 0, 5),
+					Tabs:    make([]*project.Tab, 0, 5),
+					Buttons: make([]*project.Button, 0, 5),
 				},
 			},
 		},
@@ -159,23 +159,23 @@ func Test_constructTabPanel(t *testing.T) {
 
 func Test_constructButtonPanel(t *testing.T) {
 	type args struct {
-		button *tap.Button
+		button *project.Button
 		pi     *PanelInfo
 	}
 	tests := []struct {
 		name       string
 		args       args
 		wantErr    bool
-		wantPanels []*tap.Panel
+		wantPanels []*project.Panel
 	}{
 		// TODO: Add test cases.
 		{
 			name: "simple",
 			args: args{
-				button: &tap.Button{
+				button: &project.Button{
 					ID:     "id",
 					Label:  "label",
-					Panels: []*tap.Panel{},
+					Panels: []*project.Panel{},
 				},
 				pi: &PanelInfo{
 					ID:     "id",
@@ -185,14 +185,14 @@ func Test_constructButtonPanel(t *testing.T) {
 				},
 			},
 			wantErr: false,
-			wantPanels: []*tap.Panel{
+			wantPanels: []*project.Panel{
 				{
 					ID:      "id",
 					Name:    "name",
 					Note:    "note",
 					Markup:  "markup",
-					Tabs:    make([]*tap.Tab, 0, 5),
-					Buttons: make([]*tap.Button, 0, 5),
+					Tabs:    make([]*project.Tab, 0, 5),
+					Buttons: make([]*project.Button, 0, 5),
 				},
 			},
 		},
@@ -217,7 +217,7 @@ func TestDo(t *testing.T) {
 	tests := []struct {
 		name           string
 		args           args
-		want           *tap.Builder
+		want           *project.Builder
 		wantErr        bool
 		wantErrMessage string
 		wantAppInfo    *ApplicationInfo

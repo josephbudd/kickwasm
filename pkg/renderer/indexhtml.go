@@ -3,12 +3,12 @@ package renderer
 import (
 	"fmt"
 
-	"github.com/josephbudd/kickwasm/pkg/tap"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
 
-func buildIndexHTMLNode(builder *tap.Builder, addLocations bool, headTemplateFile string) *html.Node {
+func buildIndexHTMLNode(builder *project.Builder, addLocations bool, headTemplateFile string) *html.Node {
 	// document
 	doc := &html.Node{
 		Type: html.DocumentNode,
@@ -48,7 +48,7 @@ func buildIndexHTMLNode(builder *tap.Builder, addLocations bool, headTemplateFil
 	return doc
 }
 
-func buildHeadNode(builder *tap.Builder, headTemplateName string) *html.Node {
+func buildHeadNode(builder *project.Builder, headTemplateName string) *html.Node {
 	head := &html.Node{
 		Type:     html.ElementNode,
 		Data:     "head",
@@ -157,7 +157,7 @@ func buildHeadNode(builder *tap.Builder, headTemplateName string) *html.Node {
 	return head
 }
 
-func buildModalNode(builder *tap.Builder) *html.Node {
+func buildModalNode(builder *project.Builder) *html.Node {
 	// modal view
 	modal := &html.Node{
 		Type:     html.ElementNode,
@@ -220,7 +220,7 @@ func buildModalNode(builder *tap.Builder) *html.Node {
 	return modal
 }
 
-func buildCloserNode(builder *tap.Builder) *html.Node {
+func buildCloserNode(builder *project.Builder) *html.Node {
 	closer := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,

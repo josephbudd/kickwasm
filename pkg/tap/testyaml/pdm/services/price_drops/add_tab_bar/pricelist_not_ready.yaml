@@ -1,7 +1,0 @@
-name: PriceDropAddPriceListNotReadyPanel
-
-note: |
- Displayed if there are no imported price lists.
-
-markup: |
-  <p>You haven't imported any price lists yet.</p>

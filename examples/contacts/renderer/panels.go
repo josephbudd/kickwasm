@@ -6,12 +6,12 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/interfaces/panelHelper"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AddButton/AddContactPanel"
-	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/EditButton/RemoveContactConfirmPanel"
-	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/EditButton/RemoveContactNotReadyPanel"
-	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/EditButton/RemoveContactSelectPanel"
-	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/EditContactEditPanel"
-	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/EditContactNotReadyPanel"
-	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/EditContactSelectPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/EditButton/EditContactEditPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/EditButton/EditContactNotReadyPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/EditButton/EditContactSelectPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/RemoveContactConfirmPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/RemoveContactNotReadyPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/RemoveButton/RemoveContactSelectPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 

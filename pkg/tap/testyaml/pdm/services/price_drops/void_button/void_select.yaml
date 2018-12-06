@@ -1,7 +1,0 @@
-name: PriceDropVoidSelectPanel
-
-note: |
-  mapvlist Year, Live, Void, Records
-
-markup: |
-  <div id="priceDropVoidSelect"></div>

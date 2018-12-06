@@ -1,0 +1,26 @@
+name: PurchaseOrderVoidConfirmPanel
+
+note: |
+  selected | select ( year, date & shipto)
+  click on selected to show the po.
+  upon selection
+    * hide button NotSelected
+    * fill, show button Selected
+    * go back to vlist div 0
+    * open pd in new window.
+    * Select is always visible.
+
+markup: |
+  <p>
+    <button id="purchaseOrderVoidConfirmView">
+      Click here to view the Purchase Order.
+    </button>
+  </p>
+  <p>
+    <label for="purchaseOrderVoidConfirmVoid">Void</label>
+    <input type="checkbox" id="purchaseOrderVoidConfirmVoid">
+  </p>
+  <p>
+    <button id="purchaseOrderVoidConfirmAccept">Accept</button>
+    <button id="purchaseOrderVoidConfirmCancel">Cancel</button>
+  </p>

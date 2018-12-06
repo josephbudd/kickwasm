@@ -227,7 +227,7 @@ func (cfvlist *ContactFVList) Build(contacts []*types.ContactRecord, sortedIndex
 			tn := notJS.CreateTextNode(contact.Name)
 			notJS.AppendChild(h4, tn)
 			notJS.AppendChild(button, h4)
-			// address
+			// address 1 & 2
 			p := notJS.CreateElementP()
 			tn = notJS.CreateTextNode(contact.Address1)
 			notJS.AppendChild(p, tn)
@@ -236,13 +236,14 @@ func (cfvlist *ContactFVList) Build(contacts []*types.ContactRecord, sortedIndex
 				notJS.AppendChild(p, br)
 				tn = notJS.CreateTextNode(contact.Address2)
 				notJS.AppendChild(p, tn)
-				br = notJS.CreateElementBR()
-				notJS.AppendChild(p, br)
 			}
+			// city, state zip
+			br = notJS.CreateElementBR()
+			notJS.AppendChild(p, br)
 			tn = notJS.CreateTextNode(fmt.Sprintf("%s, %s %s", contact.City, contact.State, contact.Zip))
 			notJS.AppendChild(p, tn)
 			notJS.AppendChild(button, p)
-			// contact
+			// email, phone, social
 			p = notJS.CreateElementP()
 			br = notJS.CreateElementBR()
 			notJS.AppendChild(p, br)

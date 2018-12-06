@@ -6,12 +6,12 @@ import (
 
 	"github.com/josephbudd/kickwasm/cases"
 	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
-	"github.com/josephbudd/kickwasm/pkg/tap"
 )
 
 // createMainDoPanelsGo writes panels.go in package main.
-func createMainDoPanelsGo(appPaths paths.ApplicationPathsI, builder *tap.Builder) error {
+func createMainDoPanelsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
 	servicePanelNamePathMap := builder.GenerateServiceEmptyInsidePanelNamePathMap()
 	namePathMap := make(map[string]string)

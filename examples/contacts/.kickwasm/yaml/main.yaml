@@ -18,16 +18,16 @@ services :
       name : EditButton
       heading : Edit A Contact.
       panelFiles :
-        - services/remove/not_ready_panel.yaml
-        - services/remove/select_panel.yaml
-        - services/remove/confirm_panel.yaml
+        - services/edit/not_ready_panel.yaml
+        - services/edit/select_panel.yaml
+        - services/edit/edit_panel.yaml
   - name : RemoveAContact
     button :
       label : Remove
       name : RemoveButton
       heading : Remove A Contact.
       panelFiles :
-        - services/edit/not_ready_panel.yaml
-        - services/edit/select_panel.yaml
-        - services/edit/edit_panel.yaml
+        - services/remove/not_ready_panel.yaml
+        - services/remove/select_panel.yaml
+        - services/remove/confirm_panel.yaml
 

@@ -1,0 +1,60 @@
+name: CustomerAddPanel
+
+note: |
+  A form to enter customer shipping info.
+  Accept button
+  * checks the form
+  * sends it to the main process with customer state add
+  * clears the form.
+  Clear button clears the form.
+
+markup: |
+  <p>
+    <label for="customerAddFirstName">First Name</label>
+    <input type="text" id="customerAddFirstName">
+  </p>
+
+  <p>
+    <label for="customerAddLastName">Last Name</label>
+    <input type="text" id="customerAddLastName">
+  </p>
+
+  <p>
+    <label for="customerAddAddress1">Address 1</label>
+    <input type="text" id="customerAddAddress1">
+  </p>
+
+  <p>
+    <label for="customerAddAddress2">Address 2</label>
+    <input type="text" id="customerAddAddress2">
+  </p>
+
+  <p>
+    <label for="customerAddCity">City</label>
+    <input type="text" id="customerAddCity">
+  </p>
+
+  <p>
+    <label for="customerAddState">State</label>
+    <input type="text" id="customerAddState">
+  </p>
+
+  <p>
+    <label for="customerAddZip">Zip</label>
+    <input type="text" id="customerAddZip">
+  </p>
+
+  <p>
+    <label for="customerAddPhone">Phone</label>
+    <input type="text" id="customerAddPhone">
+  </p>
+
+  <p>
+    <label for="customerAddEmail">Email</label>
+    <input type="text" id="customerAddEmail">
+  </p>
+
+  <p>
+    <button id="customerAddAccept">Accept</button>
+    <button id="customerAddCancel">Cancel</button>
+  </p>

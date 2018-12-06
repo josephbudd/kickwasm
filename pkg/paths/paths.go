@@ -128,9 +128,10 @@ func (ap *ApplicationPaths) GetPaths() *Paths {
 
 // Paths are the folder paths
 type Paths struct {
-	Output                string
-	OutputDotKickwasm     string
-	OutputDotKickwasmYAML string
+	Output                 string
+	OutputDotKickwasm      string
+	OutputDotKickwasmYAML  string
+	OutputDotKickwasmFlags string
 
 	// output domain
 
@@ -213,6 +214,7 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	// output .kickwasm folder and sub folders
 	ap.paths.OutputDotKickwasm = filepath.Join(ap.paths.Output, ".kickwasm")
 	ap.paths.OutputDotKickwasmYAML = filepath.Join(ap.paths.OutputDotKickwasm, "yaml")
+	ap.paths.OutputDotKickwasmFlags = filepath.Join(ap.paths.OutputDotKickwasm, "flags.yaml")
 	// output domain folder and sub folders.
 	ap.paths.OutputDomain = filepath.Join(ap.paths.Output, "domain")
 	ap.paths.OutputDomainInterfaces = filepath.Join(ap.paths.OutputDomain, "interfaces")
