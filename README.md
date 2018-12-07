@@ -64,17 +64,11 @@ Building the contacts CRUD example resulted in major changes and corrections to
 
 Following that, my focus has been on rekickwasm. Rekickwasm is the refactoring tool for kickwasm. Building rekickwasm resulted in other major changes to kickwasm and the framework it generates.
 
-### Kickwasm imports
-
-* [The yaml package.](https://gopkg.in/yaml.v2)
-
 ## Installation
 
 ``` bash
 
   go get -u github.com/josephbudd/kickwasm
-  go get -u gopkg.in/yaml.v2
-
   cd $GOPATH/src/github.com/josephbudd/kickwasm/
   go install
 
