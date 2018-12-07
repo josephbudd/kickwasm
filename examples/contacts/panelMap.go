@@ -25,7 +25,7 @@ const (
 )
 
 // serviceEmptyInsidePanelNamePathMap maps each markup panel template name to it's file path.
-var serviceEmptyInsidePanelNamePathMap = map[string]map[string][]string{"RemoveAContact": map[string][]string{"RemoveContactNotReadyPanel": []string{"RemoveButton"}, "RemoveContactSelectPanel": []string{"RemoveButton"}, "RemoveContactConfirmPanel": []string{"RemoveButton"}}, "AddAContact": map[string][]string{"AddContactPanel": []string{"AddButton"}}, "EditAContact": map[string][]string{"EditContactNotReadyPanel": []string{"EditButton"}, "EditContactSelectPanel": []string{"EditButton"}, "EditContactEditPanel": []string{"EditButton"}}}
+var serviceEmptyInsidePanelNamePathMap = map[string]map[string][]string{"AddAContact": map[string][]string{"AddContactPanel": []string{"AddButton"}}, "EditAContact": map[string][]string{"EditContactSelectPanel": []string{"EditButton"}, "EditContactEditPanel": []string{"EditButton"}, "EditContactNotReadyPanel": []string{"EditButton"}}, "RemoveAContact": map[string][]string{"RemoveContactNotReadyPanel": []string{"RemoveButton"}, "RemoveContactSelectPanel": []string{"RemoveButton"}, "RemoveContactConfirmPanel": []string{"RemoveButton"}}, "About": map[string][]string{"CreditTabPanel": []string{"AboutButton", "AboutTabBarPanel", "CreditTab"}, "RecordsTabPanel": []string{"AboutButton", "AboutTabBarPanel", "RecordsTab"}}}
 
 // serveMainHTML only serves up main.tmpl with all of the templates for your markup panels.
 func serveMainHTML(w http.ResponseWriter) {

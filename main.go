@@ -14,14 +14,14 @@ import (
 
 const (
 	outputFolder = "output"
-	yamlExt      = ".yaml"
-	ymlExt       = ".yml"
+	yamlFileName = "kickwasm.yaml"
+	ymlFileName  = "kickwasm.yml"
 )
 
 var (
 	version = []string{
 		`kickwasm:`,
-		`  Version: 0.4.0`,
+		`  Version: 0.5.0`,
 		`  Unstable and probably buggy. 8^(`,
 	}
 	nlSrcBB = []byte("\n")
@@ -48,8 +48,8 @@ var VersionFlag bool
 var LocationsFlag bool
 
 func init() {
-	flag.StringVar(&YAMLFileFlag, "gf", "", "The name of your main YAML file. Kickwasm will generate the framework source code using that file.")
-	flag.BoolVar(&LocationsFlag, "cc", false, "Add cookie crumbs. Use with -gf.")
+	flag.StringVar(&YAMLFileFlag, "f", "", "The path to the kickwasm.yaml or kickwasm.yml file.")
+	flag.BoolVar(&LocationsFlag, "cc", false, "Add cookie crumbs. Use with -f.")
 	flag.BoolVar(&VersionFlag, "v", false, "Version information.")
 }
 
@@ -65,8 +65,8 @@ func main() {
 		flag.PrintDefaults()
 		return
 	}
-	if ext := filepath.Ext(YAMLFileFlag); ext != yamlExt && ext != ymlExt {
-		log.Printf("Kickwasm needs a YAML file to build the framework so the file extension must be %q or %q, not %q", yamlExt, ymlExt, ext)
+	if filename := filepath.Base(YAMLFileFlag); filename != yamlFileName && filename != ymlFileName {
+		log.Printf("Kickwasm needs a YAML file named %s or %s to build the framework not a file named %q", yamlFileName, ymlFileName, filename)
 		return
 	}
 	// initialize paths

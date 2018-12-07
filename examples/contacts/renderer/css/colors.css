@@ -274,6 +274,53 @@ button.pad-button-color-level-RemoveAContact:hover
 
 
 
+/* color level About */
+
+#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-About
+{
+  color: hsl(200, 23%, 27%);
+}
+
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-About
+{
+  background-color: hsl(200, 23%, 27%);
+  color:white;
+  padding:5px;
+}
+
+button.back-color-level-About
+{
+  background-color:hsl(200, 23%, 27%);
+  color:hsl(190, 37%, 57%);
+  border-color:white;
+}
+button.back-color-level-About:hover
+{
+  color:white;
+  border-color:hsl(190, 37%, 57%);
+}
+
+div.pad-color-level-About
+{
+  background-color: hsl(200, 23%, 27%);
+}
+
+button.pad-button-color-level-About
+{
+  background-color: hsl(190, 37%, 57%);
+  color:black;
+  border-color:black;
+}
+
+button.pad-button-color-level-About:hover
+{
+  background-color: hsl(190, 37%, 37%);
+  color:white;
+  border-color:white;
+}
+
+
+
 /******************************************************************************
 
   user content

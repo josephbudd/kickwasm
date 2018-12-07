@@ -178,6 +178,36 @@ func (tools *Tools) initializeGroups() {
 	// build the buttonPanelsMap
 	var buttonid string
 	var panel js.Value
+	// About AboutButton button.
+	buttonid = "tabsMasterView-home-pad-AboutButton"
+	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
+	panel = tools.notJS.GetElementByID("tabsMasterView-home-pad-AboutButton-AboutTabBarPanel")
+	if panel == js.Undefined() {
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView-home-pad-AboutButton-AboutTabBarPanel"
+		tools.alert.Invoke(message)
+		return
+	}
+	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
+	// About CreditTab button.
+	buttonid = "tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-CreditTab"
+	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
+	panel = tools.notJS.GetElementByID("tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-CreditTabPanel-inner-CreditTabPanel")
+	if panel == js.Undefined() {
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-CreditTabPanel-inner-CreditTabPanel"
+		tools.alert.Invoke(message)
+		return
+	}
+	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
+	// About RecordsTab button.
+	buttonid = "tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-RecordsTab"
+	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
+	panel = tools.notJS.GetElementByID("tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-RecordsTabPanel-inner-RecordsTabPanel")
+	if panel == js.Undefined() {
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-RecordsTabPanel-inner-RecordsTabPanel"
+		tools.alert.Invoke(message)
+		return
+	}
+	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
 	// AddAContact AddButton button.
 	buttonid = "tabsMasterView-home-pad-AddButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)

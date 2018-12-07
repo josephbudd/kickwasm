@@ -308,12 +308,12 @@ div.under-tab-bar .heading-of-panel
 
 #tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-AddAContact,
 #tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-EditAContact,
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-RemoveAContact
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-RemoveAContact,
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-About
 {
-  /* margin-top:0;
-  margin-bottom:5px; */
   font-size:24px;
   display:inline;
+  margin-right: 4px;
 }
 
 /******************************************************************************

@@ -68,7 +68,7 @@ func initialize() {
 		initerr = fmt.Errorf("os.Getwd() error is %s", initerr.Error())
 		return
 	}
-	appSettingsPath = filepath.Join(pwd, "httpSettings.yaml")
+	appSettingsPath = filepath.Join(pwd, "http.yaml")
 	applicationRendererPath = filepath.Join(pwd, "renderer")
 	faviconPath = filepath.Join(applicationRendererPath, "favicon.ico")
 	templatePath = filepath.Join(applicationRendererPath, "templates")

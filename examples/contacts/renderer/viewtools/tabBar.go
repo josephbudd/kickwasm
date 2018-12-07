@@ -22,6 +22,7 @@ func (tools *Tools) initializeTabBar() {
 	tools.tabberLastPanelID = ""
 	tools.tabberLastPanelLevels = make(map[string]string)
 
+	tools.tabberLastPanelLevels["tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar"] = "tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-CreditTabPanel"
 	cb := tools.notJS.RegisterCallBack(
 		func(args []js.Value) {
 			target := notJS.GetEventTarget(args[0])

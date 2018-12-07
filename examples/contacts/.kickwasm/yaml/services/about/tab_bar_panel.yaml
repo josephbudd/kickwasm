@@ -1,0 +1,16 @@
+name : AboutTabBarPanel
+tabs :
+  - name : CreditTab
+    label : Credits
+    panels :
+      - name : CreditTabPanel
+        note : static text that display the credits.
+        markup : |
+          <p>Joe Budd</p>
+  - name : RecordsTab
+    label : Contact Records
+    panels :
+      - name : RecordsTabPanel
+        note : display text about the number of records in a paragraph
+        markup : |
+          <p id="recordsCountP"></p>

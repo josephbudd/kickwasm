@@ -9,7 +9,7 @@ import (
 
 func createSettingsYAML(appPaths paths.ApplicationPathsI) error {
 	folderpaths := appPaths.GetPaths()
-	fname := "httpSettings.yaml"
+	fname := "http.yaml"
 	oPath := filepath.Join(folderpaths.Output, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.HTTPSettingsYAML, nil, appPaths)
 }
