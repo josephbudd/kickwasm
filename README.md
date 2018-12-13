@@ -40,7 +40,7 @@ TDD ( test driven design ) is very simple to do in go because TDD involves the i
 
 ### Not yet stable and possibly buggy
 
-#### Dec ?, 2018
+#### Dec 12, 2018
 
 Reviewed tests and fixed minor issues found while refactoring the heck out of the contacts example with rekickwasm. Rekickwasm is still not done.
 
