@@ -31,7 +31,6 @@ type Presenter struct {
 // defineMembers defines the Presenter members by their html elements.
 func (panelPresenter *Presenter) defineMembers() (err error) {
 	defer func() {
-		// close and check for the error
 		if err != nil {
 			err = errors.WithMessage(err, "(panelPresenter *Presenter) defineMembers()")
 		}

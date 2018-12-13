@@ -50,7 +50,6 @@ type Controler struct {
 // defineControlsSetHandlers defines controler members and sets their handlers.
 func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 	defer func() {
-		// close and check for the error
 		if err != nil {
 			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
 		}

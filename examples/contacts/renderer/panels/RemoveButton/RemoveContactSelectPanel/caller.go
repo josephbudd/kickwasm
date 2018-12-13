@@ -45,7 +45,6 @@ type Caller struct {
 // addMainProcessCallBacks tells the main process what funcs to call back to.
 func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 	defer func() {
-		// close and check for the error
 		if err != nil {
 			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")
 		}
