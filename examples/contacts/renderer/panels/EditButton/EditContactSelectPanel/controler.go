@@ -1,26 +1,28 @@
 package EditContactSelectPanel
 
 import (
+	"syscall/js"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/widgets"
+	"github.com/pkg/errors"
 )
 
 /*
 
 	Panel name: EditContactSelectPanel
-	Panel id:   tabsMasterView-home-pad-EditButton-EditContactSelectPanel
 
 */
 
 // Controler is a HelloPanel Controler.
 type Controler struct {
-	panel     *Panel
-	presenter *Presenter
-	caller    *Caller
-	quitCh    chan struct{}    // send an empty struct to start the quit process.
-	tools     *viewtools.Tools // see /renderer/viewtools
-	notJS     *notjs.NotJS
+	panelGroup *PanelGroup
+	presenter  *Presenter
+	caller     *Caller
+	quitCh     chan struct{}    // send an empty struct to start the quit process.
+	tools      *viewtools.Tools // see /renderer/viewtools
+	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -32,7 +34,13 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
-func (panelControler *Controler) defineControlsSetHandlers() {
+func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
@@ -41,31 +49,39 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 
 	*/
 
-	notjs := panelControler.notJS
+	notJS := panelControler.notJS
+	tools := panelControler.tools
+	var div js.Value
+	if div = notJS.GetElementByID("contactEditSelect"); div == js.Null() {
+		err = errors.New(`unable to find #contactEditSelect`)
+		return
+	}
 	panelControler.contactEditSelect = widgets.NewContactFVList(
 		// div
-		notjs.GetElementByID("contactEditSelect"),
+		div,
 		// onSizeFunc
 		// Called when there are records in the db.
 		func() {
-			panelControler.panel.showEditContactSelectPanel(false)
+			panelControler.panelGroup.showEditContactSelectPanel(false)
 		},
 		// onNoSizeFunc
 		// Called when there are no records in the db.
 		func() {
-			panelControler.panel.showEditContactNotReadyPanel(false)
+			panelControler.panelGroup.showEditContactNotReadyPanel(false)
 		},
 		// hideFunc
-		panelControler.tools.ElementHide,
+		tools.ElementHide,
 		// showFunc
-		panelControler.tools.ElementShow,
+		tools.ElementShow,
 		// isShownFunc
-		panelControler.tools.ElementIsShown,
+		tools.ElementIsShown,
 		// notjs
-		panelControler.notJS,
+		notJS,
 		// ContactGetter
 		panelControler.caller,
 	)
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
@@ -85,5 +101,4 @@ func (panelControler *Controler) initialCalls() {
 	*/
 
 	panelControler.contactEditSelect.Start()
-
 }

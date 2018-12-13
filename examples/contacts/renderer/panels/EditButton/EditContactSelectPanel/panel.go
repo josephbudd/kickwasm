@@ -1,13 +1,12 @@
 package EditContactSelectPanel
 
 import (
-	"syscall/js"
-
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/interfaces/panelHelper"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
+	"github.com/pkg/errors"
 )
 
 /*
@@ -23,40 +22,37 @@ type Panel struct {
 	controler *Controler
 	presenter *Presenter
 	caller    *Caller
-	tools     *viewtools.Tools // see /renderer/viewtools
-
-	editContactNotReadyPanel js.Value
-
-	editContactSelectPanel js.Value
-
-	editContactEditPanel js.Value
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) *Panel {
-	panel := &Panel{
-		tools: tools,
-	}
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) (panel *Panel, err error) {
+	defer func() {
+		// check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "EditContactSelectPanel")
+		}
+	}()
 
-	panel.editContactNotReadyPanel = notJS.GetElementByID("tabsMasterView-home-pad-EditButton-EditContactNotReadyPanel")
-
-	panel.editContactSelectPanel = notJS.GetElementByID("tabsMasterView-home-pad-EditButton-EditContactSelectPanel")
-
-	panel.editContactEditPanel = notJS.GetElementByID("tabsMasterView-home-pad-EditButton-EditContactEditPanel")
-	// initialize controler, presenter, caller.
-	controler := &Controler{
-		panel:  panel,
-		quitCh: quitCh,
-		tools:  tools,
-		notJS:  notJS,
-	}
-	presenter := &Presenter{
-		panel: panel,
+	panelGroup := &PanelGroup{
 		tools: tools,
 		notJS: notJS,
 	}
+	panel = &Panel{}
+
+	// initialize controler, presenter, caller.
+	controler := &Controler{
+		panelGroup: panelGroup,
+		quitCh:     quitCh,
+		tools:      tools,
+		notJS:      notJS,
+	}
+	presenter := &Presenter{
+		panelGroup: panelGroup,
+		tools:      tools,
+		notJS:      notJS,
+	}
 	caller := &Caller{
-		panel:      panel,
+		panelGroup: panelGroup,
 		quitCh:     quitCh,
 		connection: connection,
 		tools:      tools,
@@ -74,61 +70,12 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 	caller.controler = controler
 	caller.presenter = presenter
 	// completions
+	panelGroup.defineMembers()
 	controler.defineControlsSetHandlers()
 	presenter.defineMembers()
 	caller.addMainProcessCallBacks()
-	return panel
-}
 
-/*
-	Show panel funcs.
-
-	Call these from the controler, presenter and caller.
-*/
-
-// showEditContactNotReadyPanel shows the panel you named EditContactNotReadyPanel while hiding any other panels in it's group.
-// This panel's id is tabsMasterView-home-pad-EditButton-EditContactNotReadyPanel.
-// This panel either becomes visible immediately or whenever it's panel group is made visible for whatever reason.  Whenever could be immediately if this panel group is currently visible.
-// Param force boolean effects when this panel becomes visible.
-//  * if force is true then
-//    immediately if the home button pad is not currently displayed;
-//    whenever if the home button pad is currently displayed.
-//  * if force is false then whenever.
-/* Your note for this panel is:
-tell the user that he/she has not added any contacts yet.
-*/
-func (panel *Panel) showEditContactNotReadyPanel(force bool) {
-	panel.tools.ShowPanelInButtonGroup(panel.editContactNotReadyPanel, force)
-}
-
-// showEditContactSelectPanel shows the panel you named EditContactSelectPanel while hiding any other panels in it's group.
-// This panel's id is tabsMasterView-home-pad-EditButton-EditContactSelectPanel.
-// This panel either becomes visible immediately or whenever it's panel group is made visible for whatever reason.  Whenever could be immediately if this panel group is currently visible.
-// Param force boolean effects when this panel becomes visible.
-//  * if force is true then
-//    immediately if the home button pad is not currently displayed;
-//    whenever if the home button pad is currently displayed.
-//  * if force is false then whenever.
-/* Your note for this panel is:
-A mapvlist allowing the user to select a contact to edit.
-*/
-func (panel *Panel) showEditContactSelectPanel(force bool) {
-	panel.tools.ShowPanelInButtonGroup(panel.editContactSelectPanel, force)
-}
-
-// showEditContactEditPanel shows the panel you named EditContactEditPanel while hiding any other panels in it's group.
-// This panel's id is tabsMasterView-home-pad-EditButton-EditContactEditPanel.
-// This panel either becomes visible immediately or whenever it's panel group is made visible for whatever reason.  Whenever could be immediately if this panel group is currently visible.
-// Param force boolean effects when this panel becomes visible.
-//  * if force is true then
-//    immediately if the home button pad is not currently displayed;
-//    whenever if the home button pad is currently displayed.
-//  * if force is false then whenever.
-/* Your note for this panel is:
-edit the form
-*/
-func (panel *Panel) showEditContactEditPanel(force bool) {
-	panel.tools.ShowPanelInButtonGroup(panel.editContactEditPanel, force)
+	return
 }
 
 // InitialCalls runs the first code that the panel needs to run.

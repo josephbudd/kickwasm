@@ -6,6 +6,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
+	"github.com/pkg/errors"
 )
 
 /*
@@ -16,7 +17,7 @@ import (
 
 // Caller communicates with the main process via an asynchrounous connection.
 type Caller struct {
-	panel      *Panel
+	panelGroup *PanelGroup
 	presenter  *Presenter
 	controler  *Controler
 	quitCh     chan struct{} // send an empty struct to start the quit process.
@@ -37,7 +38,13 @@ type Caller struct {
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
-func (panelCaller *Caller) addMainProcessCallBacks() {
+func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
@@ -46,9 +53,15 @@ func (panelCaller *Caller) addMainProcessCallBacks() {
 
 	*/
 
-	panelCaller.getContactsPageStatesCaller = panelCaller.connection[callids.GetContactsPageStatesCallID]
+	var found bool
+
+	if panelCaller.getContactsPageStatesCaller, found = panelCaller.connection[callids.GetContactsPageStatesCallID]; !found {
+		err = errors.New("unable to find panelCaller.connection[callids.GetContactsPageStatesCallID]")
+		return
+	}
 	panelCaller.getContactsPageStatesCaller.AddCallBack(panelCaller.GetContactsPageStatesCB)
 
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
@@ -81,15 +94,6 @@ func (panelCaller *Caller) initialCalls() {
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
 	//4: Make any initial calls to the main process that must be made when the app starts.
-
-	// example:
-
-	params := types.RendererToMainProcessLogParams{
-		Level:   loglevels.LogLevelInfo,
-		Message: "Started",
-	}
-	logCall := panelCaller.connection[callids.LogCallID]
-	logCall.CallMainProcess(params)
 
 	*/
 

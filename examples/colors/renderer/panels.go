@@ -41,33 +41,108 @@ import (
 
 */
 
-func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) {
+func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) (err error) {
 	// 1. Construct the panel code.
-	service1Level1MarkupPanel := Service1Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service1Level2MarkupPanel := Service1Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service1Level3MarkupPanel := Service1Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service1Level4MarkupPanel := Service1Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service1Level5MarkupPanel := Service1Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service2Level1MarkupPanel := Service2Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service2Level2MarkupPanel := Service2Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service2Level3MarkupPanel := Service2Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service2Level4MarkupPanel := Service2Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service2Level5MarkupPanel := Service2Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service3Level1MarkupPanel := Service3Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service3Level2MarkupPanel := Service3Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service3Level3MarkupPanel := Service3Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service3Level4MarkupPanel := Service3Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service3Level5MarkupPanel := Service3Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service4Level1MarkupPanel := Service4Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service4Level2MarkupPanel := Service4Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service4Level3MarkupPanel := Service4Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service4Level4MarkupPanel := Service4Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service4Level5MarkupPanel := Service4Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service5Level1MarkupPanel := Service5Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service5Level2MarkupPanel := Service5Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service5Level3MarkupPanel := Service5Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service5Level4MarkupPanel := Service5Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	service5Level5MarkupPanel := Service5Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	var service1Level1MarkupPanel *Service1Level1MarkupPanel.Panel
+	if service1Level1MarkupPanel, err = Service1Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service1Level2MarkupPanel *Service1Level2MarkupPanel.Panel
+	if service1Level2MarkupPanel, err = Service1Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service1Level3MarkupPanel *Service1Level3MarkupPanel.Panel
+	if service1Level3MarkupPanel, err = Service1Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service1Level4MarkupPanel *Service1Level4MarkupPanel.Panel
+	if service1Level4MarkupPanel, err = Service1Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service1Level5MarkupPanel *Service1Level5MarkupPanel.Panel
+	if service1Level5MarkupPanel, err = Service1Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service2Level1MarkupPanel *Service2Level1MarkupPanel.Panel
+	if service2Level1MarkupPanel, err = Service2Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service2Level2MarkupPanel *Service2Level2MarkupPanel.Panel
+	if service2Level2MarkupPanel, err = Service2Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service2Level3MarkupPanel *Service2Level3MarkupPanel.Panel
+	if service2Level3MarkupPanel, err = Service2Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service2Level4MarkupPanel *Service2Level4MarkupPanel.Panel
+	if service2Level4MarkupPanel, err = Service2Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service2Level5MarkupPanel *Service2Level5MarkupPanel.Panel
+	if service2Level5MarkupPanel, err = Service2Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service3Level1MarkupPanel *Service3Level1MarkupPanel.Panel
+	if service3Level1MarkupPanel, err = Service3Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service3Level2MarkupPanel *Service3Level2MarkupPanel.Panel
+	if service3Level2MarkupPanel, err = Service3Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service3Level3MarkupPanel *Service3Level3MarkupPanel.Panel
+	if service3Level3MarkupPanel, err = Service3Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service3Level4MarkupPanel *Service3Level4MarkupPanel.Panel
+	if service3Level4MarkupPanel, err = Service3Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service3Level5MarkupPanel *Service3Level5MarkupPanel.Panel
+	if service3Level5MarkupPanel, err = Service3Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service4Level1MarkupPanel *Service4Level1MarkupPanel.Panel
+	if service4Level1MarkupPanel, err = Service4Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service4Level2MarkupPanel *Service4Level2MarkupPanel.Panel
+	if service4Level2MarkupPanel, err = Service4Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service4Level3MarkupPanel *Service4Level3MarkupPanel.Panel
+	if service4Level3MarkupPanel, err = Service4Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service4Level4MarkupPanel *Service4Level4MarkupPanel.Panel
+	if service4Level4MarkupPanel, err = Service4Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service4Level5MarkupPanel *Service4Level5MarkupPanel.Panel
+	if service4Level5MarkupPanel, err = Service4Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service5Level1MarkupPanel *Service5Level1MarkupPanel.Panel
+	if service5Level1MarkupPanel, err = Service5Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service5Level2MarkupPanel *Service5Level2MarkupPanel.Panel
+	if service5Level2MarkupPanel, err = Service5Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service5Level3MarkupPanel *Service5Level3MarkupPanel.Panel
+	if service5Level3MarkupPanel, err = Service5Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service5Level4MarkupPanel *Service5Level4MarkupPanel.Panel
+	if service5Level4MarkupPanel, err = Service5Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var service5Level5MarkupPanel *Service5Level5MarkupPanel.Panel
+	if service5Level5MarkupPanel, err = Service5Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
 
 	// 2. Size the app.
 	tools.SizeApp()
@@ -98,4 +173,6 @@ func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.Ca
 	service5Level3MarkupPanel.InitialCalls()
 	service5Level4MarkupPanel.InitialCalls()
 	service5Level5MarkupPanel.InitialCalls()
+
+	return
 }

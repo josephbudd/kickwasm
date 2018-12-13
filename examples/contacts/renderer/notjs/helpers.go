@@ -1,12 +1,11 @@
 package notjs
 
 // ConsoleLog logs to the console.
-func (notjs *NotJS) ConsoleLog(message string) {
-	notjs.console.Call("log", message)
+func (notJS *NotJS) ConsoleLog(message string) {
+	notJS.console.Call("log", message)
 }
 
 // Alert invokes the browser's alert.
-func (notjs *NotJS) Alert(message string) {
-	notjs.alert.Invoke(message)
+func (notJS *NotJS) Alert(message string) {
+	notJS.alert.Invoke(message)
 }
-

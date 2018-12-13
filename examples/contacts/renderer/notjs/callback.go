@@ -5,9 +5,9 @@ import (
 )
 
 // RegisterCallBack converts a go func to a js.Callback and registers it.
-func (notjs *NotJS) RegisterCallBack(f func([]js.Value)) js.Callback {
+func (notJS *NotJS) RegisterCallBack(f func([]js.Value)) js.Callback {
 	cb := js.NewCallback(f)
-	notjs.jsCallBacks = append(notjs.jsCallBacks, cb)
+	notJS.jsCallBacks = append(notJS.jsCallBacks, cb)
 	return cb
 }
 
@@ -16,7 +16,7 @@ func (notjs *NotJS) RegisterCallBack(f func([]js.Value)) js.Callback {
 // Param stopPropagation indicates to call event.stopPropagation synchronously.
 // Param stopImmediatePropagation indicates to call event.stopImmediatePropagation synchronously.
 // Param fn is a function that takes exactly one argument, the event.
-func (notjs *NotJS) RegisterEventCallBack(preventDefault, stopPropogation, stopImmediatePropogation bool, fn func(event js.Value)) js.Callback {
+func (notJS *NotJS) RegisterEventCallBack(preventDefault, stopPropogation, stopImmediatePropogation bool, fn func(event js.Value)) js.Callback {
 	flags := js.EventCallbackFlag(0)
 	if preventDefault {
 		flags |= js.PreventDefault
@@ -28,17 +28,16 @@ func (notjs *NotJS) RegisterEventCallBack(preventDefault, stopPropogation, stopI
 		flags |= js.StopImmediatePropagation
 	}
 	cb := js.NewEventCallback(flags, fn)
-	notjs.jsCallBacks = append(notjs.jsCallBacks, cb)
+	notJS.jsCallBacks = append(notJS.jsCallBacks, cb)
 	return cb
 }
 
 // CloseCallBacks closes every registered call back.
-func (notjs *NotJS) CloseCallBacks() int {
+func (notJS *NotJS) CloseCallBacks() int {
 	var i int
 	var cb js.Callback
-	for i, cb = range notjs.jsCallBacks {
+	for i, cb = range notJS.jsCallBacks {
 		cb.Release()
 	}
 	return i + 1
 }
-

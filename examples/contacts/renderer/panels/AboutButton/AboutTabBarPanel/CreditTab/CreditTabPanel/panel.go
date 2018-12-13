@@ -1,13 +1,12 @@
 package CreditTabPanel
 
 import (
-	"syscall/js"
-
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/interfaces/panelHelper"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
+	"github.com/pkg/errors"
 )
 
 /*
@@ -23,32 +22,37 @@ type Panel struct {
 	controler *Controler
 	presenter *Presenter
 	caller    *Caller
-	tools     *viewtools.Tools // see /renderer/viewtools
-
-	creditTabPanel js.Value
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) *Panel {
-	panel := &Panel{
-		tools: tools,
-	}
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) (panel *Panel, err error) {
+	defer func() {
+		// check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "CreditTabPanel")
+		}
+	}()
 
-	panel.creditTabPanel = notJS.GetElementByID("tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-CreditTabPanel-inner-CreditTabPanel")
+	panelGroup := &PanelGroup{
+		tools: tools,
+		notJS: notJS,
+	}
+	panel = &Panel{}
+
 	// initialize controler, presenter, caller.
 	controler := &Controler{
-		panel:  panel,
-		quitCh: quitCh,
-		tools:  tools,
-		notJS:  notJS,
+		panelGroup: panelGroup,
+		quitCh:     quitCh,
+		tools:      tools,
+		notJS:      notJS,
 	}
 	presenter := &Presenter{
-		panel:   panel,
-		tools:   tools,
-		notJS:   notJS,
+		panelGroup: panelGroup,
+		tools:      tools,
+		notJS:      notJS,
 	}
 	caller := &Caller{
-		panel:      panel,
+		panelGroup: panelGroup,
 		quitCh:     quitCh,
 		connection: connection,
 		tools:      tools,
@@ -65,27 +69,20 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 	caller.controler = controler
 	caller.presenter = presenter
 	// completions
-	controler.defineControlsSetHandlers()
-	presenter.defineMembers()
-	caller.addMainProcessCallBacks()
-	return panel
+	if err = panelGroup.defineMembers(); err != nil {
+		return
+	}
+	if err = controler.defineControlsSetHandlers(); err != nil {
+		return
+	}
+	if err = presenter.defineMembers(); err != nil {
+		return
+	}
+	if err = caller.addMainProcessCallBacks(); err != nil {
+		return
+	}
+	return
 }
-
-/*
-	Show panel funcs.
-
-	Call these from the controler, presenter and caller.
-*/
-
-// showCreditTabPanel shows the panel you named CreditTabPanel while hiding any other panels in it's group.
-// This panel will become visible only when this group of panels becomes visible.
-/* Your note for this panel is:
-static text that display the credits.
-*/
-func (panel *Panel) showCreditTabPanel() {
-	panel.tools.ShowPanelInTabGroup(panel.creditTabPanel)
-}
-
 
 // InitialCalls runs the first code that the panel needs to run.
 func (panel *Panel) InitialCalls() {

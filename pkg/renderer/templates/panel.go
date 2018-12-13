@@ -4,7 +4,7 @@ package templates
 const Panel = `{{$Dot := .}}package {{.PanelName}}
 
 import (
-	"syscall/js"
+	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportDomainInterfacesCallers}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
@@ -26,88 +26,74 @@ type Panel struct {
 	controler *Controler
 	presenter *Presenter
 	caller    *Caller
-	tools     *viewtools.Tools // see {{.ImportRendererViewTools}}{{range $panel := .PanelGroup}}
-
-	{{call $Dot.LowerCamelCase $panel.Name}} js.Value{{end}}
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) *Panel {
-	panel := &Panel{
-		tools: tools,
-	}{{range $panel := .PanelGroup}}
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) (panel *Panel, err error) {
 
-	panel.{{call $Dot.LowerCamelCase $panel.Name}} = notJS.GetElementByID("{{$panel.HTMLID}}"){{end}}
-	// initialize controler, presenter, caller.
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "{{.PanelName}}")
+		}
+	}()
+
+	panelGroup := &PanelGroup{
+		tools: tools,
+		notJS: notJS,
+	}
 	controler := &Controler{
-		panel:  panel,
-		quitCh: quitCh,
-		tools:  tools,
-		notJS:  notJS,
+		panelGroup: panelGroup,
+		quitCh:     quitCh,
+		tools:      tools,
+		notJS:      notJS,
 	}
 	presenter := &Presenter{
-		panel:   panel,
-		tools:   tools,
-		notJS:   notJS,
+		panelGroup: panelGroup,
+		tools:      tools,
+		notJS:      notJS,
 	}
 	caller := &Caller{
-		panel:      panel,
+		panelGroup: panelGroup,
 		quitCh:     quitCh,
 		connection: connection,
 		tools:      tools,
 		notJS:      notJS,
 	}
-	// settings
-	panel.controler = controler
-	panel.presenter = presenter
-	panel.caller = caller
+
 	controler.presenter = presenter
 	controler.caller = caller
 	presenter.controler = controler
 	presenter.caller = caller
 	caller.controler = controler
 	caller.presenter = presenter
+
 	// completions
-	controler.defineControlsSetHandlers()
-	presenter.defineMembers()
-	caller.addMainProcessCallBacks()
-	return panel
+	if err = panelGroup.defineMembers(); err != nil {
+		return
+	}
+	if err = controler.defineControlsSetHandlers(); err != nil {
+		return
+	}
+	if err = presenter.defineMembers(); err != nil {
+		return
+	}
+	if err = caller.addMainProcessCallBacks(); err != nil {
+		return
+	}
+
+	// No errors so define the panel.
+	panel = &Panel{
+		controler: controler,
+		presenter: presenter,
+		caller:    caller,
+	}
+	return
 }
-
-/*
-	Show panel funcs.
-
-	Call these from the controler, presenter and caller.
-*/{{if .IsTabSiblingPanel}}{{range $panel := .PanelGroup}}
-
-// show{{$panel.Name}} shows the panel you named {{$panel.Name}} while hiding any other panels in it's group.
-// {{if eq $Dot.PanelName $panel.Name}}This{{else}}That{{end}} panel will become visible only when this group of panels becomes visible.
-/* Your note for {{if eq $Dot.PanelName $panel.Name}}this{{else}}that{{end}} panel is:
-{{$panel.Note}}
-*/
-func (panel *Panel) show{{$panel.Name}}() {
-	panel.tools.ShowPanelInTabGroup(panel.{{call $Dot.LowerCamelCase $panel.Name}})
-}
-{{end}}{{else}}{{range $panel := .PanelGroup}}
-
-// show{{$panel.Name}} shows the panel you named {{$panel.Name}} while hiding any other panels in it's group.
-// {{if eq $Dot.PanelName $panel.Name}}This{{else}}That{{end}} panel's id is {{$panel.HTMLID}}.
-// {{if eq $Dot.PanelName $panel.Name}}This{{else}}That{{end}} panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
-// Param force boolean effects when {{if eq $Dot.PanelName $panel.Name}}this{{else}}that{{end}} panel becomes visible.
-//  * if force is true then
-//    immediately if the home button pad is not currently displayed;
-//    whenever if the home button pad is currently displayed.
-//  * if force is false then whenever.
-/* Your note for {{if eq $Dot.PanelName $panel.Name}}this{{else}}that{{end}} panel is:
-{{$panel.Note}}
-*/
-func (panel *Panel) show{{$panel.Name}}(force bool) {
-	panel.tools.ShowPanelInButtonGroup(panel.{{call $Dot.LowerCamelCase $panel.Name}}, force)
-}{{end}}{{end}}
 
 // InitialCalls runs the first code that the panel needs to run.
 func (panel *Panel) InitialCalls() {
 	panel.controler.initialCalls()
 	panel.caller.initialCalls()
 }
+
 `

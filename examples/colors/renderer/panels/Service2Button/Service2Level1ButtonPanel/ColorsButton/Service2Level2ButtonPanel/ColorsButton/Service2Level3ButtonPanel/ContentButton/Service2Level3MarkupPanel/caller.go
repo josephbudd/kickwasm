@@ -1,6 +1,8 @@
 package Service2Level3MarkupPanel
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/colors/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
@@ -15,7 +17,7 @@ import (
 
 // Caller communicates with the main process via an asynchrounous connection.
 type Caller struct {
-	panel      *Panel
+	panelGroup *PanelGroup
 	presenter  *Presenter
 	controler  *Controler
 	quitCh     chan struct{} // send an empty struct to start the quit process.
@@ -35,7 +37,13 @@ type Caller struct {
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
-func (panelCaller *Caller) addMainProcessCallBacks() {
+func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
+
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
@@ -44,12 +52,20 @@ func (panelCaller *Caller) addMainProcessCallBacks() {
 
 	// example:
 
-	panelCaller.addCustomerCall = panelCaller.connection[calling.AddCustomerCallId]
+	import "github.com/josephbudd/kickwasm/examples/colors/domain/data/callids"
 
+	var found bool
+
+	// add customer call
+	if panelCaller.addCustomerCall, found = panelCaller.connection[calling.AddCustomerCallId]; !found {
+		err = errors.New("unable to find panelCaller.connection[calling.AddCustomerCallId]")
+		return
+	}
 	panelCaller.addCustomerCall.AddCallBack(panelCaller.addCustomerCB)
 
 	*/
 
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
@@ -60,7 +76,6 @@ func (panelCaller *Caller) addMainProcessCallBacks() {
 // example:
 
 import "github.com/josephbudd/kickwasm/examples/colors/domain/data/callids"
-
 
 // Add Customer.
 
@@ -93,6 +108,9 @@ func (panelCaller *Caller) initialCalls() {
 	//4: Make any initial calls to the main process that must be made when the app starts.
 
 	// example:
+
+	import "github.com/josephbudd/kickwasm/examples/colors/domain/data/callids"
+	import "github.com/josephbudd/kickwasm/examples/colors/domain/data/loglevels"
 
 	params := types.RendererToMainProcessLogParams{
 		Level:   loglevels.LogLevelInfo,

@@ -20,6 +20,9 @@ func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) er
 		ImportRendererViewTools                  string
 		ImportDomainImplementationsCalling       string
 		ImportDomainDataSettings                 string
+		ImportDomainDataCallIDs                  string
+		ImportDomainDataLogLevels                string
+		ImportDomainTypes                        string
 	}{
 		ApplicationGitPath: builder.ImportPath,
 		Stores:             builder.Stores,
@@ -30,6 +33,9 @@ func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) er
 		ImportRendererViewTools:                  folderpaths.ImportRendererViewTools,
 		ImportDomainImplementationsCalling:       folderpaths.ImportDomainImplementationsCalling,
 		ImportDomainDataSettings:                 folderpaths.ImportDomainDataSettings,
+		ImportDomainDataCallIDs:                  folderpaths.ImportDomainDataCallIDs,
+		ImportDomainDataLogLevels:                folderpaths.ImportDomainDataLogLevels,
+		ImportDomainTypes:                        folderpaths.ImportDomainTypes,
 	}
 	fname := "main.go"
 	oPath := filepath.Join(folderpaths.OutputRenderer, fname)

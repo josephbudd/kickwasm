@@ -4,7 +4,7 @@ A rapid development, desktop application framework generator for go. Kickwasm re
 
 ## The frame work
 
-The framework works as soon as you build it. You can build it as soon as kickwasm generates the source code.
+The framework works as soon as you build it. You can build the framework as soon as kickwasm generates the source code.
 
 The colors example is only a framework without anything added to it. See the colors example video below.
 
@@ -36,9 +36,19 @@ So when you build the framework, you build both the renderer process and the mai
 
 TDD ( test driven design ) is very simple to do in go because TDD involves the implementation of principles that already belong to go. Kickwasm attempts to create a framework with idiomatic go and a TDD friendly code architecture. You create the unit tests.
 
-## This is version 0.5.0
+## This is version 0.6.0
 
 ### Not yet stable and possibly buggy
+
+#### Dec ?, 2018
+
+Reviewed tests and fixed minor issues found while refactoring the heck out of the contacts example with rekickwasm. Rekickwasm is still not done.
+
+Now, each one of a markup panel's startup funcs returns errors and wrap those errors with meaning as they return them. Startup errors are automatically logged to the javascript console, the browser alert and the application's log.
+
+The documentation in each markup panel's package in the /renderer/panels/ folder has been updated.
+
+The wiki has been updated.
 
 #### Update: Dec 7, 2018
 
@@ -46,7 +56,7 @@ More significant changes for various reasons as I use rekickwasm.
 
 I also used rekickwasm to add a simple about section to the contacts example. The about section shows how tabs look and work.
 
-#### Update: Dec 1-5, 2018
+#### Dec 1-5, 2018
 
 I'm still building and modifying rekickwasm and that means significant changes to
 
@@ -55,7 +65,7 @@ I'm still building and modifying rekickwasm and that means significant changes t
 
 I'll have the example videos done soon.
 
-#### Update: Nov 23, 2018
+#### Nov 23, 2018
 
 Building the contacts CRUD example resulted in major changes and corrections to
 
@@ -92,3 +102,4 @@ The colors example is 100% pure kickwasm generated framework. Nothing more. The 
 
 * The rest of the wiki.
 * Start from scratch installing kickwasm source code and building the examples on linux and windows so that I can correctly define the procedures.
+* Test with **Snap**. I'm hoping to be able to build kickwasm apps with SNAP. It looks promising. We'll see.

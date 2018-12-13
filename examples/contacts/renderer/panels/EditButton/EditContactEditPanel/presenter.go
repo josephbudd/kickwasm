@@ -3,6 +3,8 @@ package EditContactEditPanel
 import (
 	"syscall/js"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
@@ -11,17 +13,16 @@ import (
 /*
 
 	Panel name: EditContactEditPanel
-	Panel id:   tabsMasterView-home-pad-EditButton-EditContactEditPanel
 
 */
 
 // Presenter writes to the panel
 type Presenter struct {
-	panel     *Panel
-	controler *Controler
-	caller    *Caller
-	tools     *viewtools.Tools // see /renderer/viewtools
-	notJS     *notjs.NotJS
+	panelGroup *PanelGroup
+	controler  *Controler
+	caller     *Caller
+	tools      *viewtools.Tools // see /renderer/viewtools
+	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
@@ -41,7 +42,13 @@ type Presenter struct {
 }
 
 // defineMembers defines the Presenter members by their html elements.
-func (panelPresenter *Presenter) defineMembers() {
+func (panelPresenter *Presenter) defineMembers() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelPresenter *Presenter) defineMembers()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
@@ -50,15 +57,46 @@ func (panelPresenter *Presenter) defineMembers() {
 	*/
 
 	notjs := panelPresenter.notJS
-	panelPresenter.contactEditName = notjs.GetElementByID("contactEditName")
-	panelPresenter.contactEditAddress1 = notjs.GetElementByID("contactEditAddress1")
-	panelPresenter.contactEditAddress2 = notjs.GetElementByID("contactEditAddress2")
-	panelPresenter.contactEditCity = notjs.GetElementByID("contactEditCity")
-	panelPresenter.contactEditState = notjs.GetElementByID("contactEditState")
-	panelPresenter.contactEditZip = notjs.GetElementByID("contactEditZip")
-	panelPresenter.contactEditPhone = notjs.GetElementByID("contactEditPhone")
-	panelPresenter.contactEditEmail = notjs.GetElementByID("contactEditEmail")
-	panelPresenter.contactEditSocial = notjs.GetElementByID("contactEditSocial")
+	null := js.Null()
+
+	if panelPresenter.contactEditName = notjs.GetElementByID("contactEditName"); panelPresenter.contactEditName == null {
+		err = errors.New(`unable to find #contactEditName`)
+		return
+	}
+	if panelPresenter.contactEditAddress1 = notjs.GetElementByID("contactEditAddress1"); panelPresenter.contactEditAddress1 == null {
+		err = errors.New(`unable to find #contactEditAddress1`)
+		return
+	}
+	if panelPresenter.contactEditAddress2 = notjs.GetElementByID("contactEditAddress2"); panelPresenter.contactEditAddress2 == null {
+		err = errors.New(`unable to find #contactEditAddress2`)
+		return
+	}
+	if panelPresenter.contactEditCity = notjs.GetElementByID("contactEditCity"); panelPresenter.contactEditCity == null {
+		err = errors.New(`unable to find #contactEditCity`)
+		return
+	}
+	if panelPresenter.contactEditState = notjs.GetElementByID("contactEditState"); panelPresenter.contactEditState == null {
+		err = errors.New(`unable to find #contactEditState`)
+		return
+	}
+	if panelPresenter.contactEditZip = notjs.GetElementByID("contactEditZip"); panelPresenter.contactEditZip == null {
+		err = errors.New(`unable to find #contactEditZip`)
+		return
+	}
+	if panelPresenter.contactEditPhone = notjs.GetElementByID("contactEditPhone"); panelPresenter.contactEditPhone == null {
+		err = errors.New(`unable to find #contactEditPhone`)
+		return
+	}
+	if panelPresenter.contactEditEmail = notjs.GetElementByID("contactEditEmail"); panelPresenter.contactEditEmail == null {
+		err = errors.New(`unable to find #contactEditEmail`)
+		return
+	}
+	if panelPresenter.contactEditSocial = notjs.GetElementByID("contactEditSocial"); panelPresenter.contactEditSocial == null {
+		err = errors.New(`unable to find #contactEditSocial`)
+		return
+	}
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 3.

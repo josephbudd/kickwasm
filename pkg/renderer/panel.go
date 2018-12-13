@@ -47,6 +47,7 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					ImportRendererViewTools             string
 					ImportRendererInterfacesPanelHelper string
 					ImportDomainDataCallIDs             string
+					ImportDomainDataLogLevels           string
 					ImportDomainTypes                   string
 					ImportDomainImplementationsCalling  string
 					ImportDomainInterfacesCallers       string
@@ -64,6 +65,7 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					ImportRendererViewTools:             folderpaths.ImportRendererViewTools,
 					ImportRendererInterfacesPanelHelper: folderpaths.ImportRendererInterfacesPanelHelper,
 					ImportDomainDataCallIDs:             folderpaths.ImportDomainDataCallIDs,
+					ImportDomainDataLogLevels:           folderpaths.ImportDomainDataLogLevels,
 					ImportDomainTypes:                   folderpaths.ImportDomainTypes,
 					ImportDomainImplementationsCalling:  folderpaths.ImportDomainImplementationsCalling,
 					ImportDomainInterfacesCallers:       folderpaths.ImportDomainInterfacesCallers,
@@ -75,8 +77,13 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 						return "\t" + strings.Join(ss, "\n\t")
 					},
 				}
-				fname := "panel.go"
+				fname := "panelGroup.go"
 				oPath := filepath.Join(folderpath, fname)
+				if err := templates.ProcessTemplate(fname, oPath, templates.PanelGroup, data, appPaths); err != nil {
+					return err
+				}
+				fname = "panel.go"
+				oPath = filepath.Join(folderpath, fname)
 				if err := templates.ProcessTemplate(fname, oPath, templates.Panel, data, appPaths); err != nil {
 					return err
 				}

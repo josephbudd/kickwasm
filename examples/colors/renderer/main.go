@@ -3,6 +3,9 @@ package main
 import (
 	"syscall/js"
 
+	"github.com/josephbudd/kickwasm/examples/colors/domain/data/callids"
+	"github.com/josephbudd/kickwasm/examples/colors/domain/data/loglevels"
+	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/callClient"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/calls"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/implementations/panelHelping"
@@ -50,7 +53,21 @@ func main() {
 
 	// finish initializing the caller client.
 	client.SetCallMap(callMap)
-	client.Connect(func() { doPanels(quitCh, tools, callMap, notJS, helper) })
+	client.Connect(func() {
+		if err := doPanels(quitCh, tools, callMap, notJS, helper); err != nil {
+			message := err.Error()
+			// log the error to the renderer.
+			notJS.ConsoleLog(message)
+			notJS.Alert(message)
+			// log the error to the main process.
+			callr := callMap[callids.LogCallID]
+			params := &types.RendererToMainProcessLogCallParams{
+				Level:   loglevels.LogLevelError,
+				Message: message,
+			}
+			callr.CallMainProcess(params)
+		}
+	})
 
 	// wait for the application to quit.
 	<-quitCh

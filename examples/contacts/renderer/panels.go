@@ -6,6 +6,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/interfaces/panelHelper"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AboutButton/AboutTabBarPanel/CreditTab/CreditTabPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AboutButton/AboutTabBarPanel/LiscenseTab/LiscenseTabPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AboutButton/AboutTabBarPanel/RecordsTab/RecordsTabPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AddButton/AddContactPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/EditButton/EditContactEditPanel"
@@ -25,17 +26,48 @@ import (
 
 */
 
-func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) {
+func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) (err error) {
 	// 1. Construct the panel code.
-	addContactPanel := AddContactPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	creditTabPanel := CreditTabPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	editContactEditPanel := EditContactEditPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	editContactNotReadyPanel := EditContactNotReadyPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	editContactSelectPanel := EditContactSelectPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	recordsTabPanel := RecordsTabPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	removeContactConfirmPanel := RemoveContactConfirmPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	removeContactNotReadyPanel := RemoveContactNotReadyPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
-	removeContactSelectPanel := RemoveContactSelectPanel.NewPanel(quitCh, tools, notJS, callMap, helper)
+	var addContactPanel *AddContactPanel.Panel
+	if addContactPanel, err = AddContactPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var creditTabPanel *CreditTabPanel.Panel
+	if creditTabPanel, err = CreditTabPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var editContactEditPanel *EditContactEditPanel.Panel
+	if editContactEditPanel, err = EditContactEditPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var editContactNotReadyPanel *EditContactNotReadyPanel.Panel
+	if editContactNotReadyPanel, err = EditContactNotReadyPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var editContactSelectPanel *EditContactSelectPanel.Panel
+	if editContactSelectPanel, err = EditContactSelectPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var liscenseTabPanel *LiscenseTabPanel.Panel
+	if liscenseTabPanel, err = LiscenseTabPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var recordsTabPanel *RecordsTabPanel.Panel
+	if recordsTabPanel, err = RecordsTabPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var removeContactConfirmPanel *RemoveContactConfirmPanel.Panel
+	if removeContactConfirmPanel, err = RemoveContactConfirmPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var removeContactNotReadyPanel *RemoveContactNotReadyPanel.Panel
+	if removeContactNotReadyPanel, err = RemoveContactNotReadyPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
+	var removeContactSelectPanel *RemoveContactSelectPanel.Panel
+	if removeContactSelectPanel, err = RemoveContactSelectPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+		return
+	}
 
 	// 2. Size the app.
 	tools.SizeApp()
@@ -46,8 +78,11 @@ func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.Ca
 	editContactEditPanel.InitialCalls()
 	editContactNotReadyPanel.InitialCalls()
 	editContactSelectPanel.InitialCalls()
+	liscenseTabPanel.InitialCalls()
 	recordsTabPanel.InitialCalls()
 	removeContactConfirmPanel.InitialCalls()
 	removeContactNotReadyPanel.InitialCalls()
 	removeContactSelectPanel.InitialCalls()
+
+	return
 }

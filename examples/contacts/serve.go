@@ -6,7 +6,6 @@ import (
 
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/filepaths"
 )
-
 /*
 
 	TODO: Modify func serve for your special needs.
@@ -79,3 +78,4 @@ func serveURLPath(w http.ResponseWriter, r *http.Request) {
 func serveWASMURLPath(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, filepaths.BuildRendererPath(r.URL.Path[5:]))
 }
+

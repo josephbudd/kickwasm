@@ -3,6 +3,8 @@ package EditContactEditPanel
 import (
 	"syscall/js"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
@@ -11,18 +13,17 @@ import (
 /*
 
 	Panel name: EditContactEditPanel
-	Panel id:   tabsMasterView-home-pad-EditButton-EditContactEditPanel
 
 */
 
 // Controler is a HelloPanel Controler.
 type Controler struct {
-	panel     *Panel
-	presenter *Presenter
-	caller    *Caller
-	quitCh    chan struct{}    // send an empty struct to start the quit process.
-	tools     *viewtools.Tools // see /renderer/viewtools
-	notJS     *notjs.NotJS
+	panelGroup *PanelGroup
+	presenter  *Presenter
+	caller     *Caller
+	quitCh     chan struct{}    // send an empty struct to start the quit process.
+	tools      *viewtools.Tools // see /renderer/viewtools
+	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -47,7 +48,13 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
-func (panelControler *Controler) defineControlsSetHandlers() {
+func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
@@ -56,26 +63,77 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 
 	*/
 
-	notjs := panelControler.notJS
-	panelControler.contactEditName = notjs.GetElementByID("contactEditName")
-	panelControler.contactEditAddress1 = notjs.GetElementByID("contactEditAddress1")
-	panelControler.contactEditAddress2 = notjs.GetElementByID("contactEditAddress2")
-	panelControler.contactEditCity = notjs.GetElementByID("contactEditCity")
-	panelControler.contactEditState = notjs.GetElementByID("contactEditState")
-	panelControler.contactEditZip = notjs.GetElementByID("contactEditZip")
-	panelControler.contactEditPhone = notjs.GetElementByID("contactEditPhone")
-	panelControler.contactEditEmail = notjs.GetElementByID("contactEditEmail")
-	panelControler.contactEditSocial = notjs.GetElementByID("contactEditSocial")
-	panelControler.contactEditSubmit = notjs.GetElementByID("contactEditSubmit")
-	panelControler.contactEditReset = notjs.GetElementByID("contactEditReset")
-	panelControler.contactEditCancel = notjs.GetElementByID("contactEditCancel")
+	notJS := panelControler.notJS
+	null := js.Null()
 
-	cb := notjs.RegisterCallBack(panelControler.handleSubmit)
-	notjs.SetOnClick(panelControler.contactEditSubmit, cb)
-	cb = notjs.RegisterCallBack(panelControler.handleReset)
-	notjs.SetOnClick(panelControler.contactEditReset, cb)
-	cb = notjs.RegisterCallBack(panelControler.handleCancel)
-	notjs.SetOnClick(panelControler.contactEditCancel, cb)
+	// Define the name input.
+	if panelControler.contactEditName = notJS.GetElementByID("contactEditName"); panelControler.contactEditName == null {
+		err = errors.New(`unable to find #contactEditName`)
+		return
+	}
+	// Define the address 1 input.
+	if panelControler.contactEditAddress1 = notJS.GetElementByID("contactEditAddress1"); panelControler.contactEditAddress1 == null {
+		err = errors.New(`unable to find #contactEditAddress1`)
+		return
+	}
+	// Define the address 2 input.
+	if panelControler.contactEditAddress2 = notJS.GetElementByID("contactEditAddress2"); panelControler.contactEditAddress2 == null {
+		err = errors.New(`unable to find #contactEditAddress2`)
+		return
+	}
+	// Define the city input.
+	if panelControler.contactEditCity = notJS.GetElementByID("contactEditCity"); panelControler.contactEditCity == null {
+		err = errors.New(`unable to find #contactEditCity`)
+		return
+	}
+	// Define the state input.
+	if panelControler.contactEditState = notJS.GetElementByID("contactEditState"); panelControler.contactEditState == null {
+		err = errors.New(`unable to find #contactEditState`)
+		return
+	}
+	// Define the zip input.
+	if panelControler.contactEditZip = notJS.GetElementByID("contactEditZip"); panelControler.contactEditZip == null {
+		err = errors.New(`unable to find #contactEditZip`)
+		return
+	}
+	// Define the phone input.
+	if panelControler.contactEditPhone = notJS.GetElementByID("contactEditPhone"); panelControler.contactEditPhone == null {
+		err = errors.New(`unable to find #contactEditPhone`)
+		return
+	}
+	// Define the email input.
+	if panelControler.contactEditEmail = notJS.GetElementByID("contactEditEmail"); panelControler.contactEditEmail == null {
+		err = errors.New(`unable to find #contactEditEmail`)
+		return
+	}
+	// Define the social input.
+	if panelControler.contactEditSocial = notJS.GetElementByID("contactEditSocial"); panelControler.contactEditSocial == null {
+		err = errors.New(`unable to find #contactEditSocial`)
+		return
+	}
+	// Define the submit button and set it's handler.
+	if panelControler.contactEditSubmit = notJS.GetElementByID("contactEditSubmit"); panelControler.contactEditSubmit == null {
+		err = errors.New(`unable to find #contactEditSubmit`)
+		return
+	}
+	cb := notJS.RegisterCallBack(panelControler.handleSubmit)
+	notJS.SetOnClick(panelControler.contactEditSubmit, cb)
+	// Define the reset button and set it's handler.
+	if panelControler.contactEditReset = notJS.GetElementByID("contactEditReset"); panelControler.contactEditReset == null {
+		err = errors.New(`unable to find #contactEditReset`)
+		return
+	}
+	cb = notJS.RegisterCallBack(panelControler.handleReset)
+	notJS.SetOnClick(panelControler.contactEditReset, cb)
+	// Define the cancel button and set it's handler.
+	if panelControler.contactEditCancel = notJS.GetElementByID("contactEditCancel"); panelControler.contactEditCancel == null {
+		err = errors.New(`unable to find #contactEditCancel`)
+		return
+	}
+	cb = notJS.RegisterCallBack(panelControler.handleCancel)
+	notJS.SetOnClick(panelControler.contactEditCancel, cb)
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
@@ -87,11 +145,11 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 func (panelControler *Controler) handleGetContact(record *types.ContactRecord) {
 	panelControler.record = record
 	panelControler.presenter.fillForm(record)
-	panelControler.panel.showEditContactEditPanel(false)
+	panelControler.panelGroup.showEditContactEditPanel(false)
 }
 
 func (panelControler *Controler) handleCancel(args []js.Value) {
-	panelControler.panel.showEditContactSelectPanel(false)
+	panelControler.panelGroup.showEditContactSelectPanel(false)
 }
 
 func (panelControler *Controler) handleSubmit(args []js.Value) {
@@ -125,18 +183,18 @@ func (panelControler *Controler) handleSubmit(args []js.Value) {
 }
 
 func (panelControler *Controler) getForm() *types.ContactRecord {
-	notjs := panelControler.notJS
+	notJS := panelControler.notJS
 	return &types.ContactRecord{
 		ID:       panelControler.record.ID,
-		Name:     notjs.GetValue(panelControler.contactEditName),
-		Address1: notjs.GetValue(panelControler.contactEditAddress1),
-		Address2: notjs.GetValue(panelControler.contactEditAddress2),
-		City:     notjs.GetValue(panelControler.contactEditCity),
-		State:    notjs.GetValue(panelControler.contactEditState),
-		Zip:      notjs.GetValue(panelControler.contactEditZip),
-		Phone:    notjs.GetValue(panelControler.contactEditPhone),
-		Email:    notjs.GetValue(panelControler.contactEditEmail),
-		Social:   notjs.GetValue(panelControler.contactEditSocial),
+		Name:     notJS.GetValue(panelControler.contactEditName),
+		Address1: notJS.GetValue(panelControler.contactEditAddress1),
+		Address2: notJS.GetValue(panelControler.contactEditAddress2),
+		City:     notJS.GetValue(panelControler.contactEditCity),
+		State:    notJS.GetValue(panelControler.contactEditState),
+		Zip:      notJS.GetValue(panelControler.contactEditZip),
+		Phone:    notJS.GetValue(panelControler.contactEditPhone),
+		Email:    notJS.GetValue(panelControler.contactEditEmail),
+		Social:   notJS.GetValue(panelControler.contactEditSocial),
 	}
 }
 

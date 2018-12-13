@@ -137,3 +137,4 @@ func buildUserHomeDataPath() {
 		initerr = fmt.Errorf("os.MkdirAll(userHomeDataPath, dmode) error is %s", initerr.Error())
 	}
 }
+

@@ -6,23 +6,23 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
+	"github.com/pkg/errors"
 )
 
 /*
 
 	Panel name: AddContactPanel
-	Panel id:   tabsMasterView-home-pad-AddButton-AddContactPanel
 
 */
 
 // Controler is a HelloPanel Controler.
 type Controler struct {
-	panel     *Panel
-	presenter *Presenter
-	caller    *Caller
-	quitCh    chan struct{}    // send an empty struct to start the quit process.
-	tools     *viewtools.Tools // see /renderer/viewtools
-	notJS     *notjs.NotJS
+	panelGroup *PanelGroup
+	presenter  *Presenter
+	caller     *Caller
+	quitCh     chan struct{}    // send an empty struct to start the quit process.
+	tools      *viewtools.Tools // see /renderer/viewtools
+	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -44,7 +44,13 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
-func (panelControler *Controler) defineControlsSetHandlers() {
+func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
@@ -54,23 +60,60 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 	*/
 
 	notjs := panelControler.notJS
-	panelControler.contactAddName = notjs.GetElementByID("contactAddName")
-	panelControler.contactAddAddress1 = notjs.GetElementByID("contactAddAddress1")
-	panelControler.contactAddAddress2 = notjs.GetElementByID("contactAddAddress2")
-	panelControler.contactAddCity = notjs.GetElementByID("contactAddCity")
-	panelControler.contactAddState = notjs.GetElementByID("contactAddState")
-	panelControler.contactAddZip = notjs.GetElementByID("contactAddZip")
-	panelControler.contactAddPhone = notjs.GetElementByID("contactAddPhone")
-	panelControler.contactAddEmail = notjs.GetElementByID("contactAddEmail")
-	panelControler.contactAddSocial = notjs.GetElementByID("contactAddSocial")
+	null := js.Null()
 
-	panelControler.contactAddSubmit = notjs.GetElementByID("contactAddSubmit")
-	panelControler.contactAddCancel = notjs.GetElementByID("contactAddCancel")
+	if panelControler.contactAddName = notjs.GetElementByID("contactAddName"); panelControler.contactAddName == null {
+		err = errors.New("unable to find #contactAddName")
+		return
+	}
+	if panelControler.contactAddAddress1 = notjs.GetElementByID("contactAddAddress1"); panelControler.contactAddAddress1 == null {
+		err = errors.New("unable to find #contactAddAddress1")
+		return
+	}
+	if panelControler.contactAddAddress2 = notjs.GetElementByID("contactAddAddress2"); panelControler.contactAddAddress2 == null {
+		err = errors.New("unable to find #contactAddAddress2")
+		return
+	}
+	if panelControler.contactAddCity = notjs.GetElementByID("contactAddCity"); panelControler.contactAddCity == null {
+		err = errors.New("unable to find #contactAddCity")
+		return
+	}
+	if panelControler.contactAddState = notjs.GetElementByID("contactAddState"); panelControler.contactAddState == null {
+		err = errors.New("unable to find #contactAddState")
+		return
+	}
+	if panelControler.contactAddZip = notjs.GetElementByID("contactAddZip"); panelControler.contactAddZip == null {
+		err = errors.New("unable to find #contactAddZip")
+		return
+	}
+	if panelControler.contactAddPhone = notjs.GetElementByID("contactAddPhone"); panelControler.contactAddPhone == null {
+		err = errors.New("unable to find #contactAddPhone")
+		return
+	}
+	if panelControler.contactAddEmail = notjs.GetElementByID("contactAddEmail"); panelControler.contactAddEmail == null {
+		err = errors.New("unable to find #contactAddEmail")
+		return
+	}
+	if panelControler.contactAddSocial = notjs.GetElementByID("contactAddSocial"); panelControler.contactAddSocial == null {
+		err = errors.New("unable to find #contactAddSocial")
+		return
+	}
 
+	if panelControler.contactAddSubmit = notjs.GetElementByID("contactAddSubmit"); panelControler.contactAddSubmit == null {
+		err = errors.New("unable to find #contactAddSubmit")
+		return
+	}
 	cb := notjs.RegisterCallBack(panelControler.handleSubmit)
 	notjs.SetOnClick(panelControler.contactAddSubmit, cb)
+
+	if panelControler.contactAddCancel = notjs.GetElementByID("contactAddCancel"); panelControler.contactAddCancel == null {
+		err = errors.New("unable to find #contactAddCancel")
+		return
+	}
 	cb = notjs.RegisterCallBack(panelControler.handleCancel)
 	notjs.SetOnClick(panelControler.contactAddCancel, cb)
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.

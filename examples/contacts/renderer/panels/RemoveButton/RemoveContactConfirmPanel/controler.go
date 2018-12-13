@@ -3,6 +3,8 @@ package RemoveContactConfirmPanel
 import (
 	"syscall/js"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
@@ -11,18 +13,17 @@ import (
 /*
 
 	Panel name: RemoveContactConfirmPanel
-	Panel id:   tabsMasterView-home-pad-RemoveButton-RemoveContactConfirmPanel
 
 */
 
 // Controler is a HelloPanel Controler.
 type Controler struct {
-	panel     *Panel
-	presenter *Presenter
-	caller    *Caller
-	quitCh    chan struct{}    // send an empty struct to start the quit process.
-	tools     *viewtools.Tools // see /renderer/viewtools
-	notJS     *notjs.NotJS
+	panelGroup *PanelGroup
+	presenter  *Presenter
+	caller     *Caller
+	quitCh     chan struct{}    // send an empty struct to start the quit process.
+	tools      *viewtools.Tools // see /renderer/viewtools
+	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -36,7 +37,13 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
-func (panelControler *Controler) defineControlsSetHandlers() {
+func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
@@ -45,14 +52,25 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 
 	*/
 
-	notjs := panelControler.notJS
-	panelControler.contactRemoveSubmit = notjs.GetElementByID("contactRemoveSubmit")
-	panelControler.contactRemoveCancel = notjs.GetElementByID("contactRemoveCancel")
+	notJS := panelControler.notJS
+	null := js.Null()
 
-	cb := notjs.RegisterEventCallBack(false, false, false, panelControler.handleSubmit)
-	notjs.SetOnClick(panelControler.contactRemoveSubmit, cb)
-	cb = notjs.RegisterEventCallBack(false, false, false, panelControler.handleCancel)
-	notjs.SetOnClick(panelControler.contactRemoveCancel, cb)
+	// submit button
+	if panelControler.contactRemoveSubmit = notJS.GetElementByID("contactRemoveSubmit"); panelControler.contactRemoveSubmit == null {
+		err = errors.New(`unable to find #contactRemoveSubmit`)
+		return
+	}
+	cb := notJS.RegisterEventCallBack(false, false, false, panelControler.handleSubmit)
+	notJS.SetOnClick(panelControler.contactRemoveSubmit, cb)
+	// cancel button
+	if panelControler.contactRemoveCancel = notJS.GetElementByID("contactRemoveCancel"); panelControler.contactRemoveCancel == null {
+		err = errors.New(`unable to find #contactRemoveCancel`)
+		return
+	}
+	cb = notJS.RegisterEventCallBack(false, false, false, panelControler.handleCancel)
+	notJS.SetOnClick(panelControler.contactRemoveCancel, cb)
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
@@ -66,13 +84,13 @@ func (panelControler *Controler) handleSubmit(event js.Value) {
 }
 
 func (panelControler *Controler) handleCancel(event js.Value) {
-	panelControler.panel.showRemoveContactSelectPanel(false)
+	panelControler.panelGroup.showRemoveContactSelectPanel(false)
 }
 
 func (panelControler *Controler) handleGetContact(record *types.ContactRecord) {
 	panelControler.record = record
 	panelControler.presenter.displayRecord(record)
-	panelControler.panel.showRemoveContactConfirmPanel(false)
+	panelControler.panelGroup.showRemoveContactConfirmPanel(false)
 }
 
 // initialCalls runs the first code that the controler needs to run.

@@ -6,18 +6,18 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
+	"github.com/pkg/errors"
 )
 
 /*
 
 	Panel name: AddContactPanel
-	Panel id:   tabsMasterView-home-pad-AddButton-AddContactPanel
 
 */
 
 // Caller communicates with the main process via an asynchrounous connection.
 type Caller struct {
-	panel      *Panel
+	panelGroup *PanelGroup
 	presenter  *Presenter
 	controler  *Controler
 	quitCh     chan struct{} // send an empty struct to start the quit process.
@@ -27,7 +27,7 @@ type Caller struct {
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
-	// Declare your Caller members.
+	// 1: Declare your Caller members.
 
 	*/
 
@@ -39,23 +39,36 @@ type Caller struct {
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
-func (panelCaller *Caller) addMainProcessCallBacks() {
+func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// Define your added Caller members.
-	// Tell the main processs to call back to your funcs.
+	// 2.1: Define each one of your added Caller members.
+	// 2.2: Tell the main processs to add a call back to each of your call back funcs.
 
 	*/
 
-	panelCaller.updateContactCaller = panelCaller.connection[callids.UpdateContactCallID]
+	var found bool
+
+	if panelCaller.updateContactCaller, found = panelCaller.connection[callids.UpdateContactCallID]; !found {
+		err = errors.New("unable to find panelCaller.connection[callids.UpdateContactCallID]")
+		return
+	}
 	panelCaller.updateContactCaller.AddCallBack(panelCaller.updateContactCB)
 
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
 
-// Define calls to the main process and their and call backs.
+// 3.1: Define your funcs which call to the main process.
+// 3.2: Define your funcs which the main process calls back to.
 
 */
 
@@ -81,13 +94,13 @@ func (panelCaller *Caller) updateContactCB(params interface{}) {
 			// Update the user and clear the form.
 			panelCaller.tools.Success("Contact added.")
 			panelCaller.presenter.clearForm()
-			panelCaller.panel.showAddContactPanel(false)
+			panelCaller.panelGroup.showAddContactPanel(false)
 		}
 	default:
 		// default should only happen during development.
 		// It means that I screwed up in the mainprocess func "mainProcessReceiveUpdateContact". It means that I passed the wrong type of param to callBackToRenderer.
 		panelCaller.tools.Error("Wrong param type send from mainProcessReceiveUpdateContact")
-		panelCaller.panel.showAddContactPanel(false)
+		panelCaller.panelGroup.showAddContactPanel(false)
 	}
 }
 
@@ -96,7 +109,7 @@ func (panelCaller *Caller) initialCalls() {
 
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
-	// Make any initial calls to the main process that must be made when the app starts.
+	//4: Make any initial calls to the main process that must be made when the app starts.
 
 	*/
 

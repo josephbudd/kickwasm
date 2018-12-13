@@ -4,6 +4,8 @@ package templates
 const PanelControler = `package {{.PanelName}}
 
 import (
+	"github.com/pkg/errors"
+
 	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
@@ -16,7 +18,7 @@ import (
 
 // Controler is a HelloPanel Controler.
 type Controler struct {
-	panel     *Panel
+	panelGroup *PanelGroup
 	presenter *Presenter
 	caller    *Caller
 	quitCh    chan struct{}    // send an empty struct to start the quit process.
@@ -28,6 +30,8 @@ type Controler struct {
 	// Declare your Controler members.
 	// example:
 
+	// import "syscall/js"
+
 	addCustomerName   js.Value
 	addCustomerSubmit js.Value
 
@@ -35,24 +39,44 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
-func (panelControler *Controler) defineControlsSetHandlers() {
+// Returns the error.
+func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+
+	defer func() {
+		if err != nil {
+			errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
 	// Define the Controler members by their html elements.
-	// Set handlers.
+	// Set their handlers.
 	// example:
 
-	// Define controler members.
-	notJS := panelControler.notJS
-	panelControler.addCustomerName := notJS.GetElementByID("addCustomerName")
-	panelControler.addCustomerSubmit := notJS.GetElementByID("addCustomerSubmit")
+	// import "syscall/js"
 
-	// Set handlers.
+	notjs := panelControler.notJS
+	tools := panelPresenter.tools
+	null := js.Null()
+
+	// Define the customer name input field.
+	if panelControler.customerName = notjs.GetElementByID("customerName"); panelControler.customerName == null {
+		err = errors.New("unable to find #customerName")
+		return
+	}
+
+	// Define the submit button and set it's handler.
+	if panelControler.addCustomerSubmit = notjs.GetElementByID("addCustomerSubmit"); panelControler.addCustomerSubmit == null {
+		err = errors.New("unable to find #addCustomerSubmit")
+		return
+	}
 	cb := notJS.RegisterCallBack(panelControler.handleSubmit)
 	notJS.SetOnClick(panelControler.addCustomerSubmit, cb)
 
 	*/
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
@@ -60,13 +84,15 @@ func (panelControler *Controler) defineControlsSetHandlers() {
 // Handlers and other functions.
 // example:
 
+// import "{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+
 func (panelControler *Controler) handleSubmit([]js.Value) {
 	name := strings.TrimSpace(panelControler.notJS.GetValue(panelControler.addCustomerName))
 	if len(name) == 0 {
 		panelControler.tools.Error("Customer Name is required.")
 		return
 	}
-	record := &records.Customer{
+	record := &types.CustomerRecord{
 		Name: name,
 	}
 	panelControler.caller.AddCustomer(record)
@@ -88,4 +114,5 @@ func (panelControler *Controler) initialCalls() {
 	*/
 
 }
+
 `

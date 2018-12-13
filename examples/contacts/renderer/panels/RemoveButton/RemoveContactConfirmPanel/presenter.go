@@ -3,6 +3,8 @@ package RemoveContactConfirmPanel
 import (
 	"syscall/js"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
@@ -11,17 +13,16 @@ import (
 /*
 
 	Panel name: RemoveContactConfirmPanel
-	Panel id:   tabsMasterView-home-pad-RemoveButton-RemoveContactConfirmPanel
 
 */
 
 // Presenter writes to the panel
 type Presenter struct {
-	panel     *Panel
-	controler *Controler
-	caller    *Caller
-	tools     *viewtools.Tools // see /renderer/viewtools
-	notJS     *notjs.NotJS
+	panelGroup *PanelGroup
+	controler  *Controler
+	caller     *Caller
+	tools      *viewtools.Tools // see /renderer/viewtools
+	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
@@ -41,7 +42,13 @@ type Presenter struct {
 }
 
 // defineMembers defines the Presenter members by their html elements.
-func (panelPresenter *Presenter) defineMembers() {
+func (panelPresenter *Presenter) defineMembers() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelPresenter *Presenter) defineMembers()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
@@ -49,16 +56,47 @@ func (panelPresenter *Presenter) defineMembers() {
 
 	*/
 
-	notjs := panelPresenter.notJS
-	panelPresenter.contactRemoveName = notjs.GetElementByID("contactRemoveName")
-	panelPresenter.contactRemoveAddress1 = notjs.GetElementByID("contactRemoveAddress1")
-	panelPresenter.contactRemoveAddress2 = notjs.GetElementByID("contactRemoveAddress2")
-	panelPresenter.contactRemoveCity = notjs.GetElementByID("contactRemoveCity")
-	panelPresenter.contactRemoveState = notjs.GetElementByID("contactRemoveState")
-	panelPresenter.contactRemoveZip = notjs.GetElementByID("contactRemoveZip")
-	panelPresenter.contactRemovePhone = notjs.GetElementByID("contactRemovePhone")
-	panelPresenter.contactRemoveEmail = notjs.GetElementByID("contactRemoveEmail")
-	panelPresenter.contactRemoveSocial = notjs.GetElementByID("contactRemoveSocial")
+	notJS := panelPresenter.notJS
+	null := js.Null()
+
+	if panelPresenter.contactRemoveName = notJS.GetElementByID("contactRemoveName"); panelPresenter.contactRemoveName == null {
+		err = errors.New(`unable to find #contactRemoveName`)
+		return
+	}
+	if panelPresenter.contactRemoveAddress1 = notJS.GetElementByID("contactRemoveAddress1"); panelPresenter.contactRemoveAddress1 == null {
+		err = errors.New(`unable to find #contactRemoveAddress1`)
+		return
+	}
+	if panelPresenter.contactRemoveAddress2 = notJS.GetElementByID("contactRemoveAddress2"); panelPresenter.contactRemoveAddress2 == null {
+		err = errors.New(`unable to find #contactRemoveAddress2`)
+		return
+	}
+	if panelPresenter.contactRemoveCity = notJS.GetElementByID("contactRemoveCity"); panelPresenter.contactRemoveCity == null {
+		err = errors.New(`unable to find #contactRemoveCity`)
+		return
+	}
+	if panelPresenter.contactRemoveState = notJS.GetElementByID("contactRemoveState"); panelPresenter.contactRemoveState == null {
+		err = errors.New(`unable to find #contactRemoveState`)
+		return
+	}
+	if panelPresenter.contactRemoveZip = notJS.GetElementByID("contactRemoveZip"); panelPresenter.contactRemoveZip == null {
+		err = errors.New(`unable to find #contactRemoveZip`)
+		return
+	}
+	if panelPresenter.contactRemovePhone = notJS.GetElementByID("contactRemovePhone"); panelPresenter.contactRemovePhone == null {
+		err = errors.New(`unable to find #contactRemovePhone`)
+		return
+	}
+	if panelPresenter.contactRemoveEmail = notJS.GetElementByID("contactRemoveEmail"); panelPresenter.contactRemoveEmail == null {
+		err = errors.New(`unable to find #contactRemoveEmail`)
+		return
+	}
+	if panelPresenter.contactRemoveSocial = notJS.GetElementByID("contactRemoveSocial"); panelPresenter.contactRemoveSocial == null {
+		err = errors.New(`unable to find #contactRemoveSocial`)
+		return
+	}
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 3.
@@ -68,14 +106,14 @@ func (panelPresenter *Presenter) defineMembers() {
 */
 
 func (panelPresenter *Presenter) displayRecord(record *types.ContactRecord) {
-	notjs := panelPresenter.notJS
-	notjs.SetInnerText(panelPresenter.contactRemoveName, record.Name)
-	notjs.SetInnerText(panelPresenter.contactRemoveAddress1, record.Address1)
-	notjs.SetInnerText(panelPresenter.contactRemoveAddress2, record.Address2)
-	notjs.SetInnerText(panelPresenter.contactRemoveCity, record.City)
-	notjs.SetInnerText(panelPresenter.contactRemoveState, record.State)
-	notjs.SetInnerText(panelPresenter.contactRemoveZip, record.Zip)
-	notjs.SetInnerText(panelPresenter.contactRemovePhone, record.Phone)
-	notjs.SetInnerText(panelPresenter.contactRemoveEmail, record.Email)
-	notjs.SetInnerText(panelPresenter.contactRemoveSocial, record.Social)
+	notJS := panelPresenter.notJS
+	notJS.SetInnerText(panelPresenter.contactRemoveName, record.Name)
+	notJS.SetInnerText(panelPresenter.contactRemoveAddress1, record.Address1)
+	notJS.SetInnerText(panelPresenter.contactRemoveAddress2, record.Address2)
+	notJS.SetInnerText(panelPresenter.contactRemoveCity, record.City)
+	notJS.SetInnerText(panelPresenter.contactRemoveState, record.State)
+	notJS.SetInnerText(panelPresenter.contactRemoveZip, record.Zip)
+	notJS.SetInnerText(panelPresenter.contactRemovePhone, record.Phone)
+	notJS.SetInnerText(panelPresenter.contactRemoveEmail, record.Email)
+	notJS.SetInnerText(panelPresenter.contactRemoveSocial, record.Social)
 }

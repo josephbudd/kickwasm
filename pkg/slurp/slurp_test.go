@@ -224,6 +224,14 @@ func TestDo(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 		{
+			name: "fail duplicate service button name",
+			args: args{
+				yamlPath: "testyaml/fails/dup_service_button_name.yaml",
+			},
+			wantErr:        true,
+			wantErrMessage: `the service button name "NextButton" is used more than once`,
+		},
+		{
 			name: "fail bad panel name",
 			args: args{
 				yamlPath: "testyaml/fails/bad_panel_name.yaml",
@@ -262,7 +270,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/dup_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the XXX service panel: the button panel named "PNamePanel" has more than one button named "OneButton"`,
+			wantErrMessage: `the button panel named "PNamePanel" has more then one button named "OneButton"`,
 		},
 		{
 			name: "fail duplicate tab name",
@@ -270,7 +278,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/dup_tab_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the XXX service panel: the tab panel named "PNamePanel" has more than one tab named "OneTab"`,
+			wantErrMessage: `the tab panel named "PNamePanel" has more then one tab named "OneTab"`,
 		},
 		{
 			name: "fail missing panel name",

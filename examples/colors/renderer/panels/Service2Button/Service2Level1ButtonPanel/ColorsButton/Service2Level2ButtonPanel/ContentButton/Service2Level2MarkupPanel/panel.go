@@ -1,7 +1,7 @@
 package Service2Level2MarkupPanel
 
 import (
-	"syscall/js"
+	"github.com/pkg/errors"
 
 	"github.com/josephbudd/kickwasm/examples/colors/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
@@ -23,75 +23,68 @@ type Panel struct {
 	controler *Controler
 	presenter *Presenter
 	caller    *Caller
-	tools     *viewtools.Tools // see /renderer/viewtools
-
-	service2Level2MarkupPanel js.Value
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) *Panel {
-	panel := &Panel{
-		tools: tools,
-	}
+func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) (panel *Panel, err error) {
 
-	panel.service2Level2MarkupPanel = notJS.GetElementByID("tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ContentButton-Service2Level2MarkupPanel")
-	// initialize controler, presenter, caller.
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "Service2Level2MarkupPanel")
+		}
+	}()
+
+	panelGroup := &PanelGroup{
+		tools: tools,
+		notJS: notJS,
+	}
 	controler := &Controler{
-		panel:  panel,
-		quitCh: quitCh,
-		tools:  tools,
-		notJS:  notJS,
+		panelGroup: panelGroup,
+		quitCh:     quitCh,
+		tools:      tools,
+		notJS:      notJS,
 	}
 	presenter := &Presenter{
-		panel:   panel,
-		tools:   tools,
-		notJS:   notJS,
+		panelGroup: panelGroup,
+		tools:      tools,
+		notJS:      notJS,
 	}
 	caller := &Caller{
-		panel:      panel,
+		panelGroup: panelGroup,
 		quitCh:     quitCh,
 		connection: connection,
 		tools:      tools,
 		notJS:      notJS,
 	}
-	// settings
-	panel.controler = controler
-	panel.presenter = presenter
-	panel.caller = caller
+
 	controler.presenter = presenter
 	controler.caller = caller
 	presenter.controler = controler
 	presenter.caller = caller
 	caller.controler = controler
 	caller.presenter = presenter
+
 	// completions
-	controler.defineControlsSetHandlers()
-	presenter.defineMembers()
-	caller.addMainProcessCallBacks()
-	return panel
-}
+	if err = panelGroup.defineMembers(); err != nil {
+		return
+	}
+	if err = controler.defineControlsSetHandlers(); err != nil {
+		return
+	}
+	if err = presenter.defineMembers(); err != nil {
+		return
+	}
+	if err = caller.addMainProcessCallBacks(); err != nil {
+		return
+	}
 
-/*
-	Show panel funcs.
-
-	Call these from the controler, presenter and caller.
-*/
-
-// showService2Level2MarkupPanel shows the panel you named Service2Level2MarkupPanel while hiding any other panels in it's group.
-// This panel's id is tabsMasterView-home-pad-Service2Button-Service2Level1ButtonPanel-ColorsButton-Service2Level2ButtonPanel-ContentButton-Service2Level2MarkupPanel.
-// This panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
-// Param force boolean effects when this panel becomes visible.
-//  * if force is true then
-//    immediately if the home button pad is not currently displayed;
-//    whenever if the home button pad is currently displayed.
-//  * if force is false then whenever.
-/* Your note for this panel is:
-This is the only content.
-Brought to you in the first service color.
-
-*/
-func (panel *Panel) showService2Level2MarkupPanel(force bool) {
-	panel.tools.ShowPanelInButtonGroup(panel.service2Level2MarkupPanel, force)
+	// No errors so define the panel.
+	panel = &Panel{
+		controler: controler,
+		presenter: presenter,
+		caller:    caller,
+	}
+	return
 }
 
 // InitialCalls runs the first code that the panel needs to run.
@@ -99,3 +92,4 @@ func (panel *Panel) InitialCalls() {
 	panel.controler.initialCalls()
 	panel.caller.initialCalls()
 }
+

@@ -3,13 +3,13 @@ package notjs
 import "syscall/js"
 
 // ClassListContains return if a class list contains a class.
-func (notjs *NotJS) ClassListContains(element js.Value, class string) bool {
+func (notJS *NotJS) ClassListContains(element js.Value, class string) bool {
 	classList := element.Get(classListAttributeName)
 	return classList.Call(containsMethodName, class).Bool()
 }
 
 // ClassListContainsAnd returns if a class list contains all of the classes.
-func (notjs *NotJS) ClassListContainsAnd(element js.Value, classes ...string) bool {
+func (notJS *NotJS) ClassListContainsAnd(element js.Value, classes ...string) bool {
 	classList := element.Get(classListAttributeName)
 	for _, class := range classes {
 		if !classList.Call(containsMethodName, class).Bool() {
@@ -20,7 +20,7 @@ func (notjs *NotJS) ClassListContainsAnd(element js.Value, classes ...string) bo
 }
 
 // ClassListContainsOr returns if a class list contains any of the classes.
-func (notjs *NotJS) ClassListContainsOr(element js.Value, classes ...string) bool {
+func (notJS *NotJS) ClassListContainsOr(element js.Value, classes ...string) bool {
 	classList := element.Get(classListAttributeName)
 	for _, class := range classes {
 		if classList.Call(containsMethodName, class).Bool() {
@@ -31,7 +31,7 @@ func (notjs *NotJS) ClassListContainsOr(element js.Value, classes ...string) boo
 }
 
 // ClassListReplaceClass replaces or adds an element's class.
-func (notjs *NotJS) ClassListReplaceClass(element js.Value, old, new string) {
+func (notJS *NotJS) ClassListReplaceClass(element js.Value, old, new string) {
 	classList := element.Get(classListAttributeName)
 	if classList.Call("replace", old, new).Bool() {
 		return
@@ -42,14 +42,13 @@ func (notjs *NotJS) ClassListReplaceClass(element js.Value, old, new string) {
 }
 
 // ClassListGetClassAt returns the class in classList at index.
-func (notjs *NotJS) ClassListGetClassAt(element js.Value, index int) string {
+func (notJS *NotJS) ClassListGetClassAt(element js.Value, index int) string {
 	classList := element.Get(classListAttributeName)
 	return classList.Call(itemMethodName, index).String()
 }
 
 // ClassListAddClass adds an element's class.
-func (notjs *NotJS) ClassListAddClass(element js.Value, new string) {
+func (notJS *NotJS) ClassListAddClass(element js.Value, new string) {
 	classList := element.Get(classListAttributeName)
 	classList.Call(addMethodName, new)
 }
-

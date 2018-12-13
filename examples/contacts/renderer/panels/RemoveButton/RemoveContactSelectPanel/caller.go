@@ -1,6 +1,8 @@
 package RemoveContactSelectPanel
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
@@ -11,13 +13,12 @@ import (
 /*
 
 	Panel name: RemoveContactSelectPanel
-	Panel id:   tabsMasterView-home-pad-RemoveButton-RemoveContactSelectPanel
 
 */
 
 // Caller communicates with the main process via an asynchrounous connection.
 type Caller struct {
-	panel      *Panel
+	panelGroup *PanelGroup
 	presenter  *Presenter
 	controler  *Controler
 	quitCh     chan struct{} // send an empty struct to start the quit process.
@@ -27,7 +28,8 @@ type Caller struct {
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
-	// Declare your Caller members.
+	// 1: Declare your Caller members.
+
 
 	*/
 
@@ -41,35 +43,67 @@ type Caller struct {
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
-func (panelCaller *Caller) addMainProcessCallBacks() {
+func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// Define your added Caller members.
-	// Tell the main processs to call back to your funcs.
+	// 2.1: Define each one of your added Caller members.
+	// 2.2: Tell the main processs to add a call back to each of your call back funcs.
 
 	*/
 
-	panelCaller.getContactCaller = panelCaller.connection[callids.GetContactCallID]
+	var found bool
+	var cllr caller.Renderer
+
+	if panelCaller.getContactCaller, found = panelCaller.connection[callids.GetContactCallID]; !found {
+		err = errors.New(`unable to find panelCaller.connection[callids.GetContactCallID]`)
+		return
+	}
 	panelCaller.getContactCaller.AddCallBack(panelCaller.getContactCB)
 
-	panelCaller.getContactsPageStatesCaller = panelCaller.connection[callids.GetContactsPageStatesCallID]
+	if panelCaller.getContactsPageStatesCaller, found = panelCaller.connection[callids.GetContactsPageStatesCallID]; !found {
+		err = errors.New(`unable to find panelCaller.connection[callids.GetContactsPageStatesCallID]`)
+		return
+	}
 	panelCaller.getContactsPageStatesCaller.AddCallBack(panelCaller.GetContactsPageStatesCB)
 
-	panelCaller.getContactsPageCitiesMatchStateCaller = panelCaller.connection[callids.GetContactsPageCitiesMatchStateCallID]
+	if panelCaller.getContactsPageCitiesMatchStateCaller, found = panelCaller.connection[callids.GetContactsPageCitiesMatchStateCallID]; !found {
+		err = errors.New(`unable to find panelCaller.connection[callids.GetContactsPageCitiesMatchStateCallID]`)
+		return
+	}
 	panelCaller.getContactsPageCitiesMatchStateCaller.AddCallBack(panelCaller.GetContactsPageCitiesMatchStateCB)
 
-	panelCaller.getContactsPageRecordsMatchStateCityCaller = panelCaller.connection[callids.GetContactsPageRecordsMatchStateCityCallID]
+	if panelCaller.getContactsPageRecordsMatchStateCityCaller, found = panelCaller.connection[callids.GetContactsPageRecordsMatchStateCityCallID]; !found {
+		err = errors.New(`unable to find panelCaller.connection[callids.GetContactsPageRecordsMatchStateCityCallID]`)
+		return
+	}
 	panelCaller.getContactsPageRecordsMatchStateCityCaller.AddCallBack(panelCaller.GetContactsPageRecordsMatchStateCityCB)
 
-	panelCaller.connection[callids.UpdateContactCallID].AddCallBack(panelCaller.updateContactCB)
-	panelCaller.connection[callids.RemoveContactCallID].AddCallBack(panelCaller.removeContactCB)
+	if cllr, found = panelCaller.connection[callids.UpdateContactCallID]; !found {
+		err = errors.New(`unable to find panelCaller.connection[callids.UpdateContactCallID]`)
+		return
+	}
+	cllr.AddCallBack(panelCaller.updateContactCB)
 
+	if cllr, found = panelCaller.connection[callids.RemoveContactCallID]; !found {
+		err = errors.New(`unable to find panelCaller.connection[callids.RemoveContactCallID]`)
+		return
+	}
+	cllr.AddCallBack(panelCaller.removeContactCB)
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 4.
 
-// Define calls to the main process and their and call backs.
+// 3.1: Define your funcs which call to the main process.
+// 3.2: Define your funcs which the main process calls back to.
 
 */
 
@@ -205,7 +239,7 @@ func (panelCaller *Caller) initialCalls() {
 
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
-	// Make any initial calls to the main process that must be made when the app starts.
+	//4: Make any initial calls to the main process that must be made when the app starts.
 
 	*/
 

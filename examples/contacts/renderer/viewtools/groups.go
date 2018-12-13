@@ -208,6 +208,16 @@ func (tools *Tools) initializeGroups() {
 		return
 	}
 	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
+	// About LiscenseTab button.
+	buttonid = "tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-LiscenseTab"
+	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
+	panel = tools.notJS.GetElementByID("tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-LiscenseTabPanel-inner-LiscenseTabPanel")
+	if panel == js.Undefined() {
+		message := "viewtools.initializeGroups: Cant find #tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-LiscenseTabPanel-inner-LiscenseTabPanel"
+		tools.alert.Invoke(message)
+		return
+	}
+	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel)
 	// AddAContact AddButton button.
 	buttonid = "tabsMasterView-home-pad-AddButton"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)

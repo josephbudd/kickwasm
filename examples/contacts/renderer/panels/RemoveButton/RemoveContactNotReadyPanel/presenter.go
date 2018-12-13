@@ -3,22 +3,22 @@ package RemoveContactNotReadyPanel
 import (
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
+	"github.com/pkg/errors"
 )
 
 /*
 
 	Panel name: RemoveContactNotReadyPanel
-	Panel id:   tabsMasterView-home-pad-RemoveButton-RemoveContactNotReadyPanel
 
 */
 
 // Presenter writes to the panel
 type Presenter struct {
-	panel     *Panel
-	controler *Controler
-	caller    *Caller
-	tools     *viewtools.Tools // see /renderer/viewtools
-	notJS     *notjs.NotJS
+	panelGroup *PanelGroup
+	controler  *Controler
+	caller     *Caller
+	tools      *viewtools.Tools // see /renderer/viewtools
+	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
@@ -31,26 +31,25 @@ type Presenter struct {
 }
 
 // defineMembers defines the Presenter members by their html elements.
-func (panelPresenter *Presenter) defineMembers() {
+func (panelPresenter *Presenter) defineMembers() (err error) {
+	defer func() {
+		// close and check for the error
+		if err != nil {
+			err = errors.WithMessage(err, "(panelPresenter *Presenter) defineMembers()")
+		}
+	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
 	// Define your Presenter members.
-	// example:
-
-	panelPresenter.customerName = panelPresenter.notJS.GetElementByID("customerName")
 
 	*/
+
+	return
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 3.
 
 // Define your Presenter functions.
-// example:
-
-// displayCustomer displays the customer in the panel.
-func (panelPresenter *Presenter) displayCustomer(record *records.CustomerRecord) {
-	panelPresenter.notJS.SetInnerText(panelPresenter.customerName, record.Name)
-}
 
 */
