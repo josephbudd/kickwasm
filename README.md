@@ -45,6 +45,10 @@ TDD ( test driven design ) is very simple to do in go because TDD involves the i
 
 #### Dec 19, 2018
 
+Edited README.
+
+#### Dec 12, 2018
+
 Reviewed tests and fixed minor issues found while refactoring the heck out of the contacts example with rekickwasm. Rekickwasm is still not done.
 
 Now, each one of a markup panel's startup funcs returns errors and wrap those errors with meaning as they return them. Startup errors are automatically logged to the javascript console, the browser alert and the application's log.
@@ -53,7 +57,7 @@ The documentation in each markup panel's package in the /renderer/panels/ folder
 
 The wiki has been updated.
 
-#### Update: Dec 7, 2018
+#### Dec 7, 2018
 
 More significant changes for various reasons as I use rekickwasm.
 
