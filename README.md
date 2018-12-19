@@ -16,14 +16,17 @@ On the contrary, the contacts example is a framework with code added. The contac
 1. The mainprocess folder contains the main process level logic.
 1. The renderer folder contains the renderer level logic.
 
-### The framework has a 2 step build
+### The framework has 2 processes
 
-The main process is a web browser running through whatever port you indicate in the application's http.yaml file. When you start the main process it opens a browser and runs the renderer process in the browser.
+1. The **main process** is a web server running through whatever port you indicate in your application's http.yaml file.
+1. When you start the main process it opens a browser which loads and runs the **renderer process**.
+
+### The framework has a 2 step build
 
 So when you build the framework, you build both the renderer process and the main process.
 
-1. Build the renderer process with **GOARCH=wasm GOOS=js go build -o app.wasm main.go panels.go**
-1. Build the main process with **go build**
+1. Build the renderer process for browsers with **GOARCH=wasm GOOS=js go build -o app.wasm main.go panels.go**
+1. Build the main process for your computer with **go build**
 1. The framework is run like any other simple program with **./my-app-name**
 
 ### The framework imports
@@ -40,7 +43,7 @@ TDD ( test driven design ) is very simple to do in go because TDD involves the i
 
 ### Not yet stable and possibly buggy
 
-#### Dec 12, 2018
+#### Dec 19, 2018
 
 Reviewed tests and fixed minor issues found while refactoring the heck out of the contacts example with rekickwasm. Rekickwasm is still not done.
 
