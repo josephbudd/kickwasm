@@ -51,35 +51,15 @@ Edited README.
 
 Reviewed tests and fixed minor issues found while refactoring the heck out of the contacts example with rekickwasm. Rekickwasm is still not done.
 
-Now, each one of a markup panel's startup funcs returns errors and wrap those errors with meaning as they return them. Startup errors are automatically logged to the javascript console, the browser alert and the application's log.
+##### Panel initialization errors
+
+Your panel initialization errors are the errors that you make in your go code in each markup panel's initialization funcs. A typical mistake that I make is attempting to get an element using the wrong id. Another typical mistake of mine is attempting to setup a call to the main process before I have created the call.
+
+Now the framework returns your errors and wraps those errors with meaning as they are returned. The framework also logs to the javascript console, the browser alert and the application's log. So you get to see the error and where the error came from right away. This makes finding and getting rid of those initial mistakes in your panel code a lot easier.
 
 The documentation in each markup panel's package in the /renderer/panels/ folder has been updated.
 
 The wiki has been updated.
-
-#### Dec 7, 2018
-
-More significant changes for various reasons as I use rekickwasm.
-
-I also used rekickwasm to add a simple about section to the contacts example. The about section shows how tabs look and work.
-
-#### Dec 1-5, 2018
-
-I'm still building and modifying rekickwasm and that means significant changes to
-
-* kickwasm,
-* the framework kickwasm generates,
-
-I'll have the example videos done soon.
-
-#### Nov 23, 2018
-
-Building the contacts CRUD example resulted in major changes and corrections to
-
-* kickwasm,
-* the framework kickwasm generates,
-
-Following that, my focus has been on rekickwasm. Rekickwasm is the refactoring tool for kickwasm. Building rekickwasm resulted in other major changes to kickwasm and the framework it generates.
 
 ## Installation
 
