@@ -36,7 +36,7 @@ type Caller struct {
 	state uint64
 	// my added callers
 	// interfaces which can be mocked in tests.
-	updateContactCaller caller.Renderer
+	updateContactConnection caller.Renderer
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
@@ -49,27 +49,27 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// 2.1: Define each one of your added Caller members.
-	// 2.2: Tell the main processs to add a call back to each of your call back funcs.
+	// 2.1: Define each one of your Caller connection members as a conection to the main process.
+	// 2.2: Tell the caller connection to the main processs to add a call back to each of your call back funcs.
 
 	*/
 
 	var found bool
-	var cllr caller.Renderer
+	var con caller.Renderer
 
 	// UpdateCaller
-	if panelCaller.updateContactCaller, found = panelCaller.connection[callids.UpdateContactCallID]; !found {
+	if panelCaller.updateContactConnection, found = panelCaller.connection[callids.UpdateContactCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.UpdateContactCallID]`)
 		return
 	}
-	panelCaller.updateContactCaller.AddCallBack(panelCaller.updateContactCB)
+	panelCaller.updateContactConnection.AddCallBack(panelCaller.updateContactCB)
 
 	// GetContact
-	if cllr, found = panelCaller.connection[callids.GetContactCallID]; !found {
+	if con, found = panelCaller.connection[callids.GetContactCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.GetContactCallID]`)
 		return
 	}
-	cllr.AddCallBack(panelCaller.getContactCB)
+	con.AddCallBack(panelCaller.getContactCB)
 
 	return
 }
@@ -88,7 +88,7 @@ func (panelCaller *Caller) updateContact(record *types.ContactRecord) {
 		Record: record,
 		State:  panelCaller.state,
 	}
-	panelCaller.updateContactCaller.CallMainProcess(params)
+	panelCaller.updateContactConnection.CallMainProcess(params)
 }
 
 func (panelCaller *Caller) updateContactCB(params interface{}) {

@@ -34,10 +34,10 @@ type Caller struct {
 	// my added members
 	state uint64
 	// my calls
-	getContactCaller                           caller.Renderer
-	getContactsPageStatesCaller                caller.Renderer
-	getContactsPageCitiesMatchStateCaller      caller.Renderer
-	getContactsPageRecordsMatchStateCityCaller caller.Renderer
+	getContactConnection                           caller.Renderer
+	getContactsPageStatesConnection                caller.Renderer
+	getContactsPageCitiesMatchStateConnection      caller.Renderer
+	getContactsPageRecordsMatchStateCityConnection caller.Renderer
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
@@ -50,55 +50,55 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// 2.1: Define each one of your added Caller members.
-	// 2.2: Tell the main processs to add a call back to each of your call back funcs.
+	// 2.1: Define each one of your Caller connection members as a conection to the main process.
+	// 2.2: Tell the caller connection to the main processs to add a call back to each of your call back funcs.
 
 	*/
 
 	var found bool
-	var cllr caller.Renderer
+	var con caller.Renderer
 
 	// GetContact
-	if panelCaller.getContactCaller, found = panelCaller.connection[callids.GetContactCallID]; !found {
+	if panelCaller.getContactConnection, found = panelCaller.connection[callids.GetContactCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.GetContactCallID]`)
 		return
 	}
-	panelCaller.getContactCaller.AddCallBack(panelCaller.getContactCB)
+	panelCaller.getContactConnection.AddCallBack(panelCaller.getContactCB)
 
 	// GetContactsPageStates
-	if panelCaller.getContactsPageStatesCaller, found = panelCaller.connection[callids.GetContactsPageStatesCallID]; !found {
+	if panelCaller.getContactsPageStatesConnection, found = panelCaller.connection[callids.GetContactsPageStatesCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.GetContactCallID]`)
 		return
 	}
-	panelCaller.getContactsPageStatesCaller.AddCallBack(panelCaller.GetContactsPageStatesCB)
+	panelCaller.getContactsPageStatesConnection.AddCallBack(panelCaller.GetContactsPageStatesCB)
 
 	// GetContactsPageCitiesMatchState
-	if panelCaller.getContactsPageCitiesMatchStateCaller, found = panelCaller.connection[callids.GetContactsPageCitiesMatchStateCallID]; !found {
+	if panelCaller.getContactsPageCitiesMatchStateConnection, found = panelCaller.connection[callids.GetContactsPageCitiesMatchStateCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.GetContactsPageCitiesMatchStateCallID]`)
 		return
 	}
-	panelCaller.getContactsPageCitiesMatchStateCaller.AddCallBack(panelCaller.GetContactsPageCitiesMatchStateCB)
+	panelCaller.getContactsPageCitiesMatchStateConnection.AddCallBack(panelCaller.GetContactsPageCitiesMatchStateCB)
 
 	// GetContactsPageRecordsMatchStateCity
-	if panelCaller.getContactsPageRecordsMatchStateCityCaller, found = panelCaller.connection[callids.GetContactsPageRecordsMatchStateCityCallID]; !found {
+	if panelCaller.getContactsPageRecordsMatchStateCityConnection, found = panelCaller.connection[callids.GetContactsPageRecordsMatchStateCityCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.GetContactsPageRecordsMatchStateCityCallID]`)
 		return
 	}
-	panelCaller.getContactsPageRecordsMatchStateCityCaller.AddCallBack(panelCaller.GetContactsPageRecordsMatchStateCityCB)
+	panelCaller.getContactsPageRecordsMatchStateCityConnection.AddCallBack(panelCaller.GetContactsPageRecordsMatchStateCityCB)
 
 	// UpdateContact
-	if cllr, found = panelCaller.connection[callids.UpdateContactCallID]; !found {
+	if con, found = panelCaller.connection[callids.UpdateContactCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.UpdateContactCallID]`)
 		return
 	}
-	cllr.AddCallBack(panelCaller.updateContactCB)
+	con.AddCallBack(panelCaller.updateContactCB)
 
 	// RemoveContact
-	if cllr, found = panelCaller.connection[callids.RemoveContactCallID]; !found {
+	if con, found = panelCaller.connection[callids.RemoveContactCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.RemoveContactCallID]`)
 		return
 	}
-	cllr.AddCallBack(panelCaller.removeContactCB)
+	con.AddCallBack(panelCaller.removeContactCB)
 
 	return
 }
@@ -125,7 +125,7 @@ func (panelCaller *Caller) GetContact(id uint64) {
 		ID:    id,
 		State: panelCaller.state,
 	}
-	panelCaller.getContactCaller.CallMainProcess(params)
+	panelCaller.getContactConnection.CallMainProcess(params)
 }
 
 func (panelCaller *Caller) getContactCB(params interface{}) {
@@ -162,7 +162,7 @@ func (panelCaller *Caller) GetContactsPageStates(sortedIndex, pageSize, state ui
 		PageSize:    pageSize,
 		State:       state | panelCaller.state,
 	}
-	panelCaller.getContactsPageStatesCaller.CallMainProcess(params)
+	panelCaller.getContactsPageStatesConnection.CallMainProcess(params)
 }
 
 // GetContactsPageStatesCB handles the main process call back.
@@ -190,7 +190,7 @@ func (panelCaller *Caller) GetContactsPageCitiesMatchState(sortedIndex, pageSize
 		State:       state | panelCaller.state,
 		StateMatch:  stateMatch,
 	}
-	panelCaller.getContactsPageCitiesMatchStateCaller.CallMainProcess(params)
+	panelCaller.getContactsPageCitiesMatchStateConnection.CallMainProcess(params)
 }
 
 // GetContactsPageCitiesMatchStateCB handles the main process call back.
@@ -219,7 +219,7 @@ func (panelCaller *Caller) GetContactsPageRecordsMatchStateCity(sortedIndex, pag
 		StateMatch:  stateMatch,
 		CityMatch:   cityMatch,
 	}
-	panelCaller.getContactsPageRecordsMatchStateCityCaller.CallMainProcess(params)
+	panelCaller.getContactsPageRecordsMatchStateCityConnection.CallMainProcess(params)
 }
 
 // GetContactsPageRecordsMatchStateCityCB handles the main process call back.

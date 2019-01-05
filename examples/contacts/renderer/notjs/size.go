@@ -6,38 +6,38 @@ import (
 )
 
 // WindowInnerWidth returns the window's inner width.
-func (notJS *NotJS) WindowInnerWidth() float64 {
-	return notJS.global.Get("innerWidth").Float()
+func (notjs *NotJS) WindowInnerWidth() float64 {
+	return notjs.global.Get("innerWidth").Float()
 }
 
 // WindowInnerHeight returns the window's inner height.
-func (notJS *NotJS) WindowInnerHeight() float64 {
-	return notJS.global.Get("innerHeight").Float()
+func (notjs *NotJS) WindowInnerHeight() float64 {
+	return notjs.global.Get("innerHeight").Float()
 }
 
 // InnerWidth returns the innermost width.
-func (notJS *NotJS) InnerWidth(el js.Value) float64 {
+func (notjs *NotJS) InnerWidth(el js.Value) float64 {
 	// offset - left, right padding and border
-	styles := notJS.getComputedStyle(el)
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("width").String()
 	f, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	return f
 }
 
 // InnerHeight returns the innermost height.
-func (notJS *NotJS) InnerHeight(el js.Value) float64 {
+func (notjs *NotJS) InnerHeight(el js.Value) float64 {
 	// offset - top, bottom padding and border
-	styles := notJS.getComputedStyle(el)
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("height").String()
 	f, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	return f
 }
 
 // OuterWidth returns the total width.
-func (notJS *NotJS) OuterWidth(el js.Value) float64 {
+func (notjs *NotJS) OuterWidth(el js.Value) float64 {
 	// offset + left, right margin
 	ofw := el.Get("offsetWidth").Float()
-	styles := notJS.getComputedStyle(el)
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("marginLeft").String()
 	ml, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	px = styles.Get("marginRight").String()
@@ -48,10 +48,10 @@ func (notJS *NotJS) OuterWidth(el js.Value) float64 {
 }
 
 // OuterHeight returns the total height.
-func (notJS *NotJS) OuterHeight(el js.Value) float64 {
+func (notjs *NotJS) OuterHeight(el js.Value) float64 {
 	// offset + top, bottom margin
 	ofh := el.Get("offsetHeight").Float()
-	styles := notJS.getComputedStyle(el)
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("marginTop").String()
 	mt, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	px = styles.Get("marginBottom").String()
@@ -62,34 +62,34 @@ func (notJS *NotJS) OuterHeight(el js.Value) float64 {
 }
 
 // OutlineWidth return the total outline width.
-func (notJS *NotJS) OutlineWidth(el js.Value) float64 {
-	styles := notJS.getComputedStyle(el)
+func (notjs *NotJS) OutlineWidth(el js.Value) float64 {
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("outlineWidth").String()
 	f, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	return f
 }
 
 // WidthExtras returns the total width that is not the innermost width.
-func (notJS *NotJS) WidthExtras(el js.Value) float64 {
-	b := notJS.BorderWidth(el)
-	p := notJS.PaddingWidth(el)
-	m := notJS.MarginWidth(el)
-	o := notJS.OutlineWidth(el)
+func (notjs *NotJS) WidthExtras(el js.Value) float64 {
+	b := notjs.BorderWidth(el)
+	p := notjs.PaddingWidth(el)
+	m := notjs.MarginWidth(el)
+	o := notjs.OutlineWidth(el)
 	return b + p + m + o + o
 }
 
 // HeightExtras returns the total height that is not the innermost height.
-func (notJS *NotJS) HeightExtras(el js.Value) float64 {
-	b := notJS.BorderHeight(el)
-	p := notJS.PaddingHeight(el)
-	m := notJS.MarginHeight(el)
-	o := notJS.OutlineWidth(el)
+func (notjs *NotJS) HeightExtras(el js.Value) float64 {
+	b := notjs.BorderHeight(el)
+	p := notjs.PaddingHeight(el)
+	m := notjs.MarginHeight(el)
+	o := notjs.OutlineWidth(el)
 	return b + p + m + o + o
 }
 
 // PaddingWidth returns the total padding width.
-func (notJS *NotJS) PaddingWidth(el js.Value) float64 {
-	styles := notJS.getComputedStyle(el)
+func (notjs *NotJS) PaddingWidth(el js.Value) float64 {
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("paddingLeft").String()
 	pl, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	px = styles.Get("paddingRight").String()
@@ -98,8 +98,8 @@ func (notJS *NotJS) PaddingWidth(el js.Value) float64 {
 }
 
 // PaddingHeight returns the total padding height.
-func (notJS *NotJS) PaddingHeight(el js.Value) float64 {
-	styles := notJS.getComputedStyle(el)
+func (notjs *NotJS) PaddingHeight(el js.Value) float64 {
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("paddingTop").String()
 	pt, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	px = styles.Get("paddingBottom").String()
@@ -108,8 +108,8 @@ func (notJS *NotJS) PaddingHeight(el js.Value) float64 {
 }
 
 // MarginWidth returns the total margin width.
-func (notJS *NotJS) MarginWidth(el js.Value) float64 {
-	styles := notJS.getComputedStyle(el)
+func (notjs *NotJS) MarginWidth(el js.Value) float64 {
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("marginLeft").String()
 	ml, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	px = styles.Get("marginRight").String()
@@ -118,8 +118,8 @@ func (notJS *NotJS) MarginWidth(el js.Value) float64 {
 }
 
 // MarginHeight returns the total margin height.
-func (notJS *NotJS) MarginHeight(el js.Value) float64 {
-	styles := notJS.getComputedStyle(el)
+func (notjs *NotJS) MarginHeight(el js.Value) float64 {
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("marginTop").String()
 	mt, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	px = styles.Get("marginBottom").String()
@@ -128,8 +128,8 @@ func (notJS *NotJS) MarginHeight(el js.Value) float64 {
 }
 
 // BorderWidth returns the total border width.
-func (notJS *NotJS) BorderWidth(el js.Value) float64 {
-	styles := notJS.getComputedStyle(el)
+func (notjs *NotJS) BorderWidth(el js.Value) float64 {
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("borderLeftWidth").String()
 	blw, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	px = styles.Get("borderRightWidth").String()
@@ -138,8 +138,8 @@ func (notJS *NotJS) BorderWidth(el js.Value) float64 {
 }
 
 // BorderHeight returns the total border height.
-func (notJS *NotJS) BorderHeight(el js.Value) float64 {
-	styles := notJS.getComputedStyle(el)
+func (notjs *NotJS) BorderHeight(el js.Value) float64 {
+	styles := notjs.getComputedStyle(el)
 	px := styles.Get("borderTopWidth").String()
 	btw, _ := strconv.ParseFloat(px[:len(px)-2], 64)
 	px = styles.Get("borderBottomWidth").String()
@@ -147,6 +147,7 @@ func (notJS *NotJS) BorderHeight(el js.Value) float64 {
 	return btw + bbw
 }
 
-func (notJS *NotJS) getComputedStyle(el js.Value) js.Value {
-	return notJS.global.Call("getComputedStyle", el)
+func (notjs *NotJS) getComputedStyle(el js.Value) js.Value {
+	return notjs.global.Call("getComputedStyle", el)
 }
+

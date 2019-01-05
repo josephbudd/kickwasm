@@ -6,21 +6,22 @@ import (
 
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/filepaths"
 )
+
 /*
 
 	TODO: Modify func serve for your special needs.
 
-	If for example you want this main process to serve your own css files in /renderer/widgetcss/.
+	If for example you want this main process to serve your own css files in /site/widgetcss/.
 
 	  1. In func serve below add the following 2 lines:
 	    case strings.HasPrefix(r.URL.Path, "/widgetcss"):
 			withDefaultHeaders(w, r, serveURLPath)
 
-	  2. In the /renderer/ folder add the /widgetcss/ folder
-	     Add your css files to the /renderer/widgetcss/ folder.
+	  2. In the /site/ folder add the /widgetcss/ folder
+	     Add your css files to the /site/widgetcss/ folder.
 
-	  3. In the /renderer/templates/ folder create a "head.tmpl" file if you haven't already.
-	     In /renderer/templates/head.tmpl add the line:
+	  3. In the /site/templates/ folder create a "head.tmpl" file if you haven't already.
+	     In /site/templates/head.tmpl add the line:
 		  <style> @import url(widgetcss/vlist.css); </style>
 
 */
@@ -78,4 +79,3 @@ func serveURLPath(w http.ResponseWriter, r *http.Request) {
 func serveWASMURLPath(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, filepaths.BuildRendererPath(r.URL.Path[5:]))
 }
-

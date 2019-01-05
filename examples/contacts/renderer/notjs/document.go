@@ -7,8 +7,8 @@ import (
 )
 
 // HostPort returns the document location host and port.
-func (notJS *NotJS) HostPort() (host string, port uint64) {
-	documentLocation := notJS.document.Get("location").String()
+func (notjs *NotJS) HostPort() (host string, port uint64) {
+	documentLocation := notjs.document.Get("location").String()
 	// "http://127.0.0.1:9094/"
 	URL, err := url.Parse(documentLocation)
 	if err != nil {
@@ -25,3 +25,4 @@ func (notJS *NotJS) HostPort() (host string, port uint64) {
 	}
 	return
 }
+

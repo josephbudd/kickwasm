@@ -15,20 +15,20 @@ The colors example in the examples/ folder, is only a framework without anything
 1. The domain folder contains domain ( application ) level logic.
 1. The mainprocess folder contains the main process level logic.
 1. The renderer folder contains the renderer level logic.
-1. The site folder contains the templates, styles etc for the browser.
+1. The site folder contains the wasm, templates, styles etc for the browser.
 
 ### The framework has 2 processes
 
 1. The **main process** is a web server running through whatever port you indicate in your application's http.yaml file.
-1. When you start the main process it opens a browser which loads and runs the **renderer process**.
+1. When you start the main process it opens a browser which loads and runs the **renderer process** from the **site/** folder.
 
 ### The framework has a 2 step build
 
-So when you build the framework, you build both the renderer process and the main process.
+So when you build the framework, you build both the renderer process and the main process. The renderer process code is in the **renderer/** folder but it is built into the **site/** folder.
 
-There is a shell script in the renderer folder that builds the renderer process. It's **build.sh**.
+There is a shell script in the **renderer/** folder that builds the renderer process into the **site/** folder. It's **build.sh**.
 
-Here is an example using the colors example. In this example I
+Here is a build example using the colors example. In this example I
 
 * cd to the examples/colors/renderer/ folder.
 * run the renderer build shell script.
@@ -40,7 +40,7 @@ Here is an example using the colors example. In this example I
 
 cd $GOPATH
 cd src/github.com/josephbudd/kickwasm/examples/colors
-cd render
+cd renderer
 ./build.sh
 cd ..
 go build
@@ -98,7 +98,11 @@ Once you build your application you can distribute it. You can distribute it as 
 1. the **examples/colors/http.yaml** file.
 1. the **examples/colors/site/** folder.
 
-The contacts example is built using an older version of kickwasm. I will update this part of the readme when I rebuild the contacts example with this new version of kickawasm.
+### For the examples/contacts/ application that would be
+
+1. the **examples/contacts/contacts** file which is the executable.
+1. the **examples/contacts/http.yaml** file.
+1. the **examples/contacts/site/** folder.
 
 ## The examples
 
@@ -129,4 +133,3 @@ The video demonstrates some practical capabilities of the framework. In this vid
 
 * The rest of the wiki.
 * Start from scratch installing kickwasm source code and building the examples on linux and windows so that I can correctly define the procedures.
-* Rebuild the contacts example.

@@ -33,8 +33,8 @@ type Caller struct {
 	*/
 
 	// my added members
-	state               uint64
-	removeContactCaller caller.Renderer
+	state                   uint64
+	removeContactConnection caller.Renderer
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
@@ -47,27 +47,25 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// 2.1: Define each one of your added Caller members.
-	// 2.2: Tell the main processs to add a call back to each of your call back funcs.
+	// 2.1: Define each one of your Caller connection members as a conection to the main process.
+	// 2.2: Tell the caller connection to the main processs to add a call back to each of your call back funcs.
 
 	*/
 
 	var found bool
-	var cllr caller.Renderer
+	var con caller.Renderer
 
-	if panelCaller.removeContactCaller, found = panelCaller.connection[callids.RemoveContactCallID]; !found {
+	if panelCaller.removeContactConnection, found = panelCaller.connection[callids.RemoveContactCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.RemoveContactCallID]`)
 		return
-	} else {
-		panelCaller.removeContactCaller.AddCallBack(panelCaller.removeContactCB)
 	}
+	panelCaller.removeContactConnection.AddCallBack(panelCaller.removeContactCB)
 
-	if cllr, found = panelCaller.connection[callids.GetContactCallID]; !found {
+	if con, found = panelCaller.connection[callids.GetContactCallID]; !found {
 		err = errors.New(`unable to find panelCaller.connection[callids.GetContactCallID]`)
 		return
-	} else {
-		cllr.AddCallBack(panelCaller.getContactCB)
 	}
+	con.AddCallBack(panelCaller.getContactCB)
 
 	return
 }
@@ -100,7 +98,7 @@ func (panelCaller *Caller) removeContact(id uint64) {
 	params := &types.RendererToMainProcessRemoveContactParams{
 		ID: id,
 	}
-	panelCaller.removeContactCaller.CallMainProcess(params)
+	panelCaller.removeContactConnection.CallMainProcess(params)
 }
 
 func (panelCaller *Caller) removeContactCB(params interface{}) {
