@@ -88,15 +88,15 @@ Cleanup.
 
 Once you build your application you can distribute it. You can distribute it as a folder. You only need to collect the following 3 items together in that folder.
 
-.1 the **executable** file.
-.1 the **http.yaml** file.
-.1 the **site/** folder.
+1. the **executable** file.
+1. the **http.yaml** file.
+1. the **site/** folder.
 
 ### For the examples/colors/ application that would be
 
-.1 the **examples/colors/colors** file which is the executable.
-.1 the **examples/colors/http.yaml** file.
-.1 the **examples/colors/site/** folder.
+1. the **examples/colors/colors** file which is the executable.
+1. the **examples/colors/http.yaml** file.
+1. the **examples/colors/site/** folder.
 
 The contacts example is built using an older version of kickwasm. I will update this part of the readme when I rebuild the contacts example with this new version of kickawasm.
 
