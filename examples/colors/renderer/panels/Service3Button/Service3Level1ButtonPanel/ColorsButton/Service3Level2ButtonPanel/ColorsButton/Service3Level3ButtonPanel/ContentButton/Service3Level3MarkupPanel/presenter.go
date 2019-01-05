@@ -3,8 +3,8 @@ package Service3Level3MarkupPanel
 import (
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/colors/site/notjs"
-	"github.com/josephbudd/kickwasm/examples/colors/site/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
 )
 
 /*
@@ -18,7 +18,7 @@ type Presenter struct {
 	panelGroup *PanelGroup
 	controler  *Controler
 	caller     *Caller
-	tools      *viewtools.Tools // see /site/viewtools
+	tools      *viewtools.Tools // see /renderer/viewtools
 	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.

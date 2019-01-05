@@ -49,8 +49,8 @@ const (
 
 	// renderer site
 
-	importRendererViewTools = "/site/viewtools"
-	importRendererNotJS     = "/site/notjs"
+	importRendererViewTools = "/renderer/viewtools"
+	importRendererNotJS     = "/renderer/notjs"
 )
 
 // Imports is the import paths.
@@ -335,12 +335,13 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	ap.paths.OutputRendererInterfacesPanelHelper = filepath.Join(ap.paths.OutputRendererInterfaces, folderNames.PanelHelper)
 	ap.paths.OutputRendererImplementations = filepath.Join(ap.paths.OutputRenderer, folderNames.Implementations)
 	ap.paths.OutputRendererImplementationsPanelHelper = filepath.Join(ap.paths.OutputRendererImplementations, folderNames.PanelHelping)
+	ap.paths.OutputRendererViewTools = filepath.Join(ap.paths.OutputRenderer, folderNames.ViewTools)
+	ap.paths.OutputRendererNotJS = filepath.Join(ap.paths.OutputRenderer, folderNames.NotJS)
+
 	// renderer site folders
 	ap.paths.OutputRendererSite = filepath.Join(ap.paths.Output, folderNames.RendererSite)
 	ap.paths.OutputRendererCSS = filepath.Join(ap.paths.OutputRendererSite, folderNames.CSS)
 	ap.paths.OutputRendererTemplates = filepath.Join(ap.paths.OutputRendererSite, folderNames.Templates)
-	ap.paths.OutputRendererViewTools = filepath.Join(ap.paths.OutputRendererSite, folderNames.ViewTools)
-	ap.paths.OutputRendererNotJS = filepath.Join(ap.paths.OutputRendererSite, folderNames.NotJS)
 
 	// output mainprocess folder and sub folders.
 	ap.paths.OutputMainProcess = filepath.Join(ap.paths.Output, folderNames.MainProcess)

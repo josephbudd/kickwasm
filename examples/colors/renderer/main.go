@@ -9,8 +9,8 @@ import (
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/callClient"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/calls"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/implementations/panelHelping"
-	"github.com/josephbudd/kickwasm/examples/colors/site/notjs"
-	"github.com/josephbudd/kickwasm/examples/colors/site/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
 )
 
 /*

@@ -6,8 +6,8 @@ import (
 	"github.com/josephbudd/kickwasm/examples/colors/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/interfaces/panelHelper"
-	"github.com/josephbudd/kickwasm/examples/colors/site/notjs"
-	"github.com/josephbudd/kickwasm/examples/colors/site/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
 )
 
 /*

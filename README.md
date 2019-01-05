@@ -10,11 +10,12 @@ The framework works as soon as you build it. You can build the framework as soon
 
 The colors example in the examples/ folder, is only a framework without anything added to it. See the colors example video below.
 
-### The framework code is physically and logically organized into 3 main levels
+### The framework code is physically and logically organized into 4 main levels
 
 1. The domain folder contains domain ( application ) level logic.
 1. The mainprocess folder contains the main process level logic.
 1. The renderer folder contains the renderer level logic.
+1. The site folder contains the templates, styles etc for the browser.
 
 ### The framework has 2 processes
 
@@ -88,13 +89,13 @@ Cleanup.
 Once you build your application you can distribute it. You can distribute it as a folder. You only need to collect the following 3 items together in that folder.
 
 .1 the **executable** file.
-.1 the **site.yaml** file.
+.1 the **http.yaml** file.
 .1 the **site/** folder.
 
 ### For the examples/colors/ application that would be
 
 .1 the **examples/colors/colors** file which is the executable.
-.1 the **examples/colors/site.yaml** file.
+.1 the **examples/colors/http.yaml** file.
 .1 the **examples/colors/site/** folder.
 
 The contacts example is built using an older version of kickwasm. I will update this part of the readme when I rebuild the contacts example with this new version of kickawasm.

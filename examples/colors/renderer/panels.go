@@ -4,6 +4,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/colors/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/interfaces/panelHelper"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service1Button/Service1Level1ButtonPanel/ColorsButton/Service1Level2ButtonPanel/ColorsButton/Service1Level3ButtonPanel/ColorsButton/Service1Level4ButtonPanel/ColorsButton/Service1Level5ButtonPanel/ContentButton/Service1Level5MarkupPanel"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service1Button/Service1Level1ButtonPanel/ColorsButton/Service1Level2ButtonPanel/ColorsButton/Service1Level3ButtonPanel/ColorsButton/Service1Level4ButtonPanel/ContentButton/Service1Level4MarkupPanel"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service1Button/Service1Level1ButtonPanel/ColorsButton/Service1Level2ButtonPanel/ColorsButton/Service1Level3ButtonPanel/ContentButton/Service1Level3MarkupPanel"
@@ -29,8 +30,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service5Button/Service5Level1ButtonPanel/ColorsButton/Service5Level2ButtonPanel/ColorsButton/Service5Level3ButtonPanel/ContentButton/Service5Level3MarkupPanel"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service5Button/Service5Level1ButtonPanel/ColorsButton/Service5Level2ButtonPanel/ContentButton/Service5Level2MarkupPanel"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/panels/Service5Button/Service5Level1ButtonPanel/ContentButton/Service5Level1MarkupPanel"
-	"github.com/josephbudd/kickwasm/examples/colors/site/notjs"
-	"github.com/josephbudd/kickwasm/examples/colors/site/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
 )
 
 /*
