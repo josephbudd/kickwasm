@@ -54,7 +54,7 @@ type cssTemplateData struct {
 	Mod5             func(int) int
 }
 
-func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
+func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	n := 1
 	if builder.Colors.LastColorLevel > 5 {
 		n = int(builder.Colors.LastColorLevel) / 5
@@ -112,15 +112,16 @@ func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) error
 		},
 	}
 	folderpaths := appPaths.GetPaths()
-	fname := "colors.css"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.ColorsDotCSS
 	oPath := filepath.Join(folderpaths.OutputRendererCSS, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.ColorsCSS, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.ColorsCSS, data, appPaths); err != nil {
+		return
 	}
-	fname = "main.css"
+	fname = fileNames.MainDotCSS
 	oPath = filepath.Join(folderpaths.OutputRendererCSS, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.MainCSS, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.MainCSS, data, appPaths); err != nil {
+		return
 	}
-	return nil
+	return
 }

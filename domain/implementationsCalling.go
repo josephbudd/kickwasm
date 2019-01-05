@@ -8,17 +8,17 @@ import (
 )
 
 // Create the files in the domain/implementations/calling/ folder.
-func createCallingGo(appPaths paths.ApplicationPathsI, data *templateData) error {
+func createCallingGo(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
 	folderpaths := appPaths.GetPaths()
 	fname := "mainprocess.go"
 	oPath := filepath.Join(folderpaths.OutputDomainImplementationsCalling, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.ImplementationsMainProcessGo, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.ImplementationsMainProcessGo, data, appPaths); err != nil {
+		return
 	}
 	fname = "renderer.go"
 	oPath = filepath.Join(folderpaths.OutputDomainImplementationsCalling, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.ImplementationsRendererGo, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.ImplementationsRendererGo, data, appPaths); err != nil {
+		return
 	}
-	return nil
+	return
 }

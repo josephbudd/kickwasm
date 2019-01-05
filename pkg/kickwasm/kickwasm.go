@@ -17,7 +17,7 @@ import (
 
 // Do builds the source code and .kickwasm/ into the output folder.
 // Returns the paths.ApplicationPathsI and the error.
-func Do(pwd, outputFolder, yamlpath string, addLocations bool, host string, port uint, headTemplateFile string) (appPaths *paths.ApplicationPaths, err error) {
+func Do(pwd, outputFolder, yamlpath string, addLocations bool, vBreaking, vFeature, vPatch int, host string, port uint) (appPaths *paths.ApplicationPaths, err error) {
 	sl := slurp.NewSlurper()
 	builder, err := sl.Gulp(yamlpath)
 	if err != nil {
@@ -27,18 +27,19 @@ func Do(pwd, outputFolder, yamlpath string, addLocations bool, host string, port
 	parts := strings.Split(builder.ImportPath, "/")
 	appName := parts[len(parts)-1]
 	appPaths = &paths.ApplicationPaths{}
+	fileNames := appPaths.GetFileNames()
 	appPaths.Initialize(pwd, outputFolder, appName)
 	if err = appPaths.MakeOutput(); err != nil {
 		return
 	}
-	if err = create(appPaths, builder, addLocations, headTemplateFile); err != nil {
+	if err = create(appPaths, builder, addLocations); err != nil {
 		return
 	}
 	folderPaths := appPaths.GetPaths()
 	// create the .kickwasm/flags.yaml file
-	flagsPath := filepath.Join(folderPaths.OutputDotKickwasm, "flags.yaml")
+	flagsPath := filepath.Join(folderPaths.OutputDotKickwasm, fileNames.FlagDotYAML)
 	yamlStartFileName := filepath.Base(yamlpath)
-	if err = flagdata.SaveFlags(flagsPath, addLocations, yamlStartFileName); err != nil {
+	if err = flagdata.SaveFlags(flagsPath, addLocations, vBreaking, vFeature, vPatch, yamlStartFileName); err != nil {
 		return
 	}
 	// build the panel file paths
@@ -51,15 +52,15 @@ func Do(pwd, outputFolder, yamlpath string, addLocations bool, host string, port
 	return
 }
 
-func create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool, headTemplateFile string) (err error) {
+func create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool) (err error) {
 	// get the framework name from the import path.
-	if err = renderer.Create(appPaths, builder, addLocations, headTemplateFile); err != nil {
+	if err = renderer.Create(appPaths, builder, addLocations); err != nil {
 		return
 	}
-	if err = mainprocess.Create(appPaths, builder, headTemplateFile); err != nil {
+	if err = mainprocess.Create(appPaths, builder); err != nil {
 		return
 	}
-	if err = domain.Create(appPaths, builder, headTemplateFile); err != nil {
+	if err = domain.Create(appPaths, builder); err != nil {
 		return
 	}
 	return

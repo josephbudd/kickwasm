@@ -7,23 +7,29 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
-func createMainGo(appPaths paths.ApplicationPathsI, data *templateData) error {
+func createMainGo(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
 	folderpaths := appPaths.GetPaths()
-	fname := "main.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.MainDotGo
 	oPath := filepath.Join(folderpaths.Output, fname)
-	return templates.ProcessTemplate(fname, oPath, templates.MainGo, data, appPaths)
+	err = templates.ProcessTemplate(fname, oPath, templates.MainGo, data, appPaths)
+	return
 }
 
-func createPanelMapGo(appPaths paths.ApplicationPathsI, data *templateData) error {
+func createPanelMapGo(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
 	folderpaths := appPaths.GetPaths()
-	fname := "panelMap.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.PanelMapDotGo
 	oPath := filepath.Join(folderpaths.Output, fname)
-	return templates.ProcessTemplate(fname, oPath, templates.PanelMapGo, data, appPaths)
+	err = templates.ProcessTemplate(fname, oPath, templates.PanelMapGo, data, appPaths)
+	return
 }
 
-func createServeGo(appPaths paths.ApplicationPathsI, data *templateData) error {
+func createServeGo(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
 	folderpaths := appPaths.GetPaths()
-	fname := "serve.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.ServeDotGo
 	oPath := filepath.Join(folderpaths.Output, fname)
-	return templates.ProcessTemplate(fname, oPath, templates.ServeGo, data, appPaths)
+	err = templates.ProcessTemplate(fname, oPath, templates.ServeGo, data, appPaths)
+	return
 }

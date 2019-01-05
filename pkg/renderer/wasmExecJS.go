@@ -9,6 +9,7 @@ import (
 
 func createWASMExecJS(appPaths paths.ApplicationPathsI) error {
 	folderpaths := appPaths.GetPaths()
-	oPath := filepath.Join(folderpaths.OutputRenderer, "wasm_exec.js")
+	fileNames := paths.GetFileNames()
+	oPath := filepath.Join(folderpaths.OutputRendererSite, fileNames.WasmExecJS)
 	return appPaths.WriteFile(oPath, []byte(templates.WASMExecJS))
 }

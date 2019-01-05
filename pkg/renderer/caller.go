@@ -10,7 +10,8 @@ import (
 
 func createCallerGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
-	fname := "client.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.ClientDotGo
 	oPath := filepath.Join(folderpaths.OutputRendererCallClient, fname)
 	data := struct {
 		ApplicationGitPath            string

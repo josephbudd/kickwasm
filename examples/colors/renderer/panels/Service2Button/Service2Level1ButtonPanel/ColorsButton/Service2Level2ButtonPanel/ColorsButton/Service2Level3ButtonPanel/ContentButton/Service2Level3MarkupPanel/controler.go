@@ -3,8 +3,8 @@ package Service2Level3MarkupPanel
 import (
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
-	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/site/notjs"
+	"github.com/josephbudd/kickwasm/examples/colors/site/viewtools"
 )
 
 /*
@@ -19,7 +19,7 @@ type Controler struct {
 	presenter *Presenter
 	caller    *Caller
 	quitCh    chan struct{}    // send an empty struct to start the quit process.
-	tools     *viewtools.Tools // see /renderer/viewtools
+	tools     *viewtools.Tools // see /site/viewtools
 	notJS     *notjs.NotJS
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.

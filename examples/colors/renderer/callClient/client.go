@@ -7,8 +7,8 @@ import (
 
 	"github.com/josephbudd/kickwasm/examples/colors/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
-	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
-	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/site/notjs"
+	"github.com/josephbudd/kickwasm/examples/colors/site/viewtools"
 )
 
 // Client is a wasm local procedure call client.

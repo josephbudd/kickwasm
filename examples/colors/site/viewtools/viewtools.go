@@ -3,7 +3,7 @@ package viewtools
 import (
 	"syscall/js"
 
-	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/colors/site/notjs"
 )
 
 /*

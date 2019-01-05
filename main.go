@@ -9,20 +9,23 @@ import (
 
 	"github.com/josephbudd/kickwasm/pkg"
 	"github.com/josephbudd/kickwasm/pkg/kickwasm"
+	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/slurp"
 )
 
 const (
-	outputFolder = "output"
-	yamlFileName = "kickwasm.yaml"
-	ymlFileName  = "kickwasm.yml"
+	outputFolder       = "output"
+	versionBreaking    = 0 // Each new version breaks backwards compatibility.
+	versionFeature     = 7 // Each new version adds features. Retains backwards compatibility.
+	versionPatch       = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
+	versionDescription = `Beta so each new beta version breaks backwards compatibility. Added version to flags.yaml 8^(`
 )
 
 var (
 	version = []string{
 		`kickwasm:`,
-		`  Version: 0.6.0`,
-		`  Unstable and probably buggy. 8^(`,
+		fmt.Sprintf("\t\tVersion: %d.%d.%d", versionBreaking, versionFeature, versionPatch),
+		fmt.Sprintf("\t\t%s", versionDescription),
 	}
 	nlSrcBB = []byte("\n")
 	nlRepBB = []byte("\\n")
@@ -54,6 +57,7 @@ func init() {
 }
 
 func main() {
+	fileNames := paths.GetFileNames()
 	flag.Parse()
 	if VersionFlag {
 		for _, v := range version {
@@ -65,8 +69,8 @@ func main() {
 		flag.PrintDefaults()
 		return
 	}
-	if filename := filepath.Base(YAMLFileFlag); filename != yamlFileName && filename != ymlFileName {
-		log.Printf("Kickwasm needs a YAML file named %s or %s to build the framework not a file named %q", yamlFileName, ymlFileName, filename)
+	if filename := filepath.Base(YAMLFileFlag); filename != fileNames.KickwasmDotYAML && filename != fileNames.KickwasmDotYML {
+		log.Printf("Kickwasm needs a YAML file named %s or %s to build the framework not a file named %q", fileNames.KickwasmDotYAML, fileNames.KickwasmDotYML, filename)
 		return
 	}
 	// initialize paths
@@ -75,7 +79,7 @@ func main() {
 		log.Println("Tried to get the working directory but couldn't, ", err)
 		return
 	}
-	if _, err = kickwasm.Do(pwd, outputFolder, YAMLFileFlag, LocationsFlag, pkg.LocalHost, pkg.LocalPort, pkg.HeadTemplateFile); err != nil {
+	if _, err = kickwasm.Do(pwd, outputFolder, YAMLFileFlag, LocationsFlag, versionBreaking, versionFeature, versionPatch, pkg.LocalHost, pkg.LocalPort); err != nil {
 		log.Println(err.Error())
 		return
 	}

@@ -46,7 +46,8 @@ func createMainDoPanelsGo(appPaths paths.ApplicationPathsI, builder *project.Bui
 		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
 		ImportRendererPanels:    folderpaths.ImportRendererPanels,
 	}
-	fname := "panels.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.PanelsDotGo
 	oPath := filepath.Join(folderpaths.OutputRenderer, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.MainDoPanelsGo, data, appPaths)
 }

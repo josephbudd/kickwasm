@@ -18,7 +18,6 @@ type templateData struct {
 	CamelCase                          func(string) string
 	ServiceTemplatePanelNames          string
 	ServiceEmptyInsidePanelNamePathMap string
-	HeadTemplateFile                   string
 
 	ImportDomainInterfacesStorers          string
 	ImportDomainInterfacesCallers          string
@@ -32,10 +31,12 @@ type templateData struct {
 
 	ImportMainProcessCalls      string
 	ImportMainProcessCallServer string
+
+	FileNames *paths.FileNames
 }
 
 // Create creates main process folder files from templates.
-func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, headTemplateFile string) error {
+func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()
 	parts := strings.Split(builder.ImportPath, "/")
 	appname := parts[len(parts)-1]
@@ -48,7 +49,6 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, headTemp
 		CamelCase:                          cases.CamelCase,
 		ServiceEmptyInsidePanelNamePathMap: strings.Replace(fmt.Sprintf("%#v", builder.GenerateServiceEmptyInsidePanelNamePathMap()), ":", ": ", -1),
 		ServiceTemplatePanelNames:          fmt.Sprintf("%#v", builder.GenerateServiceTemplatePanelName()),
-		HeadTemplateFile:                   headTemplateFile,
 
 		ImportDomainInterfacesStorers:          folderpaths.ImportDomainInterfacesStorers,
 		ImportDomainInterfacesCallers:          folderpaths.ImportDomainInterfacesCallers,
@@ -61,21 +61,23 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, headTemp
 		ImportDomainImplementationsStoringBolt: folderpaths.ImportDomainImplementationsStoringBolt,
 		ImportMainProcessCalls:                 folderpaths.ImportMainProcessCalls,
 		ImportMainProcessCallServer:            folderpaths.ImportMainProcessCallServer,
+
+		FileNames: paths.GetFileNames(),
 	}
-	if err := createMainGo(appPaths, data); err != nil {
-		return err
+	if err = createMainGo(appPaths, data); err != nil {
+		return
 	}
-	if err := createPanelMapGo(appPaths, data); err != nil {
-		return err
+	if err = createPanelMapGo(appPaths, data); err != nil {
+		return
 	}
-	if err := createServeGo(appPaths, data); err != nil {
-		return err
+	if err = createServeGo(appPaths, data); err != nil {
+		return
 	}
-	if err := createCallServer(appPaths, data); err != nil {
-		return err
+	if err = createCallServer(appPaths, data); err != nil {
+		return
 	}
-	if err := createCalls(appPaths, data); err != nil {
-		return err
+	if err = createCalls(appPaths, data); err != nil {
+		return
 	}
-	return nil
+	return
 }

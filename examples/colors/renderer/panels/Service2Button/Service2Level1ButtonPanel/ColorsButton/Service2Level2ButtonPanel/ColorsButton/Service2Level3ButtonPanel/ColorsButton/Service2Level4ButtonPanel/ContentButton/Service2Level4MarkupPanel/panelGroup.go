@@ -5,8 +5,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
-	"github.com/josephbudd/kickwasm/examples/colors/renderer/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/site/notjs"
+	"github.com/josephbudd/kickwasm/examples/colors/site/viewtools"
 )
 
 // PanelGroup is a group of 1 panel.

@@ -8,7 +8,7 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
 )
 
-func createCalls(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
+func createCalls(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()
 	data := struct {
 		ApplicationGitPath                 string
@@ -25,20 +25,21 @@ func createCalls(appPaths paths.ApplicationPathsI, builder *project.Builder) err
 		ImportDomainInterfacesCallers:      folderpaths.ImportDomainInterfacesCallers,
 		ImportDomainTypes:                  folderpaths.ImportDomainTypes,
 	}
-	fname := "map.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.MapDotGo
 	oPath := filepath.Join(folderpaths.OutputRendererCalls, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.CallsMapGo, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.CallsMapGo, data, appPaths); err != nil {
+		return
 	}
-	fname = "log.go"
+	fname = fileNames.LogDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererCalls, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.CallsLogGo, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.CallsLogGo, data, appPaths); err != nil {
+		return
 	}
-	fname = "exampleGo.txt"
+	fname = fileNames.ExampleGoDotTXT
 	oPath = filepath.Join(folderpaths.OutputRendererCalls, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.CallsExampleGoTxt, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.CallsExampleGoTxt, data, appPaths); err != nil {
+		return
 	}
-	return nil
+	return
 }

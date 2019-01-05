@@ -12,14 +12,14 @@ func (sl *Slurper) GetPanelFilePaths() []string {
 // Gulp reads the application yaml file at path and processes it.
 // It constructs a slice of tab.Services and uses them to build the project.Builder.
 // It returns the builder and the error.
-func (sl *Slurper) Gulp(yamlPath string) (*project.Builder, error) {
-	appInfo, err := sl.slurpApplication(yamlPath)
-	if err != nil {
-		return nil, err
+func (sl *Slurper) Gulp(yamlPath string) (builder *project.Builder, err error) {
+	var appInfo *ApplicationInfo
+	if appInfo, err = sl.slurpApplication(yamlPath); err != nil {
+		return
 	}
 	// have all the slurp info from the yaml files.
 	// convert this slurp info into project data.
-	builder := project.NewBuilder()
+	builder = project.NewBuilder()
 	builder.Title = appInfo.Title
 	builder.ImportPath = appInfo.ImportPath
 	builder.Stores = appInfo.Stores
@@ -38,19 +38,19 @@ func (sl *Slurper) Gulp(yamlPath string) (*project.Builder, error) {
 		}
 		service.Button = button
 		for _, pinfo := range binfo.Panels {
-			if err := constructButtonPanel(button, pinfo); err != nil {
-				return nil, err
+			if err = constructButtonPanel(button, pinfo); err != nil {
+				return
 			}
 		}
 		services = append(services, service)
 	}
-	if err := builder.BuildFromServices(services); err != nil {
-		return nil, err
+	if err = builder.BuildFromServices(services); err != nil {
+		return
 	}
-	return builder, nil
+	return
 }
 
-func constructButtonPanel(button *project.Button, pinfo *PanelInfo) error {
+func constructButtonPanel(button *project.Button, pinfo *PanelInfo) (err error) {
 	panel := &project.Panel{
 		ID:      pinfo.ID,
 		Name:    pinfo.Name,
@@ -60,20 +60,20 @@ func constructButtonPanel(button *project.Button, pinfo *PanelInfo) error {
 		Tabs:    make([]*project.Tab, 0, 5),
 	}
 	for _, binfo := range pinfo.Buttons {
-		if err := constructButton(panel, binfo); err != nil {
-			return err
+		if err = constructButton(panel, binfo); err != nil {
+			return
 		}
 	}
 	for _, tinfo := range pinfo.Tabs {
-		if err := constructTab(panel, tinfo); err != nil {
-			return err
+		if err = constructTab(panel, tinfo); err != nil {
+			return
 		}
 	}
 	button.Panels = append(button.Panels, panel)
-	return nil
+	return
 }
 
-func constructTabPanel(tab *project.Tab, pinfo *PanelInfo) error {
+func constructTabPanel(tab *project.Tab, pinfo *PanelInfo) (err error) {
 	panel := &project.Panel{
 		ID:      pinfo.ID,
 		Name:    pinfo.Name,
@@ -83,20 +83,20 @@ func constructTabPanel(tab *project.Tab, pinfo *PanelInfo) error {
 		Tabs:    make([]*project.Tab, 0, 5),
 	}
 	for _, binfo := range pinfo.Buttons {
-		if err := constructButton(panel, binfo); err != nil {
-			return err
+		if err = constructButton(panel, binfo); err != nil {
+			return
 		}
 	}
 	for _, tinfo := range pinfo.Tabs {
-		if err := constructTab(panel, tinfo); err != nil {
-			return err
+		if err = constructTab(panel, tinfo); err != nil {
+			return
 		}
 	}
 	tab.Panels = append(tab.Panels, panel)
-	return nil
+	return
 }
 
-func constructButton(panel *project.Panel, binfo *ButtonInfo) error {
+func constructButton(panel *project.Panel, binfo *ButtonInfo) (err error) {
 	button := &project.Button{
 		ID:       binfo.ID,
 		Label:    binfo.Label,
@@ -105,25 +105,25 @@ func constructButton(panel *project.Panel, binfo *ButtonInfo) error {
 		Panels:   make([]*project.Panel, 0, 5),
 	}
 	for _, pinfo := range binfo.Panels {
-		if err := constructButtonPanel(button, pinfo); err != nil {
-			return err
+		if err = constructButtonPanel(button, pinfo); err != nil {
+			return
 		}
 	}
 	panel.Buttons = append(panel.Buttons, button)
-	return nil
+	return
 }
 
-func constructTab(panel *project.Panel, t *TabInfo) error {
+func constructTab(panel *project.Panel, t *TabInfo) (err error) {
 	tab := &project.Tab{
 		ID:     t.ID,
 		Label:  t.Label,
 		Panels: make([]*project.Panel, 0, 5),
 	}
 	for _, p := range t.Panels {
-		if err := constructTabPanel(tab, p); err != nil {
-			return err
+		if err = constructTabPanel(tab, p); err != nil {
+			return
 		}
 	}
 	panel.Tabs = append(panel.Tabs, tab)
-	return nil
+	return
 }

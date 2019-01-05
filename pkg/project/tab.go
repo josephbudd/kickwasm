@@ -24,7 +24,7 @@ func (t *Tab) GetHTMLID() string {
 }
 
 // toButtonHTML returns the tab's button html
-func (t *Tab) toButtonHTML(idPrefix string, selected bool) *html.Node {
+func (t *Tab) toButtonHTML(idPrefix string, selected bool) (button *html.Node) {
 	t.HTMLID = fmt.Sprintf("%s-%s", idPrefix, t.ID)
 	var class string
 	if selected {
@@ -32,7 +32,7 @@ func (t *Tab) toButtonHTML(idPrefix string, selected bool) *html.Node {
 	} else {
 		class = fmt.Sprintf("%s %s", classTab, classUnSelected)
 	}
-	button := &html.Node{
+	button = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Button,
 		Data:     "button",
@@ -46,11 +46,11 @@ func (t *Tab) toButtonHTML(idPrefix string, selected bool) *html.Node {
 		Data: t.Label,
 	}
 	button.AppendChild(textNode)
-	return button
+	return
 }
 
 // toTabPanelHTML returns the tab's panel html
-func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) *html.Node {
+func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) {
 	// the tab panel is bound to the tab button
 	t.PanelHTMLID = t.HTMLID + suffixPanel
 	var visibility string
@@ -61,7 +61,7 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) *html.Node {
 	}
 	// the tab panel is bound to its tab
 	// it wraps the inner which wraps the inner siblings.
-	tabPanel := &html.Node{
+	tabPanel = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -145,5 +145,5 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) *html.Node {
 	}
 	// close inner
 	// close panel bound to tab, with header
-	return tabPanel
+	return
 }

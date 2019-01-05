@@ -3,12 +3,13 @@ package renderer
 import (
 	"fmt"
 
+	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/project"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
 
-func buildIndexHTMLNode(builder *project.Builder, addLocations bool, headTemplateFile string) *html.Node {
+func buildIndexHTMLNode(builder *project.Builder, addLocations bool) *html.Node {
 	// document
 	doc := &html.Node{
 		Type: html.DocumentNode,
@@ -27,7 +28,7 @@ func buildIndexHTMLNode(builder *project.Builder, addLocations bool, headTemplat
 	}
 	doc.AppendChild(htm)
 	// head
-	head := buildHeadNode(builder, headTemplateFile)
+	head := buildHeadNode(builder)
 	htm.AppendChild(head)
 	// body
 	body := &html.Node{
@@ -48,8 +49,8 @@ func buildIndexHTMLNode(builder *project.Builder, addLocations bool, headTemplat
 	return doc
 }
 
-func buildHeadNode(builder *project.Builder, headTemplateName string) *html.Node {
-	head := &html.Node{
+func buildHeadNode(builder *project.Builder) (head *html.Node) {
+	head = &html.Node{
 		Type:     html.ElementNode,
 		Data:     "head",
 		DataAtom: atom.Head,
@@ -149,17 +150,18 @@ func buildHeadNode(builder *project.Builder, headTemplateName string) *html.Node
 	script.AppendChild(textNode)
 	head.AppendChild(script)
 	// head template reference
+	fileNames := paths.GetFileNames()
 	textNode = &html.Node{
 		Type: html.TextNode,
-		Data: fmt.Sprintf(`{{template "%s"}}`, headTemplateName),
+		Data: fmt.Sprintf(`{{template "%s"}}`, fileNames.HeadDotTMPL),
 	}
 	head.AppendChild(textNode)
-	return head
+	return
 }
 
-func buildModalNode(builder *project.Builder) *html.Node {
+func buildModalNode(builder *project.Builder) (modal *html.Node) {
 	// modal view
-	modal := &html.Node{
+	modal = &html.Node{
 		Type:     html.ElementNode,
 		Data:     "div",
 		DataAtom: atom.Div,
@@ -217,11 +219,11 @@ func buildModalNode(builder *project.Builder) *html.Node {
 	}
 	button.AppendChild(textNode)
 	p.AppendChild(button)
-	return modal
+	return
 }
 
-func buildCloserNode(builder *project.Builder) *html.Node {
-	closer := &html.Node{
+func buildCloserNode(builder *project.Builder) (closer *html.Node) {
+	closer = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -298,5 +300,5 @@ func buildCloserNode(builder *project.Builder) *html.Node {
 	}
 	button.AppendChild(textNode)
 	p.AppendChild(button)
-	return closer
+	return
 }

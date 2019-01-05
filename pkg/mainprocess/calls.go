@@ -7,22 +7,23 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
-func createCalls(appPaths paths.ApplicationPathsI, data *templateData) error {
+func createCalls(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
 	folderpaths := appPaths.GetPaths()
-	fname := "map.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.MapDotGo
 	oPath := filepath.Join(folderpaths.OutputMainProcessCalls, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.CallsMapGo, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.CallsMapGo, data, appPaths); err != nil {
+		return
 	}
-	fname = "log.go"
+	fname = fileNames.LogDotGo
 	oPath = filepath.Join(folderpaths.OutputMainProcessCalls, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.CallsLogGo, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.CallsLogGo, data, appPaths); err != nil {
+		return
 	}
-	fname = "exampleGo.txt"
+	fname = fileNames.ExampleGoDotTXT
 	oPath = filepath.Join(folderpaths.OutputMainProcessCalls, fname)
-	if err := templates.ProcessTemplate(fname, oPath, templates.CallsExampleGoTxt, data, appPaths); err != nil {
-		return err
+	if err = templates.ProcessTemplate(fname, oPath, templates.CallsExampleGoTxt, data, appPaths); err != nil {
+		return
 	}
 	return nil
 }

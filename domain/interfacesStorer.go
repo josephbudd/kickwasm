@@ -8,7 +8,7 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
-func createInterfacesStoreInterfaceGo(appPaths paths.ApplicationPathsI, data *templateData) error {
+func createInterfacesStoreInterfaceGo(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
 	folderpaths := appPaths.GetPaths()
 	rdata := &struct {
 		Store              string
@@ -24,9 +24,9 @@ func createInterfacesStoreInterfaceGo(appPaths paths.ApplicationPathsI, data *te
 		fname := fmt.Sprintf("%s.go", data.LowerCamelCase(store))
 		oPath := filepath.Join(folderpaths.OutputDomainInterfacesStorers, fname)
 		rdata.Store = store
-		if err := templates.ProcessTemplate(fname, oPath, templates.StorerGo, rdata, appPaths); err != nil {
-			return err
+		if err = templates.ProcessTemplate(fname, oPath, templates.StorerGo, rdata, appPaths); err != nil {
+			return
 		}
 	}
-	return nil
+	return
 }

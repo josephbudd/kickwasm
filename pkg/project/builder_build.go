@@ -25,22 +25,25 @@ func (ch *checker) isNewServiceName(name string) bool {
 	return true
 }
 
-func (ch *checker) checkPanelID(panel *Panel) error {
+func (ch *checker) checkPanelID(panel *Panel) (err error) {
 	ccName := cases.CamelCase(panel.Name)
 	if ccName != panel.Name {
-		return errors.New("is not CamelCased")
+		err = errors.New("is not CamelCased")
+		return
 	}
 	if !strings.HasSuffix(ccName, suffixPanel) {
-		return fmt.Errorf("should end with the suffix %q", suffixPanel)
+		err = fmt.Errorf("should end with the suffix %q", suffixPanel)
+		return
 	}
 	for _, n := range ch.panelNames {
 		if n == ccName {
-			return errors.New("is not a new name")
+			err = errors.New("is not a new name")
+			return
 		}
 	}
 	panel.ID = ccName
 	ch.panelNames = append(ch.panelNames, ccName)
-	return nil
+	return
 }
 
 func (ch *checker) isNewButtonID(panel *Panel, button *Button) bool {
@@ -72,7 +75,7 @@ func (ch *checker) isNewTabID(panel *Panel, tab *Tab) bool {
 }
 
 // BuildFromServices builds from services.
-func (builder *Builder) BuildFromServices(services []*Service) error {
+func (builder *Builder) BuildFromServices(services []*Service) (err error) {
 	ch := &checker{
 		panelNames:     make([]string, 0, 5),
 		serviceNames:   make([]string, 0, 5),
@@ -80,16 +83,16 @@ func (builder *Builder) BuildFromServices(services []*Service) error {
 		panelTabIDs:    make(map[string][]string),
 	}
 	for _, s := range services {
-		if err := checkServiceValidity(s, 0, ch); err != nil {
-			return err
+		if err = checkServiceValidity(s, 0, ch); err != nil {
+			return
 		}
 	}
 	builder.Services = services
-	return nil
+	return
 }
 
-func checkServiceValidity(s *Service, level uint, ch *checker) error {
-	if err := isValidServiceName(s.Name); err != nil {
+func checkServiceValidity(s *Service, level uint, ch *checker) (err error) {
+	if err = isValidServiceName(s.Name); err != nil {
 		return err
 	}
 	if !ch.isNewServiceName(s.Name) {
@@ -101,7 +104,7 @@ func checkServiceValidity(s *Service, level uint, ch *checker) error {
 	return checkButtonValidity(fmt.Sprintf("the %s service panel", s.Name), s.Button, 0, ch)
 }
 
-func isValidServiceName(name string) error {
+func isValidServiceName(name string) (err error) {
 	if len(name) == 0 {
 		return errors.New("a service is missing a name")
 	}
@@ -112,7 +115,7 @@ func isValidServiceName(name string) error {
 	return nil
 }
 
-func isValidButtonID(id string) error {
+func isValidButtonID(id string) (err error) {
 	if len(strings.TrimSpace(id)) == 0 {
 		return errors.New("missing a name")
 	}
@@ -126,7 +129,7 @@ func isValidButtonID(id string) error {
 	return nil
 }
 
-func isValidTabID(id string) error {
+func isValidTabID(id string) (err error) {
 	if len(strings.TrimSpace(id)) == 0 {
 		return errors.New("missing a name")
 	}
@@ -140,70 +143,79 @@ func isValidTabID(id string) error {
 	return nil
 }
 
-func checkButtonValidity(panelDesc string, b *Button, level uint, ch *checker) error {
-	if err := isValidButtonID(b.ID); err != nil {
-		return fmt.Errorf("%s %s", panelDesc, err.Error())
+func checkButtonValidity(panelDesc string, b *Button, level uint, ch *checker) (err error) {
+	if err = isValidButtonID(b.ID); err != nil {
+		err = fmt.Errorf("%s %s", panelDesc, err.Error())
+		return
 	}
 	if len(b.Heading) == 0 {
 		b.Heading = b.Label
 	}
 	b.Label = strings.TrimSpace(b.Label)
 	if len(b.Label) == 0 {
-		return fmt.Errorf("%s button is missing a label. The label is the button text", panelDesc)
+		err = fmt.Errorf("%s button is missing a label. The label is the button text", panelDesc)
+		return
 	}
 	if len(b.Location) == 0 {
 		b.Location = b.Heading
 	}
 	if len(b.Panels) == 0 {
-		return fmt.Errorf(`%s button with label %q has no panel files`, panelDesc, b.Label)
+		err = fmt.Errorf(`%s button with label %q has no panel files`, panelDesc, b.Label)
+		return
 	}
 	for _, panel := range b.Panels {
 		panel.Level = level + 1
-		if err := checkButtonPanelValidity(panel, ch); err != nil {
-			return fmt.Errorf("%s: %s", panelDesc, err.Error())
+		if err = checkButtonPanelValidity(panel, ch); err != nil {
+			err = fmt.Errorf("%s: %s", panelDesc, err.Error())
+			return
 		}
 	}
-	return nil
+	return
 }
 
-func checkTabValidity(panelDesc string, tab *Tab, ch *checker) error {
-	if err := isValidTabID(tab.ID); err != nil {
-		return fmt.Errorf("%s %s", panelDesc, err.Error())
+func checkTabValidity(panelDesc string, tab *Tab, ch *checker) (err error) {
+	if err = isValidTabID(tab.ID); err != nil {
+		err = fmt.Errorf("%s %s", panelDesc, err.Error())
+		return
 	}
 	for _, panel := range tab.Panels {
-		if err := checkTabPanelValidity(panel, ch); err != nil {
-			return fmt.Errorf("%s: %s", panelDesc, err.Error())
+		if err = checkTabPanelValidity(panel, ch); err != nil {
+			err = fmt.Errorf("%s: %s", panelDesc, err.Error())
+			return
 		}
 	}
-	return nil
+	return
 }
 
-func checkTabPanelValidity(panel *Panel, ch *checker) error {
-	if err := ch.checkPanelID(panel); err != nil {
-		return fmt.Errorf("the tab panel name %q %s", panel.Name, err.Error())
+func checkTabPanelValidity(panel *Panel, ch *checker) (err error) {
+	if err = ch.checkPanelID(panel); err != nil {
+		err = fmt.Errorf("the tab panel name %q %s", panel.Name, err.Error())
 	}
-	return nil
+	return
 }
 
-func checkButtonPanelValidity(panel *Panel, ch *checker) error {
-	if err := ch.checkPanelID(panel); err != nil {
-		return fmt.Errorf("the button panel name %q %s", panel.Name, err.Error())
+func checkButtonPanelValidity(panel *Panel, ch *checker) (err error) {
+	if err = ch.checkPanelID(panel); err != nil {
+		err = fmt.Errorf("the button panel name %q %s", panel.Name, err.Error())
+		return
 	}
 	for _, tab := range panel.Tabs {
-		if err := checkTabValidity(fmt.Sprintf("the panel named %q", panel.Name), tab, ch); err != nil {
-			return err
+		if err = checkTabValidity(fmt.Sprintf("the panel named %q", panel.Name), tab, ch); err != nil {
+			return
 		}
 		if isnew := ch.isNewTabID(panel, tab); !isnew {
-			return fmt.Errorf("the tab panel named %q has more than one tab named %q", panel.Name, tab.ID)
+			err = fmt.Errorf("the tab panel named %q has more than one tab named %q", panel.Name, tab.ID)
+			return
 		}
 	}
 	for _, button := range panel.Buttons {
-		if err := checkButtonValidity(fmt.Sprintf("the panel named %q", panel.Name), button, panel.Level, ch); err != nil {
-			return err
+		if err = checkButtonValidity(fmt.Sprintf("the panel named %q", panel.Name), button, panel.Level, ch); err != nil {
+			return
 		}
 		if isnew := ch.isNewButtonID(panel, button); !isnew {
-			return fmt.Errorf("the button panel named %q has more than one button named %q", panel.Name, button.ID)
+			err = fmt.Errorf("the button panel named %q has more than one button named %q", panel.Name, button.ID)
+			return
 		}
 	}
-	return nil
+	return
 }

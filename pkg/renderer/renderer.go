@@ -29,8 +29,11 @@ func GetInitialIndent() uint {
 }
 
 // Create creates all of the renderer files.
-func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool, headTemplateFile string) (err error) {
-	if err = createHTMLTemplates(appPaths, builder, addLocations, headTemplateFile); err != nil {
+func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool) (err error) {
+	if err = createBuildSH(appPaths); err != nil {
+		return
+	}
+	if err = createHTMLTemplates(appPaths, builder, addLocations); err != nil {
 		return
 	}
 	if err = createCSS(appPaths, builder); err != nil {
@@ -67,26 +70,28 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 }
 
 // createHTMLTemplates creates the main html template file.
-func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool, headTemplateFile string) error {
+func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool) (err error) {
 	folderpaths := appPaths.GetPaths()
-	doc := buildIndexHTMLNode(builder, addLocations, headTemplateFile)
+	doc := buildIndexHTMLNode(builder, addLocations)
 	bbuf := &bytes.Buffer{}
-	if err := html.Render(bbuf, doc); err != nil {
-		return err
+	if err = html.Render(bbuf, doc); err != nil {
+		return
 	}
 	// fix the renderer html
+	fileNames := paths.GetFileNames()
 	bb := bytes.Replace(bbuf.Bytes(), []byte(`{{template &#34;`), []byte(`{{template "`), -1)
 	bb = bytes.Replace(bb, []byte(`&#34;}}`), []byte(`"}}`), -1)
-	fpath := filepath.Join(folderpaths.OutputRendererTemplates, "main.tmpl")
-	ofile, err := os.OpenFile(fpath, os.O_CREATE|os.O_WRONLY, appPaths.GetFMode())
+	fpath := filepath.Join(folderpaths.OutputRendererTemplates, fileNames.MainDotTMPL)
+	var ofile *os.File
+	ofile, err = os.OpenFile(fpath, os.O_CREATE|os.O_WRONLY, appPaths.GetFMode())
 	if err != nil {
-		return err
+		return
 	}
 	if _, err = ofile.Write(bb); err != nil {
-		return err
+		return
 	}
-	if err := ofile.Close(); err != nil {
-		return err
+	if err = ofile.Close(); err != nil {
+		return
 	}
 	servicePanelNamePathMap := builder.GenerateServiceEmptyInsidePanelNamePathMap()
 	servicePanelMap := builder.GenerateServicePanelNameTemplateMap()
@@ -95,20 +100,20 @@ func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *project.Buil
 		for name, markup := range nameMarkup {
 			folders := strings.Join(panelNamePathMap[name], string(os.PathSeparator))
 			folderPath := filepath.Join(folderpaths.OutputRendererTemplates, folders)
-			if err := os.MkdirAll(folderPath, appPaths.GetDMode()); err != nil {
-				return err
+			if err = os.MkdirAll(folderPath, appPaths.GetDMode()); err != nil {
+				return
 			}
 			fname := fmt.Sprintf("%s.tmpl", name)
 			fpath := filepath.Join(folderPath, fname)
-			ofile, err := os.OpenFile(fpath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, appPaths.GetFMode())
+			ofile, err = os.OpenFile(fpath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, appPaths.GetFMode())
 			if err != nil {
-				return err
+				return
 			}
 			_, err = ofile.Write([]byte(markup))
-			if err := ofile.Close(); err != nil {
-				return err
+			if err = ofile.Close(); err != nil {
+				return
 			}
 		}
 	}
-	return nil
+	return
 }

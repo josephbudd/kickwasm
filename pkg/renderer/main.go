@@ -37,7 +37,8 @@ func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) er
 		ImportDomainDataLogLevels:                folderpaths.ImportDomainDataLogLevels,
 		ImportDomainTypes:                        folderpaths.ImportDomainTypes,
 	}
-	fname := "main.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.MainDotGo
 	oPath := filepath.Join(folderpaths.OutputRenderer, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.MainGo, data, appPaths)
 }

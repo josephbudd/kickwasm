@@ -20,7 +20,6 @@ type templateData struct {
 	CamelCase                          func(string) string
 	ServiceTemplatePanelNames          string
 	ServiceEmptyInsidePanelNamePathMap string
-	HeadTemplateFile                   string
 
 	ImportDomainInterfacesCallers          string
 	ImportDomainInterfacesStorers          string
@@ -31,13 +30,17 @@ type templateData struct {
 	ImportDomainImplementationsStoringBolt string
 
 	OutputRendererPanels string
+
+	FileNames   *paths.FileNames
+	FolderNames *paths.FolderNames
 }
 
 // Create creates main process folder files from templates.
-func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, headTemplateFile string) error {
+func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()
 	parts := strings.Split(builder.ImportPath, "/")
 	appname := parts[len(parts)-1]
+	imports := paths.GetImports()
 	data := &templateData{
 		BackTick: "`",
 
@@ -49,42 +52,44 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, headTemp
 		CamelCase:                          cases.CamelCase,
 		ServiceEmptyInsidePanelNamePathMap: strings.Replace(fmt.Sprintf("%#v", builder.GenerateServiceEmptyInsidePanelNamePathMap()), ":", ": ", -1),
 		ServiceTemplatePanelNames:          fmt.Sprintf("%#v", builder.GenerateServiceTemplatePanelName()),
-		HeadTemplateFile:                   headTemplateFile,
 
 		// domain interfaces
 
-		ImportDomainInterfacesCallers:          paths.ImportDomainInterfacesCallers,
-		ImportDomainInterfacesStorers:          paths.ImportDomainInterfacesStorers,
-		ImportDomainDataFilepaths:              paths.ImportDomainDataFilepaths,
-		ImportDomainDataCallParams:             paths.ImportDomainDataCallParams,
-		ImportDomainTypes:                      paths.ImportDomainTypes,
-		ImportDomainImplementationsCalling:     paths.ImportDomainImplementationsCalling,
-		ImportDomainImplementationsStoringBolt: paths.ImportDomainImplementationsStoringBolt,
+		ImportDomainInterfacesCallers:          imports.ImportDomainInterfacesCallers,
+		ImportDomainInterfacesStorers:          imports.ImportDomainInterfacesStorers,
+		ImportDomainDataFilepaths:              imports.ImportDomainDataFilepaths,
+		ImportDomainDataCallParams:             imports.ImportDomainDataCallParams,
+		ImportDomainTypes:                      imports.ImportDomainTypes,
+		ImportDomainImplementationsCalling:     imports.ImportDomainImplementationsCalling,
+		ImportDomainImplementationsStoringBolt: imports.ImportDomainImplementationsStoringBolt,
 
 		// output renderer
 
 		OutputRendererPanels: folderpaths.OutputRendererPanels,
+
+		FileNames:   paths.GetFileNames(),
+		FolderNames: paths.GetFolderNames(),
 	}
-	if err := createInterfacesCallInterfaceGo(appPaths); err != nil {
-		return err
+	if err = createInterfacesCallInterfaceGo(appPaths); err != nil {
+		return
 	}
-	if err := createDataFilePathsGo(appPaths, data); err != nil {
-		return err
+	if err = createDataFilePathsGo(appPaths, data); err != nil {
+		return
 	}
-	if err := createInterfacesStoreInterfaceGo(appPaths, data); err != nil {
-		return err
+	if err = createInterfacesStoreInterfaceGo(appPaths, data); err != nil {
+		return
 	}
-	if err := createCallingGo(appPaths, data); err != nil {
-		return err
+	if err = createCallingGo(appPaths, data); err != nil {
+		return
 	}
-	if err := createStoreBoltStoresGo(appPaths, data); err != nil {
-		return err
+	if err = createStoreBoltStoresGo(appPaths, data); err != nil {
+		return
 	}
-	if err := createTypes(appPaths, data); err != nil {
-		return err
+	if err = createTypes(appPaths, data); err != nil {
+		return
 	}
-	if err := createSettingsYAML(appPaths); err != nil {
-		return err
+	if err = createSettingsYAML(appPaths); err != nil {
+		return
 	}
-	return nil
+	return
 }

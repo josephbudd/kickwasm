@@ -140,15 +140,18 @@ func NewBuilder() *Builder {
 }
 
 // ToHTML converts services to html
-func (builder *Builder) ToHTML(masterid string, addLocations bool) (string, error) {
+func (builder *Builder) ToHTML(masterid string, addLocations bool) (markup string, err error) {
 	node := builder.ToHTMLNode(masterid, addLocations)
 	bb := &bytes.Buffer{}
-	err := html.Render(bb, node)
-	return bb.String(), err
+	if err = html.Render(bb, node); err != nil {
+		return
+	}
+	markup = bb.String()
+	return
 }
 
 // ToHTMLNode converts the builder to an html node.
-func (builder *Builder) ToHTMLNode(masterid string, addLocations bool) *html.Node {
+func (builder *Builder) ToHTMLNode(masterid string, addLocations bool) (master *html.Node) {
 	if builder.markedUp {
 		panic("builder already marked up")
 	}
@@ -161,7 +164,7 @@ func (builder *Builder) ToHTMLNode(masterid string, addLocations bool) *html.Nod
 	builder.panel.HTMLID = fmt.Sprintf("%s-%s", masterid, builder.panel.ID)
 	builder.IDs.Master = masterid
 	// the master home panel
-	master := &html.Node{
+	master = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -186,13 +189,13 @@ func (builder *Builder) ToHTMLNode(masterid string, addLocations bool) *html.Nod
 	// add the slider and its collection to the home div.
 	slider := builder.toSliderCollectionHTML(addLocations)
 	master.AppendChild(slider)
-	return master
+	return
 }
 
-func (builder *Builder) toHomeHTML(addLocations bool) *html.Node {
+func (builder *Builder) toHomeHTML(addLocations bool) (home *html.Node) {
 	// the master home
 	builder.IDs.Home = builder.IDs.Master + "-home"
-	home := &html.Node{
+	home = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -216,15 +219,15 @@ func (builder *Builder) toHomeHTML(addLocations bool) *html.Node {
 		button := s.Button.toButtonHTML(builder.IDs.HomePad, builder.IDs.Home, s.Name)
 		homePad.AppendChild(button)
 	}
-	return home
+	return
 }
 
-func (builder *Builder) toSliderCollectionHTML(addLocations bool) *html.Node {
+func (builder *Builder) toSliderCollectionHTML(addLocations bool) (slider *html.Node) {
 	builder.IDs.Slider = builder.IDs.Home + "-slider"
 	builder.IDs.SliderBack = builder.IDs.Slider + "-back"
 	builder.IDs.SliderCollection = builder.IDs.Slider + "-collection"
 	// open slider
-	slider := &html.Node{
+	slider = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -271,10 +274,10 @@ func (builder *Builder) toSliderCollectionHTML(addLocations bool) *html.Node {
 	}
 	// close slider panel collection
 	// close slider
-	return slider
+	return
 }
 
-func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) *html.Node {
+func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) (sliderPanel *html.Node) {
 	colorLevelUint := uint(len(locations))
 	var backLevel string
 	if colorLevelUint == 1 {
@@ -294,7 +297,7 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 		visibility = classUnSeen + spaceString + classToBeUnSeen
 	}
 	// this panel is a slider panel.
-	sliderPanel := &html.Node{
+	sliderPanel = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -326,19 +329,19 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 	h2.AppendChild(textNode)
 	sliderPanel.AppendChild(h2)
 	// add the inner panel inside the slider
-	innerID := panel.HTMLID + dashInnerString
+	innerPanelID := panel.HTMLID + dashInnerString
 	innerPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: innerID},
+			html.Attribute{Key: "id", Val: innerPanelID},
 			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	sliderPanel.AppendChild(innerPanel)
 	// add the button pad inside the inner panel
-	buttonPadID := innerID + dashButtonPadString
+	buttonPadID := innerPanelID + dashButtonPadString
 	buttonPad := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
@@ -357,10 +360,10 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 	// close button pad
 	// close inner
 	// close slider panel
-	return sliderPanel
+	return
 }
 
-func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel, button *Button, locations []string, seen bool, addLocations bool) (*html.Node, string) {
+func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel, button *Button, locations []string, seen bool, addLocations bool) (sliderMarkupPanel *html.Node, innerPanelID string) {
 	colorLevelUint := uint(len(locations))
 	var backLevel string
 	if colorLevelUint == 1 {
@@ -379,7 +382,7 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 		visibility = classUnSeen + spaceString + classToBeUnSeen
 	}
 	// this panel is a slider markup panel.
-	sliderMarkupPanel := &html.Node{
+	sliderMarkupPanel = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -411,19 +414,19 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 	h2.AppendChild(textNode)
 	sliderMarkupPanel.AppendChild(h2)
 	// add the inner panel inside the slider markup panel.
-	innerID := panel.HTMLID + dashInnerString
+	innerPanelID = panel.HTMLID + dashInnerString
 	innerPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: innerID},
+			html.Attribute{Key: "id", Val: innerPanelID},
 			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	sliderMarkupPanel.AppendChild(innerPanel)
 	// add the user markup panel inside the inner panel.
-	contentID := innerID + dashContentString
+	contentID := innerPanelID + dashContentString
 	markupPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
@@ -452,10 +455,10 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 	markupPanel.AppendChild(templateLink)
 	// close inner
 	// close slider panel
-	return sliderMarkupPanel, innerID
+	return
 }
 
-func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) *html.Node {
+func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) (sliderPanel *html.Node) {
 	colorLevelUint := uint(len(locations))
 	var backLevel string
 	if colorLevelUint == 1 {
@@ -471,7 +474,7 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 		visibility = classUnSeen + spaceString + classToBeUnSeen
 	}
 	// this panel is a slider panel
-	sliderPanel := &html.Node{
+	sliderPanel = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -503,13 +506,13 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 	h2.AppendChild(textNode)
 	sliderPanel.AppendChild(h2)
 	// add the inner panel inside the slider panel
-	innerID := panel.HTMLID + dashInnerString
+	innerPanelID := panel.HTMLID + dashInnerString
 	innerPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: innerID},
+			html.Attribute{Key: "id", Val: innerPanelID},
 			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
 		},
 	}
@@ -520,7 +523,7 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 	innerPanel.AppendChild(underTabBar)
 	// close inner
 	// close slider panel
-	return sliderPanel
+	return
 }
 
 func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, underTabBarPanel *html.Node) {
@@ -542,7 +545,9 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 		},
 	}
 	// insert the buttons inside the tab bar panel
-	for i, t := range panel.Tabs {
+	var i int
+	var t *Tab
+	for i, t = range panel.Tabs {
 		button := t.toButtonHTML(panel.TabBarHTMLID, (i == 0))
 		tabBarPanel.AppendChild(button)
 	}
@@ -559,7 +564,7 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 		},
 	}
 	// add the markup panels to the under tab bar panel.
-	for i, t := range panel.Tabs {
+	for i, t = range panel.Tabs {
 		panel := builder.toTabPanelHTML(t, (i == 0))
 		underTabBarPanel.AppendChild(panel)
 	}
@@ -567,11 +572,11 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 	return
 }
 
-func (builder *Builder) cookieCrumbs(serviceName string, locations []string) *html.Node {
+func (builder *Builder) cookieCrumbs(serviceName string, locations []string) (cc *html.Node) {
 	if len(locations) < 1 {
 		return nil
 	}
-	cc := &html.Node{
+	cc = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
@@ -596,5 +601,5 @@ func (builder *Builder) cookieCrumbs(serviceName string, locations []string) *ht
 		h2.AppendChild(textNode)
 		cc.AppendChild(h2)
 	}
-	return cc
+	return
 }

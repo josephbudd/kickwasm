@@ -8,35 +8,35 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
 )
 
-func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
-	if err := createViewToolsGo(appPaths, builder); err != nil {
-		return err
+func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
+	if err = createViewToolsGo(appPaths, builder); err != nil {
+		return
 	}
-	if err := createViewToolsCloserGo(appPaths); err != nil {
-		return err
+	if err = createViewToolsCloserGo(appPaths); err != nil {
+		return
 	}
-	if err := createViewToolsGroupsGo(appPaths, builder); err != nil {
-		return err
+	if err = createViewToolsGroupsGo(appPaths, builder); err != nil {
+		return
 	}
-	if err := createViewToolsHelpersGo(appPaths); err != nil {
-		return err
+	if err = createViewToolsHelpersGo(appPaths); err != nil {
+		return
 	}
-	if err := createViewToolsHideShowGo(appPaths); err != nil {
-		return err
+	if err = createViewToolsHideShowGo(appPaths); err != nil {
+		return
 	}
-	if err := createViewToolsModalGo(appPaths); err != nil {
-		return err
+	if err = createViewToolsModalGo(appPaths); err != nil {
+		return
 	}
-	if err := createResizeGo(appPaths, builder); err != nil {
-		return err
+	if err = createResizeGo(appPaths, builder); err != nil {
+		return
 	}
-	if err := createViewToolsSliderGo(appPaths); err != nil {
-		return err
+	if err = createViewToolsSliderGo(appPaths); err != nil {
+		return
 	}
-	if err := createViewToolsTabBarGo(appPaths, builder); err != nil {
-		return err
+	if err = createViewToolsTabBarGo(appPaths, builder); err != nil {
+		return
 	}
-	return nil
+	return
 }
 
 func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
@@ -55,7 +55,8 @@ func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builde
 		ImportRendererNotJS: folderpaths.ImportRendererNotJS,
 	}
 	// execute the template
-	fname := "viewtools.go"
+	fileNames := paths.GetFileNames()
+	fname := fileNames.ViewToolsDotGo
 	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.ViewTools, data, appPaths)
 }

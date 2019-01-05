@@ -25,8 +25,8 @@ import (
 
 var userHomeDataPath string
 
-// applicationRendererPath is where the application settings yaml file is.
-var applicationRendererPath string
+// applicationSitePath is where the application settings yaml file is.
+var applicationSitePath string
 
 // faviconPath is where the favicon is.
 var faviconPath string
@@ -68,10 +68,10 @@ func initialize() {
 		initerr = fmt.Errorf("os.Getwd() error is %s", initerr.Error())
 		return
 	}
-	appSettingsPath = filepath.Join(pwd, "http.yaml")
-	applicationRendererPath = filepath.Join(pwd, "renderer")
-	faviconPath = filepath.Join(applicationRendererPath, "favicon.ico")
-	templatePath = filepath.Join(applicationRendererPath, "templates")
+	appSettingsPath = filepath.Join(pwd, "{{.FileNames.HTTPDotYAML}}")
+	applicationSitePath = filepath.Join(pwd, "{{.FolderNames.RendererSite}}")
+	faviconPath = filepath.Join(applicationSitePath, "{{.FileNames.FavIconDotICO}}")
+	templatePath = filepath.Join(applicationSitePath, "{{.FolderNames.Templates}}")
 }
 
 // GetSettingsPath returns the settings yaml path.
@@ -131,7 +131,7 @@ func BuildRendererPath(src string) string {
 	if !initialized {
 		initialize()
 	}
-	return filepath.Join(applicationRendererPath, src)
+	return filepath.Join(applicationSitePath, src)
 }
 
 func buildUserHomeDataPath() {
