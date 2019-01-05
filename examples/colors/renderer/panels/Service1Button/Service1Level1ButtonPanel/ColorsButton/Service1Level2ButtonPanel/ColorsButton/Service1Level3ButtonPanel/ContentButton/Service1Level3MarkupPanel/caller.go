@@ -31,7 +31,7 @@ type Caller struct {
 
 	// example:
 
-	addCustomerCall caller.Renderer
+	addCustomerConnection caller.Renderer
 
 	*/
 }
@@ -47,8 +47,8 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// 2.1: Define each one of your added Caller members.
-	// 2.2: Tell the main processs to add a call back to each of your call back funcs.
+	// 2.1: Define each one of your Caller connection members as a conection to the main process.
+	// 2.2: Tell the caller connection to the main processs to add a call back to each of your call back funcs.
 
 	// example:
 
@@ -56,12 +56,14 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	var found bool
 
-	// add customer call
-	if panelCaller.addCustomerCall, found = panelCaller.connection[calling.AddCustomerCallId]; !found {
+	// Add customer.
+	// Define the connection.
+	if panelCaller.addCustomerConnection, found = panelCaller.connection[calling.AddCustomerCallId]; !found {
 		err = errors.New("unable to find panelCaller.connection[calling.AddCustomerCallId]")
 		return
 	}
-	panelCaller.addCustomerCall.AddCallBack(panelCaller.addCustomerCB)
+	// Have the connection call back to my call back handler.
+	panelCaller.addCustomerConnection.AddCallBack(panelCaller.addCustomerCB)
 
 	*/
 
@@ -83,7 +85,7 @@ func (panelCaller *Caller) addCustomer(record *types.CustomerRecord) {
 	params := &calls.RendererToMainProcessAddCustomerParams{
 		Record: record,
 	}
-	panelCaller.addCustomerCall.CallMainProcess(params)
+	panelCaller.addCustomerConnection.CallMainProcess(params)
 }
 
 func (panelCaller *Caller) addCustomerCB(params interface{}) {
@@ -116,8 +118,8 @@ func (panelCaller *Caller) initialCalls() {
 		Level:   loglevels.LogLevelInfo,
 		Message: "Started",
 	}
-	logCall := panelCaller.connection[callids.LogCallID]
-	logCall.CallMainProcess(params)
+	logConnection := panelCaller.connection[callids.LogCallID]
+	logConnection.CallMainProcess(params)
 
 	*/
 
