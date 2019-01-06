@@ -13,7 +13,6 @@ import (
 /*
 
 	Panel name: Service1Level1MarkupPanel
-	Panel id:   tabsMasterView-home-pad-Service1Button-Service1Level1ButtonPanel-ContentButton-Service1Level1MarkupPanel
 
 */
 
@@ -92,4 +91,3 @@ func (panel *Panel) InitialCalls() {
 	panel.controler.initialCalls()
 	panel.caller.initialCalls()
 }
-

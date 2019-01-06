@@ -12,7 +12,6 @@ import (
 /*
 
 	Panel name: RemoveContactNotReadyPanel
-	Panel id:   tabsMasterView-home-pad-RemoveButton-RemoveContactNotReadyPanel
 
 */
 

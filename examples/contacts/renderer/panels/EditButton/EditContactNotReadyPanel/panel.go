@@ -12,7 +12,6 @@ import (
 /*
 
 	Panel name: EditContactNotReadyPanel
-	Panel id:   tabsMasterView-home-pad-EditButton-EditContactNotReadyPanel
 
 */
 

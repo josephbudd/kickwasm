@@ -12,7 +12,6 @@ import (
 /*
 
 	Panel name: EditContactEditPanel
-	Panel id:   tabsMasterView-home-pad-EditButton-EditContactEditPanel
 
 */
 

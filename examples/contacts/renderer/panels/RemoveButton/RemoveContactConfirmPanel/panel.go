@@ -13,7 +13,6 @@ import (
 /*
 
 	Panel name: RemoveContactConfirmPanel
-	Panel id:   tabsMasterView-home-pad-RemoveButton-RemoveContactConfirmPanel
 
 */
 

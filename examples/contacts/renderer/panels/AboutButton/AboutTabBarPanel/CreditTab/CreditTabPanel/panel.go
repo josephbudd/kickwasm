@@ -12,7 +12,6 @@ import (
 /*
 
 	Panel name: CreditTabPanel
-	Panel id:   tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-CreditTabPanel-inner-CreditTabPanel
 
 */
 

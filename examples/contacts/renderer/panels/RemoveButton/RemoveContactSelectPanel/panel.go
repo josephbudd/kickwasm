@@ -12,7 +12,6 @@ import (
 /*
 
 	Panel name: RemoveContactSelectPanel
-	Panel id:   tabsMasterView-home-pad-RemoveButton-RemoveContactSelectPanel
 
 */
 

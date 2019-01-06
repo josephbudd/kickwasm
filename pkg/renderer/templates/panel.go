@@ -16,7 +16,6 @@ import (
 /*
 
 	Panel name: {{.PanelName}}
-	Panel id:   {{.PanelID}}
 
 */
 

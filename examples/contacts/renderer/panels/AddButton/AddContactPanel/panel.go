@@ -12,7 +12,6 @@ import (
 /*
 
 	Panel name: AddContactPanel
-	Panel id:   tabsMasterView-home-pad-AddButton-AddContactPanel
 
 */
 

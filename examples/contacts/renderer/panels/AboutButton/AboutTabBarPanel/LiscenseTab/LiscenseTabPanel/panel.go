@@ -12,7 +12,6 @@ import (
 /*
 
 	Panel name: LiscenseTabPanel
-	Panel id:   tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-LiscenseTabPanel-inner-LiscenseTabPanel
 
 */
 

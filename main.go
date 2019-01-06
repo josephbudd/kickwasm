@@ -15,10 +15,10 @@ import (
 
 const (
 	outputFolder       = "output"
-	versionBreaking    = 0 // Each new version breaks backwards compatibility.
-	versionFeature     = 7 // Each new version adds features. Retains backwards compatibility.
+	versionBreaking    = 1 // Each new version breaks backwards compatibility.
+	versionFeature     = 0 // Each new version adds features. Retains backwards compatibility.
 	versionPatch       = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
-	versionDescription = `Beta so each new beta version breaks backwards compatibility. Added version to flags.yaml 8^(`
+	versionDescription = `Ready.`
 )
 
 var (

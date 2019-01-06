@@ -12,7 +12,6 @@ import (
 /*
 
 	Panel name: RecordsTabPanel
-	Panel id:   tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-RecordsTabPanel-inner-RecordsTabPanel
 
 */
 
