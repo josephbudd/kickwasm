@@ -61,8 +61,8 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	// Add customer.
 	// Define the connection.
-	if panelCaller.addCustomerConnection, found = panelCaller.connection[calling.AddCustomerCallId]; !found {
-		err = errors.New("unable to find panelCaller.connection[calling.AddCustomerCallId]")
+	if panelCaller.addCustomerConnection, found = panelCaller.connection[callids.AddCustomerCallId]; !found {
+		err = errors.New("unable to find panelCaller.connection[callids.AddCustomerCallId]")
 		return
 	}
 	// Have the connection call back to my call back handler.
@@ -80,12 +80,10 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 // example:
 
-import "{{.ApplicationGitPath}}{{.ImportDomainDataCallIDs}}"
-
 // Add Customer.
 
 func (panelCaller *Caller) addCustomer(record *types.CustomerRecord) {
-	params := &calls.RendererToMainProcessAddCustomerParams{
+	params := &types.RendererToMainProcessAddCustomerParams{
 		Record: record,
 	}
 	panelCaller.addCustomerConnection.CallMainProcess(params)

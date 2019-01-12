@@ -48,7 +48,9 @@ go build
 * [the yaml package.](https://gopkg.in/yaml.v2)
 * [the gorilla websocket package.](https://github.com/gorilla/websocket)
 
-## This is version 1.0.0
+## This is version 1.0.1
+
+Corrections to the documentation in the panelCaller.go files.
 
 ### January 6, 2019: Stable
 
