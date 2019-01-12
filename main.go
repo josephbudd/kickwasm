@@ -17,8 +17,8 @@ const (
 	outputFolder       = "output"
 	versionBreaking    = 1 // Each new version breaks backwards compatibility.
 	versionFeature     = 0 // Each new version adds features. Retains backwards compatibility.
-	versionPatch       = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
-	versionDescription = `Ready.`
+	versionPatch       = 1 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
+	versionDescription = `Ready. Made some corrections to documentation.`
 )
 
 var (
