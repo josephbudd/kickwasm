@@ -52,7 +52,7 @@ go build
 
 Rewrote notJS.RemoveChildNodes in the generated source code so that it removes all text and html from an element. OK I'm done messing with notJS. If I want to make any more changes I'll just write an external package or I'll find one that exists.
 
-## This is version 1.0.1
+## Previous version 1.0.1
 
 Corrections to the documentation in the panelCaller.go files.
 
