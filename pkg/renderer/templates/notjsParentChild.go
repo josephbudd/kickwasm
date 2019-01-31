@@ -52,10 +52,7 @@ func (notjs *NotJS) RemoveChild(parent, child js.Value) {
 
 // RemoveChildNodes removes every child node from a parent.
 func (notjs *NotJS) RemoveChildNodes(parent js.Value) {
-	children := notjs.ChildrenSlice(parent)
-	for _, ch := range children {
-		notjs.RemoveChild(parent, ch)
-	}
+	parent.Set(innerHTMLMemberName, "")
 }
 
 // InsertChildBefore inserts newChild before targetChild in parent.

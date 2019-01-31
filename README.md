@@ -48,11 +48,13 @@ go build
 * [the yaml package.](https://gopkg.in/yaml.v2)
 * [the gorilla websocket package.](https://github.com/gorilla/websocket)
 
+## This is version 1.0.2. January 31, 2019: Stable
+
+Rewrote notJS.RemoveChildNodes in the generated source code so that it removes all text and html from an element. OK I'm done messing with notJS. If I want to make any more changes I'll just write an external package or I'll find one that exists.
+
 ## This is version 1.0.1
 
 Corrections to the documentation in the panelCaller.go files.
-
-### January 6, 2019: Stable
 
 Kickwasm is stable. No further breaking changes forseen. That is because rekickwasm, the refactoring tool is now stable.
 
