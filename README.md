@@ -2,7 +2,11 @@
 
 A rapid development, desktop application framework generator for go.
 
-Kickwasm reads your kickwasm.yaml file and generates the source code of an application framework.
+KickWasm lets you construct a working framework for a go program and then add your own code to the framework in order to turn the framework into a real application. You simply follow these steps.
+
+1. Write a kickwams.yaml file(s) to define each GUI panel with its buttons or tabs or markup.
+1. Generate the framework source code with the command **kickwasm -f path-to-your-kickwasm.yaml** If you want you can immediately build and run the framework just to see it work.
+1. Add your own code one panel at a time to turn your framework into a real application.
 
 ## The frame work
 
@@ -19,8 +23,8 @@ The colors example in the examples/ folder, is only a framework without anything
 
 ### The framework has 2 processes
 
-1. The **main process** is a web server running through whatever port you indicate in your application's **http.yaml** file.
-1. When you start the main process it opens a browser which loads and runs the **renderer process** from the **site/** folder.
+1. The **main process** is a web server running through whatever port you indicate in your application's http.yaml file. When you start the main process it opens a browser which loads and runs the renderer process from the **site/** folder.
+1. The **renderer process** is all of the wasm, html, css, images, etc contained in the site/ folder.
 
 ### The framework has a 2 step build
 
@@ -50,7 +54,7 @@ go build
 
 ## This is version 1.0.2. January 31, 2019: Stable
 
-Rewrote notJS.RemoveChildNodes in the generated source code so that it removes all text and html from an element. OK I'm done messing with notJS. If I want to make any more changes I'll just write an external package or I'll find one that exists.
+Rewrote notJS.RemoveChildNodes in the generated source code so that it removes all text and html from an element. OK I'm done messing with notJS.
 
 ## Previous version 1.0.1
 
