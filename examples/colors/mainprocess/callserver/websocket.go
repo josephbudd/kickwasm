@@ -30,8 +30,9 @@ func (callServer *Server) Serve(w http.ResponseWriter, r *http.Request, handlerF
 // it keeps the web socket connection open until the ping loop or read loop tell it to stop.
 // it has a write loop which tells the ping and read loops to stop if there is a write error.
 func (callServer *Server) serveWebSocket(w http.ResponseWriter, r *http.Request) {
-	ws, err := callServer.upgrader.Upgrade(w, r, nil)
-	if err != nil {
+	var err error
+	var ws *websocket.Conn
+	if ws, err = callServer.upgrader.Upgrade(w, r, nil); err != nil {
 		return
 	}
 	callServer.incConnectionCount()
@@ -56,8 +57,7 @@ func (callServer *Server) serveWebSocket(w http.ResponseWriter, r *http.Request)
 	for {
 		select {
 		case bb := <-messageFromSenderCh:
-			err := ws.WriteMessage(websocket.TextMessage, bb)
-			if err != nil {
+			if err = ws.WriteMessage(websocket.TextMessage, bb); err != nil {
 				log.Println("serveWebSocket: ws.WriteMessage(websocket.TextMessage, bb) error is ", err.Error())
 			}
 		case <-closeWSConnectionCh:

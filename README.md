@@ -1,36 +1,44 @@
-# kickwasm
+# kickwasm version 1.1.0
 
-A rapid development, desktop application framework generator for go.
+## Description
+
+A rapid development, desktop application framework generator for linux, windows and apple.
 
 KickWasm lets you construct a working framework for a go program and then add your own code to the framework in order to turn the framework into a real application. You simply follow these steps.
 
-1. Write a kickwams.yaml file(s) to define each GUI panel with its buttons or tabs or markup.
-1. Generate the framework source code with the command **kickwasm -f path-to-your-kickwasm.yaml** If you want you can immediately build and run the framework just to see it work.
-1. Add your own code one panel at a time to turn your framework into a real application.
+1. Write a kickwams.yaml file(s)
+    1. You begin by defining each button in the framework's opening button pad.
+    1. You continue by defining each button's panel(s).
+    1. Now a panel can only have buttons or tabs or markup so you continue by defining each new panel's buttons or tabs or markup.
+    1. The cycle continues as you define each new button's panel(s) and each new tab's panel(s).
+1. Generate the framework source code with the command **kickwasm -f path-to-your-kickwasm.yaml**. If you want you can immediately build and run the framework just to see it work.
+1. Turn the framework into an application by adding your own code one panel at a time.
 
 ## The frame work
 
-The framework works as soon as you build it. You can build the framework as soon as kickwasm generates the source code.
+The framework works as soon as you build it. You can build the framework as soon as kickwasm generates the framework source code.
 
 The colors example in the examples/ folder, is only a framework without anything added to it. See the colors example video below.
 
-### The framework code is physically and logically organized into 4 main levels
+### The framework code is physically and logically organized into 4 areas of logic
 
-1. The **domain/** folder contains domain ( application ) level logic.
-1. The **mainprocess/** folder contains the main process level logic.
-1. The **renderer/** folder contains the renderer level logic.
-1. The **site/** folder contains the wasm, templates, styles etc for the browser.
+1. The go code in the **domain/** folder is the domain ( shared ) logic.
+1. The go code in the **mainprocess/** folder is the main process logic.
+1. The go code in the **renderer/** folder is the renderer logic. The go code in the **renderer/** folder is compiled into wasm into the **site/app.wasm** file.
+1. The **site/** folder contains the compiled **app.wasm** file from the **renderer/** folder. It also contains the HTML templates as well as the css and any other files for the browser.
 
 ### The framework has 2 processes
 
 1. The **main process** is a web server running through whatever port you indicate in your application's http.yaml file. When you start the main process it opens a browser which loads and runs the renderer process from the **site/** folder.
-1. The **renderer process** is all of the wasm, html, css, images, etc contained in the site/ folder.
+1. The **renderer process** is all of the wasm, html, css, images, etc contained in the **site/** folder.
 
 ### The framework has a 2 step build
 
-So when you build the framework, you build both the renderer process and the main process. The renderer process code is in the **renderer/** folder but it is built into the **site/** folder.
+So when you build the framework, you build both the main process and the renderer process.
 
-There is a shell script in the **renderer/** folder that builds the renderer process into the **site/** folder. It's **build.sh**.
+You build the main process executable from the framework's root folder which has it's main.go.
+
+You build the renderer process from the **renderer/** folder which has it's main.go. But you use the shell script **renderer/build.sh** to build the renderer's wasm byte code into the **site/** folder.
 
 Here is a build example using the colors example.
 
@@ -51,18 +59,6 @@ go build
 * [the boltdb package.](https://github.com/boltdb/bolt)
 * [the yaml package.](https://gopkg.in/yaml.v2)
 * [the gorilla websocket package.](https://github.com/gorilla/websocket)
-
-## This is version 1.0.2. January 31, 2019: Stable
-
-Rewrote notJS.RemoveChildNodes in the generated source code so that it removes all text and html from an element. OK I'm done messing with notJS.
-
-## Previous version 1.0.1
-
-Corrections to the documentation in the panelCaller.go files.
-
-Kickwasm is stable. No further breaking changes forseen. That is because rekickwasm, the refactoring tool is now stable.
-
-**Rekickwasm** is a refactoring tool for a framework generated with kickwasm. Rekickwasm only refactors the renderer part of the framework. I have been using it to refactor the contacts example renderer in all kinds of ways.
 
 ## Installation
 
@@ -98,8 +94,8 @@ Once you build your application you can distribute it. You can distribute it as 
 
 The examples/ folder contains 2 examples.
 
-1. The colors example which is just a plain untouched framework.
-1. The contacts example which is a simple **C**reate **R**eview **U**pdate **D**elete application.
+1. The colors example which is just a plain untouched framework. It wasm built with kickwasm version 1.1.0 so it starts using any port.
+1. The contacts example which is a simple **C**reate **R**ead **U**pdate **D**elete application. It was built with the previous version of kickwasm.
 
 ## The example videos
 
@@ -119,13 +115,39 @@ The video demonstrates some practical capabilities of the framework.
 
 [![building and running the contacts example](https://i.vimeocdn.com/video/744492275_640.webp)](https://vimeo.com/305091300)
 
-### The WIKI
+## The WIKI
 
-Wow! The wiki is where I attempt to demonstrate how a framework is turned into a real application.
+Wow! The WIKI is where I attempt to demonstrate how
+
+1. Kickwasm generates a framework by reading your **kickwasm.yaml** file.
+1. A framework is turned into a real application.
 
 I try to do so in very small meaningful steps. I mostly use the contacts example for reference.
 
-### Yet to do
+The WIKI is a work in progress. I am still devoted to the WIKI.
 
-* The rest of the wiki.
-* Start from scratch installing kickwasm source code and building the examples on linux and windows so that I can correctly define the procedures.
+## Tools
+
+**Rekickwasm** is a refactoring tool for a framework generated with kickwasm. Rekickwasm only refactors the renderer part of the framework. I have been using it to refactor the contacts example renderer in all kinds of ways.
+
+## Changelog for this latest version 1.1.0
+
+### No backwards compatibility breaking changes
+
+Version 1.1.0 adds using localhost and port 0 in your app's http.yaml file. With localhost and port 0, your app will find a free port on localhost and use it. Now the http.yaml file defaults to localhost and port 0. Below is an example default http.yaml file:
+
+``` yaml
+
+host : "127.0.0.1"
+port : 0
+
+```
+
+### Nasty bug
+
+1. After totally reinstalling linux on this laptop I found a bug in the contacts example and fixed that.
+
+### Small issues that were not problems
+
+1. Each markup panel controler's **func defineControlsSetHandlers()** initializes the controler. I corrected the func's defer statement so that it works as intended. Now the defer statement clarifies that the returned error occurred in **func defineControlsSetHandlers()**.
+1. I found and removed some variable shadowing in the framework code. By removing variable shadowing, I simplified the code making it easier to understand.

@@ -3,7 +3,7 @@ package AddContactPanel
 import (
 	"syscall/js"
 
-	"github.com/josephbudd/kick/examples/fvlist/mainprocess/ports/records"
+	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 	"github.com/pkg/errors"
@@ -103,7 +103,7 @@ func (panelPresenter *Presenter) defineMembers() (err error) {
 
 */
 
-func (panelPresenter *Presenter) showRecord(record *records.ContactRecord) {
+func (panelPresenter *Presenter) showRecord(record *types.ContactRecord) {
 	notjs := panelPresenter.notJS
 	notjs.SetValue(panelPresenter.contactAddName, record.Name)
 	notjs.SetValue(panelPresenter.contactAddAddress1, record.Address1)

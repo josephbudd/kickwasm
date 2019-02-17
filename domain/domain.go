@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/josephbudd/kickwasm/pkg"
+
 	"github.com/josephbudd/kickwasm/cases"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/project"
@@ -33,6 +35,9 @@ type templateData struct {
 
 	FileNames   *paths.FileNames
 	FolderNames *paths.FolderNames
+
+	Host string
+	Port uint
 }
 
 // Create creates main process folder files from templates.
@@ -69,6 +74,11 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 
 		FileNames:   paths.GetFileNames(),
 		FolderNames: paths.GetFolderNames(),
+
+		// settings.yaml
+
+		Host: pkg.LocalHost,
+		Port: pkg.LocalPort,
 	}
 	if err = createInterfacesCallInterfaceGo(appPaths); err != nil {
 		return
@@ -88,7 +98,7 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 	if err = createTypes(appPaths, data); err != nil {
 		return
 	}
-	if err = createSettingsYAML(appPaths); err != nil {
+	if err = createSettingsYAML(appPaths, data); err != nil {
 		return
 	}
 	return

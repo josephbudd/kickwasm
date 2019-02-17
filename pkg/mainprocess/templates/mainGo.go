@@ -4,15 +4,19 @@ package templates
 const MainGo = `{{$Dot := .}}{{$store0 := index .Stores 0}}package main
 
 import (
+	"fmt"
 	"log"
+	"net"
 	"path/filepath"
 
 	"github.com/boltdb/bolt"
+	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainDataSettings}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainImplementationsStoringBolt}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainInterfacesStorers}}"
+	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 	"{{.ApplicationGitPath}}{{.ImportMainProcessCalls}}"
 	"{{.ApplicationGitPath}}{{.ImportMainProcessCallServer}}"
 )
@@ -45,32 +49,64 @@ var ({{range .Stores}}
 )
 
 func main() {
-	buildBoltStores()
+	var err error
+	// build the stores and setup the close.
+	if err = buildBoltStores(); err != nil {
+		log.Println(err)
+		return
+	}{{if eq (len .Stores) 1}}
+	// close the bolt store later.{{else}}
+	// closing 1 bolt store later. That will close each bolt store because they share the same bolt database.{{end}}
 	defer {{call .LowerCamelCase $store0}}Store.Close()
-	appSettings, err := settings.NewApplicationSettings()
-	if err != nil {
+	// get the application's host and port and then setup the listener.
+	var appSettings *types.ApplicationSettings
+	if appSettings, err = settings.NewApplicationSettings(); err != nil {
 		log.Println(err)
 		return
 	}
+	// initialize and start the listener.
+	// the listener may have reset the address if "localhost:0".
+	// use the listener's address.
+	location := fmt.Sprintf("%s:%d", appSettings.Host, appSettings.Port)
+	var listener net.Listener
+	if listener, err = net.Listen("tcp", location); err != nil {
+		log.Println(err)
+		return
+	}
+	// build the callMap
 	callMap := calls.GetCallMap({{range $i, $store0 := .Stores}}{{if ne $i 0}}, {{end}}{{call $Dot.LowerCamelCase $store0}}Store{{end}})
-	callServer := callserver.NewCallServer(appSettings.Host, appSettings.Port, callMap)
+	// make the call server and start it.
+	callServer := callserver.NewCallServer(listener, callMap)
 	callServer.Run(serve)
 }
 
 // buildBoltStores makes bolt data stores.
-// Each store is the implementation of an interface defined in package repoi.
-// Each store uses the same bolt database so closing one will close all.
-func buildBoltStores() {
-	path, err := filepaths.BuildUserSubFoldersPath("boltdb")
-	if err != nil {
-		log.Fatalf("filepaths.BuildFolderPath error is %q.", err.Error())
+{{if eq (len .Stores) 1}}
+// The store is an implementation of an interface defined in package storer.
+// Close the bolt store later.{{else}}
+// Each store is an implementation of an interface defined in package storer.
+// Closing 1 bolt store later, will close each bolt store because they share the same bolt database.{{end}}
+func buildBoltStores() (err error) {
+
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "buildBoltStores()")
+		}
+	}()
+
+	var path string
+	if path, err = filepaths.BuildUserSubFoldersPath("boltdb"); err != nil {
+		err = errors.WithMessage(err, "filepaths.BuildUserSubFoldersPath(\"boltdb\")")
+		return
 	}
 	path = filepath.Join(path, "allstores.nosql")
-	db, err := bolt.Open(path, filepaths.GetFmode(), nil)
-	if err != nil {
-		log.Fatalf("bolt.Open error is %q.", err.Error())
+	var db *bolt.DB
+	if db, err = bolt.Open(path, filepaths.GetFmode(), nil); err != nil {
+		err = errors.WithMessage(err, "bolt.Open(path, filepaths.GetFmode(), nil)")
+		return
 	}{{range .Stores}}
 	{{call $Dot.LowerCamelCase .}}Store = boltstoring.New{{.}}BoltDB(db, path, filepaths.GetFmode()){{end}}
+	return
 }
 
 `
@@ -107,10 +143,11 @@ var serviceEmptyInsidePanelNamePathMap = {{.ServiceEmptyInsidePanelNamePathMap}}
 
 // serveMainHTML only serves up main.tmpl with all of the templates for your markup panels.
 func serveMainHTML(w http.ResponseWriter) {
+	var err error
 	templateFolderPath := filepaths.GetTemplatePath()
-	t := template.New(mainTemplate)
-	t, err := t.ParseFiles(filepath.Join(templateFolderPath, mainTemplate))
-	if err != nil {
+	var t *template.Template
+	t = template.New(mainTemplate)
+	if t, err = t.ParseFiles(filepath.Join(templateFolderPath, mainTemplate)); err != nil {
 		http.Error(w, err.Error(), 300)
 		return
 	}
@@ -118,8 +155,7 @@ func serveMainHTML(w http.ResponseWriter) {
 		for name, folders := range namePathMap {
 			folderPath := strings.Join(folders, string(os.PathSeparator))
 			tpath := filepath.Join(templateFolderPath, folderPath, name+".tmpl")
-			t, err = t.ParseFiles(tpath)
-			if err != nil {
+			if t, err = t.ParseFiles(tpath); err != nil {
 				http.Error(w, err.Error(), 300)
 				return
 			}
@@ -132,24 +168,22 @@ func serveMainHTML(w http.ResponseWriter) {
 	tpath := filepath.Join(templateFolderPath, headTemplate)
 	// it's ok if the template is not there
 	// but if it's there use it.
-	if _, err := os.Stat(tpath); os.IsNotExist(err) {
+	if _, err = os.Stat(tpath); os.IsNotExist(err) {
 		// the template file does not exist so inform the developer.
 		temp := fmt.Sprintf("%[1]s%[1]s define %[3]q %[2]s%[2]s<!-- You do not have a %[3]s file to import your css files. Feel free to add one in the render/template folder. -->%[1]s%[1]s end %[2]s%[2]s", "{", "}", headTemplate)
-		t, err = t.Parse(temp)
-		if err != nil {
+		if t, err = t.Parse(temp); err != nil {
 			http.Error(w, err.Error(), 300)
 			return
 		}
 	} else {
 		// the file exists so parse it
-		t, err = t.ParseFiles(tpath)
-		if err != nil {
+		if t, err = t.ParseFiles(tpath); err != nil {
 			http.Error(w, err.Error(), 300)
 			return
 		}
 	}
 	// do the template
-	if err := t.ExecuteTemplate(w, mainTemplate, nil); err != nil {
+	if err = t.ExecuteTemplate(w, mainTemplate, nil); err != nil {
 		http.Error(w, err.Error(), 300)
 	}
 }

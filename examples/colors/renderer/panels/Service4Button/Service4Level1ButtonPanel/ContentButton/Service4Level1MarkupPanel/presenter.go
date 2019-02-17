@@ -50,12 +50,12 @@ func (panelPresenter *Presenter) defineMembers() (err error) {
 
 	// import "syscall/js"
 
-	notjs := panelPresenter.notJS
+	notJS := panelPresenter.notJS
 	tools := panelPresenter.tools
 	null := js.Null()
 
 	// Define the customer name input field.
-	if panelPresenter.customerName = notjs.GetElementByID("customerName"); panelPresenter.customerName == null {
+	if panelPresenter.customerName = notJS.GetElementByID("customerName"); panelPresenter.customerName == null {
 		err = errors.New("unable to find #customerName")
 		return
 	}

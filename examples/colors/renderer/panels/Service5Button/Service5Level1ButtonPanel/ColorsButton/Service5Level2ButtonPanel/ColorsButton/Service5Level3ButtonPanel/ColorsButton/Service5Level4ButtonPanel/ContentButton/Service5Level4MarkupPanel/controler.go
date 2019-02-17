@@ -41,7 +41,7 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
+			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
 		}
 	}()
 
@@ -53,18 +53,18 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 	// import "syscall/js"
 
-	notjs := panelControler.notJS
-	tools := panelPresenter.tools
+	notJS := panelControler.notJS
+	tools := panelControler.tools
 	null := js.Null()
 
 	// Define the customer name input field.
-	if panelControler.customerName = notjs.GetElementByID("customerName"); panelControler.customerName == null {
+	if panelControler.customerName = notJS.GetElementByID("customerName"); panelControler.customerName == null {
 		err = errors.New("unable to find #customerName")
 		return
 	}
 
 	// Define the submit button and set it's handler.
-	if panelControler.addCustomerSubmit = notjs.GetElementByID("addCustomerSubmit"); panelControler.addCustomerSubmit == null {
+	if panelControler.addCustomerSubmit = notJS.GetElementByID("addCustomerSubmit"); panelControler.addCustomerSubmit == null {
 		err = errors.New("unable to find #addCustomerSubmit")
 		return
 	}

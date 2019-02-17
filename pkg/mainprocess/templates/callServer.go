@@ -63,8 +63,8 @@ func (callServer *Server) GetLastDisconnect() time.Time {
 const CallServerGo = `package callserver
 
 import (
-	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
 	"sync"
@@ -80,8 +80,7 @@ const pongWait = 60 * time.Second
 
 // Server is a main process local client call.
 type Server struct {
-	host          string
-	port          uint64
+	listener      net.Listener
 	callMap       map[types.CallID]caller.MainProcesser
 	DisconnectMax time.Duration
 
@@ -100,10 +99,9 @@ type Server struct {
 }
 
 // NewCallServer constructs a new Server.
-func NewCallServer(host string, port uint64, callMap map[types.CallID]caller.MainProcesser) *Server {
+func NewCallServer(listener net.Listener, callMap map[types.CallID]caller.MainProcesser) *Server {
 	return &Server{
-		host:          host,
-		port:          port,
+		listener:      listener,
 		callMap:       callMap,
 		DisconnectMax: time.Millisecond * 500,
 
@@ -125,7 +123,7 @@ func NewCallServer(host string, port uint64, callMap map[types.CallID]caller.Mai
 					log.Println("required oringin header not found")
 					return false
 				}
-				appHost := fmt.Sprintf("%s:%d", host, port)
+				appHost := listener.Addr().String()
 				for _, value := range values {
 					loc, err := url.Parse(value)
 					if err == nil {
@@ -146,7 +144,6 @@ func NewCallServer(host string, port uint64, callMap map[types.CallID]caller.Mai
 const CallServerRunGo = `package callserver
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -165,21 +162,15 @@ var (
 // The main process detects when the browser window closes and then stops.
 // The browser window also closes if the main process stops.
 //
-// Param port is the http port like 9090
-//
 // Package callserver handles all local http requests where either of the following 2 conditions are true.
 //  strings.HasPrefix(r.URL.Path, "/ws")
 //  r.URL.Path == "/callserver.js"
 // All other requests are passed to the parameter handlerFunc.
-// You will want your handlerFunc to do things like load your javascript, css and any other files.
-// Example HTML:
-//  <style> @import url(css/keyboard.css); </style>
+// Param: handlerFunc http.HandlerFunc
+//        You will want your handlerFunc to do things like load your javascript, css and any other files.
 func (callServer *Server) Run(handlerFunc http.HandlerFunc) error {
-	appurl := fmt.Sprintf("http://%s:%d", callServer.host, callServer.port)
+	appurl := "http://" + callServer.listener.Addr().String()
 	log.Println("listen and serve: ", appurl)
-	myServer = &http.Server{
-		Addr: fmt.Sprintf(":%d", callServer.port),
-	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		callServer.serve(w, r, handlerFunc)
 	})
@@ -195,16 +186,17 @@ func (callServer *Server) Run(handlerFunc http.HandlerFunc) error {
 	// 2 func ending possibilities:
 	//  1.a user closed browser window causing a connection error.
 	//  1.b stillConnectedLoop detects the error, stops the server and itself.
-	//  1.c myServer.ListenAndServe() ends because the server is closed.
+	//  1.c myServer.Serve(callServer.listener) ends because the server is closed.
 	//
 	//  2.a the terminal user types ^c or ^\ and stopRunLoopCh gets the signal.
 	//  2.b stillConnectedLoop stops the server and itself.
-	//  2.c myServer.ListenAndServe() ends because the server is closed.
+	//  2.c myServer.Serve(callServer.listener) ends because the server is closed.
 	stopRunLoopCh := make(chan os.Signal, 1)
 	signal.Notify(stopRunLoopCh, os.Interrupt)
 	go callServer.stillConnectedLoop(stopRunLoopCh)
 	// start the server
-	return myServer.ListenAndServe()
+	myServer = &http.Server{}
+	return myServer.Serve(callServer.listener)
 }
 
 // startBrowser tries to open the URL in a browser, and returns
@@ -324,8 +316,9 @@ func (callServer *Server) Serve(w http.ResponseWriter, r *http.Request, handlerF
 // it keeps the web socket connection open until the ping loop or read loop tell it to stop.
 // it has a write loop which tells the ping and read loops to stop if there is a write error.
 func (callServer *Server) serveWebSocket(w http.ResponseWriter, r *http.Request) {
-	ws, err := callServer.upgrader.Upgrade(w, r, nil)
-	if err != nil {
+	var err error
+	var ws *websocket.Conn
+	if ws, err = callServer.upgrader.Upgrade(w, r, nil); err != nil {
 		return
 	}
 	callServer.incConnectionCount()
@@ -350,8 +343,7 @@ func (callServer *Server) serveWebSocket(w http.ResponseWriter, r *http.Request)
 	for {
 		select {
 		case bb := <-messageFromSenderCh:
-			err := ws.WriteMessage(websocket.TextMessage, bb)
-			if err != nil {
+			if err = ws.WriteMessage(websocket.TextMessage, bb); err != nil {
 				log.Println("serveWebSocket: ws.WriteMessage(websocket.TextMessage, bb) error is ", err.Error())
 			}
 		case <-closeWSConnectionCh:

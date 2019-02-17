@@ -7,9 +7,9 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
-func createSettingsYAML(appPaths paths.ApplicationPathsI) error {
+func createSettingsYAML(appPaths paths.ApplicationPathsI, data *templateData) error {
 	folderpaths := appPaths.GetPaths()
 	fname := "http.yaml"
 	oPath := filepath.Join(folderpaths.Output, fname)
-	return templates.ProcessTemplate(fname, oPath, templates.HTTPSettingsYAML, nil, appPaths)
+	return templates.ProcessTemplate(fname, oPath, templates.HTTPSettingsYAML, data, appPaths)
 }

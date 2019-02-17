@@ -248,7 +248,8 @@ func (builder *Builder) toSliderCollectionHTML(addLocations bool) (slider *html.
 	}
 	textNode := &html.Node{
 		Type: html.TextNode,
-		Data: html.UnescapeString("&#11176;"),
+		// Data: html.UnescapeString("&#11176;"),
+		Data: "↩",
 	}
 	backButton.AppendChild(textNode)
 	slider.AppendChild(backButton)

@@ -44,7 +44,7 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
+			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
 		}
 	}()
 
