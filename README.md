@@ -1,4 +1,4 @@
-# kickwasm version 1.1.0
+# kickwasm version 1.2.0
 
 ## Description
 
