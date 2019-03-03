@@ -16,9 +16,9 @@ import (
 const (
 	outputFolder       = "output"
 	versionBreaking    = 1 // Each new version breaks backwards compatibility.
-	versionFeature     = 1 // Each new version adds features. Retains backwards compatibility.
+	versionFeature     = 2 // Each new version adds features. Retains backwards compatibility.
 	versionPatch       = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
-	versionDescription = `Using port 0 with localhost picks the next available port and uses it.`
+	versionDescription = `Tabs and the back button can be blocked. See the framework's renderer/viewtools/locks.go`
 )
 
 var (

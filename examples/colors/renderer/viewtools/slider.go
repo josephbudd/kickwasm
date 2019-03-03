@@ -7,6 +7,9 @@ import (
 
 // Back simulates a click on the tall back button at the left of slider panels.
 func (tools *Tools) Back() {
+	if !tools.HandleButtonClick() {
+		return
+	}
 	l := len(tools.backStack) - 1
 	backdiv := tools.backStack[l]
 	tools.backStack = tools.backStack[:l]

@@ -14,7 +14,7 @@ KickWasm lets you construct a working framework for a go program and then add yo
 1. Generate the framework source code with the command **kickwasm -f path-to-your-kickwasm.yaml**. If you want you can immediately build and run the framework just to see it work.
 1. Turn the framework into an application by adding your own code one panel at a time.
 
-## The frame work
+## The framework
 
 The framework works as soon as you build it. You can build the framework as soon as kickwasm generates the framework source code.
 
@@ -94,8 +94,8 @@ Once you build your application you can distribute it. You can distribute it as 
 
 The examples/ folder contains 2 examples.
 
-1. The colors example which is just a plain untouched framework. It wasm built with kickwasm version 1.1.0 so it starts using any port.
-1. The contacts example which is a simple **C**reate **R**ead **U**pdate **D**elete application. It was built with the previous version of kickwasm.
+1. The colors example which is just a plain untouched framework. It wasm built with kickwasm version 1.2.0.
+1. The contacts example which is a simple **C**reate **R**ead **U**pdate **D**elete application. It was built with kickwasm version 1.0.0. so the framework code is a little older.
 
 ## The example videos
 
@@ -130,24 +130,8 @@ The WIKI is a work in progress. I am still devoted to the WIKI.
 
 **Rekickwasm** is a refactoring tool for a framework generated with kickwasm. Rekickwasm only refactors the renderer part of the framework. I have been using it to refactor the contacts example renderer in all kinds of ways.
 
-## Changelog for this latest version 1.1.0
+## Changelog for this latest version 1.2.0
 
-### No backwards compatibility breaking changes
+### Feature added to the renderer part of the framework
 
-Version 1.1.0 adds using localhost and port 0 in your app's http.yaml file. With localhost and port 0, your app will find a free port on localhost and use it. Now the http.yaml file defaults to localhost and port 0. Below is an example default http.yaml file:
-
-``` yaml
-
-host : "127.0.0.1"
-port : 0
-
-```
-
-### Nasty bug
-
-1. After totally reinstalling linux on this laptop I found a bug in the contacts example and fixed that.
-
-### Small issues that were not problems
-
-1. Each markup panel controler's **func defineControlsSetHandlers()** initializes the controler. I corrected the func's defer statement so that it works as intended. Now the defer statement clarifies that the returned error occurred in **func defineControlsSetHandlers()**.
-1. I found and removed some variable shadowing in the framework code. By removing variable shadowing, I simplified the code making it easier to understand.
+Version 1.2.0 adds locking the back button and tab buttons so that they don't function and unlocking the back and tab buttons so that they do function.

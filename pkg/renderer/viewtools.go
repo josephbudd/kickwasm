@@ -36,6 +36,9 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsTabBarGo(appPaths, builder); err != nil {
 		return
 	}
+	if err = createViewToolsLocksGo(appPaths); err != nil {
+		return
+	}
 	return
 }
 

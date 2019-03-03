@@ -95,6 +95,10 @@ type Tools struct {
 	// tabber
 	tabberLastPanelID     string
 	tabberLastPanelLevels map[string]string
+	// button locking
+	buttonsLocked             bool
+	buttonsLockedMessageTitle string
+	buttonsLockedMessageText  string
 
 	notJS *notjs.NotJS
 }

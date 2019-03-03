@@ -45,6 +45,9 @@ func (tools *Tools) setTabBarOnClicks(tabbar js.Value, cb js.Callback) {
 }
 
 func (tools *Tools) handleTabButtonOnClick(button js.Value) {
+	if !tools.HandleButtonClick() {
+		return
+	}
 	tools.setTabButtonFocus(button)
 	nextpanelid := tools.notJS.ID(button) + "Panel"
 	if nextpanelid != tools.tabberLastPanelID {
