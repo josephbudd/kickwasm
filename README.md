@@ -1,4 +1,9 @@
 # kickwasm version 1.2.0
+## WTF?!
+
+So now in the current version of go which is go1.12, syscall/js is not backwards compatible.
+
+That means that kickwasm is messed up pretty badly. Right now I'm in the process of refactoring the old syscall/js out of kickwasm. This will take some time.
 
 ## Description
 
