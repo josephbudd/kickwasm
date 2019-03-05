@@ -5,6 +5,10 @@ So now in the current version of go which is go1.12, syscall/js is not backwards
 
 That means that kickwasm is messed up pretty badly. Right now I'm in the process of refactoring the old syscall/js out of kickwasm. This will take some time.
 
+After several hours I was able to get cwt working. It took several hours because I had to google my javascript log errors. The google of the last error revealed that I needed a new wasm_exec.js file. That fixed it.
+
+So now I will apply the same changes to kickwasm and test the framework.
+
 ## Description
 
 A rapid development, desktop application framework generator for linux, windows and apple.
