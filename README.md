@@ -6,9 +6,10 @@ I didn't realize that the go syscall/js package was experimental. With go versio
 
 There fore Kickwasm is EXPERIMENTAL. Its current scope is only to keep up with the changes in the EXPERIMENTAL go syscall/js package.
 
-## The Wiki
+## To Do
 
-The wiki has not been update to this new version of kickwasm.
+1. The contacts example needs to be redone.
+1. The some parts of the wiki need to be redone.
 
 
 ## I love kickwasm
