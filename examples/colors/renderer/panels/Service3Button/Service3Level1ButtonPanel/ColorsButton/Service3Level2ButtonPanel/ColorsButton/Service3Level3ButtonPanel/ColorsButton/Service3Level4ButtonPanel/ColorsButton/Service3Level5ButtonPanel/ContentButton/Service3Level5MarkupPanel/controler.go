@@ -83,16 +83,17 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 // import "github.com/josephbudd/kickwasm/examples/colors/domain/types"
 
-func (panelControler *Controler) handleSubmit([]js.Value) {
+func (panelControler *Controler) handleSubmit(this js.Value, args []js.Value) interface{} {
 	name := strings.TrimSpace(panelControler.notJS.GetValue(panelControler.addCustomerName))
 	if len(name) == 0 {
 		panelControler.tools.Error("Customer Name is required.")
-		return
+		return nil
 	}
 	record := &types.CustomerRecord{
 		Name: name,
 	}
 	panelControler.caller.AddCustomer(record)
+	return nil
 }
 
 */

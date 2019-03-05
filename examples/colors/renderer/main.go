@@ -6,7 +6,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/colors/domain/data/callids"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/data/loglevels"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
-	"github.com/josephbudd/kickwasm/examples/colors/renderer/callClient"
+	call "github.com/josephbudd/kickwasm/examples/colors/renderer/callClient"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/calls"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/implementations/panelHelping"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
@@ -44,8 +44,9 @@ func main() {
 	host, port := notJS.HostPort()
 	client := call.NewClient(host, port, tools, notJS)
 	client.SetOnConnectionBreak(
-		func([]js.Value) {
+		func(this js.Value, args []js.Value) interface{} {
 			quitCh <- struct{}{}
+			return nil
 		},
 	)
 	// get the local procedure calls

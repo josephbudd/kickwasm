@@ -1,5 +1,5 @@
 flagcc: true
 yamlstartfilename: kickwasm.yaml
-kwversionbreaking: 1
-kwversionfeature: 2
+kwversionbreaking: 2
+kwversionfeature: 0
 kwversionpatch: 0

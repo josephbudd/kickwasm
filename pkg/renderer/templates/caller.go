@@ -29,8 +29,8 @@ type Client struct {
 	initialCB   func()
 
 	// handlers
-	OnConnectionBreakJS js.Callback
-	OnConnectionBreak   func([]js.Value)
+	OnConnectionBreakJS js.Func
+	OnConnectionBreak   func(this js.Value, args []js.Value) interface{}
 }
 
 // NewClient costructs a new Client.
@@ -54,13 +54,14 @@ func (client *Client) SetCallMap(callMap map[types.CallID]caller.Renderer) {
 }
 
 // SetOnConnectionBreak set the handler for the connection break.
-func (client *Client) SetOnConnectionBreak(f func([]js.Value)) {
-	client.OnConnectionBreak = f
-	client.OnConnectionBreakJS = client.notJS.RegisterCallBack(f)
+func (client *Client) SetOnConnectionBreak(fn func(this js.Value, args []js.Value) interface{}) {
+	client.OnConnectionBreak = fn
+	client.OnConnectionBreakJS = client.notJS.RegisterCallBack(fn)
 }
 
-func (client *Client) defaultOnConnectionBreak([]js.Value) {
+func (client *Client) defaultOnConnectionBreak(this js.Value, args []js.Value) interface{} {
 	client.notJS.Alert("The connection to the main process has broken.")
+	return nil
 }
 
 // Connect connects to the server.
@@ -82,9 +83,11 @@ func (client *Client) Connect(callBack func()) bool {
 		return false
 	}
 	client.connection.Set("onopen", notJS.RegisterCallBack(
-		func(args []js.Value) {
-			client.onOpen(args)
+		func(this js.Value, args []js.Value) interface{} {
+			client.connected = true
+			client.notJS.ConsoleLog("Calls are connected.")
 			callBack()
+			return nil
 		}),
 	)
 	client.connection.Set("onclose", notJS.RegisterCallBack(client.onClose))
@@ -92,28 +95,25 @@ func (client *Client) Connect(callBack func()) bool {
 	return true
 }
 
-func (client *Client) onOpen(args []js.Value) {
-	client.connected = true
-	client.notJS.ConsoleLog("Calls are connected.")
-}
-
-func (client *Client) onClose(args []js.Value) {
+func (client *Client) onClose(this js.Value, args []js.Value) interface{} {
 	client.connected = false
 	client.notJS.ConsoleLog("Calls are unconnected.")
-	client.OnConnectionBreak(nil)
+	client.OnConnectionBreak(js.Undefined(), nil)
+	return nil
 }
 
-func (client *Client) onMessage(args []js.Value) {
+func (client *Client) onMessage(this js.Value, args []js.Value) interface{} {
 	e := args[0]
 	data := e.Get("data").String()
 	payload := types.Payload{}
 	if err := json.Unmarshal([]byte(data), &payload); err != nil {
 		message := fmt.Sprintf("client.onMessage: json.Unmarshal([]byte(data), payload) error is %q.", err.Error())
 		client.notJS.Alert(message)
-		return
+		return nil
 	}
 	client.queue = append(client.queue, payload)
 	client.dispatch()
+	return nil
 }
 
 func (client *Client) dispatch() {

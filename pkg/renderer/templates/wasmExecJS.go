@@ -6,38 +6,34 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 // license that can be found in the LICENSE file.
 
 (() => {
-	// Map web browser API and Node.js API to a single common API (preferring web standards over Node.js API).
-	const isNodeJS = typeof process !== "undefined";
-	if (isNodeJS) {
-		global.require = require;
-		global.fs = require("fs");
+	// Map multiple JavaScript environments to a single common API,
+	// preferring web standards over Node.js API.
+	//
+	// Environments considered:
+	// - Browsers
+	// - Node.js
+	// - Electron
+	// - Parcel
 
-		const nodeCrypto = require("crypto");
-		global.crypto = {
-			getRandomValues(b) {
-				nodeCrypto.randomFillSync(b);
-			},
-		};
-
-		global.performance = {
-			now() {
-				const [sec, nsec] = process.hrtime();
-				return sec * 1000 + nsec / 1000000;
-			},
-		};
-
-		const util = require("util");
-		global.TextEncoder = util.TextEncoder;
-		global.TextDecoder = util.TextDecoder;
+	if (typeof global !== "undefined") {
+		// global already exists
+	} else if (typeof window !== "undefined") {
+		window.global = window;
+	} else if (typeof self !== "undefined") {
+		self.global = self;
 	} else {
-		if (typeof window !== "undefined") {
-			window.global = window;
-		} else if (typeof self !== "undefined") {
-			self.global = self;
-		} else {
-			throw new Error("cannot export Go (neither window nor self is defined)");
-		}
+		throw new Error("cannot export Go (neither global, window nor self is defined)");
+	}
 
+	if (!global.require && typeof require !== "undefined") {
+		global.require = require;
+	}
+
+	if (!global.fs && global.require) {
+		global.fs = require("fs");
+	}
+
+	if (!global.fs) {
 		let outputBuf = "";
 		global.fs = {
 			constants: { O_WRONLY: -1, O_RDWR: -1, O_CREAT: -1, O_TRUNC: -1, O_APPEND: -1, O_EXCL: -1 }, // unused
@@ -50,13 +46,56 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 				}
 				return buf.length;
 			},
-			openSync(path, flags, mode) {
+			write(fd, buf, offset, length, position, callback) {
+				if (offset !== 0 || length !== buf.length || position !== null) {
+					throw new Error("not implemented");
+				}
+				const n = this.writeSync(fd, buf);
+				callback(null, n);
+			},
+			open(path, flags, mode, callback) {
 				const err = new Error("not implemented");
 				err.code = "ENOSYS";
-				throw err;
+				callback(err);
+			},
+			read(fd, buffer, offset, length, position, callback) {
+				const err = new Error("not implemented");
+				err.code = "ENOSYS";
+				callback(err);
+			},
+			fsync(fd, callback) {
+				callback(null);
 			},
 		};
 	}
+
+	if (!global.crypto) {
+		const nodeCrypto = require("crypto");
+		global.crypto = {
+			getRandomValues(b) {
+				nodeCrypto.randomFillSync(b);
+			},
+		};
+	}
+
+	if (!global.performance) {
+		global.performance = {
+			now() {
+				const [sec, nsec] = process.hrtime();
+				return sec * 1000 + nsec / 1000000;
+			},
+		};
+	}
+
+	if (!global.TextEncoder) {
+		global.TextEncoder = require("util").TextEncoder;
+	}
+
+	if (!global.TextDecoder) {
+		global.TextDecoder = require("util").TextDecoder;
+	}
+
+	// End of polyfills for common API.
 
 	const encoder = new TextEncoder("utf-8");
 	const decoder = new TextDecoder("utf-8");
@@ -70,7 +109,11 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 					console.warn("exit code:", code);
 				}
 			};
-			this._callbackTimeouts = new Map();
+			this._exitPromise = new Promise((resolve) => {
+				this._resolveExitPromise = resolve;
+			});
+			this._pendingEvent = null;
+			this._scheduledTimeouts = new Map();
 			this._nextCallbackTimeoutID = 1;
 
 			const mem = () => {
@@ -91,6 +134,9 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 
 			const loadValue = (addr) => {
 				const f = mem().getFloat64(addr, true);
+				if (f === 0) {
+					return undefined;
+				}
 				if (!isNaN(f)) {
 					return f;
 				}
@@ -108,14 +154,18 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 						mem().setUint32(addr, 0, true);
 						return;
 					}
+					if (v === 0) {
+						mem().setUint32(addr + 4, nanHead, true);
+						mem().setUint32(addr, 1, true);
+						return;
+					}
 					mem().setFloat64(addr, v, true);
 					return;
 				}
 
 				switch (v) {
 					case undefined:
-						mem().setUint32(addr + 4, nanHead, true);
-						mem().setUint32(addr, 1, true);
+						mem().setFloat64(addr, 0, true);
 						return;
 					case null:
 						mem().setUint32(addr + 4, nanHead, true);
@@ -178,6 +228,11 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 			const timeOrigin = Date.now() - performance.now();
 			this.importObject = {
 				go: {
+					// Go's SP does not change as long as no Go code is running. Some operations (e.g. calls, getters and setters)
+					// may synchronously trigger a Go event handler. This makes Go code get executed in the middle of the imported
+					// function. A goroutine can switch to a new stack if the current stack is too small (see morestack function).
+					// This changes the SP, thus we have to update the SP used by the imported function.
+
 					// func wasmExit(code int32)
 					"runtime.wasmExit": (sp) => {
 						const code = mem().getInt32(sp + 8, true);
@@ -208,22 +263,22 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 						mem().setInt32(sp + 16, (msec % 1000) * 1000000, true);
 					},
 
-					// func scheduleCallback(delay int64) int32
-					"runtime.scheduleCallback": (sp) => {
+					// func scheduleTimeoutEvent(delay int64) int32
+					"runtime.scheduleTimeoutEvent": (sp) => {
 						const id = this._nextCallbackTimeoutID;
 						this._nextCallbackTimeoutID++;
-						this._callbackTimeouts.set(id, setTimeout(
-							() => { this._resolveCallbackPromise(); },
+						this._scheduledTimeouts.set(id, setTimeout(
+							() => { this._resume(); },
 							getInt64(sp + 8) + 1, // setTimeout has been seen to fire up to 1 millisecond early
 						));
 						mem().setInt32(sp + 16, id, true);
 					},
 
-					// func clearScheduledCallback(id int32)
-					"runtime.clearScheduledCallback": (sp) => {
+					// func clearTimeoutEvent(id int32)
+					"runtime.clearTimeoutEvent": (sp) => {
 						const id = mem().getInt32(sp + 8, true);
-						clearTimeout(this._callbackTimeouts.get(id));
-						this._callbackTimeouts.delete(id);
+						clearTimeout(this._scheduledTimeouts.get(id));
+						this._scheduledTimeouts.delete(id);
 					},
 
 					// func getRandomData(r []byte)
@@ -238,7 +293,9 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 
 					// func valueGet(v ref, p string) ref
 					"syscall/js.valueGet": (sp) => {
-						storeValue(sp + 32, Reflect.get(loadValue(sp + 8), loadString(sp + 16)));
+						const result = Reflect.get(loadValue(sp + 8), loadString(sp + 16));
+						sp = this._inst.exports.getsp(); // see comment above
+						storeValue(sp + 32, result);
 					},
 
 					// func valueSet(v ref, p string, x ref)
@@ -262,7 +319,9 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 							const v = loadValue(sp + 8);
 							const m = Reflect.get(v, loadString(sp + 16));
 							const args = loadSliceOfValues(sp + 32);
-							storeValue(sp + 56, Reflect.apply(m, v, args));
+							const result = Reflect.apply(m, v, args);
+							sp = this._inst.exports.getsp(); // see comment above
+							storeValue(sp + 56, result);
 							mem().setUint8(sp + 64, 1);
 						} catch (err) {
 							storeValue(sp + 56, err);
@@ -275,7 +334,9 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 						try {
 							const v = loadValue(sp + 8);
 							const args = loadSliceOfValues(sp + 16);
-							storeValue(sp + 40, Reflect.apply(v, undefined, args));
+							const result = Reflect.apply(v, undefined, args);
+							sp = this._inst.exports.getsp(); // see comment above
+							storeValue(sp + 40, result);
 							mem().setUint8(sp + 48, 1);
 						} catch (err) {
 							storeValue(sp + 40, err);
@@ -288,7 +349,9 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 						try {
 							const v = loadValue(sp + 8);
 							const args = loadSliceOfValues(sp + 16);
-							storeValue(sp + 40, Reflect.construct(v, args));
+							const result = Reflect.construct(v, args);
+							sp = this._inst.exports.getsp(); // see comment above
+							storeValue(sp + 40, result);
 							mem().setUint8(sp + 48, 1);
 						} catch (err) {
 							storeValue(sp + 40, err);
@@ -330,7 +393,7 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 			this._inst = instance;
 			this._values = [ // TODO: garbage collection
 				NaN,
-				undefined,
+				0,
 				null,
 				true,
 				false,
@@ -339,7 +402,6 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 				this,
 			];
 			this._refs = new Map();
-			this._callbackShutdown = false;
 			this.exited = false;
 
 			const mem = new DataView(this._inst.exports.mem.buffer)
@@ -364,7 +426,7 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 			const keys = Object.keys(this.env).sort();
 			argvPtrs.push(keys.length);
 			keys.forEach((key) => {
-				argvPtrs.push(strPtr(` + "`" + `${key}=${this.env[key]}` + "`" + `));
+			argvPtrs.push(strPtr("${key}=${this.env[key]}"));
 			});
 
 			const argv = offset;
@@ -374,47 +436,41 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 				offset += 8;
 			});
 
-			while (true) {
-				const callbackPromise = new Promise((resolve) => {
-					this._resolveCallbackPromise = () => {
-						if (this.exited) {
-							throw new Error("bad callback: Go program has already exited");
-						}
-						setTimeout(resolve, 0); // make sure it is asynchronous
-					};
-				});
-				this._inst.exports.run(argc, argv);
-				if (this.exited) {
-					break;
-				}
-				await callbackPromise;
+			this._inst.exports.run(argc, argv);
+			if (this.exited) {
+				this._resolveExitPromise();
+			}
+			await this._exitPromise;
+		}
+
+		_resume() {
+			if (this.exited) {
+				throw new Error("Go program has already exited");
+			}
+			this._inst.exports.resume();
+			if (this.exited) {
+				this._resolveExitPromise();
 			}
 		}
 
-		static _makeCallbackHelper(id, pendingCallbacks, go) {
-			return function() {
-				pendingCallbacks.push({ id: id, args: arguments });
-				go._resolveCallbackPromise();
-			};
-		}
-
-		static _makeEventCallbackHelper(preventDefault, stopPropagation, stopImmediatePropagation, fn) {
-			return function(event) {
-				if (preventDefault) {
-					event.preventDefault();
-				}
-				if (stopPropagation) {
-					event.stopPropagation();
-				}
-				if (stopImmediatePropagation) {
-					event.stopImmediatePropagation();
-				}
-				fn(event);
+		_makeFuncWrapper(id) {
+			const go = this;
+			return function () {
+				const event = { id: id, this: this, args: arguments };
+				go._pendingEvent = event;
+				go._resume();
+				return event.result;
 			};
 		}
 	}
 
-	if (isNodeJS) {
+	if (
+		global.require &&
+		global.require.main === module &&
+		global.process &&
+		global.process.versions &&
+		!global.process.versions.electron
+	) {
 		if (process.argv.length < 3) {
 			process.stderr.write("usage: go_js_wasm_exec [wasm binary] [arguments]\n");
 			process.exit(1);
@@ -422,14 +478,14 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 
 		const go = new Go();
 		go.argv = process.argv.slice(2);
-		go.env = process.env;
+		go.env = Object.assign({ TMPDIR: require("os").tmpdir() }, process.env);
 		go.exit = process.exit;
 		WebAssembly.instantiate(fs.readFileSync(process.argv[2]), go.importObject).then((result) => {
-			process.on("exit", (code) => { // Node.js exits if no callback is pending
+			process.on("exit", (code) => { // Node.js exits if no event handler is pending
 				if (code === 0 && !go.exited) {
 					// deadlock, make Go print error and stack traces
-					go._callbackShutdown = true;
-					go._inst.exports.run();
+					go._pendingEvent = { id: 0 };
+					go._resume();
 				}
 			});
 			return go.run(result.instance);

@@ -8,8 +8,9 @@ import (
 func (tools *Tools) initializeCloser() {
 	notJS := tools.notJS
 	// closer master view close button
-	cb := notJS.RegisterCallBack(func([]js.Value) {
+	cb := notJS.RegisterCallBack(func(this js.Value, args []js.Value) interface{} {
 		tools.Quit()
+		return nil
 	})
 	button := notJS.GetElementByID("closerMasterView-close")
 	notJS.SetOnClick(button, cb)
@@ -20,7 +21,7 @@ func (tools *Tools) initializeCloser() {
 }
 
 // ToggleCloser toggles the closer master view.
-func (tools *Tools) toggleCloser([]js.Value) {
+func (tools *Tools) toggleCloser(this js.Value, args []js.Value) interface{} {
 	notJS := tools.notJS
 	if !tools.ElementIsShown(tools.closerMasterView) {
 		// closer view is not visible
@@ -39,12 +40,13 @@ func (tools *Tools) toggleCloser([]js.Value) {
 		}
 		// show the closer main div
 		tools.ElementShow(tools.closerMasterView)
-		return
+		return nil
 	}
 	// closer view is visible
 	// so hide the closer view and show the last main div.
 	tools.ElementHide(tools.closerMasterView)
 	tools.ElementShow(tools.lastMasterView)
+	return nil
 }
 
 // Quit closes the application renderer.

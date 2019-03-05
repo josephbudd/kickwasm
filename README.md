@@ -1,17 +1,18 @@
-# kickwasm version 1.2.0
-## WTF?!
+# kickwasm version 2.0.0
 
-So now in the current version of go which is go1.12, syscall/js is not backwards compatible.
+Compatible with go version 1.12.
 
-That means that kickwasm is messed up pretty badly. Right now I'm in the process of refactoring the old syscall/js out of kickwasm. This will take some time.
+``` quote
 
-After several hours I was able to get cwt working. It took several hours because I had to google my javascript log errors. The google of the last error revealed that I needed a new wasm_exec.js file. That fixed it.
+I didn't realize that the go syscall/js package was experimental. With go version 1.12 I found that out the hard way.
 
-So now I will apply the same changes to kickwasm and test the framework.
+There fore Kickwasm is EXPERIMENTAL. Its current scope is only to keep up with the changes in the EXPERIMENTAL go syscall/js package.
 
-## Description
+```
 
-A rapid development, desktop application framework generator for linux, windows and apple.
+## I love kickwasm
+
+Kickwams is a rapid development, desktop application framework generator for linux, windows and apple.
 
 KickWasm lets you construct a working framework for a go program and then add your own code to the framework in order to turn the framework into a real application. You simply follow these steps.
 
@@ -138,9 +139,3 @@ The WIKI is a work in progress. I am still devoted to the WIKI.
 ## Tools
 
 **Rekickwasm** is a refactoring tool for a framework generated with kickwasm. Rekickwasm only refactors the renderer part of the framework. I have been using it to refactor the contacts example renderer in all kinds of ways.
-
-## Changelog for this latest version 1.2.0
-
-### Feature added to the renderer part of the framework
-
-Version 1.2.0 adds locking the back button and tab buttons so that they don't function and unlocking the back and tab buttons so that they do function.

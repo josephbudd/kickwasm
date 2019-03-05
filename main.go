@@ -14,11 +14,13 @@ import (
 )
 
 const (
-	outputFolder       = "output"
-	versionBreaking    = 1 // Each new version breaks backwards compatibility.
-	versionFeature     = 2 // Each new version adds features. Retains backwards compatibility.
-	versionPatch       = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
-	versionDescription = `Tabs and the back button can be blocked. See the framework's renderer/viewtools/locks.go`
+	outputFolder = "output"
+
+	versionBreaking = 2 // Each new version breaks backwards compatibility.
+	versionFeature  = 0 // Each new version adds features. Retains backwards compatibility.
+	versionPatch    = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
+
+	versionDescription = `Experimental because the go package syscall/js is still experimental. Updated to the go version 1.12 syscall/js package.`
 )
 
 var (

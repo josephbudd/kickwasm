@@ -35,7 +35,7 @@ func (tools *Tools) initializeTabBar() {
 	}
 }
 
-func (tools *Tools) setTabBarOnClicks(tabbar js.Value, cb js.Callback) {
+func (tools *Tools) setTabBarOnClicks(tabbar js.Value, cb js.Func) {
 	notJS := tools.notJS
 	children := notJS.ChildrenSlice(tabbar)
 	for _, ch := range children {

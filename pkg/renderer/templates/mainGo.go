@@ -9,7 +9,7 @@ import (
 	"{{.ApplicationGitPath}}{{.ImportDomainDataCallIDs}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainDataLogLevels}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererCallClient}}"
+	call "{{.ApplicationGitPath}}{{.ImportRendererCallClient}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererCalls}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererImplementationsPanelHelper}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
@@ -47,8 +47,9 @@ func main() {
 	host, port := notJS.HostPort()
 	client := call.NewClient(host, port, tools, notJS)
 	client.SetOnConnectionBreak(
-		func([]js.Value) {
+		func(this js.Value, args []js.Value) interface{} {
 			quitCh <- struct{}{}
+			return nil
 		},
 	)
 	// get the local procedure calls

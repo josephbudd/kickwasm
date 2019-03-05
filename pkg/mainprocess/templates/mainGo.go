@@ -184,7 +184,9 @@ func serveMainHTML(w http.ResponseWriter) {
 	}
 	// do the template
 	if err = t.ExecuteTemplate(w, mainTemplate, nil); err != nil {
-		http.Error(w, err.Error(), 300)
+		if !strings.Contains(err.Error(), "reset") {
+			http.Error(w, err.Error(), 300)
+		}
 	}
 }
 

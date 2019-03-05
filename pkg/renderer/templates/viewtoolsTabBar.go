@@ -27,9 +27,10 @@ func (tools *Tools) initializeTabBar() {
 {{range $level, $id := .LastPanelLevels}}
 	tools.tabberLastPanelLevels["{{$level}}"] = "{{$id}}"{{end}}
 	cb := tools.notJS.RegisterCallBack(
-		func(args []js.Value) {
+		func(this js.Value, args []js.Value) interface{} {
 			target := notJS.GetEventTarget(args[0])
 			tools.handleTabButtonOnClick(target)
+			return nil
 		},
 	)
 	for id := range tools.tabberLastPanelLevels {
@@ -38,7 +39,7 @@ func (tools *Tools) initializeTabBar() {
 	}
 }
 
-func (tools *Tools) setTabBarOnClicks(tabbar js.Value, cb js.Callback) {
+func (tools *Tools) setTabBarOnClicks(tabbar js.Value, cb js.Func) {
 	notJS := tools.notJS
 	children := notJS.ChildrenSlice(tabbar)
 	for _, ch := range children {

@@ -26,7 +26,7 @@ type Client struct {
 	initialCB   func()
 
 	// handlers
-	OnConnectionBreakJS js.Callback
+	OnConnectionBreakJS js.Func
 	OnConnectionBreak   func([]js.Value)
 }
 
