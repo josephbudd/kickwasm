@@ -105,7 +105,7 @@ Once you build your application you can distribute it. You can distribute it as 
 
 The examples/ folder contains 2 examples.
 
-1. The colors example which is just a plain untouched framework. It wasm built with kickwasm version 1.2.0.
+1. The colors example which is just a plain untouched framework. It wasm built with kickwasm version 2.0.0.
 1. The contacts example which is a simple **C**reate **R**ead **U**pdate **D**elete application. It was built with kickwasm version 1.0.0. so the framework code is a little older.
 
 ## The example videos
