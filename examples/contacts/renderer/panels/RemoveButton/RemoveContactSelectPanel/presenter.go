@@ -1,4 +1,4 @@
-package RemoveContactSelectPanel
+package removecontactselectpanel
 
 import (
 	"github.com/pkg/errors"
@@ -29,7 +29,9 @@ type Presenter struct {
 }
 
 // defineMembers defines the Presenter members by their html elements.
+// Returns the error.
 func (panelPresenter *Presenter) defineMembers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelPresenter *Presenter) defineMembers()")

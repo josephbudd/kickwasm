@@ -7,6 +7,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/kickwasmwidgets"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
 // button attributes
@@ -41,6 +42,7 @@ func NewContactFVList(div js.Value,
 	showFunc func(js.Value),
 	isShownFunc func(js.Value) bool,
 	notJS *notjs.NotJS,
+	tools *viewtools.Tools,
 	getter ContactGetter,
 ) *ContactFVList {
 	stater := kickwasmwidgets.NewVListState()
@@ -52,6 +54,7 @@ func NewContactFVList(div js.Value,
 		showFunc,
 		isShownFunc,
 		notJS,
+		tools,
 	)
 	cfvlist := &ContactFVList{
 		FVList: fvlist,
@@ -121,10 +124,11 @@ func (cfvlist *ContactFVList) Start() {
 
 // Build rebuilds a list in a panel in the carousel.
 func (cfvlist *ContactFVList) Build(contacts []*types.ContactRecord, sortedIndex, recordCount, state uint64) {
+	notJS := cfvlist.FVList.NotJS
+	tools := cfvlist.FVList.Tools
 	panelIndex := kickwasmwidgets.StateToSubPanelIndex(state)
 	switch panelIndex {
 	case 0:
-		notJS := cfvlist.FVList.NotJS
 		l := len(contacts)
 		buttons := make([]js.Value, l, l)
 		for i, contact := range contacts {
@@ -142,32 +146,35 @@ func (cfvlist *ContactFVList) Build(contacts []*types.ContactRecord, sortedIndex
 			notJS.AppendChild(h4, tn)
 			notJS.AppendChild(button, h4)
 			// button onclick
-			cb := notJS.RegisterEventCallBack(false, false, false, func(event js.Value) {
-				// the user has clicked on a button
-				target := notJS.GetEventTarget(event)
-				for {
-					if notJS.TagName(target) == "BUTTON" {
-						break
+			cb := tools.RegisterEventCallBack(
+				func(event js.Value) interface{} {
+					// the user has clicked on a button
+					target := notJS.GetEventTarget(event)
+					for {
+						if notJS.TagName(target) == "BUTTON" {
+							break
+						}
+						target = notJS.ParentNode(target)
 					}
-					target = notJS.ParentNode(target)
-				}
-				nextPanel := cfvlist.GetSubPanel(1)
-				stateMatch := notJS.GetAttribute(target, stateValueAttributeName)
-				cfvlist.stateMatch = stateMatch
-				// set the next panel's list title.
-				notJS.SetInnerText(nextPanel.Title, fmt.Sprintf("Cities in %s", stateMatch))
-				cfvlist.getter.GetContactsPageCitiesMatchState(
-					0,
-					nextPanel.VList.GetPageSize(),
-					nextPanel.VList.GetIDState(),
-					stateMatch)
-			})
+					nextPanel := cfvlist.GetSubPanel(1)
+					stateMatch := notJS.GetAttribute(target, stateValueAttributeName)
+					cfvlist.stateMatch = stateMatch
+					// set the next panel's list title.
+					notJS.SetInnerText(nextPanel.Title, fmt.Sprintf("Cities in %s", stateMatch))
+					cfvlist.getter.GetContactsPageCitiesMatchState(
+						0,
+						nextPanel.VList.GetPageSize(),
+						nextPanel.VList.GetIDState(),
+						stateMatch)
+					return nil
+				},
+				true, true, true,
+			)
 			notJS.SetOnClick(button, cb)
 			buttons[i] = button
 		}
 		cfvlist.FVList.Build(buttons, state, recordCount)
 	case 1:
-		notJS := cfvlist.FVList.NotJS
 		l := len(contacts)
 		buttons := make([]js.Value, l, l)
 		for i, contact := range contacts {
@@ -185,7 +192,7 @@ func (cfvlist *ContactFVList) Build(contacts []*types.ContactRecord, sortedIndex
 			notJS.AppendChild(h4, tn)
 			notJS.AppendChild(button, h4)
 			// button onclick
-			cb := notJS.RegisterEventCallBack(false, false, false, func(event js.Value) {
+			cb := tools.RegisterEventCallBack(func(event js.Value) interface{} {
 				// the user has clicked on a button
 				target := notJS.GetEventTarget(event)
 				for {
@@ -205,13 +212,14 @@ func (cfvlist *ContactFVList) Build(contacts []*types.ContactRecord, sortedIndex
 					nextPanel.VList.GetIDState(),
 					cfvlist.stateMatch,
 					cityMatch)
-			})
+				return nil
+			},
+				true, true, true)
 			notJS.SetOnClick(button, cb)
 			buttons[i] = button
 		}
 		cfvlist.FVList.Build(buttons, state, recordCount)
 	default:
-		notJS := cfvlist.FVList.NotJS
 		l := len(contacts)
 		buttons := make([]js.Value, l, l)
 		for i, contact := range contacts {
@@ -259,18 +267,22 @@ func (cfvlist *ContactFVList) Build(contacts []*types.ContactRecord, sortedIndex
 			notJS.AppendChild(p, tn)
 			notJS.AppendChild(button, p)
 			// button onclick
-			cb := notJS.RegisterEventCallBack(false, false, false, func(event js.Value) {
-				// the user has clicked on a button
-				target := notJS.GetEventTarget(event)
-				for {
-					if notJS.TagName(target) == "BUTTON" {
-						break
+			cb := tools.RegisterEventCallBack(
+				func(event js.Value) interface{} {
+					// the user has clicked on a button
+					target := notJS.GetEventTarget(event)
+					for {
+						if notJS.TagName(target) == "BUTTON" {
+							break
+						}
+						target = notJS.ParentNode(target)
 					}
-					target = notJS.ParentNode(target)
-				}
-				id := notJS.GetAttributeUint64(target, recordIDAttributeName)
-				cfvlist.getter.GetContact(id)
-			})
+					id := notJS.GetAttributeUint64(target, recordIDAttributeName)
+					cfvlist.getter.GetContact(id)
+					return nil
+				},
+				true, true, true,
+			)
 			notJS.SetOnClick(button, cb)
 			buttons[i] = button
 		}

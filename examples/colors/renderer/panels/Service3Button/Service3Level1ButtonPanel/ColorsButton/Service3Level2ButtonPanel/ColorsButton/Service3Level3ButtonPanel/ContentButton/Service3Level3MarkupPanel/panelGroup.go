@@ -1,4 +1,4 @@
-package Service3Level3MarkupPanel
+package service3level3markuppanel
 
 import (
 	"syscall/js"

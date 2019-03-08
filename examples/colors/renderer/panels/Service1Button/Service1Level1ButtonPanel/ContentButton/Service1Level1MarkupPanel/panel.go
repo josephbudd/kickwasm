@@ -1,4 +1,4 @@
-package Service1Level1MarkupPanel
+package service1level1markuppanel
 
 import (
 	"github.com/pkg/errors"

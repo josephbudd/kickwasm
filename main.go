@@ -18,7 +18,7 @@ const (
 
 	versionBreaking = 2 // Each new version breaks backwards compatibility.
 	versionFeature  = 0 // Each new version adds features. Retains backwards compatibility.
-	versionPatch    = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
+	versionPatch    = 1 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
 
 	versionDescription = `Experimental because the go package syscall/js is still experimental. Updated to the go version 1.12 syscall/js package.`
 )

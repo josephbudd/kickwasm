@@ -1,4 +1,4 @@
-package RemoveContactNotReadyPanel
+package removecontactnotreadypanel
 
 import (
 	"syscall/js"
@@ -16,11 +16,12 @@ type PanelGroup struct {
 	notJS *notjs.NotJS
 
 	removeContactNotReadyPanel js.Value
-	removeContactSelectPanel   js.Value
-	removeContactConfirmPanel  js.Value
+	removeContactSelectPanel js.Value
+	removeContactConfirmPanel js.Value
 }
 
 func (panelGroup *PanelGroup) defineMembers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelGroup *PanelGroup) defineMembers()")
@@ -42,6 +43,7 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		err = errors.New("unable to find #tabsMasterView-home-pad-RemoveButton-RemoveContactConfirmPanel")
 		return
 	}
+
 
 	return
 }
@@ -96,3 +98,4 @@ form for confirmation of the record removal
 func (panelGroup *PanelGroup) showRemoveContactConfirmPanel(force bool) {
 	panelGroup.tools.ShowPanelInButtonGroup(panelGroup.removeContactConfirmPanel, force)
 }
+

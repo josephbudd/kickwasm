@@ -56,7 +56,7 @@ func (client *Client) SetCallMap(callMap map[types.CallID]caller.Renderer) {
 // SetOnConnectionBreak set the handler for the connection break.
 func (client *Client) SetOnConnectionBreak(fn func(this js.Value, args []js.Value) interface{}) {
 	client.OnConnectionBreak = fn
-	client.OnConnectionBreakJS = client.notJS.RegisterCallBack(fn)
+	client.OnConnectionBreakJS = client.tools.RegisterCallBack(fn)
 }
 
 func (client *Client) defaultOnConnectionBreak(this js.Value, args []js.Value) interface{} {
@@ -67,6 +67,7 @@ func (client *Client) defaultOnConnectionBreak(this js.Value, args []js.Value) i
 // Connect connects to the server.
 func (client *Client) Connect(callBack func()) bool {
 	notJS := client.notJS
+	tools := client.tools
 	if client.connected {
 		return true
 	}
@@ -82,7 +83,7 @@ func (client *Client) Connect(callBack func()) bool {
 	if rs.String() == "undefined" {
 		return false
 	}
-	client.connection.Set("onopen", notJS.RegisterCallBack(
+	client.connection.Set("onopen", tools.RegisterCallBack(
 		func(this js.Value, args []js.Value) interface{} {
 			client.connected = true
 			client.notJS.ConsoleLog("Calls are connected.")
@@ -90,8 +91,8 @@ func (client *Client) Connect(callBack func()) bool {
 			return nil
 		}),
 	)
-	client.connection.Set("onclose", notJS.RegisterCallBack(client.onClose))
-	client.connection.Set("onmessage", notJS.RegisterCallBack(client.onMessage))
+	client.connection.Set("onclose", tools.RegisterCallBack(client.onClose))
+	client.connection.Set("onmessage", tools.RegisterCallBack(client.onMessage))
 	return true
 }
 

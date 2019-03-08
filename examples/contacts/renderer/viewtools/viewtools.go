@@ -95,6 +95,13 @@ type Tools struct {
 	// tabber
 	tabberLastPanelID     string
 	tabberLastPanelLevels map[string]string
+	// button locking
+	buttonsLocked             bool
+	buttonsLockedMessageTitle string
+	buttonsLockedMessageText  string
+
+	// call backs
+	jsCallBacks []js.Func
 
 	notJS *notjs.NotJS
 }
@@ -109,6 +116,7 @@ func NewTools(notJS *notjs.NotJS) *Tools {
 		here:            js.Undefined(),
 		alert:           g.Get("alert"),
 		console:         g.Get("console"),
+		jsCallBacks:     make([]js.Func, 0, 100),
 		notJS:           notJS,
 	}
 	bodies := notJS.GetElementsByTagName("body")
@@ -129,7 +137,7 @@ func NewTools(notJS *notjs.NotJS) *Tools {
 	v.modalMasterViewClose = notJS.GetElementByID("modalInformationMasterView-close")
 	v.modalQueue = make([]*modalViewData, 5, 5)
 	v.modalQueueLastIndex = -1
-	cb := notJS.RegisterCallBack(v.handleModalMasterViewClose)
+	cb := v.RegisterEventCallBack(v.handleModalMasterViewClose, true, true, true)
 	notJS.SetOnClick(v.modalMasterViewClose, cb)
 
 	// misc

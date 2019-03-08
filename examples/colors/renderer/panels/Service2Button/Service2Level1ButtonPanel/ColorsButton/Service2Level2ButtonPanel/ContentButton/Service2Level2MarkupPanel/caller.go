@@ -1,4 +1,4 @@
-package Service2Level2MarkupPanel
+package service2level2markuppanel
 
 import (
 	"github.com/pkg/errors"

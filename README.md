@@ -1,16 +1,17 @@
-# kickwasm version 2.0.0
-
-Compatible with go version 1.12.
+# kickwasm version 3.0.0 experimental because syscall/js is experimental
 
 I didn't realize that the go syscall/js package was experimental. With go version 1.12 I found that out the hard way.
 
-There fore Kickwasm is EXPERIMENTAL. Its current scope is only to keep up with the changes in the EXPERIMENTAL go syscall/js package.
+There fore **Kickwasm is EXPERIMENTAL**. Its current primary scope is to keep up with the changes in the EXPERIMENTAL go syscall/js package. Kickwasm is currently compatible with go version 1.12.
 
-## To Do
+## Framework changes in version 3.0.0
 
-1. The contacts example needs to be redone.
-1. The some parts of the wiki need to be redone.
+* func RegisterCallBack and func RegisterEventCallBack were moved from the NotJS package to the ViewTools package in the renderer.
+* Framework code has been refactored to correctly use the new func RegisterEventCallBack for event handlers, not func RegisterCallBack.
 
+## Previous changes
+
+Lowercased panel package names. I also moved the call back funcs from tools to viewtools.
 
 ## I love kickwasm
 
@@ -106,8 +107,8 @@ Once you build your application you can distribute it. You can distribute it as 
 
 The examples/ folder contains 2 examples.
 
-1. The colors example which is just a plain untouched framework. It wasm built with kickwasm version 2.0.0.
-1. The contacts example which is a simple **C**reate **R**ead **U**pdate **D**elete application. It was built with kickwasm version 1.0.0. so the framework code is a little older.
+1. The colors example which is just a plain untouched framework. It wasm built with kickwasm version 3.0.0.
+1. The contacts example which is a simple **C**reate **R**ead **U**pdate **D**elete application. It wasm built with kickwasm version 3.0.0.
 
 ## The example videos
 

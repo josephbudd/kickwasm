@@ -6,7 +6,7 @@ import (
 
 // Production implements renderer/interfaces/panelHelper.Helper
 type Production struct {
-	add, edit, remove uint64
+	add, edit, remove, about uint64
 }
 
 // NewProduction constructs a new Production.
@@ -16,6 +16,7 @@ func NewProduction() *Production {
 		add:    vliststate.GetNextState(),
 		edit:   vliststate.GetNextState(),
 		remove: vliststate.GetNextState(),
+		about: vliststate.GetNextState(),
 	}
 }
 
@@ -33,3 +34,9 @@ func (p *Production) StateEdit() uint64 {
 func (p *Production) StateRemove() uint64 {
 	return p.remove
 }
+
+// StateAbout returns the Remove state.
+func (p *Production) StateAbout() uint64 {
+	return p.about
+}
+

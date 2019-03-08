@@ -1,11 +1,12 @@
-package AddContactPanel
+package addcontactpanel
 
 import (
 	"syscall/js"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 // PanelGroup is a group of 1 panel.
@@ -18,6 +19,7 @@ type PanelGroup struct {
 }
 
 func (panelGroup *PanelGroup) defineMembers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelGroup *PanelGroup) defineMembers()")
@@ -31,6 +33,7 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		err = errors.New("unable to find #tabsMasterView-home-pad-AddButton-AddContactPanel")
 		return
 	}
+
 
 	return
 }
@@ -57,3 +60,4 @@ Allow the user to enter contact info into a form and submit or cancel.
 func (panelGroup *PanelGroup) showAddContactPanel(force bool) {
 	panelGroup.tools.ShowPanelInButtonGroup(panelGroup.addContactPanel, force)
 }
+

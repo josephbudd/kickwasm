@@ -1,4 +1,4 @@
-package Service5Level3MarkupPanel
+package service5level3markuppanel
 
 import (
 	"github.com/pkg/errors"

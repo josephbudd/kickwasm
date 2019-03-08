@@ -91,10 +91,12 @@ func (tools *Tools) unQueueModal() *modalViewData {
 	return m
 }
 
-func (tools *Tools) handleModalMasterViewClose([]js.Value) {
+func (tools *Tools) handleModalMasterViewClose(event js.Value) interface{} {
 	if tools.modalCallBack != nil {
 		tools.modalCallBack()
 		tools.modalCallBack = nil
 	}
 	tools.beNotModal()
+	return nil
 }
+

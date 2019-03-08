@@ -5,6 +5,7 @@ import (
 	"syscall/js"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
 // VList is vertical list of verbose buttons.
@@ -18,6 +19,7 @@ type VList struct {
 	needToAppendFunc     func(button js.Value, count, state uint64)
 	idState              uint64
 	notJS                *notjs.NotJS
+	tools                *viewtools.Tools
 
 	hideFunc    func(js.Value)
 	showFunc    func(js.Value)
@@ -82,6 +84,7 @@ func NewVList(div js.Value,
 	showFunc func(js.Value),
 	isShownFunc func(js.Value) bool,
 	notJS *notjs.NotJS,
+	tools *viewtools.Tools,
 ) *VList {
 	vlist := &VList{
 		div:                  div,
@@ -105,7 +108,7 @@ func NewVList(div js.Value,
 	}
 	vlist.max /= 2
 	// setup scrolling
-	cb := notJS.RegisterCallBack(vlist.handleOnScroll)
+	cb := tools.RegisterEventCallBack(vlist.handleOnScroll, true, true, true)
 	notJS.SetOnScroll(div, cb)
 
 	return vlist
@@ -253,13 +256,12 @@ func (vlist *VList) clear() {
 	notJS.AppendChild(div, p)
 }
 
-func (vlist *VList) handleOnScroll(args []js.Value) {
+func (vlist *VList) handleOnScroll(event js.Value) interface{} {
 	if vlist.adjusting {
 		vlist.adjusting = false
-		return
+		return nil
 	}
 	notJS := vlist.notJS
-	event := args[0]
 	div := notJS.GetEventTarget(event)
 	lastScrollTop := float64(vlist.lastScrollTop)
 	vlist.lastScrollTop = notJS.GetScrollTop(div)
@@ -282,7 +284,7 @@ func (vlist *VList) handleOnScroll(args []js.Value) {
 		// scrolling up
 		if scrollTop > paddingHt {
 			// not at the top.
-			return
+			return nil
 		}
 		// at the top
 		if lastScrollTop > paddingHt {
@@ -297,7 +299,7 @@ func (vlist *VList) handleOnScroll(args []js.Value) {
 		// scrolling down
 		if scrollTop < bottom {
 			// not at the bottom
-			return
+			return nil
 		}
 		// at the bottom
 		// xcrollTop == bottom
@@ -310,4 +312,5 @@ func (vlist *VList) handleOnScroll(args []js.Value) {
 			)
 		}
 	}
+	return nil
 }

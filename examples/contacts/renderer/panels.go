@@ -28,44 +28,44 @@ import (
 
 func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) (err error) {
 	// 1. Construct the panel code.
-	var addContactPanel *AddContactPanel.Panel
-	if addContactPanel, err = AddContactPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var addContactPanel *addcontactpanel.Panel
+	if addContactPanel, err = addcontactpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var creditTabPanel *CreditTabPanel.Panel
-	if creditTabPanel, err = CreditTabPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var creditTabPanel *credittabpanel.Panel
+	if creditTabPanel, err = credittabpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var editContactEditPanel *EditContactEditPanel.Panel
-	if editContactEditPanel, err = EditContactEditPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var editContactEditPanel *editcontacteditpanel.Panel
+	if editContactEditPanel, err = editcontacteditpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var editContactNotReadyPanel *EditContactNotReadyPanel.Panel
-	if editContactNotReadyPanel, err = EditContactNotReadyPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var editContactNotReadyPanel *editcontactnotreadypanel.Panel
+	if editContactNotReadyPanel, err = editcontactnotreadypanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var editContactSelectPanel *EditContactSelectPanel.Panel
-	if editContactSelectPanel, err = EditContactSelectPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var editContactSelectPanel *editcontactselectpanel.Panel
+	if editContactSelectPanel, err = editcontactselectpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var liscenseTabPanel *LiscenseTabPanel.Panel
-	if liscenseTabPanel, err = LiscenseTabPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var liscenseTabPanel *liscensetabpanel.Panel
+	if liscenseTabPanel, err = liscensetabpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var recordsTabPanel *RecordsTabPanel.Panel
-	if recordsTabPanel, err = RecordsTabPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var recordsTabPanel *recordstabpanel.Panel
+	if recordsTabPanel, err = recordstabpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var removeContactConfirmPanel *RemoveContactConfirmPanel.Panel
-	if removeContactConfirmPanel, err = RemoveContactConfirmPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var removeContactConfirmPanel *removecontactconfirmpanel.Panel
+	if removeContactConfirmPanel, err = removecontactconfirmpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var removeContactNotReadyPanel *RemoveContactNotReadyPanel.Panel
-	if removeContactNotReadyPanel, err = RemoveContactNotReadyPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var removeContactNotReadyPanel *removecontactnotreadypanel.Panel
+	if removeContactNotReadyPanel, err = removecontactnotreadypanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var removeContactSelectPanel *RemoveContactSelectPanel.Panel
-	if removeContactSelectPanel, err = RemoveContactSelectPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var removeContactSelectPanel *removecontactselectpanel.Panel
+	if removeContactSelectPanel, err = removecontactselectpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
 

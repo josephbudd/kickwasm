@@ -1,7 +1,6 @@
 package callserver
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -20,21 +19,15 @@ var (
 // The main process detects when the browser window closes and then stops.
 // The browser window also closes if the main process stops.
 //
-// Param port is the http port like 9090
-//
 // Package callserver handles all local http requests where either of the following 2 conditions are true.
 //  strings.HasPrefix(r.URL.Path, "/ws")
 //  r.URL.Path == "/callserver.js"
 // All other requests are passed to the parameter handlerFunc.
-// You will want your handlerFunc to do things like load your javascript, css and any other files.
-// Example HTML:
-//  <style> @import url(css/keyboard.css); </style>
+// Param: handlerFunc http.HandlerFunc
+//        You will want your handlerFunc to do things like load your javascript, css and any other files.
 func (callServer *Server) Run(handlerFunc http.HandlerFunc) error {
-	appurl := fmt.Sprintf("http://%s:%d", callServer.host, callServer.port)
+	appurl := "http://" + callServer.listener.Addr().String()
 	log.Println("listen and serve: ", appurl)
-	myServer = &http.Server{
-		Addr: fmt.Sprintf(":%d", callServer.port),
-	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		callServer.serve(w, r, handlerFunc)
 	})
@@ -50,16 +43,17 @@ func (callServer *Server) Run(handlerFunc http.HandlerFunc) error {
 	// 2 func ending possibilities:
 	//  1.a user closed browser window causing a connection error.
 	//  1.b stillConnectedLoop detects the error, stops the server and itself.
-	//  1.c myServer.ListenAndServe() ends because the server is closed.
+	//  1.c myServer.Serve(callServer.listener) ends because the server is closed.
 	//
 	//  2.a the terminal user types ^c or ^\ and stopRunLoopCh gets the signal.
 	//  2.b stillConnectedLoop stops the server and itself.
-	//  2.c myServer.ListenAndServe() ends because the server is closed.
+	//  2.c myServer.Serve(callServer.listener) ends because the server is closed.
 	stopRunLoopCh := make(chan os.Signal, 1)
 	signal.Notify(stopRunLoopCh, os.Interrupt)
 	go callServer.stillConnectedLoop(stopRunLoopCh)
 	// start the server
-	return myServer.ListenAndServe()
+	myServer = &http.Server{}
+	return myServer.Serve(callServer.listener)
 }
 
 // startBrowser tries to open the URL in a browser, and returns

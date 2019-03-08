@@ -1,11 +1,12 @@
-package LiscenseTabPanel
+package liscensetabpanel
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -30,13 +31,14 @@ type Caller struct {
 
 	// example:
 
-	addCustomerCall caller.Renderer
+	addCustomerConnection caller.Renderer
 
 	*/
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
 func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")
@@ -47,6 +49,21 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	// 2.1: Define each one of your Caller connection members as a conection to the main process.
 	// 2.2: Tell the caller connection to the main processs to add a call back to each of your call back funcs.
+
+	// example:
+
+	import "github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
+
+	var found bool
+
+	// Add customer.
+	// Define the connection.
+	if panelCaller.addCustomerConnection, found = panelCaller.connection[callids.AddCustomerCallId]; !found {
+		err = errors.New("unable to find panelCaller.connection[callids.AddCustomerCallId]")
+		return
+	}
+	// Have the connection call back to my call back handler.
+	panelCaller.addCustomerConnection.AddCallBack(panelCaller.addCustomerCB)
 
 	*/
 
@@ -60,16 +77,13 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 // example:
 
-import "github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
-
-
 // Add Customer.
 
 func (panelCaller *Caller) addCustomer(record *types.CustomerRecord) {
-	params := &calls.RendererToMainProcessAddCustomerParams{
+	params := &types.RendererToMainProcessAddCustomerParams{
 		Record: record,
 	}
-	panelCaller.addCustomerCall.CallMainProcess(params)
+	panelCaller.addCustomerConnection.CallMainProcess(params)
 }
 
 func (panelCaller *Caller) addCustomerCB(params interface{}) {
@@ -95,13 +109,17 @@ func (panelCaller *Caller) initialCalls() {
 
 	// example:
 
+	import "github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
+	import "github.com/josephbudd/kickwasm/examples/contacts/domain/data/loglevels"
+
 	params := types.RendererToMainProcessLogParams{
 		Level:   loglevels.LogLevelInfo,
 		Message: "Started",
 	}
-	logCall := panelCaller.connection[callids.LogCallID]
-	logCall.CallMainProcess(params)
+	logConnection := panelCaller.connection[callids.LogCallID]
+	logConnection.CallMainProcess(params)
 
 	*/
 
 }
+

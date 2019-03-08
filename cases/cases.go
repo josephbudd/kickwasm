@@ -21,7 +21,7 @@ func CamelCase(s string) string {
 	return toJSVarName(strings.Join(ss, emptyString))
 }
 
-// LowerCamelCase consverts a string to snake case.
+// LowerCamelCase consverts a string to lower camel case.
 // ex: "abc def ghi" becomes "abcDefGhi"
 func LowerCamelCase(s string) string {
 	ss := strings.Split(s, spaceString)
@@ -31,6 +31,11 @@ func LowerCamelCase(s string) string {
 		ss[i] = strings.ToUpper(ss[i][0:1]) + ss[i][1:]
 	}
 	return toJSVarName(strings.Join(ss, emptyString))
+}
+
+// ToGoPackageName makes a word a valid go package name.
+func ToGoPackageName(s string) (newName string) {
+	return strings.ToLower(s)
 }
 
 // toJSVarName removes chars unless a-z, A-Z, 0-9, underscore.

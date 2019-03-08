@@ -5,4 +5,5 @@ type Helper interface {
 	StateAdd() uint64
 	StateEdit() uint64
 	StateRemove() uint64
+	StateAbout() uint64
 }

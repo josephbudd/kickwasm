@@ -1,7 +1,7 @@
 package templates
 
 // PanelControler is the genereric renderer panel controler template.
-const PanelControler = `package {{.PanelName}}
+const PanelControler = `package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"
@@ -71,7 +71,9 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 		err = errors.New("unable to find #addCustomerSubmit")
 		return
 	}
-	cb := notJS.RegisterCallBack(panelControler.handleSubmit)
+	// see render/viewtools/callback.go
+	// use the event call back func and set propagations.
+	cb := tools.RegisterEventCallBack(panelControler.handleSubmit, true, true, true)
 	notJS.SetOnClick(panelControler.addCustomerSubmit, cb)
 
 	*/
@@ -86,7 +88,7 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 // import "{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 
-func (panelControler *Controler) handleSubmit(this js.Value, args []js.Value) interface{} {
+func (panelControler *Controler) handleSubmit(event js.Value) interface{} {
 	name := strings.TrimSpace(panelControler.notJS.GetValue(panelControler.addCustomerName))
 	if len(name) == 0 {
 		panelControler.tools.Error("Customer Name is required.")

@@ -1,12 +1,13 @@
-package AddContactPanel
+package addcontactpanel
 
 import (
 	"syscall/js"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -44,7 +45,9 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
+// Returns the error.
 func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
@@ -59,6 +62,7 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 	*/
 
 	notjs := panelControler.notJS
+	tools := panelControler.tools
 	null := js.Null()
 
 	if panelControler.contactAddName = notjs.GetElementByID("contactAddName"); panelControler.contactAddName == null {
@@ -102,14 +106,14 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 		err = errors.New("unable to find #contactAddSubmit")
 		return
 	}
-	cb := notjs.RegisterCallBack(panelControler.handleSubmit)
+	cb := tools.RegisterEventCallBack(panelControler.handleSubmit, true, true, true)
 	notjs.SetOnClick(panelControler.contactAddSubmit, cb)
 
 	if panelControler.contactAddCancel = notjs.GetElementByID("contactAddCancel"); panelControler.contactAddCancel == null {
 		err = errors.New("unable to find #contactAddCancel")
 		return
 	}
-	cb = notjs.RegisterCallBack(panelControler.handleCancel)
+	cb = tools.RegisterEventCallBack(panelControler.handleCancel, true, true, true)
 	notjs.SetOnClick(panelControler.contactAddCancel, cb)
 
 	return
@@ -121,39 +125,41 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 */
 
-func (panelControler *Controler) handleSubmit(args []js.Value) {
+func (panelControler *Controler) handleSubmit(event js.Value) interface{} {
 	record := panelControler.getRecord()
 	tools := panelControler.tools
 	if len(record.Name) == 0 {
 		tools.Error("Name is required.")
-		return
+		return nil
 	}
 	if len(record.Address1) == 0 {
 		tools.Error("Address1 is required.")
-		return
+		return nil
 	}
 	if len(record.City) == 0 {
 		tools.Error("City is required.")
-		return
+		return nil
 	}
 	if len(record.State) == 0 {
 		tools.Error("State is required.")
-		return
+		return nil
 	}
 	if len(record.Zip) == 0 {
 		tools.Error("Zip is required.")
-		return
+		return nil
 	}
 	if len(record.Email) == 0 && len(record.Phone) == 0 {
 		tools.Error("Either Email or Phone is required.")
-		return
+		return nil
 	}
 	panelControler.caller.updateContact(record)
+	return nil
 }
 
-func (panelControler *Controler) handleCancel(args []js.Value) {
+func (panelControler *Controler) handleCancel(event js.Value) interface{} {
 	panelControler.presenter.clearForm()
 	panelControler.tools.Back()
+	return nil
 }
 
 func (panelControler *Controler) getRecord() *types.ContactRecord {

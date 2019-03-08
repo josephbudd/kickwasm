@@ -26,7 +26,10 @@ func (tools *Tools) hideSlider() {
 
 func (tools *Tools) initializeSlider() {
 	notJS := tools.notJS
-	buttoncb := notJS.RegisterCallBack(tools.handlePadButtonOnClick)
+	buttoncb := tools.RegisterEventCallBack(
+		tools.handlePadButtonOnClick,
+		true, true, true,
+	)
 	divs := notJS.GetElementsByTagName("DIV")
 	for _, div := range divs {
 		if notJS.ClassListContains(div, SliderButtonPadClassName) {
@@ -45,14 +48,14 @@ func (tools *Tools) initializeSlider() {
 			}
 		}
 	}
-	backcb := notJS.RegisterCallBack(tools.handleBack)
+	backcb := tools.RegisterEventCallBack(tools.handleBack, true, true, true)
 	notJS.SetOnClick(tools.tabsMasterviewHomeSliderBack, backcb)
 }
 
-func (tools *Tools) handlePadButtonOnClick(this js.Value, args []js.Value) interface{} {
+func (tools *Tools) handlePadButtonOnClick(event js.Value) interface{} {
 	// get back div
 	notJS := tools.notJS
-	target := args[0].Get("target")
+	target := notJS.GetEventTarget(event)
 	backid := target.Call("getAttribute", BackIDAttribute).String()
 	backdiv := notJS.GetElementByID(backid)
 	// get forward div
@@ -75,7 +78,7 @@ func (tools *Tools) handlePadButtonOnClick(this js.Value, args []js.Value) inter
 }
 
 // handleBack provides the behavior for the tall back button at the left of slider panels.
-func (tools *Tools) handleBack(this js.Value, args []js.Value) interface{} {
+func (tools *Tools) handleBack(event js.Value) interface{} {
 	tools.Back()
 	return nil
 }

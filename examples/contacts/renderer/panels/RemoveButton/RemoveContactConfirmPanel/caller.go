@@ -1,4 +1,4 @@
-package RemoveContactConfirmPanel
+package removecontactconfirmpanel
 
 import (
 	"github.com/pkg/errors"
@@ -39,6 +39,7 @@ type Caller struct {
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
 func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")

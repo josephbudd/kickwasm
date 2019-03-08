@@ -1,7 +1,7 @@
 package templates
 
 // PanelPresenter is the genereric renderer panel presenter template.
-const PanelPresenter = `package {{.PanelName}}
+const PanelPresenter = `package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"

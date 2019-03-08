@@ -4,6 +4,7 @@ import (
 	"syscall/js"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 )
 
 const (
@@ -41,6 +42,7 @@ type FVList struct {
 	onNoSizeFunc func()
 
 	NotJS            *notjs.NotJS
+	Tools            *viewtools.Tools
 	addedRecordVList bool
 
 	StateMatch string
@@ -79,6 +81,7 @@ func NewFVList(div js.Value,
 	showFunc func(js.Value),
 	isShownFunc func(js.Value) bool,
 	notJS *notjs.NotJS,
+	tools *viewtools.Tools,
 ) *FVList {
 	// setup div
 	notJS.RemoveChildNodes(div)
@@ -87,6 +90,7 @@ func NewFVList(div js.Value,
 		IDState:        IDState,
 		panels:         make([]*FVListPanel, 0, 5),
 		NotJS:          notJS,
+		Tools:          tools,
 		hideFunc:       hideFunc,
 		showFunc:       showFunc,
 		isShownFunc:    isShownFunc,
@@ -126,6 +130,7 @@ func BuildFVList(div js.Value,
 	showFunc func(js.Value),
 	isShownFunc func(js.Value) bool,
 	notJS *notjs.NotJS,
+	tools *viewtools.Tools,
 ) FVList {
 	// setup div
 	notJS.RemoveChildNodes(div)
@@ -134,6 +139,7 @@ func BuildFVList(div js.Value,
 		IDState:        IDState,
 		panels:         make([]*FVListPanel, 0, 5),
 		NotJS:          notJS,
+		Tools:          tools,
 		hideFunc:       hideFunc,
 		showFunc:       showFunc,
 		isShownFunc:    isShownFunc,
@@ -272,6 +278,7 @@ func (fvlist *FVList) addList(
 	// filter wrapper
 	i := len(fvlist.panels)
 	notJS := fvlist.NotJS
+	tools := fvlist.Tools
 	wrapper := notJS.CreateElementDIV()
 	//notJS.SetID(wrapper, fmt.Sprintf(subDivIndexAttributeNameFormatter, i))
 	// left arrow
@@ -280,14 +287,17 @@ func (fvlist *FVList) addList(
 	if i > 0 {
 		arrow = notJS.CreateElementBUTTON()
 		notJS.ClassListAddClass(arrow, arrowClassName)
-		tn := notJS.CreateTextNode("\u2BA8")
+		tn := notJS.CreateTextNode("↩")
 		notJS.AppendChild(arrow, tn)
 		notJS.SetAttributeInt(arrow, arrowTargetSubpanelIndexAttribute, i-1)
-		cb := notJS.RegisterEventCallBack(false, false, false,
-			func(event js.Value) {
+		cb := tools.RegisterEventCallBack(
+			func(event js.Value) interface{} {
 				index := notJS.GetAttributeInt(arrow, arrowTargetSubpanelIndexAttribute)
 				fvlist.OpenSubPanel(index)
-			})
+				return nil
+			},
+			false, false, false,
+		)
 		notJS.SetOnClick(arrow, cb)
 		notJS.AppendChild(wrapper, arrow)
 	}
@@ -318,6 +328,7 @@ func (fvlist *FVList) addList(
 		fvlist.showFunc,
 		fvlist.isShownFunc,
 		notJS,
+		tools,
 	)
 	panel := &FVListPanel{
 		Panel:       wrapper,

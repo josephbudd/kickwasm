@@ -53,9 +53,10 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					ImportDomainImplementationsCalling  string
 					ImportDomainInterfacesCallers       string
 
-					CamelCase      func(string) string
-					LowerCamelCase func(string) string
-					SplitTabJoin   func(string) string
+					CamelCase       func(string) string
+					LowerCamelCase  func(string) string
+					SplitTabJoin    func(string) string
+					PackageNameCase func(string) string
 				}{
 					PanelName:                           panelName,
 					PanelID:                             panel.HTMLID,
@@ -77,6 +78,7 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 						ss := strings.Split(s, "\n")
 						return "\t" + strings.Join(ss, "\n\t")
 					},
+					PackageNameCase: cases.ToGoPackageName,
 				}
 				fname := fileNames.PanelGroupDotGo
 				oPath := filepath.Join(folderpath, fname)

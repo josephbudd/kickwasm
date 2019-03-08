@@ -1,15 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"net"
 	"path/filepath"
 
 	"github.com/boltdb/bolt"
+	"github.com/pkg/errors"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/filepaths"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/settings"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/implementations/storing/boltstoring"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/storer"
+	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/mainprocess/calls"
 	"github.com/josephbudd/kickwasm/examples/contacts/mainprocess/callserver"
 )
@@ -42,31 +46,59 @@ var (
 )
 
 func main() {
-	buildBoltStores()
-	defer contactStore.Close()
-	appSettings, err := settings.NewApplicationSettings()
-	if err != nil {
+	var err error
+	// build the stores and setup the close.
+	if err = buildBoltStores(); err != nil {
 		log.Println(err)
 		return
 	}
+	// close the bolt store later.
+	defer contactStore.Close()
+	// get the application's host and port and then setup the listener.
+	var appSettings *types.ApplicationSettings
+	if appSettings, err = settings.NewApplicationSettings(); err != nil {
+		log.Println(err)
+		return
+	}
+	// initialize and start the listener.
+	// the listener may have reset the address if "localhost:0".
+	// use the listener's address.
+	location := fmt.Sprintf("%s:%d", appSettings.Host, appSettings.Port)
+	var listener net.Listener
+	if listener, err = net.Listen("tcp", location); err != nil {
+		log.Println(err)
+		return
+	}
+	// build the callMap
 	callMap := calls.GetCallMap(contactStore)
-	callServer := callserver.NewCallServer(appSettings.Host, appSettings.Port, callMap)
+	// make the call server and start it.
+	callServer := callserver.NewCallServer(listener, callMap)
 	callServer.Run(serve)
 }
 
 // buildBoltStores makes bolt data stores.
-// Each store is the implementation of an interface defined in package repoi.
-// Each store uses the same bolt database so closing one will close all.
-func buildBoltStores() {
-	path, err := filepaths.BuildUserSubFoldersPath("boltdb")
-	if err != nil {
-		log.Fatalf("filepaths.BuildFolderPath error is %q.", err.Error())
+
+// The store is an implementation of an interface defined in package storer.
+// Close the bolt store later.
+func buildBoltStores() (err error) {
+
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "buildBoltStores()")
+		}
+	}()
+
+	var path string
+	if path, err = filepaths.BuildUserSubFoldersPath("boltdb"); err != nil {
+		err = errors.WithMessage(err, "filepaths.BuildUserSubFoldersPath(\"boltdb\")")
+		return
 	}
 	path = filepath.Join(path, "allstores.nosql")
-	db, err := bolt.Open(path, filepaths.GetFmode(), nil)
-	if err != nil {
-		log.Fatalf("bolt.Open error is %q.", err.Error())
+	var db *bolt.DB
+	if db, err = bolt.Open(path, filepaths.GetFmode(), nil); err != nil {
+		err = errors.WithMessage(err, "bolt.Open(path, filepaths.GetFmode(), nil)")
+		return
 	}
 	contactStore = boltstoring.NewContactBoltDB(db, path, filepaths.GetFmode())
+	return
 }
-

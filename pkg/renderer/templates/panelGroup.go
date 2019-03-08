@@ -1,7 +1,7 @@
 package templates
 
 // PanelGroup is the genereric renderer panelGroup template.
-const PanelGroup = `{{$Dot := .}}{{$lpg := len .PanelGroup}}package {{.PanelName}}
+const PanelGroup = `{{$Dot := .}}{{$lpg := len .PanelGroup}}package {{call .PackageNameCase .PanelName}}
 
 import (
 	"syscall/js"

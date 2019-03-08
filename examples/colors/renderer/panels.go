@@ -43,104 +43,104 @@ import (
 
 func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) (err error) {
 	// 1. Construct the panel code.
-	var service1Level1MarkupPanel *Service1Level1MarkupPanel.Panel
-	if service1Level1MarkupPanel, err = Service1Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service1Level1MarkupPanel *service1level1markuppanel.Panel
+	if service1Level1MarkupPanel, err = service1level1markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service1Level2MarkupPanel *Service1Level2MarkupPanel.Panel
-	if service1Level2MarkupPanel, err = Service1Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service1Level2MarkupPanel *service1level2markuppanel.Panel
+	if service1Level2MarkupPanel, err = service1level2markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service1Level3MarkupPanel *Service1Level3MarkupPanel.Panel
-	if service1Level3MarkupPanel, err = Service1Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service1Level3MarkupPanel *service1level3markuppanel.Panel
+	if service1Level3MarkupPanel, err = service1level3markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service1Level4MarkupPanel *Service1Level4MarkupPanel.Panel
-	if service1Level4MarkupPanel, err = Service1Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service1Level4MarkupPanel *service1level4markuppanel.Panel
+	if service1Level4MarkupPanel, err = service1level4markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service1Level5MarkupPanel *Service1Level5MarkupPanel.Panel
-	if service1Level5MarkupPanel, err = Service1Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service1Level5MarkupPanel *service1level5markuppanel.Panel
+	if service1Level5MarkupPanel, err = service1level5markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service2Level1MarkupPanel *Service2Level1MarkupPanel.Panel
-	if service2Level1MarkupPanel, err = Service2Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service2Level1MarkupPanel *service2level1markuppanel.Panel
+	if service2Level1MarkupPanel, err = service2level1markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service2Level2MarkupPanel *Service2Level2MarkupPanel.Panel
-	if service2Level2MarkupPanel, err = Service2Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service2Level2MarkupPanel *service2level2markuppanel.Panel
+	if service2Level2MarkupPanel, err = service2level2markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service2Level3MarkupPanel *Service2Level3MarkupPanel.Panel
-	if service2Level3MarkupPanel, err = Service2Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service2Level3MarkupPanel *service2level3markuppanel.Panel
+	if service2Level3MarkupPanel, err = service2level3markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service2Level4MarkupPanel *Service2Level4MarkupPanel.Panel
-	if service2Level4MarkupPanel, err = Service2Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service2Level4MarkupPanel *service2level4markuppanel.Panel
+	if service2Level4MarkupPanel, err = service2level4markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service2Level5MarkupPanel *Service2Level5MarkupPanel.Panel
-	if service2Level5MarkupPanel, err = Service2Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service2Level5MarkupPanel *service2level5markuppanel.Panel
+	if service2Level5MarkupPanel, err = service2level5markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service3Level1MarkupPanel *Service3Level1MarkupPanel.Panel
-	if service3Level1MarkupPanel, err = Service3Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service3Level1MarkupPanel *service3level1markuppanel.Panel
+	if service3Level1MarkupPanel, err = service3level1markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service3Level2MarkupPanel *Service3Level2MarkupPanel.Panel
-	if service3Level2MarkupPanel, err = Service3Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service3Level2MarkupPanel *service3level2markuppanel.Panel
+	if service3Level2MarkupPanel, err = service3level2markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service3Level3MarkupPanel *Service3Level3MarkupPanel.Panel
-	if service3Level3MarkupPanel, err = Service3Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service3Level3MarkupPanel *service3level3markuppanel.Panel
+	if service3Level3MarkupPanel, err = service3level3markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service3Level4MarkupPanel *Service3Level4MarkupPanel.Panel
-	if service3Level4MarkupPanel, err = Service3Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service3Level4MarkupPanel *service3level4markuppanel.Panel
+	if service3Level4MarkupPanel, err = service3level4markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service3Level5MarkupPanel *Service3Level5MarkupPanel.Panel
-	if service3Level5MarkupPanel, err = Service3Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service3Level5MarkupPanel *service3level5markuppanel.Panel
+	if service3Level5MarkupPanel, err = service3level5markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service4Level1MarkupPanel *Service4Level1MarkupPanel.Panel
-	if service4Level1MarkupPanel, err = Service4Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service4Level1MarkupPanel *service4level1markuppanel.Panel
+	if service4Level1MarkupPanel, err = service4level1markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service4Level2MarkupPanel *Service4Level2MarkupPanel.Panel
-	if service4Level2MarkupPanel, err = Service4Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service4Level2MarkupPanel *service4level2markuppanel.Panel
+	if service4Level2MarkupPanel, err = service4level2markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service4Level3MarkupPanel *Service4Level3MarkupPanel.Panel
-	if service4Level3MarkupPanel, err = Service4Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service4Level3MarkupPanel *service4level3markuppanel.Panel
+	if service4Level3MarkupPanel, err = service4level3markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service4Level4MarkupPanel *Service4Level4MarkupPanel.Panel
-	if service4Level4MarkupPanel, err = Service4Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service4Level4MarkupPanel *service4level4markuppanel.Panel
+	if service4Level4MarkupPanel, err = service4level4markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service4Level5MarkupPanel *Service4Level5MarkupPanel.Panel
-	if service4Level5MarkupPanel, err = Service4Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service4Level5MarkupPanel *service4level5markuppanel.Panel
+	if service4Level5MarkupPanel, err = service4level5markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service5Level1MarkupPanel *Service5Level1MarkupPanel.Panel
-	if service5Level1MarkupPanel, err = Service5Level1MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service5Level1MarkupPanel *service5level1markuppanel.Panel
+	if service5Level1MarkupPanel, err = service5level1markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service5Level2MarkupPanel *Service5Level2MarkupPanel.Panel
-	if service5Level2MarkupPanel, err = Service5Level2MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service5Level2MarkupPanel *service5level2markuppanel.Panel
+	if service5Level2MarkupPanel, err = service5level2markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service5Level3MarkupPanel *Service5Level3MarkupPanel.Panel
-	if service5Level3MarkupPanel, err = Service5Level3MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service5Level3MarkupPanel *service5level3markuppanel.Panel
+	if service5Level3MarkupPanel, err = service5level3markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service5Level4MarkupPanel *Service5Level4MarkupPanel.Panel
-	if service5Level4MarkupPanel, err = Service5Level4MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service5Level4MarkupPanel *service5level4markuppanel.Panel
+	if service5Level4MarkupPanel, err = service5level4markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var service5Level5MarkupPanel *Service5Level5MarkupPanel.Panel
-	if service5Level5MarkupPanel, err = Service5Level5MarkupPanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var service5Level5MarkupPanel *service5level5markuppanel.Panel
+	if service5Level5MarkupPanel, err = service5level5markuppanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
 

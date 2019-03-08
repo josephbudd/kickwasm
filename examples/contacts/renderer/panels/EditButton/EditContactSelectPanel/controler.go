@@ -1,12 +1,13 @@
-package EditContactSelectPanel
+package editcontactselectpanel
 
 import (
 	"syscall/js"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/widgets"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -34,7 +35,9 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
+// Returns the error.
 func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
@@ -76,6 +79,8 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 		tools.ElementIsShown,
 		// notjs
 		notJS,
+		// tools
+		tools,
 		// ContactGetter
 		panelControler.caller,
 	)

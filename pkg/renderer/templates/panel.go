@@ -1,7 +1,7 @@
 package templates
 
 // Panel is the genereric renderer panel template.
-const Panel = `{{$Dot := .}}package {{.PanelName}}
+const Panel = `{{$Dot := .}}package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"

@@ -10,8 +10,8 @@ import (
 func createNotJS(appPaths paths.ApplicationPathsI) (err error) {
 	fileNames := paths.GetFileNames()
 	notJSFileNames := map[*string]string{
-		&templates.NotJSAttributesGo:  fileNames.AttributesDotGo,
-		&templates.NotJSCallbackGo:    fileNames.CallBackDotGo,
+		&templates.NotJSAttributesGo: fileNames.AttributesDotGo,
+		//&templates.NotJSCallbackGo:    fileNames.CallBackDotGo,
 		&templates.NotJSClassGo:       fileNames.ClassDotGo,
 		&templates.NotJSCreateGetGo:   fileNames.CreateGetDotGo,
 		&templates.NotJSDataGo:        fileNames.DataDotGo,

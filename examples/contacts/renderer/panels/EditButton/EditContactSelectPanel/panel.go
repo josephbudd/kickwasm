@@ -1,12 +1,13 @@
-package EditContactSelectPanel
+package editcontactselectpanel
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/interfaces/panelHelper"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -25,8 +26,8 @@ type Panel struct {
 
 // NewPanel constructs a new panel.
 func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) (panel *Panel, err error) {
+
 	defer func() {
-		// check for the error
 		if err != nil {
 			err = errors.WithMessage(err, "EditContactSelectPanel")
 		}
@@ -36,9 +37,6 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 		tools: tools,
 		notJS: notJS,
 	}
-	panel = &Panel{}
-
-	// initialize controler, presenter, caller.
 	controler := &Controler{
 		panelGroup: panelGroup,
 		quitCh:     quitCh,
@@ -58,22 +56,34 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 		notJS:      notJS,
 		state:      helper.StateEdit(),
 	}
-	// settings
-	panel.controler = controler
-	panel.presenter = presenter
-	panel.caller = caller
+
 	controler.presenter = presenter
 	controler.caller = caller
 	presenter.controler = controler
 	presenter.caller = caller
 	caller.controler = controler
 	caller.presenter = presenter
-	// completions
-	panelGroup.defineMembers()
-	controler.defineControlsSetHandlers()
-	presenter.defineMembers()
-	caller.addMainProcessCallBacks()
 
+	// completions
+	if err = panelGroup.defineMembers(); err != nil {
+		return
+	}
+	if err = controler.defineControlsSetHandlers(); err != nil {
+		return
+	}
+	if err = presenter.defineMembers(); err != nil {
+		return
+	}
+	if err = caller.addMainProcessCallBacks(); err != nil {
+		return
+	}
+
+	// No errors so define the panel.
+	panel = &Panel{
+		controler: controler,
+		presenter: presenter,
+		caller:    caller,
+	}
 	return
 }
 

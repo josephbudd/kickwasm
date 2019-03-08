@@ -23,11 +23,13 @@ func (tools *Tools) initializeTabBar() {
 	tools.tabberLastPanelLevels = make(map[string]string)
 
 	tools.tabberLastPanelLevels["tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar"] = "tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-CreditTabPanel"
-	cb := tools.notJS.RegisterCallBack(
-		func(args []js.Value) {
-			target := notJS.GetEventTarget(args[0])
+	cb := tools.RegisterEventCallBack(
+		func(event js.Value) interface{} {
+			target := notJS.GetEventTarget(event)
 			tools.handleTabButtonOnClick(target)
+			return nil
 		},
+		true, true, true,
 	)
 	for id := range tools.tabberLastPanelLevels {
 		tabbar := notJS.GetElementByID(id)
@@ -46,6 +48,9 @@ func (tools *Tools) setTabBarOnClicks(tabbar js.Value, cb js.Func) {
 }
 
 func (tools *Tools) handleTabButtonOnClick(button js.Value) {
+	if !tools.HandleButtonClick() {
+		return
+	}
 	tools.setTabButtonFocus(button)
 	nextpanelid := tools.notJS.ID(button) + "Panel"
 	if nextpanelid != tools.tabberLastPanelID {

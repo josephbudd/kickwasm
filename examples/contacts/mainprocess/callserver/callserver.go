@@ -1,8 +1,8 @@
 package callserver
 
 import (
-	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
 	"sync"
@@ -18,8 +18,7 @@ const pongWait = 60 * time.Second
 
 // Server is a main process local client call.
 type Server struct {
-	host          string
-	port          uint64
+	listener      net.Listener
 	callMap       map[types.CallID]caller.MainProcesser
 	DisconnectMax time.Duration
 
@@ -38,10 +37,9 @@ type Server struct {
 }
 
 // NewCallServer constructs a new Server.
-func NewCallServer(host string, port uint64, callMap map[types.CallID]caller.MainProcesser) *Server {
+func NewCallServer(listener net.Listener, callMap map[types.CallID]caller.MainProcesser) *Server {
 	return &Server{
-		host:          host,
-		port:          port,
+		listener:      listener,
 		callMap:       callMap,
 		DisconnectMax: time.Millisecond * 500,
 
@@ -63,7 +61,7 @@ func NewCallServer(host string, port uint64, callMap map[types.CallID]caller.Mai
 					log.Println("required oringin header not found")
 					return false
 				}
-				appHost := fmt.Sprintf("%s:%d", host, port)
+				appHost := listener.Addr().String()
 				for _, value := range values {
 					loc, err := url.Parse(value)
 					if err == nil {

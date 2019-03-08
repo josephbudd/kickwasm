@@ -12,6 +12,9 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsGo(appPaths, builder); err != nil {
 		return
 	}
+	if err = createViewToolsCallBackGo(appPaths); err != nil {
+		return
+	}
 	if err = createViewToolsCloserGo(appPaths); err != nil {
 		return
 	}

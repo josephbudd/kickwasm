@@ -1,7 +1,7 @@
 package templates
 
 // PanelCaller is the genereric renderer panel caller template.
-const PanelCaller = `package {{.PanelName}}
+const PanelCaller = `package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"

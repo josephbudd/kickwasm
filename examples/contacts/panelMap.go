@@ -25,14 +25,15 @@ const (
 )
 
 // serviceEmptyInsidePanelNamePathMap maps each markup panel template name to it's file path.
-var serviceEmptyInsidePanelNamePathMap = map[string]map[string][]string{"RemoveAContact": map[string][]string{"RemoveContactSelectPanel": []string{"RemoveButton"}, "RemoveContactConfirmPanel": []string{"RemoveButton"}, "RemoveContactNotReadyPanel": []string{"RemoveButton"}}, "About": map[string][]string{"CreditTabPanel": []string{"AboutButton", "AboutTabBarPanel", "CreditTab"}, "RecordsTabPanel": []string{"AboutButton", "AboutTabBarPanel", "RecordsTab"}, "LiscenseTabPanel": []string{"AboutButton", "AboutTabBarPanel", "LiscenseTab"}}, "AddAContact": map[string][]string{"AddContactPanel": []string{"AddButton"}}, "EditAContact": map[string][]string{"EditContactNotReadyPanel": []string{"EditButton"}, "EditContactSelectPanel": []string{"EditButton"}, "EditContactEditPanel": []string{"EditButton"}}}
+var serviceEmptyInsidePanelNamePathMap = map[string]map[string][]string{"About": map[string][]string{"CreditTabPanel": []string{"AboutButton", "AboutTabBarPanel", "CreditTab"}, "LiscenseTabPanel": []string{"AboutButton", "AboutTabBarPanel", "LiscenseTab"}, "RecordsTabPanel": []string{"AboutButton", "AboutTabBarPanel", "RecordsTab"}}, "AddAContact": map[string][]string{"AddContactPanel": []string{"AddButton"}}, "EditAContact": map[string][]string{"EditContactEditPanel": []string{"EditButton"}, "EditContactNotReadyPanel": []string{"EditButton"}, "EditContactSelectPanel": []string{"EditButton"}}, "RemoveAContact": map[string][]string{"RemoveContactConfirmPanel": []string{"RemoveButton"}, "RemoveContactNotReadyPanel": []string{"RemoveButton"}, "RemoveContactSelectPanel": []string{"RemoveButton"}}}
 
 // serveMainHTML only serves up main.tmpl with all of the templates for your markup panels.
 func serveMainHTML(w http.ResponseWriter) {
+	var err error
 	templateFolderPath := filepaths.GetTemplatePath()
-	t := template.New(mainTemplate)
-	t, err := t.ParseFiles(filepath.Join(templateFolderPath, mainTemplate))
-	if err != nil {
+	var t *template.Template
+	t = template.New(mainTemplate)
+	if t, err = t.ParseFiles(filepath.Join(templateFolderPath, mainTemplate)); err != nil {
 		http.Error(w, err.Error(), 300)
 		return
 	}
@@ -40,8 +41,7 @@ func serveMainHTML(w http.ResponseWriter) {
 		for name, folders := range namePathMap {
 			folderPath := strings.Join(folders, string(os.PathSeparator))
 			tpath := filepath.Join(templateFolderPath, folderPath, name+".tmpl")
-			t, err = t.ParseFiles(tpath)
-			if err != nil {
+			if t, err = t.ParseFiles(tpath); err != nil {
 				http.Error(w, err.Error(), 300)
 				return
 			}
@@ -54,25 +54,25 @@ func serveMainHTML(w http.ResponseWriter) {
 	tpath := filepath.Join(templateFolderPath, headTemplate)
 	// it's ok if the template is not there
 	// but if it's there use it.
-	if _, err := os.Stat(tpath); os.IsNotExist(err) {
+	if _, err = os.Stat(tpath); os.IsNotExist(err) {
 		// the template file does not exist so inform the developer.
 		temp := fmt.Sprintf("%[1]s%[1]s define %[3]q %[2]s%[2]s<!-- You do not have a %[3]s file to import your css files. Feel free to add one in the render/template folder. -->%[1]s%[1]s end %[2]s%[2]s", "{", "}", headTemplate)
-		t, err = t.Parse(temp)
-		if err != nil {
+		if t, err = t.Parse(temp); err != nil {
 			http.Error(w, err.Error(), 300)
 			return
 		}
 	} else {
 		// the file exists so parse it
-		t, err = t.ParseFiles(tpath)
-		if err != nil {
+		if t, err = t.ParseFiles(tpath); err != nil {
 			http.Error(w, err.Error(), 300)
 			return
 		}
 	}
 	// do the template
-	if err := t.ExecuteTemplate(w, mainTemplate, nil); err != nil {
-		http.Error(w, err.Error(), 300)
+	if err = t.ExecuteTemplate(w, mainTemplate, nil); err != nil {
+		if !strings.Contains(err.Error(), "reset") {
+			http.Error(w, err.Error(), 300)
+		}
 	}
 }
 

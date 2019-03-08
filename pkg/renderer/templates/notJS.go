@@ -15,9 +15,6 @@ type NotJS struct {
 	document js.Value
 	console  js.Value
 	alert    js.Value
-
-	// call backs
-	jsCallBacks []js.Func
 }
 
 // NewNotJS constructs a new NotJS.
@@ -32,7 +29,6 @@ func NewNotJS() *NotJS {
 		document:    g.Get("document"),
 		alert:       g.Get("alert"),
 		console:     g.Get("console"),
-		jsCallBacks: make([]js.Func, 0, 100),
 	}
 }
 

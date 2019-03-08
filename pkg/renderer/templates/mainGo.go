@@ -47,7 +47,7 @@ func main() {
 	host, port := notJS.HostPort()
 	client := call.NewClient(host, port, tools, notJS)
 	client.SetOnConnectionBreak(
-		func(this js.Value, args []js.Value) interface{} {
+		func(event js.Value, args []js.Value) interface{} {
 			quitCh <- struct{}{}
 			return nil
 		},

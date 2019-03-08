@@ -1,9 +1,10 @@
-package LiscenseTabPanel
+package liscensetabpanel
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -24,16 +25,14 @@ type Controler struct {
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
 	// Declare your Controler members.
-	// example:
-
-	addCustomerName   js.Value
-	addCustomerSubmit js.Value
 
 	*/
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
+// Returns the error.
 func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
@@ -43,7 +42,7 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
 	// Define the Controler members by their html elements.
-	// Set handlers.
+	// Set their handlers.
 
 	*/
 

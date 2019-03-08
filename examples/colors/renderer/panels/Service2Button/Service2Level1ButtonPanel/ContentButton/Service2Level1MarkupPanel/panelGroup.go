@@ -1,4 +1,4 @@
-package Service2Level1MarkupPanel
+package service2level1markuppanel
 
 import (
 	"syscall/js"

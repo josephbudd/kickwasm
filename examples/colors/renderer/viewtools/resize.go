@@ -6,10 +6,13 @@ import (
 )
 
 func (tools *Tools) initializeResize() {
-	cb := tools.notJS.RegisterCallBack(func(this js.Value, args []js.Value) interface{} {
-		tools.SizeApp()
-		return nil
-	})
+	cb := tools.RegisterEventCallBack(
+		func(event js.Value) interface{} {
+			tools.SizeApp()
+			return nil
+		},
+		true, true, true,
+	)
 	tools.Global.Set("onresize", cb)
 }
 

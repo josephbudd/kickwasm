@@ -1,12 +1,13 @@
-package AddContactPanel
+package addcontactpanel
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/interfaces/panelHelper"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -25,8 +26,8 @@ type Panel struct {
 
 // NewPanel constructs a new panel.
 func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, connection map[types.CallID]caller.Renderer, helper panelHelper.Helper) (panel *Panel, err error) {
+
 	defer func() {
-		// check for the error
 		if err != nil {
 			err = errors.WithMessage(err, "AddContactPanel")
 		}
@@ -36,9 +37,6 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 		tools: tools,
 		notJS: notJS,
 	}
-	panel = &Panel{}
-
-	// initialize controler, presenter, caller.
 	controler := &Controler{
 		panelGroup: panelGroup,
 		quitCh:     quitCh,
@@ -58,16 +56,14 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 		notJS:      notJS,
 		state:      helper.StateAdd(),
 	}
-	// settings
-	panel.controler = controler
-	panel.presenter = presenter
-	panel.caller = caller
+
 	controler.presenter = presenter
 	controler.caller = caller
 	presenter.controler = controler
 	presenter.caller = caller
 	caller.controler = controler
 	caller.presenter = presenter
+
 	// completions
 	if err = panelGroup.defineMembers(); err != nil {
 		return
@@ -80,6 +76,13 @@ func NewPanel(quitCh chan struct{}, tools *viewtools.Tools, notJS *notjs.NotJS, 
 	}
 	if err = caller.addMainProcessCallBacks(); err != nil {
 		return
+	}
+
+	// No errors so define the panel.
+	panel = &Panel{
+		controler: controler,
+		presenter: presenter,
+		caller:    caller,
 	}
 	return
 }

@@ -1,11 +1,12 @@
-package EditContactEditPanel
+package editcontacteditpanel
 
 import (
 	"syscall/js"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 // PanelGroup is a group of 3 panels.
@@ -15,11 +16,12 @@ type PanelGroup struct {
 	notJS *notjs.NotJS
 
 	editContactNotReadyPanel js.Value
-	editContactSelectPanel   js.Value
-	editContactEditPanel     js.Value
+	editContactSelectPanel js.Value
+	editContactEditPanel js.Value
 }
 
 func (panelGroup *PanelGroup) defineMembers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelGroup *PanelGroup) defineMembers()")
@@ -41,6 +43,7 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		err = errors.New("unable to find #tabsMasterView-home-pad-EditButton-EditContactEditPanel")
 		return
 	}
+
 
 	return
 }
@@ -95,3 +98,4 @@ edit the form
 func (panelGroup *PanelGroup) showEditContactEditPanel(force bool) {
 	panelGroup.tools.ShowPanelInButtonGroup(panelGroup.editContactEditPanel, force)
 }
+

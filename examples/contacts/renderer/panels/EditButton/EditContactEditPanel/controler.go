@@ -1,4 +1,4 @@
-package EditContactEditPanel
+package editcontacteditpanel
 
 import (
 	"syscall/js"
@@ -48,7 +48,9 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
+// Returns the error.
 func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
@@ -63,6 +65,7 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 	*/
 
 	notJS := panelControler.notJS
+	tools := panelControler.tools
 	null := js.Null()
 
 	// Define the name input.
@@ -115,21 +118,21 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 		err = errors.New(`unable to find #contactEditSubmit`)
 		return
 	}
-	cb := notJS.RegisterCallBack(panelControler.handleSubmit)
+	cb := tools.RegisterEventCallBack(panelControler.handleSubmit, true, true, true)
 	notJS.SetOnClick(panelControler.contactEditSubmit, cb)
 	// Define the reset button and set it's handler.
 	if panelControler.contactEditReset = notJS.GetElementByID("contactEditReset"); panelControler.contactEditReset == null {
 		err = errors.New(`unable to find #contactEditReset`)
 		return
 	}
-	cb = notJS.RegisterCallBack(panelControler.handleReset)
+	cb = tools.RegisterEventCallBack(panelControler.handleReset, true, true, true)
 	notJS.SetOnClick(panelControler.contactEditReset, cb)
 	// Define the cancel button and set it's handler.
 	if panelControler.contactEditCancel = notJS.GetElementByID("contactEditCancel"); panelControler.contactEditCancel == null {
 		err = errors.New(`unable to find #contactEditCancel`)
 		return
 	}
-	cb = notJS.RegisterCallBack(panelControler.handleCancel)
+	cb = tools.RegisterEventCallBack(panelControler.handleCancel, true, true, true)
 	notJS.SetOnClick(panelControler.contactEditCancel, cb)
 
 	return
@@ -147,38 +150,40 @@ func (panelControler *Controler) handleGetContact(record *types.ContactRecord) {
 	panelControler.panelGroup.showEditContactEditPanel(false)
 }
 
-func (panelControler *Controler) handleCancel(args []js.Value) {
+func (panelControler *Controler) handleCancel(event js.Value) interface{} {
 	panelControler.panelGroup.showEditContactSelectPanel(false)
+	return nil
 }
 
-func (panelControler *Controler) handleSubmit(args []js.Value) {
+func (panelControler *Controler) handleSubmit(event js.Value) interface{} {
 	tools := panelControler.tools
 	record := panelControler.getForm()
 	if len(record.Name) == 0 {
 		tools.Error("Name is required.")
-		return
+		return nil
 	}
 	if len(record.Address1) == 0 {
 		tools.Error("Address1 is required.")
-		return
+		return nil
 	}
 	if len(record.City) == 0 {
 		tools.Error("City is required.")
-		return
+		return nil
 	}
 	if len(record.State) == 0 {
 		tools.Error("State is required.")
-		return
+		return nil
 	}
 	if len(record.Zip) == 0 {
 		tools.Error("Zip is required.")
-		return
+		return nil
 	}
 	if len(record.Email) == 0 && len(record.Phone) == 0 {
 		tools.Error("Either Email or Phone is required.")
-		return
+		return nil
 	}
 	panelControler.caller.updateContact(record)
+	return nil
 }
 
 func (panelControler *Controler) getForm() *types.ContactRecord {
@@ -197,8 +202,9 @@ func (panelControler *Controler) getForm() *types.ContactRecord {
 	}
 }
 
-func (panelControler *Controler) handleReset(args []js.Value) {
+func (panelControler *Controler) handleReset(event js.Value) interface{} {
 	panelControler.presenter.fillForm(panelControler.record)
+	return nil
 }
 
 // initialCalls runs the first code that the controler needs to run.

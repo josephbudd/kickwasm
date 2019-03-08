@@ -1,12 +1,13 @@
-package RecordsTabPanel
+package recordstabpanel
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -30,15 +31,11 @@ type Caller struct {
 	// 1: Declare your Caller members.
 
 	*/
-
-	// my added members
-	state uint64
-	// my calls
-	getContactsPageStatesConnection caller.Renderer
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
 func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")
@@ -52,13 +49,14 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	*/
 
+	var callr caller.Renderer
 	var found bool
 
-	if panelCaller.getContactsPageStatesConnection, found = panelCaller.connection[callids.GetContactsPageStatesCallID]; !found {
+	if callr, found = panelCaller.connection[callids.GetContactsPageStatesCallID]; !found {
 		err = errors.New("unable to find panelCaller.connection[callids.GetContactsPageStatesCallID]")
 		return
 	}
-	panelCaller.getContactsPageStatesConnection.AddCallBack(panelCaller.GetContactsPageStatesCB)
+	callr.AddCallBack(panelCaller.GetContactsPageStatesCB)
 
 	return
 }
@@ -76,14 +74,11 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 func (panelCaller *Caller) GetContactsPageStatesCB(params interface{}) {
 	switch params := params.(type) {
 	case *types.MainProcessToRendererGetContactsPageStatesParams:
-		if params.State&panelCaller.state == panelCaller.state {
-			if params.Error {
-				panelCaller.tools.Error(params.ErrorMessage)
-				return
-			}
-			// ok
-			panelCaller.presenter.DisplayRecordCount(params.RecordCount)
+		if params.Error {
+			return
 		}
+		// ok
+		panelCaller.presenter.DisplayRecordCount(params.RecordCount)
 	}
 }
 

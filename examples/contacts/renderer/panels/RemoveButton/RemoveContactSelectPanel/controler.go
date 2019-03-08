@@ -1,4 +1,4 @@
-package RemoveContactSelectPanel
+package removecontactselectpanel
 
 import (
 	"syscall/js"
@@ -35,7 +35,9 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
+// Returns the error.
 func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
@@ -78,6 +80,8 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 		tools.ElementIsShown,
 		// notjs
 		notJS,
+		// tools
+		tools,
 		// ContactGetter
 		panelControler.caller,
 	)

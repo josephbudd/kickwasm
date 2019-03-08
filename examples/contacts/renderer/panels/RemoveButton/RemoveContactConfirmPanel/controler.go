@@ -1,4 +1,4 @@
-package RemoveContactConfirmPanel
+package removecontactconfirmpanel
 
 import (
 	"syscall/js"
@@ -37,7 +37,9 @@ type Controler struct {
 }
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
+// Returns the error.
 func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
@@ -52,6 +54,7 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 	*/
 
 	notJS := panelControler.notJS
+	tools := panelControler.tools
 	null := js.Null()
 
 	// submit button
@@ -59,14 +62,14 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 		err = errors.New(`unable to find #contactRemoveSubmit`)
 		return
 	}
-	cb := notJS.RegisterEventCallBack(false, false, false, panelControler.handleSubmit)
+	cb := tools.RegisterEventCallBack(panelControler.handleSubmit, true, true, true)
 	notJS.SetOnClick(panelControler.contactRemoveSubmit, cb)
 	// cancel button
 	if panelControler.contactRemoveCancel = notJS.GetElementByID("contactRemoveCancel"); panelControler.contactRemoveCancel == null {
 		err = errors.New(`unable to find #contactRemoveCancel`)
 		return
 	}
-	cb = notJS.RegisterEventCallBack(false, false, false, panelControler.handleCancel)
+	cb = tools.RegisterEventCallBack(panelControler.handleCancel, true, true, true)
 	notJS.SetOnClick(panelControler.contactRemoveCancel, cb)
 
 	return
@@ -78,12 +81,14 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 */
 
-func (panelControler *Controler) handleSubmit(event js.Value) {
+func (panelControler *Controler) handleSubmit(event js.Value) interface{} {
 	panelControler.caller.removeContact(panelControler.record.ID)
+	return nil
 }
 
-func (panelControler *Controler) handleCancel(event js.Value) {
+func (panelControler *Controler) handleCancel(event js.Value) interface{} {
 	panelControler.panelGroup.showRemoveContactSelectPanel(false)
+	return nil
 }
 
 func (panelControler *Controler) handleGetContact(record *types.ContactRecord) {

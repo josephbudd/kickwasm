@@ -1,12 +1,13 @@
-package EditContactSelectPanel
+package editcontactselectpanel
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/viewtools"
-	"github.com/pkg/errors"
 )
 
 /*
@@ -42,6 +43,7 @@ type Caller struct {
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
 func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelCaller *Caller) addMainProcessCallBacks()")

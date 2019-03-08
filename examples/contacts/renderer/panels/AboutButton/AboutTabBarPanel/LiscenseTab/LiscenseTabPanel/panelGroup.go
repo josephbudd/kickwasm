@@ -1,4 +1,4 @@
-package LiscenseTabPanel
+package liscensetabpanel
 
 import (
 	"syscall/js"
@@ -19,6 +19,7 @@ type PanelGroup struct {
 }
 
 func (panelGroup *PanelGroup) defineMembers() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = errors.WithMessage(err, "(panelGroup *PanelGroup) defineMembers()")
@@ -32,6 +33,7 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		err = errors.New("unable to find #tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-LiscenseTabPanel-inner-LiscenseTabPanel")
 		return
 	}
+
 
 	return
 }
@@ -50,3 +52,5 @@ statically displays the liscense
 func (panelGroup *PanelGroup) showLiscenseTabPanel() {
 	panelGroup.tools.ShowPanelInTabGroup(panelGroup.liscenseTabPanel)
 }
+
+
