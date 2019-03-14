@@ -33,3 +33,4 @@ func NewApplicationSettings() (*types.ApplicationSettings, error) {
 	}
 	return v, nil
 }
+

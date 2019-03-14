@@ -8,3 +8,4 @@ const (
 	LogLevelError
 	LogLevelFatal
 )
+

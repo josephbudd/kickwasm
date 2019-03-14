@@ -1,8 +1,12 @@
-# kickwasm version 3.0.0 experimental because syscall/js is experimental
+# kickwasm version 3.0.1 experimental because syscall/js is experimental
 
 I didn't realize that the go syscall/js package was experimental. With go version 1.12 I found that out the hard way.
 
 There fore **Kickwasm is EXPERIMENTAL**. Its current primary scope is to keep up with the changes in the EXPERIMENTAL go syscall/js package. Kickwasm is currently compatible with go version 1.12.
+
+## Framework changes in version 3.0.1
+
+Added some missing documentation.
 
 ## Framework changes in version 3.0.0
 
@@ -11,7 +15,7 @@ There fore **Kickwasm is EXPERIMENTAL**. Its current primary scope is to keep up
 
 ## Previous changes
 
-Lowercased panel package names. I also moved the call back funcs from tools to viewtools.
+* Lowercased panel package names. I also moved the call back funcs from tools to viewtools.
 
 ## I love kickwasm
 
