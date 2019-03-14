@@ -1,5 +1,4 @@
 package callids
 
-// Log call id for the Log call.
+// LogCallID is the call id for the Log call.
 var LogCallID = nextCallID()
-

@@ -1,5 +1,6 @@
 package loglevels
 
+// Log levels
 const (
 	LogLevelNil uint64 = iota
 	LogLevelInfo
@@ -7,4 +8,3 @@ const (
 	LogLevelError
 	LogLevelFatal
 )
-

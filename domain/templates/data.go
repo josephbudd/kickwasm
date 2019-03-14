@@ -3,6 +3,7 @@ package templates
 // DataLogLevelsGo is the domain/data/loglevels/loglevels.go template
 const DataLogLevelsGo = `package loglevels
 
+// Log levels
 const (
 	LogLevelNil uint64 = iota
 	LogLevelInfo
@@ -159,7 +160,7 @@ func buildUserHomeDataPath() {
 // DataCallIDsLogGo is the domain/data/callids/log.go template.
 const DataCallIDsLogGo = `package callids
 
-// Log call id for the Log call.
+// LogCallID is the call id for the Log call.
 var LogCallID = nextCallID()
 
 `
@@ -191,6 +192,8 @@ import (
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 )
 
+// NewApplicationSettings makes a new ApplicationSettings.
+// Returns a pointer to the ApplicationSettings and the error.
 func NewApplicationSettings() (*types.ApplicationSettings, error) {
 	fpath := filepaths.GetSettingsPath()
 	f, err := os.Open(fpath)

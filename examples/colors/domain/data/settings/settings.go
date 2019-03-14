@@ -9,6 +9,8 @@ import (
 	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
 )
 
+// NewApplicationSettings makes a new ApplicationSettings.
+// Returns a pointer to the ApplicationSettings and the error.
 func NewApplicationSettings() (*types.ApplicationSettings, error) {
 	fpath := filepaths.GetSettingsPath()
 	f, err := os.Open(fpath)
@@ -31,4 +33,3 @@ func NewApplicationSettings() (*types.ApplicationSettings, error) {
 	}
 	return v, nil
 }
-
