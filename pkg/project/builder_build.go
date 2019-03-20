@@ -178,6 +178,10 @@ func checkTabValidity(panelDesc string, tab *Tab, ch *checker) (err error) {
 		err = fmt.Errorf("%s %s", panelDesc, err.Error())
 		return
 	}
+	if len(tab.Label) == 0 {
+		err = fmt.Errorf("%s the tab named %q is missing a label", panelDesc, tab.ID)
+		return
+	}
 	for _, panel := range tab.Panels {
 		if err = checkTabPanelValidity(panel, ch); err != nil {
 			err = fmt.Errorf("%s: %s", panelDesc, err.Error())

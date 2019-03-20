@@ -1,8 +1,72 @@
 package project
 
 import (
+	"fmt"
 	"strings"
 )
+
+// GenerateButtonIDsPanelIDs returns button ids mapped to their panel ids.
+func (builder *Builder) GenerateButtonIDsPanelIDs() (buttons map[string][]string) {
+	buttons = make(map[string][]string, 100)
+	// start with service buttons
+	for _, s := range builder.Services {
+		button := s.Button
+		l := len(button.Panels)
+		pids := make([]string, l, l)
+		for i, p := range button.Panels {
+			pids[i] = p.ID
+			generateButtonIDsPanelIDs(p, buttons)
+		}
+		buttons[button.ID] = pids
+	}
+	return
+}
+func generateButtonIDsPanelIDs(panel *Panel, buttons map[string][]string) {
+	for _, b := range panel.Buttons {
+		id := fmt.Sprintf("%s-%s", panel.ID, b.ID)
+		l := len(b.Panels)
+		pids := make([]string, l, l)
+		for i, p := range b.Panels {
+			pids[i] = p.ID
+			generateButtonIDsPanelIDs(p, buttons)
+		}
+		buttons[id] = pids
+	}
+	for _, t := range panel.Tabs {
+		for _, p := range t.Panels {
+			generateButtonIDsPanelIDs(p, buttons)
+		}
+	}
+}
+
+// GenerateTabIDsPanelIDs returns button ids mapped to their panel ids.
+func (builder *Builder) GenerateTabIDsPanelIDs() (tabs map[string][]string) {
+	tabs = make(map[string][]string, 100)
+	// start with service buttons
+	for _, s := range builder.Services {
+		for _, p := range s.Button.Panels {
+			generateTabIDsPanelIDs(p, tabs)
+		}
+	}
+	return
+}
+func generateTabIDsPanelIDs(panel *Panel, tabs map[string][]string) {
+	for _, t := range panel.Tabs {
+		id := fmt.Sprintf("%s-%s", panel.ID, t.ID)
+		l := len(t.Panels)
+		pids := make([]string, l, l)
+		for i, p := range t.Panels {
+			pids[i] = p.ID
+			generateTabIDsPanelIDs(p, tabs)
+		}
+		tabs[id] = pids
+	}
+	for _, b := range panel.Buttons {
+		for _, p := range b.Panels {
+			generateTabIDsPanelIDs(p, tabs)
+		}
+	}
+}
 
 // GenerateOpeningTabPanelID returns the id of the innermost open tab panel at startup.
 func (builder *Builder) GenerateOpeningTabPanelID() string {

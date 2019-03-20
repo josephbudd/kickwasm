@@ -41,14 +41,12 @@ func (sl *Slurper) slurpServiceButtonPanels(parentFilePath string, button *Butto
 	for _, fpath := range button.PanelFiles {
 		fullpath := filepath.Join(dir, fpath)
 		var bb []byte
-		bb, err = getFileBB(fullpath)
-		if err != nil {
+		if bb, err = getFileBB(fullpath); err != nil {
 			err = errors.New(err.Error() + " in " + parentFilePath)
 			return
 		}
 		var panel *PanelInfo
-		panel, err = sl.checkButtonPanelInfoBB(bb, fullpath, 1)
-		if err != nil {
+		if panel, err = sl.checkButtonPanelInfoBB(bb, fullpath, 1); err != nil {
 			return
 		}
 		sl.panelFiles = append(sl.panelFiles, fullpath)

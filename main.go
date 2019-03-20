@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/josephbudd/kickwasm/pkg"
 	"github.com/josephbudd/kickwasm/pkg/kickwasm"
@@ -17,17 +18,21 @@ const (
 	outputFolder = "output"
 
 	versionBreaking = 3 // Each new version breaks backwards compatibility.
-	versionFeature  = 0 // Each new version adds features. Retains backwards compatibility.
-	versionPatch    = 1 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
+	versionFeature  = 1 // Each new version adds features. Retains backwards compatibility.
+	versionPatch    = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
 
-	versionDescription = `Experimental because the go package syscall/js is still experimental. Updated to the go version 1.12 syscall/js package.`
 )
 
 var (
+	versionDescription = []string{
+		"Experimental because the go package syscall/js is still experimental.",
+		"Updated to the experimental go version 1.12 syscall/js package.",
+		"Improvements to help rekickwasm spot refactoring changes.",
+	}
 	version = []string{
 		`kickwasm:`,
-		fmt.Sprintf("\t\tVersion: %d.%d.%d", versionBreaking, versionFeature, versionPatch),
-		fmt.Sprintf("\t\t%s", versionDescription),
+		fmt.Sprintf("  Version: %d.%d.%d", versionBreaking, versionFeature, versionPatch),
+		fmt.Sprint("  ", strings.Join(versionDescription, "\n  ")),
 	}
 	nlSrcBB = []byte("\n")
 	nlRepBB = []byte("\\n")
