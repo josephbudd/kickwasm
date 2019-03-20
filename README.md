@@ -1,4 +1,4 @@
-# kickwasm version 3.1.1 experimental because syscall/js is experimental
+# kickwasm version 3.1.0 experimental because syscall/js is experimental
 
 I didn't realize that the go syscall/js package was experimental. With go version 1.12 I found that out the hard way.
 
