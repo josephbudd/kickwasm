@@ -1,6 +1,14 @@
 package slurp
 
-import "github.com/josephbudd/kickwasm/pkg/project"
+import (
+	"strings"
+
+	"github.com/josephbudd/kickwasm/pkg/project"
+)
+
+const (
+	forwardSlash = "/"
+)
 
 // GetPanelFilePaths return the path of every panel file.
 // Other than the starting yaml file these are the only other yaml files.
@@ -23,6 +31,9 @@ func (sl *Slurper) Gulp(yamlPath string) (builder *project.Builder, err error) {
 	builder.Title = appInfo.Title
 	builder.ImportPath = appInfo.ImportPath
 	builder.Stores = appInfo.Stores
+	i := strings.LastIndex(appInfo.ImportPath, forwardSlash)
+	builder.SitePackPackage = appInfo.ImportPath[i+1:] + "sitepack"
+	builder.SitePackImportPath = appInfo.ImportPath[:i] + forwardSlash + builder.SitePackPackage
 	services := make([]*project.Service, 0, len(appInfo.Services))
 	for _, sinfo := range appInfo.Services {
 		service := &project.Service{

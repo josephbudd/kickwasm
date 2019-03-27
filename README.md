@@ -1,8 +1,14 @@
-# kickwasm version 3.1.0 experimental because syscall/js is experimental
+# kickwasm version 4.0.0 experimental because syscall/js is experimental
 
 I didn't realize that the go syscall/js package was experimental. With go version 1.12 I found that out the hard way.
 
 There fore **Kickwasm is EXPERIMENTAL**. Its current primary scope is to keep up with the changes in the EXPERIMENTAL go syscall/js package. Kickwasm is currently compatible with go version 1.12.
+
+## Framework changes in version 4.0.0
+
+Now the entire application is compiled into a single executable that you can distribute.
+
+So the build process hasn't changed. However there is a tiny change to how you will edit serve.go to handle your added url paths. It's really the same but with a call to a different func name.
 
 ## Framework changes in version 3.1.0
 
@@ -55,23 +61,46 @@ The colors example in the examples/ folder, is only a framework without anything
 
 ### The framework has a 2 step build
 
-So when you build the framework, you build both the main process and the renderer process.
+#### Build Step 1
 
-You build the main process executable from the framework's root folder which has it's main.go.
+In the first build step you build the renderer process. In the **renderer/** folder you run the shell script **build.sh**. **build.sh** builds in 3 steps.
 
-You build the renderer process from the **renderer/** folder which has it's main.go. But you use the shell script **renderer/build.sh** to build the renderer's wasm byte code into the **site/** folder.
+1. Build the renderer's wasm byte code into the **site/** folder at **site/app.wasm**.
+1. Write the source code for a new package made from the **site/** folder and the **settings.yaml** file.
+1. Build the new package.
+
+#### Build Step 2
+
+Then, you build the main process. You end up with your entire application in one executable file.
 
 Here is a build example using the colors example.
 
-``` bash
+``` text
 
-cd $GOPATH
-cd src/github.com/josephbudd/kickwasm/examples/colors
-cd renderer
-./build.sh
-cd ..
+$ cd ~/src/github.com/josephbudd/kickwasm/examples/colors
+$ cd renderer
+$ ./build.sh
+Building your wasm into ../site/app.wasm
+
+Great! Your wasm has been compiled.
+
+Now its time to write the source code for your new colorssitepack package.
+The colorssitepack package is your applications renderer process.
+( The stuff that gets loaded into the browser. )
+This could take a while.
+cd /home/nil/go/src/github.com/josephbudd/kickwasm/examples/colors
+kickpack -o /home/nil/go/src/github.com/josephbudd/kickwasm/examples/colorssitepack ./site ./http.yaml
+
+Finally! Now its time to build your new colorssitepack package.
+cd /home/nil/go/src/github.com/josephbudd/kickwasm/examples/colorssitepack
 go build
-./colors
+
+You've done it!
+The package at /home/nil/go/src/github.com/josephbudd/kickwasm/examples/colorssitepack contains the files from your renderer process.
+
+$ cd ..
+$ go build
+$ ./colors
 
 ```
 
@@ -83,40 +112,35 @@ go build
 
 ## Installation
 
-``` bash
+``` text
 
-  go get -u github.com/josephbudd/kickwasm
-  cd $GOPATH/src/github.com/josephbudd/kickwasm/
-  go install
+$ go get -u github.com/josephbudd/kickwasm
+$ cd ~/go/src/github.com/josephbudd/kickwasm
+$ go install
+$ go get -u github.com/josephbudd/kickpack
+$ cd ~/go/src/github.com/josephbudd/kickpack
+$ go install
 
 ```
 
 ## Distribution
 
-Once you build your application you can distribute it. You can distribute it as a folder. You only need to collect the following 3 items together in that folder.
-
-1. the **executable** file.
-1. the **http.yaml** file.
-1. the **site/** folder.
+Once you build your application you can distribute it. Your entire application is contained in the executable file.
 
 ### For the examples/colors/ application that would be
 
 1. the **examples/colors/colors** file which is the executable.
-1. the **examples/colors/http.yaml** file.
-1. the **examples/colors/site/** folder.
 
 ### For the examples/contacts/ application that would be
 
 1. the **examples/contacts/contacts** file which is the executable.
-1. the **examples/contacts/http.yaml** file.
-1. the **examples/contacts/site/** folder.
 
 ## The examples
 
 The examples/ folder contains 2 examples.
 
-1. The colors example which is just a plain untouched framework. It wasm built with kickwasm version 3.0.0.
-1. The contacts example which is a simple **C**reate **R**ead **U**pdate **D**elete application. It wasm built with kickwasm version 3.0.0.
+1. The colors example which is just a plain untouched framework. It was built with kickwasm version 4.0.0.
+1. The contacts example which is a simple **C**reate **R**ead **U**pdate **D**elete application. It wasm built with kickwasm version 3.0.0. I will update the contacts example to kickwasm version 4.0.0 when I get the chance.
 
 ## The example videos
 
@@ -150,3 +174,5 @@ The WIKI is a work in progress. I am still devoted to the WIKI.
 ## Tools
 
 **Rekickwasm** is a refactoring tool for a framework generated with kickwasm. Rekickwasm only refactors the renderer part of the framework. I have been using it to refactor the contacts example renderer in all kinds of ways.
+
+**Kickpack** converts files into a go source code package where they can be accesses from memory using the file's path. The framework's script at renderer/build.sh uses kickpack to build the application's entire renderer process into the application's sitepack package.

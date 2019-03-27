@@ -33,6 +33,9 @@ type templateData struct {
 	ImportMainProcessCallServer string
 
 	FileNames *paths.FileNames
+
+	SitePackImportPath string
+	SitePackPackage    string
 }
 
 // Create creates main process folder files from templates.
@@ -63,6 +66,9 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 		ImportMainProcessCallServer:            folderpaths.ImportMainProcessCallServer,
 
 		FileNames: paths.GetFileNames(),
+
+		SitePackImportPath: builder.SitePackImportPath,
+		SitePackPackage:    builder.SitePackPackage,
 	}
 	if err = createMainGo(appPaths, data); err != nil {
 		return

@@ -72,18 +72,20 @@ type Attributes struct {
 
 // Builder builds html.
 type Builder struct {
-	Name              string
-	Title             string
-	ImportPath        string
-	Stores            []string
-	Services          []*Service
-	panel             *Panel
-	sliderPanelIndent uint
-	Classes           *Classes
-	Attributes        *Attributes
-	IDs               *IDs
-	Colors            *Colors
-	markedUp          bool
+	Name               string
+	Title              string
+	ImportPath         string
+	Stores             []string
+	Services           []*Service
+	panel              *Panel
+	sliderPanelIndent  uint
+	Classes            *Classes
+	Attributes         *Attributes
+	IDs                *IDs
+	Colors             *Colors
+	markedUp           bool
+	SitePackImportPath string
+	SitePackPackage    string
 }
 
 // NewBuilder constructs a new builder.

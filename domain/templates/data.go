@@ -34,6 +34,8 @@ var faviconPath string
 
 // templatePath is where the view is.
 var templatePath string
+var shortTemplatePath string
+var shortSitePath string
 
 // fmode is the applications mode for files.
 var fmode = os.FileMode(0666)
@@ -48,6 +50,7 @@ var initialized bool
 var testing bool
 
 var appSettingsPath string
+var shortAppSettingsPath string
 
 // Testing sets testing to true so that the test db is used not the normal database.
 // Returns if in using test db.
@@ -59,7 +62,6 @@ func Testing() bool {
 }
 
 func initialize() {
-	initialized = true
 	buildUserHomeDataPath()
 	if initerr != nil {
 		return
@@ -70,9 +72,13 @@ func initialize() {
 		return
 	}
 	appSettingsPath = filepath.Join(pwd, "{{.FileNames.HTTPDotYAML}}")
+	shortAppSettingsPath = "{{.FileNames.HTTPDotYAML}}"
 	applicationSitePath = filepath.Join(pwd, "{{.FolderNames.RendererSite}}")
 	faviconPath = filepath.Join(applicationSitePath, "{{.FileNames.FavIconDotICO}}")
 	templatePath = filepath.Join(applicationSitePath, "{{.FolderNames.Templates}}")
+	shortSitePath = "site"
+	shortTemplatePath = filepath.Join(shortSitePath, "templates")
+	initialized = true
 }
 
 // GetSettingsPath returns the settings yaml path.
@@ -83,6 +89,14 @@ func GetSettingsPath() string {
 	return appSettingsPath
 }
 
+// GetShortSettingsPath returns the settings yaml path.
+func GetShortSettingsPath() string {
+	if !initialized {
+		initialize()
+	}
+	return shortAppSettingsPath
+}
+
 // GetFaviconPath returns the path of the favicon.
 func GetFaviconPath() string {
 	if !initialized {
@@ -91,12 +105,28 @@ func GetFaviconPath() string {
 	return faviconPath
 }
 
+// GetShortSitePath returns the short path to the applications site folder.
+func GetShortSitePath() string {
+	if !initialized {
+		initialize()
+	}
+	return shortSitePath
+}
+
 // GetTemplatePath returns the path of application's markup.
 func GetTemplatePath() string {
 	if !initialized {
 		initialize()
 	}
 	return templatePath
+}
+
+// GetShortTemplatePath returns the short path to the application's template folder.
+func GetShortTemplatePath() string {
+	if !initialized {
+		initialize()
+	}
+	return shortTemplatePath
 }
 
 // GetFmode returns the file mode for files.
@@ -184,37 +214,31 @@ func nextCallID() types.CallID {
 const DataSettingsGo = `package settings
 
 import (
-	"os"
+	"fmt"
 
 	yaml "gopkg.in/yaml.v2"
 
+	"github.com/pkg/errors"
+
 	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+	"{{.SitePackImportPath}}"
 )
 
 // NewApplicationSettings makes a new ApplicationSettings.
 // Returns a pointer to the ApplicationSettings and the error.
-func NewApplicationSettings() (*types.ApplicationSettings, error) {
-	fpath := filepaths.GetSettingsPath()
-	f, err := os.Open(fpath)
-	if err != nil {
-		return nil, err
+func NewApplicationSettings() (settings *types.ApplicationSettings, err error) {
+	var fpath string
+	var contents []byte
+	var found bool
+	fpath = filepaths.GetShortSettingsPath()
+	if contents, found = {{.SitePackPackage}}.Contents(fpath); !found {
+		err = errors.New(fmt.Sprintf("can't find %q", fpath))
+		return
 	}
-	stat, err := f.Stat()
-	if err != nil {
-		return nil, err
-	}
-	l := stat.Size()
-	yamlbb := make([]byte, l, l)
-	_, err = f.Read(yamlbb)
-	if err != nil {
-		return nil, err
-	}
-	v := &types.ApplicationSettings{}
-	if err := yaml.Unmarshal(yamlbb, v); err != nil {
-		return nil, err
-	}
-	return v, nil
+	settings = &types.ApplicationSettings{}
+	err = yaml.Unmarshal(contents, settings)
+	return
 }
 
 `

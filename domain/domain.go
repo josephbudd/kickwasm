@@ -38,6 +38,9 @@ type templateData struct {
 
 	Host string
 	Port uint
+
+	SitePackPackage    string
+	SitePackImportPath string
 }
 
 // Create creates main process folder files from templates.
@@ -79,6 +82,11 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 
 		Host: pkg.LocalHost,
 		Port: pkg.LocalPort,
+
+		// sitepack
+
+		SitePackPackage:    builder.SitePackPackage,
+		SitePackImportPath: builder.SitePackImportPath,
 	}
 	if err = createInterfacesCallInterfaceGo(appPaths); err != nil {
 		return

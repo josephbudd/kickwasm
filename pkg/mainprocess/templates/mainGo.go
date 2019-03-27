@@ -116,12 +116,13 @@ const PanelMapGo = `package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
-	"text/template"
 
+	"{{.SitePackImportPath}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 )
 
@@ -144,46 +145,64 @@ var serviceEmptyInsidePanelNamePathMap = {{.ServiceEmptyInsidePanelNamePathMap}}
 // serveMainHTML only serves up main.tmpl with all of the templates for your markup panels.
 func serveMainHTML(w http.ResponseWriter) {
 	var err error
-	templateFolderPath := filepaths.GetTemplatePath()
-	var t *template.Template
-	t = template.New(mainTemplate)
-	if t, err = t.ParseFiles(filepath.Join(templateFolderPath, mainTemplate)); err != nil {
+	var masterT, tmpl *template.Template
+	var tpath, s string
+	var bb []byte
+	var found bool
+	var fname string
+	var l int
+
+	templateFolderPath := filepaths.GetShortTemplatePath()
+	// main.tmpl
+	tpath = filepath.Join(templateFolderPath, mainTemplate)
+	if bb, found = {{.SitePackPackage}}.Contents(tpath); !found {
+		http.Error(w, fmt.Sprintf("Not found. (%s)", mainTemplate), 404)
+		return
+	}
+	l += len(bb)
+	masterT = template.New(mainTemplate)
+	s = string(bb)
+	if _, err = masterT.Parse(s); err != nil {
 		http.Error(w, err.Error(), 300)
 		return
 	}
-	for _, namePathMap := range serviceEmptyInsidePanelNamePathMap {
-		for name, folders := range namePathMap {
-			folderPath := strings.Join(folders, string(os.PathSeparator))
-			tpath := filepath.Join(templateFolderPath, folderPath, name+".tmpl")
-			if t, err = t.ParseFiles(tpath); err != nil {
-				http.Error(w, err.Error(), 300)
-				return
-			}
-		}
-	}
+	// head.tmpl
 	// the head template which contains
 	//  * any css imports
 	//  * any javascript imports
-	// needed for this applicaion
-	tpath := filepath.Join(templateFolderPath, headTemplate)
-	// it's ok if the template is not there
-	// but if it's there use it.
-	if _, err = os.Stat(tpath); os.IsNotExist(err) {
-		// the template file does not exist so inform the developer.
-		temp := fmt.Sprintf("%[1]s%[1]s define %[3]q %[2]s%[2]s<!-- You do not have a %[3]s file to import your css files. Feel free to add one in the render/template folder. -->%[1]s%[1]s end %[2]s%[2]s", "{", "}", headTemplate)
-		if t, err = t.Parse(temp); err != nil {
-			http.Error(w, err.Error(), 300)
-			return
-		}
-	} else {
-		// the file exists so parse it
-		if t, err = t.ParseFiles(tpath); err != nil {
-			http.Error(w, err.Error(), 300)
-			return
+	tpath = filepath.Join(templateFolderPath, headTemplate)
+	if bb, found = {{.SitePackPackage}}.Contents(tpath); !found {
+		// add a head.tmpl template
+		// it's ok if the template is not there
+		// but if it's there use it.
+		bb = []byte(fmt.Sprintf("%[1]s%[1]s define %[3]q %[2]s%[2]s<!-- You do not have a %[3]s file to import your css files. Feel free to add one in the render/template folder. -->%[1]s%[1]s end %[2]s%[2]s", "{", "}", headTemplate))
+	}
+	tmpl = masterT.New(headTemplate)
+	l += len(bb)
+	s = string(bb)
+	if _, err = tmpl.Parse(s); err != nil {
+		http.Error(w, err.Error(), 300)
+	}
+	// panel template files
+	for _, namePathMap := range serviceEmptyInsidePanelNamePathMap {
+		for name, folders := range namePathMap {
+			fname = name + ".tmpl"
+			folderPath := strings.Join(folders, string(os.PathSeparator))
+			tpath := filepath.Join(templateFolderPath, folderPath, fname)
+			if bb, found = {{.SitePackPackage}}.Contents(tpath); !found {
+				http.Error(w, fmt.Sprintf("Not found. (%s)", fname), 404)
+				return
+			}
+			l += len(bb)
+			tmpl = masterT.New(fname)
+			s = string(bb)
+			if _, err = tmpl.Parse(s); err != nil {
+				http.Error(w, err.Error(), 300)
+			}
 		}
 	}
-	// do the template
-	if err = t.ExecuteTemplate(w, mainTemplate, nil); err != nil {
+	// send the html
+	if err = masterT.ExecuteTemplate(w, mainTemplate, nil); err != nil {
 		if !strings.Contains(err.Error(), "reset") {
 			http.Error(w, err.Error(), 300)
 		}
@@ -196,11 +215,19 @@ func serveMainHTML(w http.ResponseWriter) {
 const ServeGo = `package main
 
 import (
+	"log"
 	"net/http"
+	"path/filepath"
 	"strings"
 
+	"{{.SitePackImportPath}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 )
+
+const (
+	wasmPrefix = "/wasm"
+)
+
 /*
 
 	TODO: Modify func serve for your special needs.
@@ -218,6 +245,14 @@ import (
 	     In /site/templates/head.tmpl add the line:
 		  <style> @import url(widgetcss/vlist.css); </style>
 
+	  4. Rebuild the renderer process.
+		 $ cd renderer/
+		 $ build.sh
+		 
+	  5. Rebuild the main process.
+		 $ cd ..
+		 $ go build
+
 */
 
 // serve serves files from renderer folders.
@@ -227,14 +262,14 @@ func serve(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	switch {
-	case r.URL.Path == "/favicon.ico":
-		withDefaultHeaders(w, r, serveFavIconPath)
 	case r.URL.Path == "/":
 		withDefaultHeaders(w, r, serveMain)
 	case strings.HasPrefix(r.URL.Path, "/css"):
-		withDefaultHeaders(w, r, serveURLPath)
-	case strings.HasPrefix(r.URL.Path, "/wasm"):
-		withDefaultWASMHeaders(w, r, serveWASMURLPath)
+		withDefaultHeaders(w, r, serveFileStore)
+	case strings.HasPrefix(r.URL.Path, wasmPrefix):
+		withDefaultWASMHeaders(w, r, serveFileStore)
+	case r.URL.Path == "/favicon.ico":
+		withDefaultHeaders(w, r, serveFileStore)
 	default:
 		http.Error(w, "Not found", 404)
 	}
@@ -262,12 +297,28 @@ func serveMain(w http.ResponseWriter, r *http.Request) {
 	serveMainHTML(w)
 }
 
-func serveURLPath(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepaths.BuildRendererPath(r.URL.Path))
-}
-
-func serveWASMURLPath(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepaths.BuildRendererPath(r.URL.Path[5:]))
+func serveFileStore(w http.ResponseWriter, r *http.Request) {
+	var bb []byte
+	var found bool
+	var path string
+	var urlPath string
+	urlPath = r.URL.Path
+	// fix url path
+	if strings.HasPrefix(urlPath, wasmPrefix) {
+		// the wasm prefix only flags to use wasm headers.
+		// there is no wams folder.
+		urlPath = urlPath[len(wasmPrefix):]
+	}
+	path = filepath.Join(filepaths.GetShortSitePath(), urlPath)
+	if bb, found = {{.SitePackPackage}}.Contents(path); !found {
+		log.Println("%q not found", path)
+		http.Error(w, "Not found", 404)
+		return
+	}
+	var err error
+	if _, err = w.Write(bb); err != nil {
+		http.Error(w, err.Error(), 300)
+	}
 }
 
 `
