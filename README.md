@@ -183,4 +183,6 @@ The WIKI is a work in progress. I am still devoted to the WIKI.
 
 ## Applications built with kickwasm
 
+### CWT
+
 * [![Learning Morse Code with CWT.](https://i.vimeocdn.com/video/772644525.jpg)](https://vimeo.com/328175343)
