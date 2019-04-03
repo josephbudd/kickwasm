@@ -180,3 +180,7 @@ The WIKI is a work in progress. I am still devoted to the WIKI.
 **Rekickwasm** is a refactoring tool for a framework generated with kickwasm. Rekickwasm only refactors the renderer part of the framework. I have been using it to refactor the contacts example renderer in all kinds of ways.
 
 **Kickpack** converts files into a go source code package where they can be accesses from memory using the file's path. The framework's script at renderer/build.sh uses kickpack to build the application's entire renderer process into the application's sitepack package.
+
+## Applications built with kickwasm
+
+* [![Learning Morse Code with CWT.](https://i.vimeocdn.com/video/772644525.jpg)](https://vimeo.com/328175343)
