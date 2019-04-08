@@ -16,7 +16,7 @@ tabs :
         markup : |
           <p id="recordsCountP"></p>
   - name : LiscenseTab
-    label : Liscense
+    label : License
     panels :
       - name : LiscenseTabPanel
         note : dynamic liscense

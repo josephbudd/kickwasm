@@ -254,7 +254,7 @@ func (callServer *Server) serve(w http.ResponseWriter, r *http.Request, handlerF
 //  * it closes myServer and returns
 //  * the closed server causes myServer.ListenAndServe() in func Run to end.
 //  * which causes func Run to end.
-// If there is an operationg system interupt signal
+// If there is an operationg system interrupt signal
 //  * it closes myServer and returns
 //  * the closed server causes myServer.ListenAndServe() in func Run to end.
 //  * which causes func Run to end.
