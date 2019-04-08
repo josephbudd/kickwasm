@@ -4,39 +4,11 @@ The go syscall/js package is experimental, there fore **Kickwasm is EXPERIMENTAL
 
 Its current primary scope is to keep up with the changes in the EXPERIMENTAL go syscall/js package. Kickwasm is currently compatible with go version 1.12.
 
-## Changes in version 4.0.2
+## For more information check out
 
-1. kickwasm and the framework source code now pass gofmt with no changes.
-1. The storer implementation code is less verbose.
-1. Corrected documentation in panel callers.
-1, The colors and contacts examples have been rebuilt with kickwasm version 4.0.2.
-
-## Framework changes in version 4.0.1
-
-Fixed **renderer/build.sh** so that it removes the old sitepack package before creating a new one.
-
-## Framework changes in version 4.0.0
-
-Now the entire application is compiled into a single executable that you can distribute.
-
-So the build process hasn't changed. However there is a tiny change to how you will edit serve.go to handle your added url paths. It's really the same but with a call to a different func name.
-
-## Framework changes in version 3.1.0
-
-Added funcs to detect changes for rekickwasm that were previously missed in version 3.0.1.
-
-## Framework changes in version 3.0.1
-
-Added some missing documentation.
-
-## Framework changes in version 3.0.0
-
-* func RegisterCallBack and func RegisterEventCallBack were moved from the NotJS package to the ViewTools package in the renderer.
-* Framework code has been refactored to correctly use the new func RegisterEventCallBack for event handlers, not func RegisterCallBack.
-
-## Previous changes
-
-* Lowercased panel package names. I also moved the call back funcs from tools to viewtools.
+* The videos below.
+* The wiki linked to above.
+* The examples in the example folders.
 
 ## I love kickwasm
 
@@ -72,17 +44,7 @@ The colors example in the examples/ folder, is only a framework without anything
 
 ### The framework has a 2 step build
 
-#### Build Step 1
-
-In the first build step you build the renderer process. In the **renderer/** folder you run the shell script **build.sh**. **build.sh** builds in 3 steps.
-
-1. Build the renderer's wasm byte code into the **site/** folder at **site/app.wasm**.
-1. Write the source code for a new package made from the **site/** folder and the **settings.yaml** file.
-1. Build the new package.
-
-#### Build Step 2
-
-Then, you build the main process. You end up with your entire application in one executable file.
+You build the renderer and then you build the main process. You are left with a single executable.
 
 Here is a build example using the colors example.
 
@@ -192,5 +154,7 @@ The WIKI is a work in progress. I am still devoted to the WIKI.
 ## Applications built with kickwasm
 
 ### CWT
+
+cwt is located at https://github.com/josephbudd/cwt
 
 [![Learning Morse Code with CWT.](https://i.vimeocdn.com/video/772644525.jpg)](https://vimeo.com/328175343)
