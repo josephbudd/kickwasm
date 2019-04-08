@@ -1,5 +1,7 @@
 # kickwasm version 4.0.2 experimental because syscall/js is experimental
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+
 The go syscall/js package is experimental, there fore **Kickwasm is EXPERIMENTAL**.
 
 Its current primary scope is to keep up with the changes in the EXPERIMENTAL go syscall/js package. Kickwasm is currently compatible with go version 1.12.
@@ -8,7 +10,7 @@ Its current primary scope is to keep up with the changes in the EXPERIMENTAL go 
 
 * The videos below.
 * The wiki linked to above.
-* The examples in the example folders.
+* The example codes in the examples folders.
 
 ## I love kickwasm
 
