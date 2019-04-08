@@ -1,6 +1,6 @@
 # kickwasm version 4.0.2 experimental because syscall/js is experimental
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+[![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm) That A+ is for both kickwasm and the framework source code in the examples folder.
 
 The go syscall/js package is experimental, there fore **Kickwasm is EXPERIMENTAL**.
 
