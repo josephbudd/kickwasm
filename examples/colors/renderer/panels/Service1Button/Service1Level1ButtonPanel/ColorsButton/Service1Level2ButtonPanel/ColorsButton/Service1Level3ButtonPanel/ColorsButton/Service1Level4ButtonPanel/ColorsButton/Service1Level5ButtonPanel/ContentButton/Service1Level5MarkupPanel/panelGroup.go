@@ -34,7 +34,6 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		return
 	}
 
-
 	return
 }
 
@@ -60,4 +59,3 @@ Brought to you in the first service color.
 func (panelGroup *PanelGroup) showService1Level5MarkupPanel(force bool) {
 	panelGroup.tools.ShowPanelInButtonGroup(panelGroup.service1Level5MarkupPanel, force)
 }
-

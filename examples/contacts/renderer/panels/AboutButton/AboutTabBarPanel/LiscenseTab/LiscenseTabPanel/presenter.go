@@ -1,6 +1,8 @@
 package liscensetabpanel
 
 import (
+	"syscall/js"
+
 	"github.com/pkg/errors"
 
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
@@ -24,13 +26,10 @@ type Presenter struct {
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
 	// Declare your Presenter members here.
-	// example:
-
-	// import "syscall/js"
-
-	customerName js.Value
 
 	*/
+
+	aboutLicense js.Value
 }
 
 // defineMembers defines the Presenter members by their html elements.
@@ -46,21 +45,17 @@ func (panelPresenter *Presenter) defineMembers() (err error) {
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
 	// Define your Presenter members.
-	// example:
-
-	// import "syscall/js"
-
-	notJS := panelPresenter.notJS
-	tools := panelPresenter.tools
-	null := js.Null()
-
-	// Define the customer name input field.
-	if panelPresenter.customerName = notJS.GetElementByID("customerName"); panelPresenter.customerName == null {
-		err = errors.New("unable to find #customerName")
-		return
-	}
 
 	*/
+
+	notJS := panelPresenter.notJS
+	null := js.Null()
+
+	// Define the license div.
+	if panelPresenter.aboutLicense = notJS.GetElementByID("aboutLicense"); panelPresenter.aboutLicense == null {
+		err = errors.New("unable to find #aboutLicense")
+		return
+	}
 
 	return
 }
@@ -68,11 +63,16 @@ func (panelPresenter *Presenter) defineMembers() (err error) {
 /* NOTE TO DEVELOPER. Step 3 of 3.
 
 // Define your Presenter functions.
-// example:
-
-// displayCustomer displays the customer in the panel.
-func (panelPresenter *Presenter) displayCustomer(record *types.CustomerRecord) {
-	panelPresenter.notJS.SetInnerText(panelPresenter.customerName, record.Name)
-}
 
 */
+
+// displayLicense displays the license in the panel.
+func (panelPresenter *Presenter) displayLicense(license []string) {
+	notJS := panelPresenter.notJS
+	for _, s := range license {
+		p := notJS.CreateElementP()
+		tn := notJS.CreateTextNode(s)
+		notJS.AppendChild(p, tn)
+		notJS.AppendChild(panelPresenter.aboutLicense, p)
+	}
+}

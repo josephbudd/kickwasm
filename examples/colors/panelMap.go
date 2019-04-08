@@ -94,4 +94,3 @@ func serveMainHTML(w http.ResponseWriter) {
 		}
 	}
 }
-

@@ -92,5 +92,4 @@ func (notjs *NotJS) Focus(element js.Value) {
 func (notjs *NotJS) Blur(element js.Value) {
 	element.Call("blur")
 }
-
 `

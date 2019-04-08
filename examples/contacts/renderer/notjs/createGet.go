@@ -131,4 +131,3 @@ func (notjs *NotJS) CreateElementTR() js.Value {
 func (notjs *NotJS) CreateElementTD() js.Value {
 	return notjs.document.Call(createElementMethodName, "td")
 }
-

@@ -56,7 +56,6 @@ func (callServer *Server) GetLastDisconnect() time.Time {
 	lastDisconnectMutex.Unlock()
 	return t
 }
-
 `
 
 // CallServerGo is the /mainprocess/tranpsports/callserver/callserver.go file.
@@ -137,7 +136,6 @@ func NewCallServer(listener net.Listener, callMap map[types.CallID]caller.MainPr
 		},
 	}
 }
-
 `
 
 // CallServerRunGo is /mainprocess/transports/callserver/run.go
@@ -280,7 +278,6 @@ func (callServer *Server) stillConnectedLoop(stopRunLoopCh chan os.Signal) {
 		}
 	}
 }
-
 `
 
 //CallServerWebsocketGo is /mainprocess/transports/callserver/websocket.go
@@ -435,5 +432,4 @@ func (callServer *Server) pingLoop(ws *websocket.Conn, stopPingLoopCh, closeWSCo
 		}
 	}
 }
-
 `

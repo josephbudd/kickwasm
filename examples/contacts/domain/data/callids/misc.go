@@ -1,6 +1,6 @@
 package callids
 
-import	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
+import "github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 
 var nextid types.CallID
 
@@ -9,4 +9,3 @@ func nextCallID() types.CallID {
 	nextid++
 	return id
 }
-

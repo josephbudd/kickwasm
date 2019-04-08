@@ -35,7 +35,7 @@ func Test_constructButton(t *testing.T) {
 			},
 			wantErr: false,
 			wantButtons: []*project.Button{
-				&project.Button{
+				{
 					ID:               "id",
 					Label:            "Label",
 					Heading:          "Heading",
@@ -85,7 +85,7 @@ func Test_constructTab(t *testing.T) {
 			},
 			wantErr: false,
 			wantTabs: []*project.Tab{
-				&project.Tab{
+				{
 					ID:     "id",
 					Label:  "Label",
 					Panels: []*project.Panel{},
@@ -322,7 +322,7 @@ func TestDo(t *testing.T) {
 				ImportPath: "github.com/josephbudd/kickwasm/examples/test1",
 				Stores:     []string{"Test1"},
 				Services: []*ServiceInfo{
-					&ServiceInfo{
+					{
 						Name: "Service1",
 						Button: &ButtonInfo{
 							ID:         "1Button",
@@ -333,7 +333,7 @@ func TestDo(t *testing.T) {
 							Panels:     []*PanelInfo{},
 						},
 					},
-					&ServiceInfo{
+					{
 						Name: "Service2",
 						Button: &ButtonInfo{
 							ID:         "2Button",
@@ -415,7 +415,7 @@ func Test_slurpApplication(t *testing.T) {
 				ImportPath: "github.com/josephbudd/kickwasm/examples/test1",
 				Stores:     []string{"Test1"},
 				Services: []*ServiceInfo{
-					&ServiceInfo{
+					{
 						SourcePath: "testyaml/simple_test/app.yaml",
 						Name:       "Service1",
 						Button: &ButtonInfo{
@@ -429,7 +429,7 @@ func Test_slurpApplication(t *testing.T) {
 								"service1/panel2.yaml",
 							},
 							Panels: []*PanelInfo{
-								&PanelInfo{
+								{
 									SourcePath: "testyaml/simple_test/service1/panel1.yaml",
 									Level:      1,
 									ID:         "",
@@ -439,7 +439,7 @@ func Test_slurpApplication(t *testing.T) {
 									Tabs:       []*TabInfo(nil),
 									Markup:     "<p>Panel 1-1</p>",
 								},
-								&PanelInfo{
+								{
 									SourcePath: "testyaml/simple_test/service1/panel2.yaml",
 									Level:      1,
 									ID:         "",
@@ -452,7 +452,7 @@ func Test_slurpApplication(t *testing.T) {
 							},
 						},
 					},
-					&ServiceInfo{
+					{
 						SourcePath: "testyaml/simple_test/app.yaml",
 						Name:       "Service2",
 						Button: &ButtonInfo{
@@ -466,14 +466,14 @@ func Test_slurpApplication(t *testing.T) {
 								"service2/panel5.yaml",
 							},
 							Panels: []*PanelInfo{
-								&PanelInfo{
+								{
 									SourcePath: "testyaml/simple_test/service2/panel3.yaml",
 									Level:      1,
 									ID:         "",
 									Name:       "ThreePanel",
 									Note:       "p3 note",
 									Buttons: []*ButtonInfo{
-										&ButtonInfo{
+										{
 											SourcePath: "testyaml/simple_test/service2/panel3.yaml",
 											ID:         "Panel31Button",
 											Label:      "Panel 3 Button 1",
@@ -484,7 +484,7 @@ func Test_slurpApplication(t *testing.T) {
 												"panel3-button1-panels/panel2.yaml",
 											},
 											Panels: []*PanelInfo{
-												&PanelInfo{
+												{
 													SourcePath: "testyaml/simple_test/service2/panel3-button1-panels/panel1.yaml",
 													Level:      2,
 													ID:         "",
@@ -494,7 +494,7 @@ func Test_slurpApplication(t *testing.T) {
 													Tabs:       []*TabInfo(nil),
 													Markup:     "Panel3Button1Panel1 Markup",
 												},
-												&PanelInfo{
+												{
 													SourcePath: "testyaml/simple_test/service2/panel3-button1-panels/panel2.yaml",
 													Level:      2,
 													ID:         "",
@@ -506,7 +506,7 @@ func Test_slurpApplication(t *testing.T) {
 												},
 											},
 										},
-										&ButtonInfo{
+										{
 											SourcePath: "testyaml/simple_test/service2/panel3.yaml",
 											ID:         "Panel32Button",
 											Label:      "Panel 3 Button 2",
@@ -517,7 +517,7 @@ func Test_slurpApplication(t *testing.T) {
 												"panel3-button2-panels/panel2.yaml",
 											},
 											Panels: []*PanelInfo{
-												&PanelInfo{
+												{
 													SourcePath: "testyaml/simple_test/service2/panel3-button2-panels/panel1.yaml",
 													Level:      2,
 													ID:         "",
@@ -527,7 +527,7 @@ func Test_slurpApplication(t *testing.T) {
 													Tabs:       []*TabInfo(nil),
 													Markup:     "Panel3Button2Panel1 Markup",
 												},
-												&PanelInfo{
+												{
 													SourcePath: "testyaml/simple_test/service2/panel3-button2-panels/panel2.yaml",
 													Level:      2,
 													ID:         "",
@@ -543,7 +543,7 @@ func Test_slurpApplication(t *testing.T) {
 									Tabs:   []*TabInfo(nil),
 									Markup: "",
 								},
-								&PanelInfo{
+								{
 									SourcePath: "testyaml/simple_test/service2/panel5.yaml",
 									Level:      1,
 									ID:         "",
@@ -551,7 +551,7 @@ func Test_slurpApplication(t *testing.T) {
 									Note:       "p5 note",
 									Buttons:    []*ButtonInfo{},
 									Tabs: []*TabInfo{
-										&TabInfo{
+										{
 											SourcePath: "testyaml/simple_test/service2/panel5.yaml",
 											ID:         "P51Tab",
 											Label:      "P5T1 Label",
@@ -560,7 +560,7 @@ func Test_slurpApplication(t *testing.T) {
 												"panel5-tab1-panels/panel2.yaml",
 											},
 											Panels: []*PanelInfo{
-												&PanelInfo{
+												{
 													SourcePath: "testyaml/simple_test/service2/panel5-tab1-panels/panel1.yaml",
 													Level:      2,
 													ID:         "",
@@ -570,7 +570,7 @@ func Test_slurpApplication(t *testing.T) {
 													Tabs:       []*TabInfo(nil),
 													Markup:     "Panel5Tab1Panel1 Markup",
 												},
-												&PanelInfo{
+												{
 													SourcePath: "testyaml/simple_test/service2/panel5-tab1-panels/panel2.yaml",
 													Level:      2,
 													ID:         "",
@@ -582,7 +582,7 @@ func Test_slurpApplication(t *testing.T) {
 												},
 											},
 										},
-										&TabInfo{
+										{
 											SourcePath: "testyaml/simple_test/service2/panel5.yaml",
 											ID:         "P52Tab",
 											Label:      "P5T2 Label",
@@ -591,7 +591,7 @@ func Test_slurpApplication(t *testing.T) {
 												"panel5-tab2-panels/panel2.yaml",
 											},
 											Panels: []*PanelInfo{
-												&PanelInfo{
+												{
 													SourcePath: "testyaml/simple_test/service2/panel5-tab2-panels/panel1.yaml",
 													Level:      2,
 													ID:         "",
@@ -601,7 +601,7 @@ func Test_slurpApplication(t *testing.T) {
 													Tabs:       []*TabInfo(nil),
 													Markup:     "Panel5Tab2Panel1 Markup",
 												},
-												&PanelInfo{
+												{
 													SourcePath: "testyaml/simple_test/service2/panel5-tab2-panels/panel2.yaml",
 													Level:      2,
 													ID:         "",

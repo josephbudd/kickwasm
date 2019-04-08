@@ -21,4 +21,3 @@ func (notjs *NotJS) SetOnChange(element js.Value, cb js.Func) {
 func (notjs *NotJS) SetOnScroll(element js.Value, cb js.Func) {
 	element.Set("onscroll", cb)
 }
-

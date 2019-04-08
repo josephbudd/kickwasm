@@ -9,4 +9,3 @@ func (notjs *NotJS) ConsoleLog(message string) {
 func (notjs *NotJS) Alert(message string) {
 	notjs.alert.Invoke(message)
 }
-

@@ -51,7 +51,7 @@ func (panel *Panel) markItUp(forwhat string, group []*Panel) string {
 		l = len(group)
 	}
 	// this panel comes from the user's json file.
-	// add comments in the html and then comments renderered.
+	// add comments in the html and then comments rendered.
 	lines = append(lines, emptyString)
 	// html comments
 	lines = append(lines, "<!--")

@@ -27,4 +27,3 @@ func NewApplicationSettings() (settings *types.ApplicationSettings, err error) {
 	err = yaml.Unmarshal(contents, settings)
 	return
 }
-

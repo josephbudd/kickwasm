@@ -11,11 +11,6 @@ import (
 // Create the files in the domain/implementations/store/boltstoring/ folder.
 func createStoreBoltStoresGo(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
 	folderpaths := appPaths.GetPaths()
-	fname := "error.go"
-	oPath := filepath.Join(folderpaths.OutputDomainImplementationsStoringBolt, fname)
-	if err = templates.ProcessTemplate(fname, oPath, templates.ImplementationsStoringBoltErrorsGo, data, appPaths); err != nil {
-		return
-	}
 	data2 := struct {
 		Store              string
 		ApplicationGitPath string

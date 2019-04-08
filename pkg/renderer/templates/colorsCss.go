@@ -501,5 +501,4 @@ button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
   background: white;
   color:black;
 }
-
 `

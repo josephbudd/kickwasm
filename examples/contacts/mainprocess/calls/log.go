@@ -70,7 +70,7 @@ func processLog(params []byte, callBackToRenderer func(params []byte)) {
 		"github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
 		"github.com/josephbudd/kickwasm/examples/contacts/domain/implementations/calling"
 
-	) 	
+	)
 
 	func (panelCaller *Caller) setCallBacks() {
 		logger := panelCaller.connections[callerids.LogCallID]
@@ -99,4 +99,3 @@ func processLog(params []byte, callBackToRenderer func(params []byte)) {
 	}
 
 */
-

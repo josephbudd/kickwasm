@@ -14,7 +14,6 @@ import (
 // GetCallMap returns a map of each mainprocess call.
 func GetCallMap(colorStore storer.ColorStorer) map[types.CallID]caller.MainProcesser {
 	return map[types.CallID]caller.MainProcesser{
-		callids.LogCallID:           newLogCall(),
+		callids.LogCallID: newLogCall(),
 	}
 }
-

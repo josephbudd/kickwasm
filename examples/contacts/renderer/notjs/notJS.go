@@ -22,10 +22,9 @@ func NewNotJS() *NotJS {
 	count++
 	g := js.Global()
 	return &NotJS{
-		global:      g,
-		document:    g.Get("document"),
-		alert:       g.Get("alert"),
-		console:     g.Get("console"),
+		global:   g,
+		document: g.Get("document"),
+		alert:    g.Get("alert"),
+		console:  g.Get("console"),
 	}
 }
-

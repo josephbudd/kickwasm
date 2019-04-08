@@ -44,8 +44,8 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// 2.1: Define each one of your Caller connection members as a conection to the main process.
-	// 2.2: Tell the caller connection to the main processs to add a call back to each of your call back funcs.
+	// 2.1: Define each one of your Caller connection members as a connection to the main process.
+	// 2.2: Tell the caller connection to the main process to add a call back to each of your call back funcs.
 
 	*/
 

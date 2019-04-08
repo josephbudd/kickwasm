@@ -74,15 +74,13 @@ STEP 4: REFACTOR YOUR PANEL AND CONSTRUCTOR AND/OR CONTROLERS AND/OR PRESENTERS,
 	if params.State & panelCaller.state == panelCaller.state {
 		...
 	}
-
 `
 
 // PanelHelperInterface is the template for the file renderer/interfaces/panelHelper/helper.go
 const PanelHelperInterface = `package panelHelper
 
 // Helper is help for setting up the markup panels.
-type Helper interface {}
-
+type Helper interface{}
 `
 
 // PanelHelperImplementation is the template for the file renderer/implementations/panelHelping/noHelp.go
@@ -90,5 +88,4 @@ const PanelHelperImplementation = `package panelHelping
 
 // NoHelp implements the default empty renderer/interfaces/panelHelper.Helper
 type NoHelp struct{}
-
 `

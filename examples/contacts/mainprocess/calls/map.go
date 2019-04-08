@@ -21,5 +21,7 @@ func GetCallMap(contactStore storer.ContactStorer) map[types.CallID]caller.MainP
 		callids.GetContactsPageCitiesMatchStateCallID:      newGetContactsPageCitiesMatchStateCall(contactStore),
 		callids.GetContactsPageRecordsMatchStateCityCallID: newGetContactsPageRecordsMatchStateCityCall(contactStore),
 		callids.GetContactsPageStatesCallID:                newGetContactsPageStatesCall(contactStore),
+		callids.GetAboutCallID:                             newGetAboutCall(),
+		callids.GetLicenseCallID:                           newGetLicenseCall(),
 	}
 }

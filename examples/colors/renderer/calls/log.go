@@ -64,4 +64,3 @@ func rendererReceiveAndDispatchLog(params []byte, dispatch func(interface{})) {
 	}
 
 */
-

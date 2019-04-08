@@ -102,5 +102,4 @@ func (tools *Tools) handleModalMasterViewClose(event js.Value) interface{} {
 	tools.beNotModal()
 	return nil
 }
-
 `

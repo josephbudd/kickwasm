@@ -1,8 +1,15 @@
-# kickwasm version 4.0.1 experimental because syscall/js is experimental
+# kickwasm version 4.0.2 experimental because syscall/js is experimental
 
-I didn't realize that the go syscall/js package was experimental. With go version 1.12 I found that out the hard way.
+The go syscall/js package is experimental, there fore **Kickwasm is EXPERIMENTAL**.
 
-There fore **Kickwasm is EXPERIMENTAL**. Its current primary scope is to keep up with the changes in the EXPERIMENTAL go syscall/js package. Kickwasm is currently compatible with go version 1.12.
+Its current primary scope is to keep up with the changes in the EXPERIMENTAL go syscall/js package. Kickwasm is currently compatible with go version 1.12.
+
+## Changes in version 4.0.2
+
+1. kickwasm and the framework source code now pass gofmt with no changes.
+1. The storer implementation code is less verbose.
+1. Corrected documentation in panel callers.
+1, The colors and contacts examples have been rebuilt with kickwasm version 4.0.2.
 
 ## Framework changes in version 4.0.1
 
@@ -96,6 +103,7 @@ cd /home/nil/go/src/github.com/josephbudd/kickwasm/examples/colors
 kickpack -o /home/nil/go/src/github.com/josephbudd/kickwasm/examples/colorssitepack ./site ./http.yaml
 
 Finally! Now its time to build your new colorssitepack package.
+This will take a while.
 cd /home/nil/go/src/github.com/josephbudd/kickwasm/examples/colorssitepack
 go build
 

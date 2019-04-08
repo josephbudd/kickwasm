@@ -33,9 +33,9 @@ func (b *Button) toButtonHTML(idPrefix string, backid string, colorLevel string)
 		DataAtom: atom.Button,
 		Data:     "button",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: b.HTMLID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s%s", classPadButtonColorLevelPrefix, colorLevel)},
-			html.Attribute{Key: attributeBackID, Val: backid},
+			{Key: "id", Val: b.HTMLID},
+			{Key: "class", Val: fmt.Sprintf("%s%s", classPadButtonColorLevelPrefix, colorLevel)},
+			{Key: attributeBackID, Val: backid},
 		},
 	}
 	textNode := &html.Node{

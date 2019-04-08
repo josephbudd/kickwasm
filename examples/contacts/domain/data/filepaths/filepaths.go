@@ -17,6 +17,8 @@ var faviconPath string
 
 // templatePath is where the view is.
 var templatePath string
+var shortTemplatePath string
+var shortSitePath string
 
 // fmode is the applications mode for files.
 var fmode = os.FileMode(0666)
@@ -31,6 +33,7 @@ var initialized bool
 var testing bool
 
 var appSettingsPath string
+var shortAppSettingsPath string
 
 // Testing sets testing to true so that the test db is used not the normal database.
 // Returns if in using test db.
@@ -42,7 +45,6 @@ func Testing() bool {
 }
 
 func initialize() {
-	initialized = true
 	buildUserHomeDataPath()
 	if initerr != nil {
 		return
@@ -53,9 +55,13 @@ func initialize() {
 		return
 	}
 	appSettingsPath = filepath.Join(pwd, "http.yaml")
+	shortAppSettingsPath = "http.yaml"
 	applicationSitePath = filepath.Join(pwd, "site")
 	faviconPath = filepath.Join(applicationSitePath, "favicon.ico")
 	templatePath = filepath.Join(applicationSitePath, "templates")
+	shortSitePath = "site"
+	shortTemplatePath = filepath.Join(shortSitePath, "templates")
+	initialized = true
 }
 
 // GetSettingsPath returns the settings yaml path.
@@ -66,6 +72,14 @@ func GetSettingsPath() string {
 	return appSettingsPath
 }
 
+// GetShortSettingsPath returns the settings yaml path.
+func GetShortSettingsPath() string {
+	if !initialized {
+		initialize()
+	}
+	return shortAppSettingsPath
+}
+
 // GetFaviconPath returns the path of the favicon.
 func GetFaviconPath() string {
 	if !initialized {
@@ -74,12 +88,28 @@ func GetFaviconPath() string {
 	return faviconPath
 }
 
+// GetShortSitePath returns the short path to the applications site folder.
+func GetShortSitePath() string {
+	if !initialized {
+		initialize()
+	}
+	return shortSitePath
+}
+
 // GetTemplatePath returns the path of application's markup.
 func GetTemplatePath() string {
 	if !initialized {
 		initialize()
 	}
 	return templatePath
+}
+
+// GetShortTemplatePath returns the short path to the application's template folder.
+func GetShortTemplatePath() string {
+	if !initialized {
+		initialize()
+	}
+	return shortTemplatePath
 }
 
 // GetFmode returns the file mode for files.
@@ -93,7 +123,7 @@ func GetDmode() os.FileMode {
 }
 
 // BuildUserSubFoldersPath builds a sub folder path in the user's home folder.
-// It makes the path if neccessary.
+// It makes the path if necessary.
 // Param sfpath [in] is the subfolder path.
 // Returns the folder path.
 func BuildUserSubFoldersPath(sfpath string) (string, error) {
@@ -137,4 +167,3 @@ func buildUserHomeDataPath() {
 		initerr = fmt.Errorf("os.MkdirAll(userHomeDataPath, dmode) error is %s", initerr.Error())
 	}
 }
-

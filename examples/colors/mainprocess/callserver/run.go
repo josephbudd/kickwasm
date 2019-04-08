@@ -137,4 +137,3 @@ func (callServer *Server) stillConnectedLoop(stopRunLoopCh chan os.Signal) {
 		}
 	}
 }
-

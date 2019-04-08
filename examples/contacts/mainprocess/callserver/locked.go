@@ -53,4 +53,3 @@ func (callServer *Server) GetLastDisconnect() time.Time {
 	lastDisconnectMutex.Unlock()
 	return t
 }
-

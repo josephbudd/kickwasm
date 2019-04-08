@@ -18,4 +18,3 @@ func NewColorRecord() *ColorRecord {
 	v := &ColorRecord{}
 	return v
 }
-

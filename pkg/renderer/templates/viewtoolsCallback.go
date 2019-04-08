@@ -54,5 +54,4 @@ func (tools *Tools) CloseCallBacks() int {
 	}
 	return i + 1
 }
-
 `

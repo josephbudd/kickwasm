@@ -23,7 +23,7 @@ func rendererReceiveAndDispatchRemoveContact(params []byte, dispatch func(interf
 	// 1. Unmarshall params into a *MainProcessToRendererRemoveContactParams.
 	rxparams := &types.MainProcessToRendererRemoveContactParams{}
 	if err := json.Unmarshal(params, rxparams); err != nil {
-		// This error will only happend during the development stage.
+		// This error will only happen during the development stage.
 		// It means a conflict with the txparams in func mainProcessReceiveRemoveContact.
 		rxparams = &types.MainProcessToRendererRemoveContactParams{
 			Error:        true,

@@ -37,8 +37,8 @@ func (t *Tab) toButtonHTML(idPrefix string, selected bool) (button *html.Node) {
 		DataAtom: atom.Button,
 		Data:     "button",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: t.HTMLID},
-			html.Attribute{Key: "class", Val: class},
+			{Key: "id", Val: t.HTMLID},
+			{Key: "class", Val: class},
 		},
 	}
 	textNode := &html.Node{
@@ -66,8 +66,8 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: t.PanelHTMLID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s %s", classTabPanel, classPanelWithHeading, visibility)},
+			{Key: "id", Val: t.PanelHTMLID},
+			{Key: "class", Val: fmt.Sprintf("%s %s %s", classTabPanel, classPanelWithHeading, visibility)},
 		},
 	}
 	// the tab panel has an h3
@@ -76,7 +76,7 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 		DataAtom: atom.H3,
 		Data:     "h3",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "class", Val: classPanelHeading},
+			{Key: "class", Val: classPanelHeading},
 		},
 	}
 	textNode := &html.Node{
@@ -94,8 +94,8 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: innerID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classInnerPanel, classUserContent)},
+			{Key: "id", Val: innerID},
+			{Key: "class", Val: fmt.Sprintf("%s %s", classInnerPanel, classUserContent)},
 		},
 	}
 	tabPanel.AppendChild(innerPanel)
@@ -127,8 +127,8 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 			DataAtom: atom.Div,
 			Data:     "div",
 			Attr: []html.Attribute{
-				html.Attribute{Key: "id", Val: p.HTMLID},
-				html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classSliderPanelInnerSibling, visibility)},
+				{Key: "id", Val: p.HTMLID},
+				{Key: "class", Val: fmt.Sprintf("%s %s", classSliderPanelInnerSibling, visibility)},
 			},
 		}
 		innerPanel.AppendChild(innerSiblingMarkupPanel)

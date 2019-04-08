@@ -123,7 +123,7 @@ func GetDmode() os.FileMode {
 }
 
 // BuildUserSubFoldersPath builds a sub folder path in the user's home folder.
-// It makes the path if neccessary.
+// It makes the path if necessary.
 // Param sfpath [in] is the subfolder path.
 // Returns the folder path.
 func BuildUserSubFoldersPath(sfpath string) (string, error) {
@@ -167,4 +167,3 @@ func buildUserHomeDataPath() {
 		initerr = fmt.Errorf("os.MkdirAll(userHomeDataPath, dmode) error is %s", initerr.Error())
 	}
 }
-

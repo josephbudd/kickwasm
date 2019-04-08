@@ -110,4 +110,3 @@ func (notjs *NotJS) GetAttributeFloat64(element js.Value, name string) float64 {
 	}
 	return float64(i)
 }
-

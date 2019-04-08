@@ -5,7 +5,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/interfaces/panelHelper"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
-	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AboutButton/AboutTabBarPanel/CreditTab/CreditTabPanel"
+	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AboutButton/AboutTabBarPanel/AboutTab/AboutTabPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AboutButton/AboutTabBarPanel/LiscenseTab/LiscenseTabPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AboutButton/AboutTabBarPanel/RecordsTab/RecordsTabPanel"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/panels/AddButton/AddContactPanel"
@@ -28,12 +28,12 @@ import (
 
 func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) (err error) {
 	// 1. Construct the panel code.
-	var addContactPanel *addcontactpanel.Panel
-	if addContactPanel, err = addcontactpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var aboutTabPanel *abouttabpanel.Panel
+	if aboutTabPanel, err = abouttabpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
-	var creditTabPanel *credittabpanel.Panel
-	if creditTabPanel, err = credittabpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	var addContactPanel *addcontactpanel.Panel
+	if addContactPanel, err = addcontactpanel.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
 		return
 	}
 	var editContactEditPanel *editcontacteditpanel.Panel
@@ -73,8 +73,8 @@ func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.Ca
 	tools.SizeApp()
 
 	// 3. Start each panel's initial calls.
+	aboutTabPanel.InitialCalls()
 	addContactPanel.InitialCalls()
-	creditTabPanel.InitialCalls()
 	editContactEditPanel.InitialCalls()
 	editContactNotReadyPanel.InitialCalls()
 	editContactSelectPanel.InitialCalls()

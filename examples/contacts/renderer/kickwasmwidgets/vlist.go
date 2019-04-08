@@ -54,17 +54,17 @@ type VList struct {
 //  is called when the list needs initialized.
 //  is passed the params(count, state)
 //  is asynchronous and returns nothing
-//  it is expected to propogate a call back to vlist.Build
+//  it is expected to propagate a call back to vlist.Build
 // Param needToPrependFunc
 //  is called when the list needs to prepend more records.
 //  is passed the params (button, count, state)
 //  is asynchronous and returns nothing
-//  it is expected to propogate a call back to vlist.Build
+//  it is expected to propagate a call back to vlist.Build
 // Param needToAppendFunc
 //  is called when the list needs to append more records.
 //  is passed the params (button, count, state)
 //  is asynchronous and returns nothing
-//  it is expected to propogate a call back to vlist.Build
+//  it is expected to propagate a call back to vlist.Build
 // Param notJS is a pointer to notjs.NotJS
 // Param hideFunc is a func that will hide this div.
 //  it will take one param, any js.Value.

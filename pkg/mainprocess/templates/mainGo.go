@@ -108,7 +108,6 @@ func buildBoltStores() (err error) {
 	{{call $Dot.LowerCamelCase .}}Store = boltstoring.New{{.}}BoltDB(db, path, filepaths.GetFmode()){{end}}
 	return
 }
-
 `
 
 // PanelMapGo is the panelMap.go template for package main.
@@ -208,7 +207,6 @@ func serveMainHTML(w http.ResponseWriter) {
 		}
 	}
 }
-
 `
 
 // ServeGo is the serve.go template which is the web server.
@@ -248,7 +246,7 @@ const (
 	  4. Rebuild the renderer process.
 		 $ cd renderer/
 		 $ build.sh
-		 
+
 	  5. Rebuild the main process.
 		 $ cd ..
 		 $ go build
@@ -320,5 +318,4 @@ func serveFileStore(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 300)
 	}
 }
-
 `

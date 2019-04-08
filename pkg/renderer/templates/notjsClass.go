@@ -55,5 +55,4 @@ func (notjs *NotJS) ClassListAddClass(element js.Value, new string) {
 	classList := element.Get(classListAttributeName)
 	classList.Call(addMethodName, new)
 }
-
 `

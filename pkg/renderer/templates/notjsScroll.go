@@ -14,5 +14,4 @@ func (notjs *NotJS) ScrollTo(element js.Value, left, top int) {
 func (notjs *NotJS) GetScrollTop(element js.Value) int {
 	return element.Get("scrollTop").Int()
 }
-
 `

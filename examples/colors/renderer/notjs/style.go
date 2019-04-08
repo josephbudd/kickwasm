@@ -16,4 +16,3 @@ func (notjs *NotJS) SetStyleWidth(element js.Value, width float64) {
 	style := element.Get(styleMemberName)
 	style.Set("width", fmt.Sprintf(pxFormatter, width))
 }
-

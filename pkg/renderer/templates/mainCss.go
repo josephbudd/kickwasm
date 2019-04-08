@@ -410,5 +410,4 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   width:100%;
   margin-right:20px;
 }
-
 `

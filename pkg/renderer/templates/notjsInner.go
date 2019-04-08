@@ -29,5 +29,4 @@ func (notjs *NotJS) GetInnerHTML(element js.Value) string {
 func (notjs *NotJS) GetOuterHTML(element js.Value) string {
 	return element.Get(outerHTMLMemberName).String()
 }
-
 `

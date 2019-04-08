@@ -69,8 +69,7 @@ func processLog(params []byte, callBackToRenderer func(params []byte)) {
 	import (
 		"github.com/josephbudd/kickwasm/examples/colors/domain/data/callids"
 		"github.com/josephbudd/kickwasm/examples/colors/domain/implementations/calling"
-
-	) 	
+	)
 
 	func (panelCaller *Caller) setCallBacks() {
 		logger := panelCaller.connections[callerids.LogCallID]
@@ -99,4 +98,3 @@ func processLog(params []byte, callBackToRenderer func(params []byte)) {
 	}
 
 */
-

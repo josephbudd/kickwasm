@@ -34,7 +34,6 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		return
 	}
 
-
 	return
 }
 
@@ -60,4 +59,3 @@ Allow the user to enter contact info into a form and submit or cancel.
 func (panelGroup *PanelGroup) showAddContactPanel(force bool) {
 	panelGroup.tools.ShowPanelInButtonGroup(panelGroup.addContactPanel, force)
 }
-

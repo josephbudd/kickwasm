@@ -25,6 +25,12 @@ type Controler struct {
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
 	// Declare your Controler members.
+	// example:
+
+	// import "syscall/js"
+
+	addCustomerName   js.Value
+	addCustomerSubmit js.Value
 
 	*/
 }
@@ -43,6 +49,29 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 	// Define the Controler members by their html elements.
 	// Set their handlers.
+	// example:
+
+	// import "syscall/js"
+
+	notJS := panelControler.notJS
+	tools := panelControler.tools
+	null := js.Null()
+
+	// Define the customer name input field.
+	if panelControler.customerName = notJS.GetElementByID("customerName"); panelControler.customerName == null {
+		err = errors.New("unable to find #customerName")
+		return
+	}
+
+	// Define the submit button and set it's handler.
+	if panelControler.addCustomerSubmit = notJS.GetElementByID("addCustomerSubmit"); panelControler.addCustomerSubmit == null {
+		err = errors.New("unable to find #addCustomerSubmit")
+		return
+	}
+	// see render/viewtools/callback.go
+	// use the event call back func and set propagations.
+	cb := tools.RegisterEventCallBack(panelControler.handleSubmit, true, true, true)
+	notJS.SetOnClick(panelControler.addCustomerSubmit, cb)
 
 	*/
 
@@ -52,6 +81,22 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 /* NOTE TO DEVELOPER. Step 3 of 4.
 
 // Handlers and other functions.
+// example:
+
+// import "github.com/josephbudd/kickwasm/examples/contacts/domain/types"
+
+func (panelControler *Controler) handleSubmit(event js.Value) interface{} {
+	name := strings.TrimSpace(panelControler.notJS.GetValue(panelControler.addCustomerName))
+	if len(name) == 0 {
+		panelControler.tools.Error("Customer Name is required.")
+		return nil
+	}
+	record := &types.CustomerRecord{
+		Name: name,
+	}
+	panelControler.caller.AddCustomer(record)
+	return nil
+}
 
 */
 
@@ -62,6 +107,9 @@ func (panelControler *Controler) initialCalls() {
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
+	// example:
+
+	panelControler.customerSelectWidget.start()
 
 	*/
 

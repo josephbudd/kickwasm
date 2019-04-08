@@ -34,7 +34,7 @@ const (
 	  4. Rebuild the renderer process.
 		 $ cd renderer/
 		 $ build.sh
-		 
+
 	  5. Rebuild the main process.
 		 $ cd ..
 		 $ go build
@@ -106,4 +106,3 @@ func serveFileStore(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 300)
 	}
 }
-

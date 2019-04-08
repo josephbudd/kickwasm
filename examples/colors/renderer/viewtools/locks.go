@@ -31,4 +31,3 @@ func (tools *Tools) HandleButtonClick() (clicked bool) {
 	clicked = !tools.buttonsLocked
 	return
 }
-

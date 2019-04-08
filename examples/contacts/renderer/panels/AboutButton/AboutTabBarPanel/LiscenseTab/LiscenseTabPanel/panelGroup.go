@@ -34,7 +34,6 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		return
 	}
 
-
 	return
 }
 
@@ -52,5 +51,4 @@ statically displays the liscense
 func (panelGroup *PanelGroup) showLiscenseTabPanel() {
 	panelGroup.tools.ShowPanelInTabGroup(panelGroup.liscenseTabPanel)
 }
-
 

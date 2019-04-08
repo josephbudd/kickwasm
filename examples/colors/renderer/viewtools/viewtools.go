@@ -149,4 +149,3 @@ func NewTools(notJS *notjs.NotJS) *Tools {
 
 	return v
 }
-

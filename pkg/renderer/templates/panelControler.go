@@ -19,11 +19,11 @@ import (
 // Controler is a HelloPanel Controler.
 type Controler struct {
 	panelGroup *PanelGroup
-	presenter *Presenter
-	caller    *Caller
-	quitCh    chan struct{}    // send an empty struct to start the quit process.
-	tools     *viewtools.Tools // see {{.ImportRendererViewTools}}
-	notJS     *notjs.NotJS
+	presenter  *Presenter
+	caller     *Caller
+	quitCh     chan struct{}    // send an empty struct to start the quit process.
+	tools      *viewtools.Tools // see {{.ImportRendererViewTools}}
+	notJS      *notjs.NotJS
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -117,5 +117,4 @@ func (panelControler *Controler) initialCalls() {
 	*/
 
 }
-
 `

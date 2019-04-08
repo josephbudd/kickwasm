@@ -16,7 +16,7 @@ func NewProduction() *Production {
 		add:    vliststate.GetNextState(),
 		edit:   vliststate.GetNextState(),
 		remove: vliststate.GetNextState(),
-		about: vliststate.GetNextState(),
+		about:  vliststate.GetNextState(),
 	}
 }
 
@@ -39,4 +39,3 @@ func (p *Production) StateRemove() uint64 {
 func (p *Production) StateAbout() uint64 {
 	return p.about
 }
-

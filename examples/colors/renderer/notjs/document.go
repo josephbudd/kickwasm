@@ -25,4 +25,3 @@ func (notjs *NotJS) HostPort() (host string, port uint64) {
 	}
 	return
 }
-

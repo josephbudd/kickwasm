@@ -20,5 +20,7 @@ func GetCallMap(rendererSendPayload func(payload []byte) error) map[types.CallID
 		callids.GetContactsPageCitiesMatchStateCallID:      newGetContactsPageCitiesMatchStateCall(rendererSendPayload),
 		callids.GetContactsPageRecordsMatchStateCityCallID: newGetContactsPageRecordsMatchStateCityCall(rendererSendPayload),
 		callids.GetContactsPageStatesCallID:                newGetContactsPageStatesCall(rendererSendPayload),
+		callids.GetAboutCallID:                             newGetAboutCall(rendererSendPayload),
+		callids.GetLicenseCallID:                           newGetLicenseCall(rendererSendPayload),
 	}
 }

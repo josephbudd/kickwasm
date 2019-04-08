@@ -59,5 +59,4 @@ func (notjs *NotJS) RemoveChildNodes(parent js.Value) {
 func (notjs *NotJS) InsertChildBefore(parent, newChild, targetChild js.Value) {
 	parent.Call("insertBefore", newChild, targetChild)
 }
-
 `

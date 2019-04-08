@@ -16,10 +16,9 @@ import (
 // GetCallMap returns a render call map.
 func GetCallMap(rendererSendPayload func(payload []byte) error) map[types.CallID]caller.Renderer {
 	return map[types.CallID]caller.Renderer{
-		callids.LogCallID:           newLogCall(rendererSendPayload),
+		callids.LogCallID: newLogCall(rendererSendPayload),
 	}
 }
-
 `
 
 // CallsLogGo is the renderer/calls/log.go template.
@@ -89,7 +88,6 @@ func rendererReceiveAndDispatchLog(params []byte, dispatch func(interface{})) {
 	}
 
 */
-
 `
 
 // CallsExampleGoTxt is the template for renderer/calls/example.go.
@@ -153,7 +151,7 @@ func rendererReceiveAndDispatchGetCustomer(params []byte, dispatch func(interfac
 	// 1. Unmarshall params into a *types.MainProcessToRendererGetCustomerParams.
 	rxparams := &types.MainProcessToRendererGetCustomerParams{}
 	if err := json.Unmarshal(params, rxparams); err != nil {
-		// This error should only happend during the development stage.
+		// This error should only happen during the development stage.
 		// It means a conflict with the txparams in func processGetCustomer.
 		//   See mainprocess/calls/exampleGo.txt
 		rxparams = &types.MainProcessToRendererGetCustomerParams{
@@ -210,5 +208,4 @@ func rendererReceiveAndDispatchGetCustomer(params []byte, dispatch func(interfac
 	}
 
 */
-
 `

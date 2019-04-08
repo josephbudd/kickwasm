@@ -47,8 +47,8 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// 2.1: Define each one of your Caller connection members as a conection to the main process.
-	// 2.2: Tell the caller connection to the main processs to add a call back to each of your call back funcs.
+	// 2.1: Define each one of your Caller connection members as a connection to the main process.
+	// 2.2: Tell the caller connection to the main process to add a call back to each of your call back funcs.
 
 	// example:
 
@@ -58,8 +58,8 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	// Add customer.
 	// Define the connection.
-	if panelCaller.addCustomerConnection, found = panelCaller.connection[callids.AddCustomerCallId]; !found {
-		err = errors.New("unable to find panelCaller.connection[callids.AddCustomerCallId]")
+	if panelCaller.addCustomerConnection, found = panelCaller.connection[callids.AddCustomerCallID]; !found {
+		err = errors.New("unable to find panelCaller.connection[callids.AddCustomerCallID]")
 		return
 	}
 	// Have the connection call back to my call back handler.
@@ -122,4 +122,3 @@ func (panelCaller *Caller) initialCalls() {
 	*/
 
 }
-

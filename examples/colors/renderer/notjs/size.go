@@ -150,4 +150,3 @@ func (notjs *NotJS) BorderHeight(el js.Value) float64 {
 func (notjs *NotJS) getComputedStyle(el js.Value) js.Value {
 	return notjs.global.Call("getComputedStyle", el)
 }
-

@@ -26,4 +26,3 @@ func NewMainProcess(
 func (call *MainProcess) Process(params []byte, callback func(params []byte)) {
 	call.mainprocessReceive(params, callback)
 }
-

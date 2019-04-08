@@ -132,4 +132,3 @@ func processGetCustomer(params []byte, callBackToRenderer func(params []byte), c
 	txparamsbb, _ := json.Marshal(txparams)
 	callBackToRenderer(txparamsbb)
 }
-

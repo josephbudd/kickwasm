@@ -44,7 +44,6 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		return
 	}
 
-
 	return
 }
 
@@ -98,4 +97,3 @@ edit the form
 func (panelGroup *PanelGroup) showEditContactEditPanel(force bool) {
 	panelGroup.tools.ShowPanelInButtonGroup(panelGroup.editContactEditPanel, force)
 }
-

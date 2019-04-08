@@ -326,3 +326,4 @@ func (tools *Tools) resizeMe(mine js.Value, w, h float64) {
 		}
 	}
 }
+

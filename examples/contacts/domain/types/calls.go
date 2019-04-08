@@ -8,4 +8,3 @@ type Payload struct {
 	Procedure CallID
 	Params    string
 }
-

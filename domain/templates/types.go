@@ -11,7 +11,6 @@ type Payload struct {
 	Procedure CallID
 	Params    string
 }
-
 `
 
 // TypesRecordsGo is the domain/types/records.go template.
@@ -35,7 +34,6 @@ func New{{.}}Record() *{{.}}Record {
 	v := &{{.}}Record{}
 	return v
 }{{end}}
-
 `
 
 // TypesLogGo is the domain/types/log.go template.
@@ -53,7 +51,6 @@ type MainProcessToRendererLogCallParams struct {
 	ErrorMessage string
 	Level        uint64
 }
-
 `
 
 // SettingsGo is the domain/types/settings.go template.
@@ -64,5 +61,4 @@ type ApplicationSettings struct {
 	Host string {{.BackTick}}yaml:"host"{{.BackTick}}
 	Port uint64 {{.BackTick}}yaml:"port"{{.BackTick}}
 }
-
 `

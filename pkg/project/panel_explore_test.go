@@ -143,11 +143,11 @@ func testGenerateTabBarLevelStartPanelMap(t *testing.T, builder *Builder) {
 
 func testGenerateServiceEmptyInsidePanelIDsMap(t *testing.T, builder *Builder) {
 	wants := map[string]map[string]string{
-		"Service1": map[string]string{
+		"Service1": {
 			"OnePanel": "masterid-home-pad-OneButton-OnePanel-inner-user-content",
 			"TwoPanel": "masterid-home-pad-OneButton-TwoPanel-inner-user-content",
 		},
-		"Service2": map[string]string{
+		"Service2": {
 			"FourPanel":  "masterid-home-pad-TwoButton-FourPanel-inner-user-content",
 			"ThreePanel": "masterid-home-pad-TwoButton-ThreePanel-inner-user-content",
 		},
@@ -160,11 +160,11 @@ func testGenerateServiceEmptyInsidePanelIDsMap(t *testing.T, builder *Builder) {
 
 func testGenerateServiceEmptyPanelIDsMap(t *testing.T, builder *Builder) {
 	wants := map[string][]string{
-		"Service1": []string{
+		"Service1": {
 			"masterid-home-pad-OneButton-OnePanel",
 			"masterid-home-pad-OneButton-TwoPanel",
 		},
-		"Service2": []string{
+		"Service2": {
 			"masterid-home-pad-TwoButton-ThreePanel",
 			"masterid-home-pad-TwoButton-FourPanel",
 		},
@@ -198,11 +198,11 @@ func testgenerateServicePanelNameTemplateMap(t *testing.T, builder *Builder) {
 		{
 			name: "a",
 			want: map[string]map[string]string{
-				"Service1": map[string]string{
+				"Service1": {
 					"OnePanel": "\n<!--\n\nPanel name: \"OnePanel\"\n\nPanel note: p1 note\n\nThis is one of a group of 2 panels displayed when the \"One\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-OneButton-TwoPanel-inner-user-content\n  * Name: TwoPanel\n  * Note: p2 note\n\n-->\n\n<p>Panel 1-1</p>\n",
 					"TwoPanel": "\n<!--\n\nPanel name: \"TwoPanel\"\n\nPanel note: p2 note\n\nThis is one of a group of 2 panels displayed when the \"One\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-OneButton-OnePanel-inner-user-content\n  * Name: OnePanel\n  * Note: p1 note\n\n-->\n\n<p>Panel 2-1</p>\n",
 				},
-				"Service2": map[string]string{
+				"Service2": {
 					"ThreePanel": "\n<!--\n\nPanel name: \"ThreePanel\"\n\nPanel note: p3 note\n\nThis is one of a group of 2 panels displayed when the \"Two\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-TwoButton-FourPanel-inner-user-content\n  * Name: FourPanel\n  * Note: p4 note\n\n-->\n\n<p>Panel 3-1</p>\n",
 					"FourPanel":  "\n<!--\n\nPanel name: \"FourPanel\"\n\nPanel note: p4 note\n\nThis is one of a group of 2 panels displayed when the \"Two\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-TwoButton-ThreePanel-inner-user-content\n  * Name: ThreePanel\n  * Note: p3 note\n\n-->\n\n<p>Panel 4-1</p>\n",
 				},
@@ -227,11 +227,11 @@ func testGenerateServiceTemplatePanelName(t *testing.T, builder *Builder) {
 		{
 			name: "wtf",
 			want: map[string][]string{
-				"Service2": []string{
+				"Service2": {
 					"ThreePanel",
 					"FourPanel",
 				},
-				"Service1": []string{
+				"Service1": {
 					"OnePanel",
 					"TwoPanel",
 				},
@@ -256,9 +256,9 @@ func testBuilderGenerateServiceEmptyInsidePanelNamePathMap(t *testing.T, builder
 		{
 			name: "test",
 			want: map[string]map[string][]string{
-				"Service1": map[string][]string{
-					"OneOnePanel": []string{"OneButton", "OnePanel", "OneOneButton"},
-					"TwoOnePanel": []string{"OneButton", "TwoPanel", "TwoOneButton"},
+				"Service1": {
+					"OneOnePanel": {"OneButton", "OnePanel", "OneOneButton"},
+					"TwoOnePanel": {"OneButton", "TwoPanel", "TwoOneButton"},
 				},
 			},
 		},
@@ -359,10 +359,10 @@ Service1:
 
 func testGenerateButtonIDsPanelIDs(t *testing.T, builder *Builder) {
 	wantButtons := map[string][]string{
-		"FourButton":  []string{"OtherTabPanel"},
-		"OneButton":   []string{"OnePanel", "TwoPanel"},
-		"ThreeButton": []string{"TabPanel"},
-		"TwoButton":   []string{"ThreePanel", "FourPanel"},
+		"FourButton":  {"OtherTabPanel"},
+		"OneButton":   {"OnePanel", "TwoPanel"},
+		"ThreeButton": {"TabPanel"},
+		"TwoButton":   {"ThreePanel", "FourPanel"},
 	}
 	t.Run("testGenerateButtonIDsPanelIDs", func(t *testing.T) {
 		if gotButtons := builder.GenerateButtonIDsPanelIDs(); !reflect.DeepEqual(gotButtons, wantButtons) {
@@ -373,8 +373,8 @@ func testGenerateButtonIDsPanelIDs(t *testing.T, builder *Builder) {
 
 func testGenerateTabIDsPanelIDs(t *testing.T, builder *Builder) {
 	wantTabs := map[string][]string{
-		"OtherTabPanel-OneTab": []string{"LastTabPanel"},
-		"TabPanel-OneTab":      []string{"OnlyPanel"},
+		"OtherTabPanel-OneTab": {"LastTabPanel"},
+		"TabPanel-OneTab":      {"OnlyPanel"},
 	}
 	t.Run("testGenerateTabIDsPanelIDs", func(t *testing.T) {
 		if gotTabs := builder.GenerateTabIDsPanelIDs(); !reflect.DeepEqual(gotTabs, wantTabs) {

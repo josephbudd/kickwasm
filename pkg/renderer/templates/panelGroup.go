@@ -37,7 +37,6 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		return
 	}
 {{end}}
-
 	return
 }
 
@@ -71,5 +70,4 @@ func (panelGroup *PanelGroup) show{{$panel.Name}}() {
 func (panelGroup *PanelGroup) show{{$panel.Name}}(force bool) {
 	panelGroup.tools.ShowPanelInButtonGroup(panelGroup.{{call $Dot.LowerCamelCase $panel.Name}}, force)
 }{{end}}{{end}}
-
 `

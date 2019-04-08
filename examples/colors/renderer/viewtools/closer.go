@@ -57,4 +57,3 @@ func (tools *Tools) Quit() {
 	tools.CloseCallBacks()
 	tools.Global.Call("close")
 }
-

@@ -24,8 +24,8 @@ func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) er
 		ImportDomainDataLogLevels                string
 		ImportDomainTypes                        string
 	}{
-		ApplicationGitPath: builder.ImportPath,
-		Stores:             builder.Stores,
+		ApplicationGitPath:                       builder.ImportPath,
+		Stores:                                   builder.Stores,
 		ImportRendererCallClient:                 folderpaths.ImportRendererCallClient,
 		ImportRendererCalls:                      folderpaths.ImportRendererCalls,
 		ImportRendererImplementationsPanelHelper: folderpaths.ImportRendererImplementationsPanelHelper,

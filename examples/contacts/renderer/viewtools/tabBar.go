@@ -22,7 +22,7 @@ func (tools *Tools) initializeTabBar() {
 	tools.tabberLastPanelID = ""
 	tools.tabberLastPanelLevels = make(map[string]string)
 
-	tools.tabberLastPanelLevels["tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar"] = "tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-CreditTabPanel"
+	tools.tabberLastPanelLevels["tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar"] = "tabsMasterView_home_pad_AboutButton_AboutTabBarPanel_tab_bar-AboutTabPanel"
 	cb := tools.RegisterEventCallBack(
 		func(event js.Value) interface{} {
 			target := notJS.GetEventTarget(event)

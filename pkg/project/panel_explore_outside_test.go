@@ -12,68 +12,68 @@ import (
 
 func TestOutsideExplore(t *testing.T) {
 	var want = map[string]map[string]map[string][]string{
-		"PriceList": map[string]map[string][]string{
-			"": map[string][]string{
-				"PriceListsButton": []string{
+		"PriceList": {
+			"": {
+				"PriceListsButton": {
 					"PriceListsButton",
 				},
 			},
-			"PriceListPanel": map[string][]string{
-				"ImportButton": []string{
+			"PriceListPanel": {
+				"ImportButton": {
 					"PriceListsButton", "PriceListPanel", "ImportButton",
 				},
-				"EditButton": []string{
+				"EditButton": {
 					"PriceListsButton", "PriceListPanel", "EditButton",
 				},
-				"ViewButton": []string{
+				"ViewButton": {
 					"PriceListsButton", "PriceListPanel", "ViewButton",
 				},
 			},
 		},
-		"Customer": map[string]map[string][]string{
-			"": map[string][]string{
-				"CustomersButton": []string{
+		"Customer": {
+			"": {
+				"CustomersButton": {
 					"CustomersButton",
 				},
 			},
-			"CustomerPanel": map[string][]string{
-				"AddButton": []string{
+			"CustomerPanel": {
+				"AddButton": {
 					"CustomersButton", "CustomerPanel", "AddButton",
 				},
-				"EditButton": []string{
+				"EditButton": {
 					"CustomersButton", "CustomerPanel", "EditButton",
 				},
 			},
 		},
-		"PriceDrop": map[string]map[string][]string{
-			"": map[string][]string{
-				"PriceDropsButton": []string{
+		"PriceDrop": {
+			"": {
+				"PriceDropsButton": {
 					"PriceDropsButton",
 				},
 			},
-			"PriceDropPanel": map[string][]string{
-				"ViewButton": []string{
+			"PriceDropPanel": {
+				"ViewButton": {
 					"PriceDropsButton", "PriceDropPanel", "ViewButton",
 				},
-				"AddButton": []string{
+				"AddButton": {
 					"PriceDropsButton", "PriceDropPanel", "AddButton",
 				},
-				"VoidUnvoidButton": []string{
+				"VoidUnvoidButton": {
 					"PriceDropsButton", "PriceDropPanel", "VoidUnvoidButton",
 				},
 			},
 		},
-		"PurchaseOrder": map[string]map[string][]string{
-			"": map[string][]string{
-				"PurchaseOrdersButton": []string{
+		"PurchaseOrder": {
+			"": {
+				"PurchaseOrdersButton": {
 					"PurchaseOrdersButton",
 				},
 			},
-			"PurchaseOrderButtonPadPanel": map[string][]string{
-				"AddButton": []string{
+			"PurchaseOrderButtonPadPanel": {
+				"AddButton": {
 					"PurchaseOrdersButton", "PurchaseOrderButtonPadPanel", "AddButton",
 				},
-				"VoidUnvoidButton": []string{
+				"VoidUnvoidButton": {
 					"PurchaseOrdersButton", "PurchaseOrderButtonPadPanel", "VoidUnvoidButton",
 				},
 			},

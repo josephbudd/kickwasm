@@ -17,10 +17,9 @@ import (
 // GetCallMap returns a map of each mainprocess call.
 func GetCallMap({{range $i, $store := .Stores}}{{if ne $i 0}}, {{end}}{{call $Dot.LowerCamelCase $store}}Store storer.{{$store}}Storer{{end}}) map[types.CallID]caller.MainProcesser {
 	return map[types.CallID]caller.MainProcesser{
-		callids.LogCallID:           newLogCall(),
+		callids.LogCallID: newLogCall(),
 	}
 }
-
 `
 
 // CallsLogGo is the mainprocess/calls/log.go template.
@@ -95,8 +94,7 @@ func processLog(params []byte, callBackToRenderer func(params []byte)) {
 	import (
 		"{{.ApplicationGitPath}}{{.ImportDomainDataCallIDs}}"
 		"{{.ApplicationGitPath}}{{.ImportDomainImplementationsCalling}}"
-
-	) 	
+	)
 
 	func (panelCaller *Caller) setCallBacks() {
 		logger := panelCaller.connections[callerids.LogCallID]
@@ -125,7 +123,6 @@ func processLog(params []byte, callBackToRenderer func(params []byte)) {
 	}
 
 */
-
 `
 
 // CallsExampleGoTxt is the template for mainprocess/calls/example.go.
@@ -263,5 +260,4 @@ func processGetCustomer(params []byte, callBackToRenderer func(params []byte), c
 	txparamsbb, _ := json.Marshal(txparams)
 	callBackToRenderer(txparamsbb)
 }
-
 `

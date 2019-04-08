@@ -5,4 +5,3 @@ type ApplicationSettings struct {
 	Host string `yaml:"host"`
 	Port uint64 `yaml:"port"`
 }
-

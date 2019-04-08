@@ -22,7 +22,7 @@ func NewRenderer(
 	rendererSendPayload func(payload []byte) error,
 ) *Renderer {
 	return &Renderer{
-		ID: id,
+		ID:                      id,
 		rendererReceiveDispatch: rendererReceiveDispatch,
 		rendererSendPayload:     rendererSendPayload,
 		rendererListeners:       make([]func(interface{}), 0, 10),
@@ -56,4 +56,3 @@ func (call *Renderer) Dispatch(params []byte) {
 		},
 	)
 }
-

@@ -51,6 +51,7 @@ fi
 # build the new package
 echo ""
 echo "Finally! Now its time to build your new ${sitepackagename} package."
+echo "This will take a while."
 echo "cd ${sitepackpath}"
 cd "$sitepackpath"
 echo "go build"

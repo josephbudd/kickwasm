@@ -102,4 +102,3 @@ func buildBoltStores() (err error) {
 	colorStore = boltstoring.NewColorBoltDB(db, path, filepaths.GetFmode())
 	return
 }
-

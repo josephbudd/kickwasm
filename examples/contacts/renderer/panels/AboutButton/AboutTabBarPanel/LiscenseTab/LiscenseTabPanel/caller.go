@@ -3,6 +3,7 @@ package liscensetabpanel
 import (
 	"github.com/pkg/errors"
 
+	"github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/interfaces/caller"
 	"github.com/josephbudd/kickwasm/examples/contacts/domain/types"
 	"github.com/josephbudd/kickwasm/examples/contacts/renderer/notjs"
@@ -29,11 +30,9 @@ type Caller struct {
 
 	// 1: Declare your Caller members.
 
-	// example:
-
-	addCustomerConnection caller.Renderer
-
 	*/
+
+	getLicenseConnection caller.Renderer
 }
 
 // addMainProcessCallBacks tells the main process what funcs to call back to.
@@ -47,25 +46,21 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// 2.1: Define each one of your Caller connection members as a conection to the main process.
-	// 2.2: Tell the caller connection to the main processs to add a call back to each of your call back funcs.
+	// 2.1: Define each one of your Caller connection members as a connection to the main process.
+	// 2.2: Tell the caller connection to the main process to add a call back to each of your call back funcs.
 
-	// example:
-
-	import "github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
+	*/
 
 	var found bool
 
-	// Add customer.
+	// Get License.
 	// Define the connection.
-	if panelCaller.addCustomerConnection, found = panelCaller.connection[callids.AddCustomerCallId]; !found {
-		err = errors.New("unable to find panelCaller.connection[callids.AddCustomerCallId]")
+	if panelCaller.getLicenseConnection, found = panelCaller.connection[callids.GetLicenseCallID]; !found {
+		err = errors.New("unable to find panelCaller.connection[callids.GetLicenseCallID]")
 		return
 	}
 	// Have the connection call back to my call back handler.
-	panelCaller.addCustomerConnection.AddCallBack(panelCaller.addCustomerCB)
-
-	*/
+	panelCaller.getLicenseConnection.AddCallBack(panelCaller.getLicenseCB)
 
 	return
 }
@@ -75,30 +70,26 @@ func (panelCaller *Caller) addMainProcessCallBacks() (err error) {
 // 3.1: Define your funcs which call to the main process.
 // 3.2: Define your funcs which the main process calls back to.
 
-// example:
+*/
 
-// Add Customer.
+// Get License.
 
-func (panelCaller *Caller) addCustomer(record *types.CustomerRecord) {
-	params := &types.RendererToMainProcessAddCustomerParams{
-		Record: record,
-	}
-	panelCaller.addCustomerConnection.CallMainProcess(params)
+func (panelCaller *Caller) getLicense() {
+	params := &types.RendererToMainProcessGetLicenseParams{}
+	panelCaller.getLicenseConnection.CallMainProcess(params)
 }
 
-func (panelCaller *Caller) addCustomerCB(params interface{}) {
+func (panelCaller *Caller) getLicenseCB(params interface{}) {
 	switch params := params.(type) {
-	case *types.MainProcessToRendererAddCustomerParams:
+	case *types.MainProcessToRendererGetLicenseParams:
 		if params.Error {
 			panelCaller.tools.Error(params.ErrorMessage)
 			return
 		}
 		// no errors
-		panelCaller.tools.Success("Customer Added.")
+		panelCaller.presenter.displayLicense(params.License)
 	}
 }
-
-*/
 
 // initialCalls makes the first calls to the main process.
 func (panelCaller *Caller) initialCalls() {
@@ -107,19 +98,8 @@ func (panelCaller *Caller) initialCalls() {
 
 	//4: Make any initial calls to the main process that must be made when the app starts.
 
-	// example:
-
-	import "github.com/josephbudd/kickwasm/examples/contacts/domain/data/callids"
-	import "github.com/josephbudd/kickwasm/examples/contacts/domain/data/loglevels"
-
-	params := types.RendererToMainProcessLogParams{
-		Level:   loglevels.LogLevelInfo,
-		Message: "Started",
-	}
-	logConnection := panelCaller.connection[callids.LogCallID]
-	logConnection.CallMainProcess(params)
-
 	*/
 
-}
+	panelCaller.getLicense()
 
+}

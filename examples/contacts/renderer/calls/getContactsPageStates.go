@@ -23,7 +23,7 @@ func rendererReceiveAndDispatchGetContactsPageStates(params []byte, dispatch fun
 	// 1. Unmarshall params into a *MainProcessToRendererGetContactsPageStatesParams.
 	rxparams := &types.MainProcessToRendererGetContactsPageStatesParams{}
 	if err := json.Unmarshal(params, rxparams); err != nil {
-		// This error will only happend during the development stage.
+		// This error will only happen during the development stage.
 		// It means a conflict with the txparams in func mainProcessReceiveGetContactsPageStates.
 		rxparams = &types.MainProcessToRendererGetContactsPageStatesParams{
 			Error:        true,

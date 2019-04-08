@@ -170,14 +170,14 @@ func (builder *Builder) ToHTMLNode(masterid string, addLocations bool) (master *
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
-		Attr:     []html.Attribute{html.Attribute{Key: "id", Val: masterid}},
+		Attr:     []html.Attribute{{Key: "id", Val: masterid}},
 	}
 	// add the h1 to the master home panel
 	heading := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.H1,
 		Data:     "h1",
-		Attr:     []html.Attribute{html.Attribute{Key: "class", Val: classPanelHeading}},
+		Attr:     []html.Attribute{{Key: "class", Val: classPanelHeading}},
 	}
 	textNode := &html.Node{
 		Type: html.TextNode,
@@ -201,7 +201,7 @@ func (builder *Builder) toHomeHTML(addLocations bool) (home *html.Node) {
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
-		Attr:     []html.Attribute{html.Attribute{Key: "id", Val: builder.IDs.Home}},
+		Attr:     []html.Attribute{{Key: "id", Val: builder.IDs.Home}},
 	}
 	// add the home button pad to the master home pad
 	// buttons
@@ -211,8 +211,8 @@ func (builder *Builder) toHomeHTML(addLocations bool) (home *html.Node) {
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: builder.IDs.HomePad},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s0", classPadColorLevelPrefix)},
+			{Key: "id", Val: builder.IDs.HomePad},
+			{Key: "class", Val: fmt.Sprintf("%s0", classPadColorLevelPrefix)},
 		},
 	}
 	home.AppendChild(homePad)
@@ -234,8 +234,8 @@ func (builder *Builder) toSliderCollectionHTML(addLocations bool) (slider *html.
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: builder.IDs.Slider},
-			html.Attribute{Key: "class", Val: classUnSeen},
+			{Key: "id", Val: builder.IDs.Slider},
+			{Key: "class", Val: classUnSeen},
 		},
 	}
 	// add the back button to the slider
@@ -244,8 +244,8 @@ func (builder *Builder) toSliderCollectionHTML(addLocations bool) (slider *html.
 		DataAtom: atom.Button,
 		Data:     "button",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: builder.IDs.SliderBack},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s%d", classBackColorLevelPrefix, 0)},
+			{Key: "id", Val: builder.IDs.SliderBack},
+			{Key: "class", Val: fmt.Sprintf("%s%d", classBackColorLevelPrefix, 0)},
 		},
 	}
 	textNode := &html.Node{
@@ -261,7 +261,7 @@ func (builder *Builder) toSliderCollectionHTML(addLocations bool) (slider *html.
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: builder.IDs.SliderCollection},
+			{Key: "id", Val: builder.IDs.SliderCollection},
 		},
 	}
 	slider.AppendChild(sliderCollection)
@@ -305,9 +305,9 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: panel.HTMLID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classSliderPanel, visibility)},
-			html.Attribute{Key: attributeBackColorLevel, Val: fmt.Sprintf("%s%s", classBackColorLevelPrefix, backLevel)},
+			{Key: "id", Val: panel.HTMLID},
+			{Key: "class", Val: fmt.Sprintf("%s %s", classSliderPanel, visibility)},
+			{Key: attributeBackColorLevel, Val: fmt.Sprintf("%s%s", classBackColorLevelPrefix, backLevel)},
 		},
 	}
 	// add the cookie crumbs inside the slider
@@ -322,7 +322,7 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 		DataAtom: atom.H2,
 		Data:     "h2",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
 		},
 	}
 	textNode := &html.Node{
@@ -338,8 +338,8 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: innerPanelID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
+			{Key: "id", Val: innerPanelID},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	sliderPanel.AppendChild(innerPanel)
@@ -350,8 +350,8 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: buttonPadID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderButtonPad, classPadColorLevelPrefix, serviceName)},
+			{Key: "id", Val: buttonPadID},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderButtonPad, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	innerPanel.AppendChild(buttonPad)
@@ -390,9 +390,9 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: panel.HTMLID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classSliderPanel, visibility)},
-			html.Attribute{Key: attributeBackColorLevel, Val: fmt.Sprintf("%s%s", classBackColorLevelPrefix, backLevel)},
+			{Key: "id", Val: panel.HTMLID},
+			{Key: "class", Val: fmt.Sprintf("%s %s", classSliderPanel, visibility)},
+			{Key: attributeBackColorLevel, Val: fmt.Sprintf("%s%s", classBackColorLevelPrefix, backLevel)},
 		},
 	}
 	// add the cookie crumbs inside the slider markup panel.
@@ -407,7 +407,7 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.H2,
 		Data:     "h2",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
 		},
 	}
 	textNode := &html.Node{
@@ -423,8 +423,8 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: innerPanelID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
+			{Key: "id", Val: innerPanelID},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	sliderMarkupPanel.AppendChild(innerPanel)
@@ -435,8 +435,8 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: contentID},
-			html.Attribute{Key: "class", Val: classUserContent},
+			{Key: "id", Val: contentID},
+			{Key: "class", Val: classUserContent},
 		},
 	}
 	innerPanel.AppendChild(markupPanel)
@@ -482,9 +482,9 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: panel.HTMLID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classSliderPanel, visibility)},
-			html.Attribute{Key: attributeBackColorLevel, Val: fmt.Sprintf("%s%s", classBackColorLevelPrefix, backLevel)},
+			{Key: "id", Val: panel.HTMLID},
+			{Key: "class", Val: fmt.Sprintf("%s %s", classSliderPanel, visibility)},
+			{Key: attributeBackColorLevel, Val: fmt.Sprintf("%s%s", classBackColorLevelPrefix, backLevel)},
 		},
 	}
 	// add the cookie crumbs inside the slider panel
@@ -499,7 +499,7 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.H2,
 		Data:     "h2",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
 		},
 	}
 	textNode := &html.Node{
@@ -515,8 +515,8 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: innerPanelID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
+			{Key: "id", Val: innerPanelID},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	sliderPanel.AppendChild(innerPanel)
@@ -543,8 +543,8 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: panel.TabBarHTMLID},
-			html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classTabBar, visibility)},
+			{Key: "id", Val: panel.TabBarHTMLID},
+			{Key: "class", Val: fmt.Sprintf("%s %s", classTabBar, visibility)},
 		},
 	}
 	// insert the buttons inside the tab bar panel
@@ -562,8 +562,8 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: underID},
-			html.Attribute{Key: "class", Val: classUnderTabBar},
+			{Key: "id", Val: underID},
+			{Key: "class", Val: classUnderTabBar},
 		},
 	}
 	// add the markup panels to the under tab bar panel.
@@ -584,7 +584,7 @@ func (builder *Builder) cookieCrumbs(serviceName string, locations []string) (cc
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "class", Val: classPanelHeading},
+			{Key: "class", Val: classPanelHeading},
 		},
 	}
 	l := len(locations)
@@ -594,7 +594,7 @@ func (builder *Builder) cookieCrumbs(serviceName string, locations []string) (cc
 			DataAtom: atom.H2,
 			Data:     "h2",
 			Attr: []html.Attribute{
-				html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s%s", classCookieCrumb, classCookieCrumbLevelPrefix, serviceName)},
+				{Key: "class", Val: fmt.Sprintf("%s %s%s", classCookieCrumb, classCookieCrumbLevelPrefix, serviceName)},
 			},
 		}
 		textNode := &html.Node{

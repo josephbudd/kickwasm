@@ -12,4 +12,3 @@ type MainProcessToRendererLogCallParams struct {
 	ErrorMessage string
 	Level        uint64
 }
-

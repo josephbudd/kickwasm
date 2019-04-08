@@ -60,7 +60,7 @@ func buildHeadNode(builder *project.Builder) (head *html.Node) {
 		DataAtom: atom.Meta,
 		Data:     "meta",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "charset", Val: "utf-8"},
+			{Key: "charset", Val: "utf-8"},
 		},
 	}
 	head.AppendChild(meta)
@@ -119,7 +119,7 @@ func buildHeadNode(builder *project.Builder) (head *html.Node) {
 		DataAtom: atom.Script,
 		Data:     "script",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "src", Val: "/wasm/wasm_exec.js"},
+			{Key: "src", Val: "/wasm/wasm_exec.js"},
 		},
 	}
 	head.AppendChild(script)
@@ -166,8 +166,8 @@ func buildModalNode(builder *project.Builder) (modal *html.Node) {
 		Data:     "div",
 		DataAtom: atom.Div,
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "modalInformationMasterView"},
-			html.Attribute{Key: "class", Val: builder.Classes.UnSeen},
+			{Key: "id", Val: "modalInformationMasterView"},
+			{Key: "class", Val: builder.Classes.UnSeen},
 		},
 	}
 	center := &html.Node{
@@ -175,8 +175,8 @@ func buildModalNode(builder *project.Builder) (modal *html.Node) {
 		Data:     "div",
 		DataAtom: atom.Div,
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "modalInformationMasterView-center"},
-			html.Attribute{Key: "class", Val: builder.Classes.ModalUserContent},
+			{Key: "id", Val: "modalInformationMasterView-center"},
+			{Key: "class", Val: builder.Classes.ModalUserContent},
 		},
 	}
 	modal.AppendChild(center)
@@ -185,8 +185,8 @@ func buildModalNode(builder *project.Builder) (modal *html.Node) {
 		Data:     "h1",
 		DataAtom: atom.H1,
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "modalInformationMasterView-h1"},
-			html.Attribute{Key: "class", Val: builder.Classes.PanelHeading},
+			{Key: "id", Val: "modalInformationMasterView-h1"},
+			{Key: "class", Val: builder.Classes.PanelHeading},
 		},
 	}
 	center.AppendChild(h1)
@@ -195,7 +195,7 @@ func buildModalNode(builder *project.Builder) (modal *html.Node) {
 		Data:     "div",
 		DataAtom: atom.Div,
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "modalInformationMasterView-message"},
+			{Key: "id", Val: "modalInformationMasterView-message"},
 		},
 	}
 	center.AppendChild(message)
@@ -210,7 +210,7 @@ func buildModalNode(builder *project.Builder) (modal *html.Node) {
 		Data:     "button",
 		DataAtom: atom.Button,
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "modalInformationMasterView-close"},
+			{Key: "id", Val: "modalInformationMasterView-close"},
 		},
 	}
 	textNode := &html.Node{
@@ -228,8 +228,8 @@ func buildCloserNode(builder *project.Builder) (closer *html.Node) {
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "closerMasterView"},
-			html.Attribute{Key: "class", Val: builder.Classes.UnSeen},
+			{Key: "id", Val: "closerMasterView"},
+			{Key: "class", Val: builder.Classes.UnSeen},
 		},
 	}
 	center := &html.Node{
@@ -237,8 +237,8 @@ func buildCloserNode(builder *project.Builder) (closer *html.Node) {
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "closerMasterView-center"},
-			html.Attribute{Key: "class", Val: builder.Classes.CloserUserContent},
+			{Key: "id", Val: "closerMasterView-center"},
+			{Key: "class", Val: builder.Classes.CloserUserContent},
 		},
 	}
 	closer.AppendChild(center)
@@ -277,7 +277,7 @@ func buildCloserNode(builder *project.Builder) (closer *html.Node) {
 		DataAtom: atom.Div,
 		Data:     "button",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "closerMasterView-cancel"},
+			{Key: "id", Val: "closerMasterView-cancel"},
 		},
 	}
 	textNode = &html.Node{
@@ -291,7 +291,7 @@ func buildCloserNode(builder *project.Builder) (closer *html.Node) {
 		DataAtom: atom.Div,
 		Data:     "button",
 		Attr: []html.Attribute{
-			html.Attribute{Key: "id", Val: "closerMasterView-close"},
+			{Key: "id", Val: "closerMasterView-close"},
 		},
 	}
 	textNode = &html.Node{

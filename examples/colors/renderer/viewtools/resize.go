@@ -263,7 +263,7 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 			}
 		}
 		if seen == js.Undefined() {
-			// this will only happend in development and testing of kickwasm.
+			// this will only happen in development and testing of kickwasm.
 			message := fmt.Sprintf("missing seen div under %s", underTabbar.Get("id"))
 			notJS.Alert(message)
 			return
@@ -326,4 +326,3 @@ func (tools *Tools) resizeMe(mine js.Value, w, h float64) {
 		}
 	}
 }
-

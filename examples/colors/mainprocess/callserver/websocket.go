@@ -149,4 +149,3 @@ func (callServer *Server) pingLoop(ws *websocket.Conn, stopPingLoopCh, closeWSCo
 		}
 	}
 }
-

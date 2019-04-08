@@ -11,7 +11,6 @@ const (
 	LogLevelError
 	LogLevelFatal
 )
-
 `
 
 // DataFilePathsGo is the domain/data/filepaths.go template.
@@ -140,7 +139,7 @@ func GetDmode() os.FileMode {
 }
 
 // BuildUserSubFoldersPath builds a sub folder path in the user's home folder.
-// It makes the path if neccessary.
+// It makes the path if necessary.
 // Param sfpath [in] is the subfolder path.
 // Returns the folder path.
 func BuildUserSubFoldersPath(sfpath string) (string, error) {
@@ -184,7 +183,6 @@ func buildUserHomeDataPath() {
 		initerr = fmt.Errorf("os.MkdirAll(userHomeDataPath, dmode) error is %s", initerr.Error())
 	}
 }
-
 `
 
 // DataCallIDsLogGo is the domain/data/callids/log.go template.
@@ -192,13 +190,12 @@ const DataCallIDsLogGo = `package callids
 
 // LogCallID is the call id for the Log call.
 var LogCallID = nextCallID()
-
 `
 
 // DataCallIDsMiscGo is the domain/data/callids/misc.go template.
 const DataCallIDsMiscGo = `package callids
 
-import	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+import "{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 
 var nextid types.CallID
 
@@ -207,7 +204,6 @@ func nextCallID() types.CallID {
 	nextid++
 	return id
 }
-
 `
 
 // DataSettingsGo is the /domain/data/settings.go file.
@@ -240,5 +236,4 @@ func NewApplicationSettings() (settings *types.ApplicationSettings, err error) {
 	err = yaml.Unmarshal(contents, settings)
 	return
 }
-
 `

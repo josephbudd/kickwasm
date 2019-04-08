@@ -13,7 +13,6 @@ import (
 // GetCallMap returns a render call map.
 func GetCallMap(rendererSendPayload func(payload []byte) error) map[types.CallID]caller.Renderer {
 	return map[types.CallID]caller.Renderer{
-		callids.LogCallID:           newLogCall(rendererSendPayload),
+		callids.LogCallID: newLogCall(rendererSendPayload),
 	}
 }
-

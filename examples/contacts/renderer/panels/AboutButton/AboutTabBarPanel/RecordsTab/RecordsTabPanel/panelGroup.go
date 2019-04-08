@@ -34,7 +34,6 @@ func (panelGroup *PanelGroup) defineMembers() (err error) {
 		return
 	}
 
-
 	return
 }
 
@@ -52,5 +51,4 @@ display text about the number of records in a paragraph
 func (panelGroup *PanelGroup) showRecordsTabPanel() {
 	panelGroup.tools.ShowPanelInTabGroup(panelGroup.recordsTabPanel)
 }
-
 
