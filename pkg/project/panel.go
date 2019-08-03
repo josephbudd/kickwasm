@@ -5,32 +5,21 @@ import (
 	"strings"
 )
 
-// JSData is the name and document id of javascript Controler or Presenter member.
-type JSData struct {
-	Name string `yaml:"name"`
-	ID   string `yaml:"id"`
-}
-
-// JSHandler is the controler element's name, event and handler.
-type JSHandler struct {
-	Element  string `yaml:"element"`
-	Event    string `yaml:"event"`
-	Function string `yaml:"function"`
-}
-
 // Panel is a panel under a tab
 type Panel struct {
-	ID      string    `yaml:"id"`
-	Name    string    `yaml:"name"`
-	Tabs    []*Tab    `yaml:"tabs,omitempty"`
-	Buttons []*Button `yaml:"buttons,omitempty"`
-	Note    string    `yaml:"note"`
+	ID          string    `yaml:"id"`
+	Name        string    `yaml:"name"`
+	Tabs        []*Tab    `yaml:"tabs,omitempty"`
+	HasRealTabs bool      `yaml:"HasRealTabs"`
+	Buttons     []*Button `yaml:"buttons,omitempty"`
+	Note        string    `yaml:"note"`
+	Markup      string    `yaml:"markup,omitempty"`
+	HVScroll    bool      `yaml:"HVScroll"`
 
-	Markup string `yaml:"markup,omitempty"`
-
-	HTMLID            string `yaml:"HTMLID"`            // "-"
-	TabBarHTMLID      string `yaml:"TabBarHTMLID"`      // "-"
-	UnderTabBarHTMLID string `yaml:"UnderTabBarHTMLID"` // "-"
+	HTMLID            string `yaml:"HTMLID"`
+	TabBarHTMLID      string `yaml:"TabBarHTMLID"`
+	UnderTabBarHTMLID string `yaml:"UnderTabBarHTMLID"`
+	H3ID              string `yaml:"H3ID"`
 
 	Level    uint   `yaml:"-"`
 	Template string `yaml:"-"`
@@ -103,44 +92,12 @@ func (panel *Panel) markItUp(forwhat string, group []*Panel) string {
 
 func (panel *Panel) innerID() string {
 	if len(panel.Buttons) > 0 {
-		return panel.HTMLID + dashInnerString + dashButtonPadString
+		return panel.HTMLID + DashInnerString + dashButtonPadString
 	}
 	if len(panel.Tabs) > 0 {
 		return strings.Replace(panel.HTMLID+dashTabBar, dashString, underscoreString, -1)
 	}
-	return panel.HTMLID + dashInnerString + dashContentString
-}
-
-func (panel *Panel) innerComment() string {
-	lines := make([]string, 0, 5)
-	if len(panel.Buttons) > 0 {
-		lines = append(lines, fmt.Sprintf(`The button pad <div #%s`, panel.innerID()))
-		lines = append(lines, "But the panel is a button pad so you won't be adding any content there.")
-		return strings.Join(lines, newline)
-	}
-	if len(panel.Tabs) > 0 {
-		lines = append(lines, fmt.Sprintf(`The tab bar <div #%s`, panel.innerID()))
-		lines = append(lines, "But the panel is a tab bar so you won't be adding any content there.")
-		return strings.Join(lines, newline)
-	}
-	lines = append(lines, fmt.Sprintf(`The content panel <div #%s`, panel.innerID()))
-	return strings.Join(lines, newline)
-}
-
-func (panel *Panel) innerHTMLComment() string {
-	lines := make([]string, 0, 5)
-	if len(panel.Buttons) > 0 {
-		lines = append(lines, fmt.Sprintf(`The button pad &lt;div #%s`, panel.innerID()))
-		lines = append(lines, "<br/>But the panel is a button pad so you won't be adding any content there.")
-		return strings.Join(lines, newline)
-	}
-	if len(panel.Tabs) > 0 {
-		lines = append(lines, fmt.Sprintf(`The tab bar &lt;div #%s`, panel.innerID()))
-		lines = append(lines, "<br/>But the panel is a tab bar so you won't be adding any content there.")
-		return strings.Join(lines, newline)
-	}
-	lines = append(lines, fmt.Sprintf(`The content panel &lt;div #%s`, panel.innerID()))
-	return strings.Join(lines, newline)
+	return panel.HTMLID + DashInnerString + dashContentString
 }
 
 func (panel *Panel) tabSubPanelComment() string {

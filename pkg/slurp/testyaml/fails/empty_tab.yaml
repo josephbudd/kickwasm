@@ -1,0 +1,19 @@
+title : Dup Tab Name
+importPath : github.com/josephbudd/kickwasm/examples/xxx
+
+stores :
+  - XXX
+
+services :
+  - name : XXX
+    button :
+      name : NextButton
+      label : Click here for the next color level.
+      heading : The button pad below is styled with the level 1 colors.
+      cc : Level 1 Colors
+      panels :
+        - label : Buttons
+          name : PNamePanel
+          tabs :
+            - name : OneTab
+              label : One

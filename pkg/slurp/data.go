@@ -3,6 +3,8 @@ package slurp
 // Slurper slurps an application yaml file and checks it.
 type Slurper struct {
 	panelNames   map[string]string   // name : source path
+	tabNames     map[string]string   // name : source path
+	buttonNames  map[string]string   // nmae : source path
 	buttonIDs    map[string][]string // panel name : button names
 	tabIDs       map[string][]string // panel name : tab names
 	maxLevel     int
@@ -13,9 +15,11 @@ type Slurper struct {
 // NewSlurper constructs a new slurper.
 func NewSlurper() *Slurper {
 	return &Slurper{
-		panelNames:   make(map[string]string),
-		buttonIDs:    make(map[string][]string),
-		tabIDs:       make(map[string][]string),
+		panelNames:   make(map[string]string, 100),
+		tabNames:     make(map[string]string, 100),
+		buttonNames:  make(map[string]string, 100),
+		buttonIDs:    make(map[string][]string, 100),
+		tabIDs:       make(map[string][]string, 100),
 		maxLevel:     5,
 		CurrentLevel: 2,
 		panelFiles:   make([]string, 0, 5),
@@ -27,7 +31,6 @@ type ApplicationInfo struct {
 	SourcePath string         `yaml:"sourcePath"`
 	Title      string         `yaml:"title"`
 	ImportPath string         `yaml:"importPath"`
-	Stores     []string       `yaml:"stores"`
 	Services   []*ServiceInfo `yaml:"services"`
 }
 
@@ -54,8 +57,10 @@ type TabInfo struct {
 	SourcePath string       `yaml:"sourcePath"`
 	ID         string       `yaml:"name"`
 	Label      string       `yaml:"label"`
+	Heading    string       `yaml:"heading"`
 	PanelFiles []string     `yaml:"panelFiles,omitempty"`
 	Panels     []*PanelInfo `yaml:"panels,omitempty"` // "-"
+	Spawn      bool         `yaml:"spawn,omitempty"`
 }
 
 // PanelInfo is info defining a panel.

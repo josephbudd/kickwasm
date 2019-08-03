@@ -4,11 +4,28 @@ import (
 	"strings"
 
 	"github.com/josephbudd/kickwasm/pkg/project"
+	"github.com/pkg/errors"
+	yaml "gopkg.in/yaml.v2"
 )
 
 const (
 	forwardSlash = "/"
 )
+
+// GetApplicationInfo only reads the application info.
+func GetApplicationInfo(fpath string) (appInfo *ApplicationInfo, err error) {
+	var bb []byte
+	if bb, err = getFileBB(fpath); err != nil {
+		return
+	}
+	appInfo = &ApplicationInfo{}
+	if err = yaml.Unmarshal(bb, appInfo); err != nil {
+		err = errors.New(err.Error() + " in " + fpath)
+		return
+	}
+	appInfo.SourcePath = fpath
+	return
+}
 
 // GetPanelFilePaths return the path of every panel file.
 // Other than the starting yaml file these are the only other yaml files.
@@ -30,7 +47,6 @@ func (sl *Slurper) Gulp(yamlPath string) (builder *project.Builder, err error) {
 	builder = project.NewBuilder()
 	builder.Title = appInfo.Title
 	builder.ImportPath = appInfo.ImportPath
-	builder.Stores = appInfo.Stores
 	i := strings.LastIndex(appInfo.ImportPath, forwardSlash)
 	builder.SitePackPackage = appInfo.ImportPath[i+1:] + "sitepack"
 	builder.SitePackImportPath = appInfo.ImportPath[:i] + forwardSlash + builder.SitePackPackage
@@ -126,9 +142,11 @@ func constructButton(panel *project.Panel, binfo *ButtonInfo) (err error) {
 
 func constructTab(panel *project.Panel, t *TabInfo) (err error) {
 	tab := &project.Tab{
-		ID:     t.ID,
-		Label:  t.Label,
-		Panels: make([]*project.Panel, 0, 5),
+		ID:      t.ID,
+		Label:   t.Label,
+		Heading: t.Heading,
+		Spawn:   t.Spawn,
+		Panels:  make([]*project.Panel, 0, 5),
 	}
 	for _, p := range t.Panels {
 		if err = constructTabPanel(tab, p); err != nil {

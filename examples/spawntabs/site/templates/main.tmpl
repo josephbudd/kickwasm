@@ -1,0 +1,20 @@
+<html><head><meta charset="utf-8"/><title>Spawn Tabs</title><style>@import url(css/main.css);</style><style>@import url(css/colors.css);</style><style>@import url(mycss/Usercontent.css);</style><script>
+		// wasm callbacks do not return values so use javascript to return true.
+		window.onabort = function(e) {return true;}
+		window.onbeforeunload = function(e) {return true;}
+	</script><script src="/wasm/wasm_exec.js"></script><script>
+		if (!WebAssembly.instantiateStreaming) { // polyfill
+			WebAssembly.instantiateStreaming = async (resp, importObject) => {
+				const source = await (await resp).arrayBuffer();
+				return await WebAssembly.instantiate(source, importObject);
+			};
+		}
+	
+		(
+			async function() {
+				const go = new Go()
+				const { instance } = await WebAssembly.instantiateStreaming(fetch("/wasm/app.wasm"), go.importObject)
+				go.run(instance)
+			}
+		)()
+		</script>{{template "Head.tmpl"}}</head><body><div id="tabsMasterView"><h1 class="heading-of-panel">Spawn Tabs</h1><div id="tabsMasterView-home"><div id="tabsMasterView-home-pad" class="pad-color-level-0"><button id="tabsMasterView-home-pad-TabsButton" class="pad-button-color-level-Tabs" backid="tabsMasterView-home">Tabs</button></div></div><div id="tabsMasterView-home-slider" class="unseen"><button id="tabsMasterView-home-slider-back" class="back-color-level-0">↩</button><div id="tabsMasterView-home-slider-collection"><div id="tabsMasterView-home-pad-TabsButton-TabsButtonTabBarPanel" class="slider-panel unseen tobe-seen" backColorLevel="back-color-level-0"><div class="heading-of-panel"><h2 class="cookie-crumb cookie-crumb-level-Tabs">Tabs</h2></div><h2 class="heading-of-panel heading-of-panel-level-Tabs">Tabs</h2><div id="tabsMasterView-home-pad-TabsButton-TabsButtonTabBarPanel-inner" class="slider-panel-pad pad-color-level-Tabs"><div id="tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar" class="tab-bar seen tobe-seen"><button id="tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTab" class="tab selected-tab seen">First Tab</button></div><div id="tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-under-tab-bar" class="under-tab-bar"><div id="tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel" class="panel-bound-to-tab panel-with-heading seen"><h3 id="tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-H3" class="heading-of-panel">First Tab</h3><div id="tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-inner" class="inner-panel user-content"><div id="tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-inner-CreatePanel" class="user-content seen vscroll"><div class="resize-me-width">{{template "CreatePanel.tmpl"}}</div></div></div></div></div></div></div></div></div></div><div id="modalInformationMasterView" class="unseen"><div id="modalInformationMasterView-center" class="modal-user-content"><h1 id="modalInformationMasterView-h1" class="heading-of-panel"></h1><div id="modalInformationMasterView-message"></div><p><button id="modalInformationMasterView-close">Close</button></p></div></div><div id="closerMasterView" class="unseen"><div id="closerMasterView-center" class="closer-user-content"><h1>Close this application.</h1><p>Are you certain that you want to close this application?</p><p><button id="closerMasterView-cancel">No! Do not close this application.</button><button id="closerMasterView-close">Yes, close this application.</button></p></div></div></body></html>

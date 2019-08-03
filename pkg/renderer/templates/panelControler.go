@@ -5,9 +5,6 @@ const PanelControler = `package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"
-
-	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -16,18 +13,15 @@ import (
 
 */
 
-// Controler is a HelloPanel Controler.
-type Controler struct {
-	panelGroup *PanelGroup
-	presenter  *Presenter
-	caller     *Caller
-	quitCh     chan struct{}    // send an empty struct to start the quit process.
-	tools      *viewtools.Tools // see {{.ImportRendererViewTools}}
-	notJS      *notjs.NotJS
+// panelControler controls user input.
+type panelControler struct {
+	group      *panelGroup
+	presenter  *panelPresenter
+	caller     *panelCaller
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
-	// Declare your Controler members.
+	// Declare your panelControler members.
 	// example:
 
 	// import "syscall/js"
@@ -40,11 +34,11 @@ type Controler struct {
 
 // defineControlsSetHandlers defines controler members and sets their handlers.
 // Returns the error.
-func (panelControler *Controler) defineControlsSetHandlers() (err error) {
+func (controler *panelControler) defineControlsSetHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(panelControler *Controler) defineControlsSetHandlers()")
+			err = errors.WithMessage(err, "(controler *panelControler) defineControlsSetHandlers()")
 		}
 	}()
 
@@ -56,25 +50,23 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 
 	// import "syscall/js"
 
-	notJS := panelControler.notJS
-	tools := panelControler.tools
-	null := js.Null()
+	var cb js.Func
 
 	// Define the customer name input field.
-	if panelControler.customerName = notJS.GetElementByID("customerName"); panelControler.customerName == null {
-		err = errors.New("unable to find #customerName")
+	if controler.addCustomerName = notJS.GetElementByID("addCustomerName"); controler.addCustomerName == null {
+		err = errors.New("unable to find #addCustomerName")
 		return
 	}
 
 	// Define the submit button and set it's handler.
-	if panelControler.addCustomerSubmit = notJS.GetElementByID("addCustomerSubmit"); panelControler.addCustomerSubmit == null {
+	if controler.addCustomerSubmit = notJS.GetElementByID("addCustomerSubmit"); controler.addCustomerSubmit == null {
 		err = errors.New("unable to find #addCustomerSubmit")
 		return
 	}
 	// see render/viewtools/callback.go
 	// use the event call back func and set propagations.
-	cb := tools.RegisterEventCallBack(panelControler.handleSubmit, true, true, true)
-	notJS.SetOnClick(panelControler.addCustomerSubmit, cb)
+	cb = tools.RegisterEventCallBack(controler.handleSubmit, true, true, true)
+	notJS.SetOnClick(controler.addCustomerSubmit, cb)
 
 	*/
 
@@ -86,25 +78,25 @@ func (panelControler *Controler) defineControlsSetHandlers() (err error) {
 // Handlers and other functions.
 // example:
 
-// import "{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
+// import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
 
-func (panelControler *Controler) handleSubmit(event js.Value) interface{} {
-	name := strings.TrimSpace(panelControler.notJS.GetValue(panelControler.addCustomerName))
+func (controler *panelControler) handleSubmit(event js.Value) (nilReturn interface{}) {
+	name := strings.TrimSpace(notJS.GetValue(controler.addCustomerName))
 	if len(name) == 0 {
-		panelControler.tools.Error("Customer Name is required.")
-		return nil
+		tools.Error("Customer Name is required.")
+		return
 	}
-	record := &types.CustomerRecord{
+	r := &record.Customer{
 		Name: name,
 	}
-	panelControler.caller.AddCustomer(record)
-	return nil
+	controler.caller.AddCustomer(r)
+	return
 }
 
 */
 
 // initialCalls runs the first code that the controler needs to run.
-func (panelControler *Controler) initialCalls() {
+func (controler *panelControler) initialCalls() {
 
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
@@ -112,7 +104,7 @@ func (panelControler *Controler) initialCalls() {
 	// I use this to start up widgets. For example a virtual list widget.
 	// example:
 
-	panelControler.customerSelectWidget.start()
+	controler.customerSelectWidget.start()
 
 	*/
 

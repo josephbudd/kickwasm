@@ -3,13 +3,8 @@ package paths
 // FolderNames is the names of folders.
 type FolderNames struct {
 	BoltStoring     string
-	CallClient      string
-	CallIDs         string
-	Caller          string
-	Calling         string
-	Calls           string
-	CallServer      string
 	CSS             string
+	MyCSS           string
 	Data            string
 	Domain          string
 	DotKickwasm     string
@@ -19,32 +14,38 @@ type FolderNames struct {
 	LogLevels       string
 	MainProcess     string
 	NotJS           string
-	PanelHelper     string
-	PanelHelping    string
+	Paneling        string
 	Panels          string
+	Record          string
 	Renderer        string
 	RendererSite    string
-	Services        string
 	Settings        string
+	Store           string
 	Storer          string
 	Storing         string
 	Templates       string
 	Types           string
 	ViewTools       string
+	WASM            string
 	YAML            string
+
+	SpawnPanels    string
+	SpawnTemplates string
+	SpawnPack      string
+
+	LPC      string
+	Dispatch string
+	Message  string
+
+	SitePack string
 }
 
 // GetFolderNames returns the folder names.
 func GetFolderNames() *FolderNames {
 	return &FolderNames{
 		BoltStoring:     "boltstoring",
-		CallClient:      "callClient",
-		CallIDs:         "callids",
-		Caller:          "caller",
-		Calling:         "calling",
-		Calls:           "calls",
-		CallServer:      "callserver",
 		CSS:             "css",
+		MyCSS:           "mycss",
 		Data:            "data",
 		Domain:          "domain",
 		DotKickwasm:     ".kickwasm",
@@ -54,18 +55,29 @@ func GetFolderNames() *FolderNames {
 		LogLevels:       "loglevels",
 		MainProcess:     "mainprocess",
 		NotJS:           "notjs",
-		PanelHelper:     "panelHelper",
-		PanelHelping:    "panelHelping",
+		Paneling:        "paneling",
 		Panels:          "panels",
+		Record:          "record",
 		Renderer:        "renderer",
 		RendererSite:    "site",
-		Services:        "services",
 		Settings:        "settings",
+		Store:           "store",
 		Storer:          "storer",
 		Storing:         "storing",
 		Templates:       "templates",
 		Types:           "types",
 		ViewTools:       "viewtools",
+		WASM:            "wasm",
 		YAML:            "yaml",
+
+		SpawnPanels:    "spawnPanels",
+		SpawnTemplates: "spawnTemplates",
+		SpawnPack:      "spawnpack",
+
+		LPC:      "lpc",
+		Dispatch: "dispatch",
+		Message:  "message",
+
+		SitePack: "",
 	}
 }

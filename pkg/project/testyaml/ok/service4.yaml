@@ -11,6 +11,7 @@ button :
       tabs :
         - label : Tab 1
           name : OneTab
+          spawn: true
           panels :
             - name : LastTabPanel
               note : tab panel note

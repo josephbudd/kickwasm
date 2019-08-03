@@ -46,18 +46,21 @@ type Classes struct {
 	PanelWithTabBar         string
 	PanelHeading            string
 	PanelHeadingLevelPrefix string
-	InnerPanel              string
+	TabPanelGroup           string
 	UserContent             string
 	ModalUserContent        string
 	CloserUserContent       string
 	ResizeMeWidth           string
+	VScroll                 string
+	HVScroll                string
+	UserMarkup              string
 
 	Slider                  string
 	SliderBack              string
 	SliderPanel             string
-	SliderPanelInner        string
-	SliderButtonPad         string
 	SliderPanelInnerSibling string
+	SliderPanelPad          string
+	SliderButtonPad         string
 	ResizeMeWidthClassName  string
 
 	CookieCrumb            string
@@ -86,12 +89,14 @@ type Builder struct {
 	markedUp           bool
 	SitePackImportPath string
 	SitePackPackage    string
+	MarkupPanelCount   uint64
 }
 
 // NewBuilder constructs a new builder.
 func NewBuilder() *Builder {
 	return &Builder{
-		panel: newPanel(),
+		Stores: make([]string, 0),
+		panel:  newPanel(),
 		Classes: &Classes{
 			Tab:           classTab,
 			SelectedTab:   classSelected,
@@ -106,17 +111,20 @@ func NewBuilder() *Builder {
 			PanelWithTabBar:         classPanelWithTabBar,
 			PanelHeading:            classPanelHeading,
 			PanelHeadingLevelPrefix: classPanelHeadingLevelPrefix,
-			InnerPanel:              classInnerPanel,
+			TabPanelGroup:           classTabPanelGroup,
 			UserContent:             classUserContent,
 			ModalUserContent:        classModalUserContent,
 			CloserUserContent:       classCloserUserContent,
 			ResizeMeWidth:           classResizeMeWidthClassName,
+			VScroll:                 classVScroll,
+			HVScroll:                classHVScroll,
+			UserMarkup:              classUserMarkup,
 
 			Slider:                  classSlider,
 			SliderPanel:             classSliderPanel,
-			SliderPanelInner:        classSliderPanelInner,
-			SliderButtonPad:         classSliderButtonPad,
 			SliderPanelInnerSibling: classSliderPanelInnerSibling,
+			SliderPanelPad:          classSliderPanelPad,
+			SliderButtonPad:         classSliderButtonPad,
 
 			Seen:       classSeen,
 			UnSeen:     classUnSeen,
@@ -331,19 +339,19 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 	}
 	h2.AppendChild(textNode)
 	sliderPanel.AppendChild(h2)
-	// add the inner panel inside the slider
-	innerPanelID := panel.HTMLID + dashInnerString
+	// add the panel pad inside the slider
+	innerPanelID := panel.HTMLID + DashInnerString
 	innerPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
 			{Key: "id", Val: innerPanelID},
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	sliderPanel.AppendChild(innerPanel)
-	// add the button pad inside the inner panel
+	// add the buttons inside the pad
 	buttonPadID := innerPanelID + dashButtonPadString
 	buttonPad := &html.Node{
 		Type:     html.ElementNode,
@@ -384,7 +392,7 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 	} else {
 		visibility = classUnSeen + spaceString + classToBeUnSeen
 	}
-	// this panel is a slider markup panel.
+	// this panel is a slider panel.
 	sliderMarkupPanel = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
@@ -401,7 +409,7 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 			sliderMarkupPanel.AppendChild(cc)
 		}
 	}
-	// add the h2 inside the slider markup panel.
+	// add the h2 inside the slider panel.
 	h2 := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.H2,
@@ -416,30 +424,48 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 	}
 	h2.AppendChild(textNode)
 	sliderMarkupPanel.AppendChild(h2)
-	// add the inner panel inside the slider markup panel.
-	innerPanelID = panel.HTMLID + dashInnerString
+	// add the pad inside the slider panel.
+	innerPanelID = panel.HTMLID + DashInnerString
 	innerPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
 			{Key: "id", Val: innerPanelID},
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	sliderMarkupPanel.AppendChild(innerPanel)
-	// add the user markup panel inside the inner panel.
+	// the user content panel.
+	var scroll string
+	if panel.HVScroll {
+		scroll = classHVScroll
+	} else {
+		scroll = classVScroll
+	}
 	contentID := innerPanelID + dashContentString
-	markupPanel := &html.Node{
+	userContentPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
 			{Key: "id", Val: contentID},
-			{Key: "class", Val: classUserContent},
+			{Key: "class", Val: fmt.Sprintf("%s %s", classUserContent, scroll)},
 		},
 	}
-	innerPanel.AppendChild(markupPanel)
+	innerPanel.AppendChild(userContentPanel)
+	attributes := make([]html.Attribute, 0, 1)
+	if !panel.HVScroll {
+		// this panel will not horizontaly scroll so size the width.
+		attributes = append(attributes, html.Attribute{Key: "class", Val: classResizeMeWidthClassName})
+	}
+	markupPanel := &html.Node{
+		Type:     html.ElementNode,
+		DataAtom: atom.Div,
+		Data:     "div",
+		Attr:     attributes,
+	}
+	userContentPanel.AppendChild(markupPanel)
 	l := len(button.Panels)
 	var forwhat string
 	if l == 1 {
@@ -509,14 +535,14 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 	h2.AppendChild(textNode)
 	sliderPanel.AppendChild(h2)
 	// add the inner panel inside the slider panel
-	innerPanelID := panel.HTMLID + dashInnerString
+	innerPanelID := panel.HTMLID + DashInnerString
 	innerPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
 			{Key: "id", Val: innerPanelID},
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelInner, classPadColorLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, serviceName)},
 		},
 	}
 	sliderPanel.AppendChild(innerPanel)
@@ -530,6 +556,19 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 }
 
 func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, underTabBarPanel *html.Node) {
+	var t *Tab
+	// how many real buttons are there in this tab bar?
+	buttonCount := len(panel.Tabs)
+	for _, t := range panel.Tabs {
+		if t.Spawn {
+			buttonCount--
+		}
+	}
+	panel.HasRealTabs = buttonCount > 0
+	if !panel.HasRealTabs {
+		// no buttons so this tab bar is not seen.
+		seen = false
+	}
 	var visibility string
 	if seen {
 		visibility = classSeen + spaceString + classToBeSeen
@@ -547,31 +586,41 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 			{Key: "class", Val: fmt.Sprintf("%s %s", classTabBar, visibility)},
 		},
 	}
-	// insert the buttons inside the tab bar panel
-	var i int
-	var t *Tab
-	for i, t = range panel.Tabs {
-		button := t.toButtonHTML(panel.TabBarHTMLID, (i == 0))
-		tabBarPanel.AppendChild(button)
+	// insert the real buttons inside the tab bar panel
+	position := 0
+	for _, t = range panel.Tabs {
+		if !t.Spawn {
+			button := t.toButtonHTML(panel.TabBarHTMLID, (position == 0))
+			position++
+			tabBarPanel.AppendChild(button)
+		} else {
+			_ = t.toButtonHTML(panel.TabBarHTMLID, false)
+		}
 	}
-	// close tab bar
 	// under tab bar panel
-	underID := panel.TabBarHTMLID + dashUnderTabBar
+	panel.UnderTabBarHTMLID = panel.TabBarHTMLID + DashUnderTabBar
 	underTabBarPanel = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			{Key: "id", Val: underID},
+			{Key: "id", Val: panel.UnderTabBarHTMLID},
 			{Key: "class", Val: classUnderTabBar},
 		},
 	}
-	// add the markup panels to the under tab bar panel.
-	for i, t = range panel.Tabs {
-		panel := builder.toTabPanelHTML(t, (i == 0))
-		underTabBarPanel.AppendChild(panel)
+	if panel.HasRealTabs {
+		// add the markup panels to the under tab bar panel.
+		position := 0
+		for _, t = range panel.Tabs {
+			if !t.Spawn {
+				p := builder.toTabPanelHTML(t, (position == 0))
+				underTabBarPanel.AppendChild(p)
+				position++
+			} else {
+				_ = builder.toTabPanelHTML(t, false)
+			}
+		}
 	}
-	// close under tab bar
 	return
 }
 

@@ -1,11 +1,7 @@
 package project
 
-import (
-	"fmt"
-	"strings"
-)
-
 // GenerateButtonIDsPanelIDs returns button ids mapped to their panel ids.
+// Only used by rekickwasm.
 func (builder *Builder) GenerateButtonIDsPanelIDs() (buttons map[string][]string) {
 	buttons = make(map[string][]string, 100)
 	// start with service buttons
@@ -23,25 +19,33 @@ func (builder *Builder) GenerateButtonIDsPanelIDs() (buttons map[string][]string
 }
 func generateButtonIDsPanelIDs(panel *Panel, buttons map[string][]string) {
 	for _, b := range panel.Buttons {
-		id := fmt.Sprintf("%s-%s", panel.ID, b.ID)
 		l := len(b.Panels)
 		pids := make([]string, l, l)
 		for i, p := range b.Panels {
 			pids[i] = p.ID
 			generateButtonIDsPanelIDs(p, buttons)
 		}
-		buttons[id] = pids
+		buttons[b.ID] = pids
 	}
 	for _, t := range panel.Tabs {
-		for _, p := range t.Panels {
-			generateButtonIDsPanelIDs(p, buttons)
+		if !t.Spawn {
+			for _, p := range t.Panels {
+				generateButtonIDsPanelIDs(p, buttons)
+			}
 		}
 	}
 }
 
-// GenerateTabIDsPanelIDs returns button ids mapped to their panel ids.
-func (builder *Builder) GenerateTabIDsPanelIDs() (tabs map[string][]string) {
-	tabs = make(map[string][]string, 100)
+// TabSpawnPanelIDs is a tab's spawn and it's panel ids.
+type TabSpawnPanelIDs struct {
+	Spawn    bool
+	PanelIDs []string
+}
+
+// GenerateTabIDsPanelIDs returns tab ids mapped to their panel ids.
+// Only used by rekickwasm.
+func (builder *Builder) GenerateTabIDsPanelIDs() (tabs map[string]TabSpawnPanelIDs) {
+	tabs = make(map[string]TabSpawnPanelIDs, 100)
 	// start with service buttons
 	for _, s := range builder.Services {
 		for _, p := range s.Button.Panels {
@@ -50,45 +54,27 @@ func (builder *Builder) GenerateTabIDsPanelIDs() (tabs map[string][]string) {
 	}
 	return
 }
-func generateTabIDsPanelIDs(panel *Panel, tabs map[string][]string) {
-	for _, t := range panel.Tabs {
-		id := fmt.Sprintf("%s-%s", panel.ID, t.ID)
-		l := len(t.Panels)
-		pids := make([]string, l, l)
-		for i, p := range t.Panels {
-			pids[i] = p.ID
-			generateTabIDsPanelIDs(p, tabs)
+func generateTabIDsPanelIDs(panel *Panel, tabs map[string]TabSpawnPanelIDs) {
+	if len(panel.Tabs) > 0 {
+		for _, t := range panel.Tabs {
+			l := len(t.Panels)
+			pids := make([]string, l, l)
+			for i, p := range t.Panels {
+				pids[i] = p.ID
+				generateTabIDsPanelIDs(p, tabs)
+			}
+			// Also need to know if a tab is spawned.
+			tabs[t.ID] = TabSpawnPanelIDs{
+				Spawn:    t.Spawn,
+				PanelIDs: pids,
+			}
 		}
-		tabs[id] = pids
 	}
 	for _, b := range panel.Buttons {
 		for _, p := range b.Panels {
 			generateTabIDsPanelIDs(p, tabs)
 		}
 	}
-}
-
-// GenerateOpeningTabPanelID returns the id of the innermost open tab panel at startup.
-func (builder *Builder) GenerateOpeningTabPanelID() string {
-	// only panels have tabs and buttons
-	if len(builder.panel.Tabs) > 0 {
-		tab := builder.panel.Tabs[0]
-		if len(tab.Panels) == 0 {
-			return tab.HTMLID + suffixPanel
-		}
-		return tab.Panels[0].generateOpeningTabPanelID()
-	}
-	return emptyString
-}
-func (panel *Panel) generateOpeningTabPanelID() string {
-	if len(panel.Tabs) > 0 {
-		tab := panel.Tabs[0]
-		if len(tab.Panels) == 0 {
-			return tab.HTMLID + suffixPanel
-		}
-		return tab.Panels[0].generateOpeningTabPanelID()
-	}
-	return emptyString
 }
 
 // GenerateServiceNames returns the service names.
@@ -125,8 +111,12 @@ func generateServiceEmptyPanelIDsMapButton(button *Button, serviceName string, s
 	for _, panel := range button.Panels {
 		switch {
 		case len(panel.Tabs) > 0:
-			for _, tab := range panel.Tabs {
-				generateServiceEmptyPanelIDsMapTab(tab, serviceName, servicePanelIDsMap)
+			if panel.HasRealTabs {
+				for _, tab := range panel.Tabs {
+					if !tab.Spawn {
+						generateServiceEmptyPanelIDsMapTab(tab, serviceName, servicePanelIDsMap)
+					}
+				}
 			}
 		case len(panel.Buttons) > 0:
 			for _, b := range panel.Buttons {
@@ -151,45 +141,8 @@ func generateServiceEmptyPanelIDsMapTab(tab *Tab, serviceName string, servicePan
 	}
 }
 
-// GenerateServiceEmptyInsidePanelIDsMap returns
-//   each service name mapped to
-//   a map of each markup panel's name mapped to the html id of it's inner most empty div
-//     where the markup panel's template will be included.
-func (builder *Builder) GenerateServiceEmptyInsidePanelIDsMap() map[string]map[string]string {
-	servicePanelIDsMap := make(map[string]map[string]string)
-	for _, s := range builder.Services {
-		serviceName := s.Name
-		servicePanelIDsMap[serviceName] = make(map[string]string)
-		generateServiceEmptyInsidePanelIDsMapButton(s.Button, serviceName, servicePanelIDsMap)
-	}
-	return servicePanelIDsMap
-}
-func generateServiceEmptyInsidePanelIDsMapButton(button *Button, serviceName string, servicePanelIDsMap map[string]map[string]string) {
-	for _, panel := range button.Panels {
-		switch {
-		case len(panel.Tabs) > 0:
-			for _, tab := range panel.Tabs {
-				generateServiceEmptyInsidePanelIDsMapTab(tab, serviceName, servicePanelIDsMap)
-			}
-		case len(panel.Buttons) > 0:
-			for _, b := range panel.Buttons {
-				generateServiceEmptyInsidePanelIDsMapButton(b, serviceName, servicePanelIDsMap)
-			}
-		default:
-			if len(panel.HTMLID) > 0 {
-				servicePanelIDsMap[serviceName][panel.Name] = panel.innerID()
-			}
-		}
-	}
-}
-func generateServiceEmptyInsidePanelIDsMapTab(tab *Tab, serviceName string, servicePanelIDsMap map[string]map[string]string) {
-	for _, panel := range tab.Panels {
-		servicePanelIDsMap[serviceName][panel.Name] = panel.innerID()
-	}
-}
-
-// GenerateTabBarLevelStartPanelMap returns a level mapped to the id of its first tab bar panel.
-func (builder *Builder) GenerateTabBarLevelStartPanelMap() map[string]string {
+// GenerateTabBarIDStartPanelIDMap returns each tab bar id mapped to the id of its first tab bar panel.
+func (builder *Builder) GenerateTabBarIDStartPanelIDMap() map[string]string {
 	tabBarPanelMap := make(map[string]string)
 	for _, s := range builder.Services {
 		for _, p := range s.Button.Panels {
@@ -200,12 +153,23 @@ func (builder *Builder) GenerateTabBarLevelStartPanelMap() map[string]string {
 }
 func (panel *Panel) getTabBarLastPanelIDs(tabBarPanelMap map[string]string) {
 	if len(panel.Tabs) > 0 {
-		level := strings.Split(panel.TabBarHTMLID, dashString)[0]
-		tabBarPanelMap[level] = panel.Tabs[0].PanelHTMLID
-		for _, tab := range panel.Tabs {
-			for _, p := range tab.Panels {
-				if len(p.Tabs) > 0 || len(p.Buttons) > 0 {
-					p.getTabBarLastPanelIDs(tabBarPanelMap)
+		tabBarID := panel.TabBarHTMLID
+		tabBarPanelMap[tabBarID] = ""
+		if panel.HasRealTabs {
+			// find the first normal tab
+			for _, tab := range panel.Tabs {
+				if !tab.Spawn {
+					tabBarPanelMap[tabBarID] = tab.PanelHTMLID
+					break
+				}
+			}
+			for _, tab := range panel.Tabs {
+				if !tab.Spawn {
+					for _, p := range tab.Panels {
+						if len(p.Tabs) > 0 || len(p.Buttons) > 0 {
+							p.getTabBarLastPanelIDs(tabBarPanelMap)
+						}
+					}
 				}
 			}
 		}
@@ -277,16 +241,18 @@ func (panel *Panel) generateServiceButtonPanelGroups(list *[]*ButtonPanelGroup) 
 		}
 	}
 	for _, t := range panel.Tabs {
-		// tab bar
-		g := NewButtonPanelGroup()
-		g.IsTabButton = true
-		*list = append(*list, g)
-		g.ButtonID = t.HTMLID
-		//g.ButtonName = panelIDToName(t.HTMLID)
-		g.ButtonName = t.ID
-		for _, p := range t.Panels {
-			g.PanelNamesIDMap[p.Name] = p
-			// go no deeper with tab bars.
+		if !t.Spawn {
+			// tab bar
+			g := NewButtonPanelGroup()
+			g.IsTabButton = true
+			*list = append(*list, g)
+			g.ButtonID = t.HTMLID
+			//g.ButtonName = panelIDToName(t.HTMLID)
+			g.ButtonName = t.ID
+			for _, p := range t.Panels {
+				g.PanelNamesIDMap[p.Name] = p
+				// go no deeper with tab bars.
+			}
 		}
 	}
 }
@@ -305,11 +271,11 @@ func (builder *Builder) GenerateTabBarIDs() []string {
 func generateTabBarIDs(panel *Panel, ids *[]string) {
 	if len(panel.Tabs) > 0 {
 		*ids = append(*ids, panel.TabBarHTMLID)
-		for _, tab := range panel.Tabs {
-			for _, panel := range tab.Panels {
-				generateTabBarIDs(panel, ids)
-			}
-		}
+		// for _, tab := range panel.Tabs {
+		// 	for _, panel := range tab.Panels {
+		// 		generateTabBarIDs(panel, ids)
+		// 	}
+		// }
 		return
 	}
 	for _, button := range panel.Buttons {
@@ -345,8 +311,10 @@ func generateServicePanelNameTemplateMap(panel *Panel, panelNameTemplateMap map[
 		}
 	}
 	for _, t := range panel.Tabs {
-		for _, p := range t.Panels {
-			generateServicePanelNameTemplateMap(p, panelNameTemplateMap)
+		if !t.Spawn {
+			for _, p := range t.Panels {
+				generateServicePanelNameTemplateMap(p, panelNameTemplateMap)
+			}
 		}
 	}
 }
@@ -376,8 +344,10 @@ func generateServiceTemplatePanelName(panel *Panel, panelNameList *[]string) {
 		}
 	}
 	for _, t := range panel.Tabs {
-		for _, p := range t.Panels {
-			generateServiceTemplatePanelName(p, panelNameList)
+		if !t.Spawn {
+			for _, p := range t.Panels {
+				generateServiceTemplatePanelName(p, panelNameList)
+			}
 		}
 	}
 }
@@ -407,9 +377,7 @@ func generateServiceEmptyInsidePanelNamePathMap(panel *Panel, folderList []strin
 	l := len(folderList)
 	for _, b := range panel.Buttons {
 		newFolderList := make([]string, l+1, l*2)
-		for i, f := range folderList {
-			newFolderList[i] = f
-		}
+		copy(newFolderList, folderList)
 		newFolderList[l] = b.ID
 		for _, p := range b.Panels {
 			generateServiceEmptyInsidePanelNamePathMap(p, newFolderList, panelNamePathMap)
@@ -417,14 +385,13 @@ func generateServiceEmptyInsidePanelNamePathMap(panel *Panel, folderList []strin
 		}
 	}
 	for _, t := range panel.Tabs {
-		newFolderList := make([]string, l+1, l*2)
-		for i, f := range folderList {
-			newFolderList[i] = f
-		}
-		newFolderList[l] = t.ID
-		for _, p := range t.Panels {
-			//generateServiceEmptyInsidePanelNamePathMap(p, folderList, panelNamePathMap)
-			generateServiceEmptyInsidePanelNamePathMap(p, newFolderList, panelNamePathMap)
+		if !t.Spawn {
+			newFolderList := make([]string, l+1, l*2)
+			copy(newFolderList, folderList)
+			newFolderList[l] = t.ID
+			for _, p := range t.Panels {
+				generateServiceEmptyInsidePanelNamePathMap(p, newFolderList, panelNamePathMap)
+			}
 		}
 	}
 }
@@ -452,9 +419,11 @@ func generateServicePanelNamePanelMap(panel *Panel, panelNamePanelMap map[string
 		}
 	}
 	for _, t := range panel.Tabs {
-		for _, p := range t.Panels {
-			panelNamePanelMap[p.Name] = p
-			generateServicePanelNamePanelMap(p, panelNamePanelMap)
+		if !t.Spawn {
+			for _, p := range t.Panels {
+				panelNamePanelMap[p.Name] = p
+				generateServicePanelNamePanelMap(p, panelNamePanelMap)
+			}
 		}
 	}
 }
@@ -497,9 +466,7 @@ func generateServicePanelButtonFolderPathMap(panel *Panel, folderList []string, 
 	l := len(folderList)
 	for _, b := range panel.Buttons {
 		buttonFolderList := make([]string, l+1, 20)
-		for i, f := range folderList {
-			buttonFolderList[i] = f
-		}
+		copy(buttonFolderList, folderList)
 		buttonFolderList[l] = b.ID
 		panelButtonFolderPathMap[panel.Name][b.ID] = buttonFolderList
 		for _, p := range b.Panels {
@@ -507,13 +474,18 @@ func generateServicePanelButtonFolderPathMap(panel *Panel, folderList []string, 
 				panelButtonFolderPathMap[p.Name] = make(map[string][]string)
 				// create the folder list for the walk.
 				newFolderList := make([]string, l+1, 20)
-				for i, f := range buttonFolderList {
-					newFolderList[i] = f
-				}
+				copy(newFolderList, buttonFolderList)
 				newFolderList[l] = b.ID
 				panelButtonFolderPathMap[panel.Name][b.ID] = newFolderList
 				generateServicePanelButtonFolderPathMap(p, newFolderList, panelButtonFolderPathMap)
 			}
 		}
 	}
+}
+
+func boolToInt(b bool) (i int) {
+	if b {
+		i = 1
+	}
+	return
 }

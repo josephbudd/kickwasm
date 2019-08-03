@@ -3,16 +3,21 @@ package project
 import (
 	"strings"
 
-	"github.com/josephbudd/kickwasm/cases"
+	"github.com/josephbudd/kickwasm/pkg/cases"
 )
 
 // exported constants
 const (
-	CommentLine  = "//"
-	CommentStart = "/*"
-	CommentEnd   = "*/"
-	EmptyString  = ""
-	MaxLevels    = 5
+	SpawnIDReplacePattern = "{{.SpawnID}}"
+	CommentLine           = "//"
+	CommentStart          = "/*"
+	CommentEnd            = "*/"
+	EmptyString           = ""
+	MaxLevels             = 5
+	DashUnderTabBar       = "-under-tab-bar"
+	DashInnerString       = "-inner"
+	DashPanelHeading      = "-panel-heading"
+	DashNoTabButtons      = "-no-tab-buttons"
 
 	brString = "<br/>"
 
@@ -24,16 +29,15 @@ const (
 	spaceString         = " "
 	emptyString         = ""
 	dashString          = "-"
+	dashH3String        = "-H3"
 	dashSubPanelString  = "-subpanel"
 	dashButtonPadString = "-button-pad"
 	dashTabBar          = "-tab-bar"
 	underscoreTabBar    = "_tab_bar"
-	dashUnderTabBar     = "-under-tab-bar"
-	dashInnerString     = "-inner"
 	dashContentString   = "-user-content"
-	todo                = "<!-- TODO : Replace kick's instructional markup with your own. -->"
-	beginning           = "<!-- Beginning of kick's instructional markup that you want to replace with your own. -->"
-	end                 = "<!-- End of kick's instructional markup that you want to replace with your own. -->"
+	todo                = "<!-- TODO : Replace kickwasm's instructional markup with your own. -->"
+	beginning           = "<!-- Beginning of kickwasm's instructional markup that you want to replace with your own. -->"
+	end                 = "<!-- End of kickwasm's instructional markup that you want to replace with your own. -->"
 	add                 = " You want to add your markup to this div."
 
 	underscoreRune   = '_'
@@ -53,21 +57,22 @@ const (
 	classUnSelected              = "unselected-tab"
 	classPanelWithHeading        = "panel-with-heading"
 	classPanelWithTabBar         = "panel-with-tab-bar"
-	classInnerPanel              = "inner-panel"
+	classTabPanelGroup           = "inner-panel"
 	classPanelHeading            = "heading-of-panel"
 	classPanelHeadingLevelPrefix = "heading-of-panel-level-"
 
 	classSlider     = "slider"
 	classSliderBack = "slider-back"
 
-	classSliderPanel             = "slider-panel"
-	classSliderPanelInner        = "slider-panel-inner"
-	classSliderPanelInnerSibling = "slider-panel-inner-sibling"
-	classSliderButtonPad         = "slider-button-pad"
-	classSliderTabBar            = "slider-tab-bar"
+	classSliderPanel     = "slider-panel"
+	classSliderPanelPad  = "slider-panel-pad"
+	classSliderButtonPad = "slider-button-pad"
+	classSliderTabBar    = "slider-tab-bar"
 
 	classSliderPanelWithButtonPad = "slider-panel-with-button-pad"
 	classSliderPanelWithTabBar    = "slider-panel-with-tab-bar"
+
+	classSliderPanelInnerSibling = "slider-panel-inner-sibling"
 
 	classBackColorLevelPrefix      = "back-color-level-"
 	classPadColorLevelPrefix       = "pad-color-level-"
@@ -80,6 +85,12 @@ const (
 	classModalUserContent       = "modal-user-content"
 	classCloserUserContent      = "closer-user-content"
 	classResizeMeWidthClassName = "resize-me-width"
+
+	classVScroll    = "vscroll"
+	classHVScroll   = "hvscroll"
+	classUserMarkup = "user-markup"
+
+	attributeSpawnable = "spawnable"
 
 	attributeBackID         = "backid"
 	attributeBackColorLevel = "backColorLevel"

@@ -28,7 +28,7 @@ func (tools *Tools) hideSlider() {
 }
 
 func (tools *Tools) initializeSlider() {
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	buttoncb := tools.RegisterEventCallBack(
 		tools.handlePadButtonOnClick,
 		true, true, true,
@@ -57,7 +57,7 @@ func (tools *Tools) initializeSlider() {
 
 func (tools *Tools) handlePadButtonOnClick(event js.Value) interface{} {
 	// get back div
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	target := notJS.GetEventTarget(event)
 	backid := target.Call("getAttribute", BackIDAttribute).String()
 	backdiv := notJS.GetElementByID(backid)
@@ -91,7 +91,7 @@ func (tools *Tools) hereIsVisible() bool {
 	if tools.here == js.Undefined() {
 		return false
 	}
-	p := tools.notJS.ParentNode(tools.here)
+	p := tools.NotJS.ParentNode(tools.here)
 	return p == tools.tabsMasterviewHomeSliderCollection
 }
 `

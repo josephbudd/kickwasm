@@ -9,7 +9,8 @@ import (
 
 func createViewToolsHelpersGo(appPaths paths.ApplicationPathsI) error {
 	folderpaths := appPaths.GetPaths()
-	fname := "helpers.go"
+	fileNames := appPaths.GetFileNames()
+	fname := fileNames.HelpersDotGo
 	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return appPaths.WriteFile(oPath, []byte(templates.ViewtoolsHelpers))
 }

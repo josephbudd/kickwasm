@@ -22,7 +22,7 @@ func (tools *Tools) initializeResize() {
 // SizeApp resizes the app
 func (tools *Tools) SizeApp() {
 	// begin with the height of the inside of the browser where the window is.
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	windowWidth := notJS.WindowInnerWidth()
 	windowHeight := notJS.WindowInnerHeight()
 	// and subtract body measurments
@@ -40,7 +40,7 @@ func (tools *Tools) SizeApp() {
 
 func (tools *Tools) sizeTabsMasterView(w, h float64) {
 	// now set the masterview height
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	if tools.ElementIsShown(tools.tabsMasterview) {
 		// tabs masterview is visible
 		// subtract extras before setting
@@ -122,7 +122,7 @@ func (tools *Tools) reSizeSliderBack(height, margintop float64) {
 func (tools *Tools) sizeModalMasterView(w, h float64) {
 	// modal master view
 	if tools.ElementIsShown(tools.modalMasterView) {
-		notJS := tools.notJS
+		notJS := tools.NotJS
 		// modal view is visible
 		w -= notJS.WidthExtras(tools.modalMasterView)
 		h -= notJS.HeightExtras(tools.modalMasterView)
@@ -154,7 +154,7 @@ func (tools *Tools) sizeModalMasterView(w, h float64) {
 
 func (tools *Tools) sizeCloserMasterView(w, h float64) {
 	if tools.ElementIsShown(tools.closerMasterView) {
-		tools.notJS.SetStyleHeight(tools.closerMasterView, h)
+		tools.NotJS.SetStyleHeight(tools.closerMasterView, h)
 	}
 }
 
@@ -162,7 +162,7 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 	// #tabsMasterView-home-slider-collection is the parant of a slider panel
 	// finds and sets the ht of div.slider-panel-inner
 	// remove extras.
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	w -= notJS.WidthExtras(sliderPanel)
 	h -= notJS.HeightExtras(sliderPanel)
 	inner := js.Undefined()
@@ -234,9 +234,17 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 		// a user content is inside the inner panel
 		w -= notJS.WidthExtras(userContent)
 		h -= notJS.HeightExtras(userContent)
-		notJS.SetStyleHeight(userContent, h)
 		notJS.SetStyleWidth(userContent, w)
+		notJS.SetStyleHeight(userContent, h)
+		// markup div wraps the template markup.
 		children := notJS.ChildrenSlice(userContent)
+		markup := children[0]
+		w -= notJS.WidthExtras(markup)
+		h -= notJS.HeightExtras(markup)
+		notJS.SetStyleWidth(markup, w)
+		notJS.SetStyleHeight(markup, h)
+		// check the template for whatever needs it's width sized.
+		children = notJS.ChildrenSlice(markup)
 		for _, ch := range children {
 			if !notJS.ClassListContains(ch, UnSeenClassName) {
 				if notJS.ClassListContains(ch, ResizeMeWidthClassName) {
@@ -249,15 +257,19 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 	if tabbar != js.Undefined() && underTabbar != js.Undefined() {
 		// a tab bar is inside the inner panel
 		seen := js.Undefined()
-		// set the under tab bar height
+		// the tab bar height is already set.
+		// remove the height of the tab bar.
+		notJS.SetStyleWidth(tabbar, w-notJS.WidthExtras(tabbar))
 		h -= notJS.OuterHeight(tabbar)
-		h -= notJS.HeightExtras(underTabbar)
-		notJS.SetStyleHeight(underTabbar, h)
 		// set the under tab bar width
 		w -= notJS.WidthExtras(underTabbar)
 		notJS.SetStyleWidth(underTabbar, w)
+		// set the under tab bar height
+		h -= notJS.HeightExtras(underTabbar)
+		notJS.SetStyleHeight(underTabbar, h)
 
 		// find the visible panel under the tab bar
+		// its class will be "{{.Classes.TabPanel}}"
 		children := notJS.ChildrenSlice(underTabbar)
 		for _, ch := range children {
 			if notJS.ClassListContains(ch, SeenClassName) {
@@ -271,13 +283,19 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 			notJS.Alert(message)
 			return
 		}
-		// size the visible panel under the tab bar
+		// size the visible panel inside the under the tab bar
 		w -= notJS.WidthExtras(seen)
 		notJS.SetStyleWidth(seen, w)
 		notJS.SetStyleHeight(seen, h)
 
-		// the visible panel under the tab bar has a heading over its inner panel
+		// the visible panel inside the under the tab bar has a heading over its inner panel
 		// the inner panel's height is height of the under tab bar - the heading height.
+		// h3
+		// TabPanelGroupClassName
+		//  user-content & seen & scroller
+		//    markup > template
+		//  user-content & unseen & scroller
+		//    markup > template
 		children = notJS.ChildrenSlice(seen)
 		for _, ch := range children {
 			if notJS.ClassListContains(ch, PanelHeadingClassName) {
@@ -285,24 +303,30 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 				chwx1 := notJS.WidthExtras(ch)
 				notJS.SetStyleWidth(ch, w-chwx1)
 				h -= notJS.OuterHeight(ch)
-			} else if notJS.ClassListContains(ch, InnerPanelClassName) {
-				// size the innner panel
+			} else if notJS.ClassListContains(ch, TabPanelGroupClassName) {
+				// size the panel group panel
 				chwx1 := notJS.WidthExtras(ch)
-				notJS.SetStyleHeight(ch, h)
 				notJS.SetStyleWidth(ch, w-chwx1)
+				chhx1 := notJS.HeightExtras(ch)   // added xxx
+				notJS.SetStyleHeight(ch, h-chhx1)
 				children2 := notJS.ChildrenSlice(ch)
+				// site the visible user content panel in this group.
 				for _, ch := range children2 {
 					if !notJS.ClassListContains(ch, UnSeenClassName) {
-						if notJS.ClassListContains(ch, SliderPanelInnerSiblingClassName) {
-							// size the visible inner panel sibling
+						if notJS.ClassListContains(ch, UserContentClassName) {
+							// size the visible user content panel in this group.
 							chwx2 := notJS.WidthExtras(ch)
 							notJS.SetStyleWidth(ch, w-chwx1-chwx2)
-							// size all children with the ResizeMeWidthClassName
+							// size the markup panel containing the template markup
 							children3 := notJS.ChildrenSlice(ch)
-							for _, ch := range children3 {
+							chwx3 := notJS.WidthExtras(children3[0])
+							notJS.SetStyleWidth(children3[0], w-chwx1-chwx2-chwx3)
+							// size all children with the ResizeMeWidthClassName
+							children4 := notJS.ChildrenSlice(ch)
+							for _, ch := range children4 {
 								if !notJS.ClassListContains(ch, UnSeenClassName) {
 									if notJS.ClassListContains(ch, ResizeMeWidthClassName) {
-										tools.resizeMe(ch, w-chwx1-chwx2, h)
+										tools.resizeMe(ch, w-chwx1-chwx2-chwx3, h)
 									}
 								}
 							}
@@ -317,7 +341,7 @@ func (tools *Tools) sizeSliderPanel(sliderPanel js.Value, w, h float64) {
 }
 
 func (tools *Tools) resizeMe(mine js.Value, w, h float64) {
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	w = w - notJS.WidthExtras(mine)
 	notJS.SetStyleWidth(mine, w)
 	children := notJS.ChildrenSlice(mine)

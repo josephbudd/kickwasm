@@ -128,6 +128,11 @@ func (sl *Slurper) slurpPanelButtonsTabs(parentFilePath string, panel *PanelInfo
 			sl.panelFiles = append(sl.panelFiles, fullpath)
 			tab.Panels = append(tab.Panels, panel)
 		}
+		if len(tab.Panels) == 0 {
+			err = fmt.Errorf(`the panel named %q, has a tab named %q which has no panels, in %s`, panel.Name, tab.ID, parentFilePath)
+			//err = errors.New(the panel namederr.Error() + " in " + parentFilePath)
+			return
+		}
 	}
 	return
 }

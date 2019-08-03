@@ -24,16 +24,20 @@ type cssTemplateData struct {
 	TabBar           string
 	PanelHeading     string
 	TabPanel         string
-	InnerPanel       string
+	TabPanelGroup    string
 	PanelWithHeading string
 	PanelWithTabBar  string
 
 	SliderPanel       string
-	SliderPanelInner  string
+	SliderPanelPad    string
 	SliderButtonPad   string
 	UserContent       string
 	ModalUserContent  string
 	CloserUserContent string
+	UserMarkup        string
+
+	VScroll  string
+	HVScroll string
 
 	IDMaster           string
 	IDHome             string
@@ -81,15 +85,18 @@ func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 		TabBar:            builder.Classes.TabBar,
 		PanelHeading:      builder.Classes.PanelHeading,
 		TabPanel:          builder.Classes.TabPanel,
-		InnerPanel:        builder.Classes.InnerPanel,
+		TabPanelGroup:     builder.Classes.TabPanelGroup,
 		PanelWithHeading:  builder.Classes.PanelWithHeading,
 		PanelWithTabBar:   builder.Classes.PanelWithTabBar,
 		SliderPanel:       builder.Classes.SliderPanel,
-		SliderPanelInner:  builder.Classes.SliderPanelInner,
+		SliderPanelPad:    builder.Classes.SliderPanelPad,
 		SliderButtonPad:   builder.Classes.SliderButtonPad,
 		UserContent:       builder.Classes.UserContent,
 		ModalUserContent:  builder.Classes.ModalUserContent,
 		CloserUserContent: builder.Classes.CloserUserContent,
+		VScroll:           builder.Classes.VScroll,
+		HVScroll:          builder.Classes.HVScroll,
+		UserMarkup:        builder.Classes.UserMarkup,
 
 		IDMaster:           builder.IDs.Master,
 		IDHome:             builder.IDs.Home,
@@ -121,6 +128,11 @@ func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 	fname = fileNames.MainDotCSS
 	oPath = filepath.Join(folderpaths.OutputRendererCSS, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.MainCSS, data, appPaths); err != nil {
+		return
+	}
+	fname = fileNames.UserContentDotCSS
+	oPath = filepath.Join(folderpaths.OutputRendererMyCSS, fname)
+	if err = templates.ProcessTemplate(fname, oPath, templates.MyCSS, data, appPaths); err != nil {
 		return
 	}
 	return

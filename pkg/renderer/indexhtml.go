@@ -9,7 +9,7 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-func buildIndexHTMLNode(builder *project.Builder, addLocations bool) *html.Node {
+func buildIndexHTMLNode(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool) *html.Node {
 	// document
 	doc := &html.Node{
 		Type: html.DocumentNode,
@@ -28,7 +28,7 @@ func buildIndexHTMLNode(builder *project.Builder, addLocations bool) *html.Node 
 	}
 	doc.AppendChild(htm)
 	// head
-	head := buildHeadNode(builder)
+	head := buildHeadNode(appPaths, builder)
 	htm.AppendChild(head)
 	// body
 	body := &html.Node{
@@ -49,7 +49,10 @@ func buildIndexHTMLNode(builder *project.Builder, addLocations bool) *html.Node 
 	return doc
 }
 
-func buildHeadNode(builder *project.Builder) (head *html.Node) {
+func buildHeadNode(appPaths paths.ApplicationPathsI, builder *project.Builder) (head *html.Node) {
+	fileNames := appPaths.GetFileNames()
+	folderNames := appPaths.GetFolderNames()
+
 	head = &html.Node{
 		Type:     html.ElementNode,
 		Data:     "head",
@@ -83,7 +86,8 @@ func buildHeadNode(builder *project.Builder) (head *html.Node) {
 	}
 	textNode = &html.Node{
 		Type: html.TextNode,
-		Data: "@import url(css/main.css);",
+		// Data: "@import url(css/main.css);",
+		Data: fmt.Sprintf("@import url(%s/%s);", folderNames.CSS, fileNames.MainDotCSS),
 	}
 	style.AppendChild(textNode)
 	head.AppendChild(style)
@@ -94,10 +98,25 @@ func buildHeadNode(builder *project.Builder) (head *html.Node) {
 	}
 	textNode = &html.Node{
 		Type: html.TextNode,
-		Data: "@import url(css/colors.css);",
+		// Data: "@import url(css/colors.css);",
+		Data: fmt.Sprintf("@import url(%s/%s);", folderNames.CSS, fileNames.ColorsDotCSS),
 	}
 	style.AppendChild(textNode)
 	head.AppendChild(style)
+
+	style = &html.Node{
+		Type:     html.ElementNode,
+		Data:     "style",
+		DataAtom: atom.Style,
+	}
+	textNode = &html.Node{
+		Type: html.TextNode,
+		// Data: "@import url(mycss/Usercontent.css);",
+		Data: fmt.Sprintf("@import url(%s/%s);", folderNames.MyCSS, fileNames.UserContentDotCSS),
+	}
+	style.AppendChild(textNode)
+	head.AppendChild(style)
+
 	// scripts
 	script := &html.Node{
 		Type:     html.ElementNode,
@@ -119,7 +138,8 @@ func buildHeadNode(builder *project.Builder) (head *html.Node) {
 		DataAtom: atom.Script,
 		Data:     "script",
 		Attr: []html.Attribute{
-			{Key: "src", Val: "/wasm/wasm_exec.js"},
+			// {Key: "src", Val: "/wasm/wasm_exec.js"},
+			{Key: "src", Val: fmt.Sprintf("/%s/%s", folderNames.WASM, fileNames.WasmExecJS)},
 		},
 	}
 	head.AppendChild(script)
@@ -150,7 +170,6 @@ func buildHeadNode(builder *project.Builder) (head *html.Node) {
 	script.AppendChild(textNode)
 	head.AppendChild(script)
 	// head template reference
-	fileNames := paths.GetFileNames()
 	textNode = &html.Node{
 		Type: html.TextNode,
 		Data: fmt.Sprintf(`{{template "%s"}}`, fileNames.HeadDotTMPL),

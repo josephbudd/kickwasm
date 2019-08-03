@@ -4,77 +4,62 @@ package templates
 const MainGo = `package main
 
 import (
-	"syscall/js"
+	"log"
 
-	"{{.ApplicationGitPath}}{{.ImportDomainDataCallIDs}}"
-	"{{.ApplicationGitPath}}{{.ImportDomainDataLogLevels}}"
-	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
-	call "{{.ApplicationGitPath}}{{.ImportRendererCallClient}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererCalls}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererImplementationsPanelHelper}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
 	YOU MAY EDIT THIS FILE.
 
-	For example: You may want to redefine the helper which is passed to your markup panel constructors.
-		1. Edit the definition of the renderer/interfaces/panelHelper.Helper interface.
-		2. Define a new implementation of panelHelper in the renderer/implementation/panelHelping package.
+	For example: You may want to redefine the starting.Helper which is passed to your markup panel constructors.
+		1. Edit the definition of the renderer/interfaces/starter.Helper interface.
+		2. Define a new implementation of starter in the renderer/implementation/starting package.
 		3. In func main below, set helper to your new implementation.
 		4. Modify the Panel constructors in the markup panel packages
 		   in the render/panels/ folder to use your new definition
-		   of the panelHelper.Helper interface.
+		   of the starter.Helper interface.
 
 	Rekickwasm will preserve this file for you.
 
 	BUILD INSTRUCTIONS:
 
-		GOARCH=wasm GOOS=js go build -o app.wasm main.go panels.go
+		cd renderer
+		./build.sh
 		cd ..
 		go build
 
 */
 
 func main() {
-	quitCh := make(chan struct{})
+	sendChan, receiveChan, eojChan := lpc.Channels()
+	quitChan := make(chan struct{})
 	notJS := notjs.NewNotJS()
 	tools := viewtools.NewTools(notJS)
-	helper := &panelHelping.NoHelp{}
+	help := paneling.NewHelp()
 
-	// get the renderer's connection client.
+	// get the renderer's channels
 	host, port := notJS.HostPort()
-	client := call.NewClient(host, port, tools, notJS)
-	client.SetOnConnectionBreak(
-		func(event js.Value, args []js.Value) interface{} {
-			quitCh <- struct{}{}
-			return nil
-		},
-	)
-	// get the local procedure calls
-	callMap := calls.GetCallMap(client.SendPayload)
+	client := lpc.NewClient(host, port, tools, quitChan, eojChan, receiveChan, sendChan)
 
 	// finish initializing the caller client.
-	client.SetCallMap(callMap)
-	client.Connect(func() {
-		if err := doPanels(quitCh, tools, callMap, notJS, helper); err != nil {
-			message := err.Error()
-			// log the error to the renderer.
-			notJS.ConsoleLog(message)
-			notJS.Alert(message)
-			// log the error to the main process.
-			callr := callMap[callids.LogCallID]
-			params := &types.RendererToMainProcessLogCallParams{
-				Level:   loglevels.LogLevelError,
-				Message: message,
-			}
-			callr.CallMainProcess(params)
+	err := client.Connect(func() {
+		if er := doPanels(client, quitChan, eojChan, receiveChan, sendChan, tools, notJS, help); er != nil {
+			errmsg := er.Error()
+			tools.ConsoleLog(errmsg)
+			tools.Alert(errmsg)
 		}
 	})
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
 
 	// wait for the application to quit.
-	<-quitCh
+	<-eojChan
 	tools.Quit()
 }
 `

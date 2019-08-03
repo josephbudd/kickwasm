@@ -2,17 +2,19 @@ package kickwasm
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/josephbudd/kickwasm/domain"
 	"github.com/josephbudd/kickwasm/foldercp"
+	"github.com/josephbudd/kickwasm/pkg/domain"
 	"github.com/josephbudd/kickwasm/pkg/flagdata"
 	"github.com/josephbudd/kickwasm/pkg/mainprocess"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer"
 	"github.com/josephbudd/kickwasm/pkg/slurp"
+	"github.com/josephbudd/kickwasm/sitepack"
 )
 
 // Do builds the source code and .kickwasm/ into the output folder.
@@ -26,6 +28,12 @@ func Do(pwd, outputFolder, yamlpath string, addLocations bool, vBreaking, vFeatu
 	}
 	parts := strings.Split(builder.ImportPath, "/")
 	appName := parts[len(parts)-1]
+	// Delete output folder.
+	path := filepath.Join(pwd, outputFolder, appName)
+	if err = os.RemoveAll(path); err != nil {
+		return
+	}
+	// Build appPaths.
 	appPaths = &paths.ApplicationPaths{}
 	fileNames := appPaths.GetFileNames()
 	appPaths.Initialize(pwd, outputFolder, appName)
@@ -61,6 +69,9 @@ func create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 		return
 	}
 	if err = domain.Create(appPaths, builder); err != nil {
+		return
+	}
+	if err = sitepack.Create(appPaths); err != nil {
 		return
 	}
 	return

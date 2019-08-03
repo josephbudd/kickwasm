@@ -5,131 +5,151 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 )
 
 // Import paths
 const (
-	// domain interfaces
-
-	importDomainInterfacesCallers = "/domain/interfaces/caller"
-	importDomainInterfacesStorers = "/domain/interfaces/storer"
 
 	// domain data
 
-	importDomainDataFilepaths  = "/domain/data/filepaths"
-	importDomainDataCallIDs    = "/domain/data/callids"
-	importDomainDataCallParams = "/domain/data/callParams"
-	importDomainDataLogLevels  = "/domain/data/loglevels"
-	importDomainDataSettings   = "/domain/data/settings"
+	importDomainDataFilepaths = "/domain/data/filepaths"
+	importDomainDataLogLevels = "/domain/data/loglevels"
+	importDomainDataSettings  = "/domain/data/settings"
 
 	// domain types
 
 	importDomainTypes = "/domain/types"
 
-	// domain implementations
+	// domain lpc
 
-	importDomainImplementationsCalling     = "/domain/implementations/calling"
-	importDomainImplementationsStoringBolt = "/domain/implementations/storing/boltstoring"
+	importDomainLPC        = "/domain/lpc"
+	importDomainLPCMessage = "/domain/lpc/message"
 
 	// main process
 
-	importMainProcessCalls      = "/mainprocess/calls"
-	importMainProcessCallServer = "/mainprocess/callserver"
-	importMainProcessServices   = "/mainprocess/services"
+	importMainProcessServices = "/mainprocess/services"
+
+	// main process lpc
+
+	importMainProcessLPC         = "/mainprocess/lpc"
+	importMainProcessLPCDispatch = "/mainprocess/lpc/dispatch"
 
 	// renderer
 
-	importRendererCallClient                 = "/renderer/callClient"
-	importRendererCalls                      = "/renderer/calls"
-	importRendererPanels                     = "/renderer/panels"
-	importRendererInterfacesPanelHelper      = "/renderer/interfaces/panelHelper"
-	importRendererImplementationsPanelHelper = "/renderer/implementations/panelHelping"
+	importRenderer         = "/renderer"
+	importRendererPanels   = "/renderer/panels"
+	importRendererPaneling = "/renderer/paneling"
 
 	// renderer site
 
 	importRendererViewTools = "/renderer/viewtools"
 	importRendererNotJS     = "/renderer/notjs"
+
+	importRendererSpawnPanels = "/renderer/spawnPanels"
+	importRendererSpawnPack   = "/renderer/spawnpack"
+
+	// renderer lpc
+
+	importRendererLPC = "/renderer/lpc"
+
+	// stores
+
+	importDomainStore        = "/domain/store"
+	importDomainStoreRecord  = "/domain/store/record"
+	importDomainStoreStorer  = "/domain/store/storer"
+	importDomainStoreStoring = "/domain/store/storing"
 )
 
 // Imports is the import paths.
 type Imports struct {
-	ImportDomainInterfacesCallers string
-	ImportDomainInterfacesStorers string
 
 	// domain data
 
-	ImportDomainDataFilepaths  string
-	ImportDomainDataCallIDs    string
-	ImportDomainDataCallParams string
-	ImportDomainDataLogLevels  string
-	ImportDomainDataSettings   string
+	ImportDomainDataFilepaths string
+	ImportDomainDataLogLevels string
+	ImportDomainDataSettings  string
 
 	// domain types
 
 	ImportDomainTypes string
 
-	// domain implementations
+	// lpc
 
-	ImportDomainImplementationsCalling     string
-	ImportDomainImplementationsStoringBolt string
+	ImportDomainLPC              string
+	ImportDomainLPCMessage       string
+	ImportRendererLPC            string
+	ImportMainProcessLPC         string
+	ImportMainProcessLPCDispatch string
 
 	// main process
 
-	ImportMainProcessCalls      string
-	ImportMainProcessCallServer string
-	ImportMainProcessServices   string
+	ImportMainProcessServices string
 
 	// renderer
 
-	ImportRendererCallClient                 string
-	ImportRendererCalls                      string
-	ImportRendererPanels                     string
-	ImportRendererViewTools                  string
-	ImportRendererNotJS                      string
-	ImportRendererInterfacesPanelHelper      string
-	ImportRendererImplementationsPanelHelper string
+	ImportRenderer          string
+	ImportRendererPanels    string
+	ImportRendererViewTools string
+	ImportRendererNotJS     string
+	ImportRendererPaneling  string
+
+	ImportRendererSpawnPack   string
+	ImportRendererSpawnPanels string
+
+	// store
+
+	ImportDomainStore        string
+	ImportDomainStoreRecord  string
+	ImportDomainStoreStorer  string
+	ImportDomainStoreStoring string
 }
 
 // GetImports returns the go import paths.
 func GetImports() *Imports {
 	return &Imports{
-		ImportDomainInterfacesCallers: importDomainInterfacesCallers,
-		ImportDomainInterfacesStorers: importDomainInterfacesStorers,
 
 		// domain data
 
-		ImportDomainDataFilepaths:  importDomainDataFilepaths,
-		ImportDomainDataCallIDs:    importDomainDataCallIDs,
-		ImportDomainDataCallParams: importDomainDataCallParams,
-		ImportDomainDataLogLevels:  importDomainDataLogLevels,
-		ImportDomainDataSettings:   importDomainDataSettings,
+		ImportDomainDataFilepaths: importDomainDataFilepaths,
+		ImportDomainDataLogLevels: importDomainDataLogLevels,
+		ImportDomainDataSettings:  importDomainDataSettings,
 
 		// domain types
 
 		ImportDomainTypes: importDomainTypes,
 
-		// domain implementations
+		// lpc
 
-		ImportDomainImplementationsCalling:     importDomainImplementationsCalling,
-		ImportDomainImplementationsStoringBolt: importDomainImplementationsStoringBolt,
+		ImportDomainLPC:              importDomainLPC,
+		ImportDomainLPCMessage:       importDomainLPCMessage,
+		ImportRendererLPC:            importRendererLPC,
+		ImportMainProcessLPC:         importMainProcessLPC,
+		ImportMainProcessLPCDispatch: importMainProcessLPCDispatch,
 
 		// main process
 
-		ImportMainProcessCalls:      importMainProcessCalls,
-		ImportMainProcessCallServer: importMainProcessCallServer,
-		ImportMainProcessServices:   importMainProcessServices,
+		ImportMainProcessServices: importMainProcessServices,
 
 		// renderer
 
-		ImportRendererCallClient:                 importRendererCallClient,
-		ImportRendererCalls:                      importRendererCalls,
-		ImportRendererPanels:                     importRendererPanels,
-		ImportRendererViewTools:                  importRendererViewTools,
-		ImportRendererNotJS:                      importRendererNotJS,
-		ImportRendererInterfacesPanelHelper:      importRendererInterfacesPanelHelper,
-		ImportRendererImplementationsPanelHelper: importRendererImplementationsPanelHelper,
+		ImportRenderer:          importRenderer,
+		ImportRendererPanels:    importRendererPanels,
+		ImportRendererViewTools: importRendererViewTools,
+		ImportRendererNotJS:     importRendererNotJS,
+		ImportRendererPaneling:  importRendererPaneling,
+
+		ImportRendererSpawnPack:   importRendererSpawnPack,
+		ImportRendererSpawnPanels: importRendererSpawnPanels,
+
+		// store
+
+		ImportDomainStore:        importDomainStore,
+		ImportDomainStoreRecord:  importDomainStoreRecord,
+		ImportDomainStoreStorer:  importDomainStoreStorer,
+		ImportDomainStoreStoring: importDomainStoreStoring,
 	}
 }
 
@@ -140,10 +160,14 @@ type ApplicationPathsI interface {
 	WriteFile(fpath string, data []byte) error
 	GetDMode() os.FileMode
 	GetFMode() os.FileMode
+	GetFileNames() *FileNames
+	GetFolderNames() *FolderNames
 }
 
 // ApplicationPaths is the paths needed for kick.
 type ApplicationPaths struct {
+	appName string
+
 	inputFolderRendererPath    string
 	inputFolderMainProcessPath string
 
@@ -165,32 +189,41 @@ type ApplicationPaths struct {
 func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 	ap.FMode = os.FileMode(0666)
 	ap.DMode = os.FileMode(0775)
+	ap.appName = appname
 
 	ap.initializeOutput(pwd, outputFolder, appname)
 
 	// import paths
-	ap.paths.ImportDomainInterfacesCallers = importDomainInterfacesCallers
-	ap.paths.ImportDomainInterfacesStorers = importDomainInterfacesStorers
 	ap.paths.ImportDomainDataFilepaths = importDomainDataFilepaths
-	ap.paths.ImportDomainDataCallIDs = importDomainDataCallIDs
-	ap.paths.ImportDomainDataCallParams = importDomainDataCallParams
 	ap.paths.ImportDomainDataLogLevels = importDomainDataLogLevels
 	ap.paths.ImportDomainDataSettings = importDomainDataSettings
 	ap.paths.ImportDomainTypes = importDomainTypes
-	ap.paths.ImportDomainImplementationsCalling = importDomainImplementationsCalling
-	ap.paths.ImportDomainImplementationsStoringBolt = importDomainImplementationsStoringBolt
+
+	// lpc
+
+	ap.paths.ImportDomainLPC = importDomainLPC
+	ap.paths.ImportDomainLPCMessage = importDomainLPCMessage
+	ap.paths.ImportRendererLPC = importRendererLPC
+	ap.paths.ImportMainProcessLPC = importMainProcessLPC
+	ap.paths.ImportMainProcessLPCDispatch = importMainProcessLPCDispatch
 
 	ap.paths.ImportMainProcessServices = importMainProcessServices
-	ap.paths.ImportMainProcessCalls = importMainProcessCalls
-	ap.paths.ImportMainProcessCallServer = importMainProcessCallServer
+	ap.paths.ImportMainProcessLPCDispatch = importMainProcessLPCDispatch
 
-	ap.paths.ImportRendererCallClient = importRendererCallClient
-	ap.paths.ImportRendererCalls = importRendererCalls
+	ap.paths.ImportRenderer = importRenderer
 	ap.paths.ImportRendererPanels = importRendererPanels
 	ap.paths.ImportRendererViewTools = importRendererViewTools
 	ap.paths.ImportRendererNotJS = importRendererNotJS
-	ap.paths.ImportRendererInterfacesPanelHelper = importRendererInterfacesPanelHelper
-	ap.paths.ImportRendererImplementationsPanelHelper = importRendererImplementationsPanelHelper
+	ap.paths.ImportRendererPaneling = importRendererPaneling
+
+	ap.paths.ImportRendererSpawnPack = importRendererSpawnPack
+	ap.paths.ImportRendererSpawnPanels = importRendererSpawnPanels
+
+	ap.paths.ImportDomainStore = importDomainStore
+	ap.paths.ImportDomainStoreRecord = importDomainStoreRecord
+	ap.paths.ImportDomainStoreStorer = importDomainStoreStorer
+	ap.paths.ImportDomainStoreStoring = importDomainStoreStoring
+
 }
 
 // GetDMode returns the file mode for directories.
@@ -215,8 +248,10 @@ func (ap *ApplicationPaths) GetFileNames() *FileNames {
 }
 
 // GetFolderNames returns the folder names.
-func (ap *ApplicationPaths) GetFolderNames() *FolderNames {
-	return GetFolderNames()
+func (ap *ApplicationPaths) GetFolderNames() (fnames *FolderNames) {
+	fnames = GetFolderNames()
+	fnames.SitePack = strings.ToLower(ap.appName) + "sitepack"
+	return
 }
 
 // Paths are the folder paths
@@ -226,154 +261,164 @@ type Paths struct {
 	OutputDotKickwasmYAML  string
 	OutputDotKickwasmFlags string
 
+	// output sitepack
+	OutputSitePack string
+
 	// output domain
 
 	OutputDomain string
 
-	OutputDomainInterfaces        string
-	OutputDomainInterfacesCallers string
-	OutputDomainInterfacesStorers string
-
 	OutputDomainData          string
 	OutputDomainDataFilepaths string
-	OutputDomainDataCallIDs   string
 	OutputDomainDataLogLevels string
 	OutputDomainDataSettings  string
 
-	OutputDomainImplementations            string
-	OutputDomainImplementationsCalling     string
-	OutputDomainImplementationsStoring     string
-	OutputDomainImplementationsStoringBolt string
+	OutputDomainStore        string
+	OutputDomainStoreStoring string
+	OutputDomainStoreStorer  string
+	OutputDomainStoreRecord  string
 
 	OutputDomainTypes string
 
+	// output domain lpc
+
+	OutputDomainLPC        string
+	OutputDomainLPCMessage string
+
 	// output main process
 
-	OutputMainProcess           string
-	OutputMainProcessCalls      string
-	OutputMainProcessCallServer string
-	OutputMainProcessServices   string
+	OutputMainProcess            string
+	OutputMainProcessLPCDispatch string
+
+	// output main process lpc
+
+	OutputMainProcessLPC string
 
 	// output renderer
 
-	OutputRenderer                           string
-	OutputRendererCSS                        string
-	OutputRendererTemplates                  string
-	OutputRendererCallClient                 string
-	OutputRendererCalls                      string
-	OutputRendererPanels                     string
-	OutputRendererSite                       string
-	OutputRendererViewTools                  string
-	OutputRendererNotJS                      string
-	OutputRendererInterfaces                 string
-	OutputRendererInterfacesPanelHelper      string
-	OutputRendererImplementations            string
-	OutputRendererImplementationsPanelHelper string
+	OutputRenderer               string
+	OutputRendererCSS            string
+	OutputRendererMyCSS          string
+	OutputRendererTemplates      string
+	OutputRendererSpawnTemplates string
+	OutputRendererPanels         string
+	OutputRendererSpawns         string
+	OutputRendererSite           string
+	OutputRendererViewTools      string
+	OutputRendererNotJS          string
+	OutputRendererPaneling       string
+	OutputRendererSpawnPack      string
+
+	// output renderer lpc
+
+	OutputRendererLPC string
 
 	// import domain
 
-	ImportDomainInterfacesCallers          string
-	ImportDomainInterfacesStorers          string
-	ImportDomainDataFilepaths              string
-	ImportDomainDataCallIDs                string
-	ImportDomainDataCallParams             string
-	ImportDomainDataLogLevels              string
-	ImportDomainDataSettings               string
-	ImportDomainTypes                      string
-	ImportDomainImplementationsCalling     string
-	ImportDomainImplementationsStoringBolt string
+	ImportDomainDataFilepaths string
+	ImportDomainDataLogLevels string
+	ImportDomainDataSettings  string
+	ImportDomainTypes         string
+
+	// import domain lpc
+
+	ImportDomainLPC        string
+	ImportDomainLPCMessage string
 
 	// import main process
 
-	ImportMainProcessCalls      string
-	ImportMainProcessCallServer string
-	ImportMainProcessServices   string
+	ImportMainProcessServices string
+
+	// import main process lpc
+
+	ImportMainProcessLPC         string
+	ImportMainProcessLPCDispatch string
 
 	// import renderer
 
-	ImportRendererCallClient                 string
-	ImportRendererCalls                      string
-	ImportRendererPanels                     string
-	ImportRendererViewTools                  string
-	ImportRendererNotJS                      string
-	ImportRendererInterfacesPanelHelper      string
-	ImportRendererImplementationsPanelHelper string
+	ImportRenderer          string
+	ImportRendererPanels    string
+	ImportRendererViewTools string
+	ImportRendererNotJS     string
+	ImportRendererPaneling  string
+
+	ImportRendererSpawnPack   string
+	ImportRendererSpawnPanels string
+
+	// import renderer lpc
+
+	ImportRendererLPC string
+
+	// import store
+
+	ImportDomainStore        string
+	ImportDomainStoreRecord  string
+	ImportDomainStoreStorer  string
+	ImportDomainStoreStoring string
 }
 
 // initializeOutput defines the output paths
 func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) {
 	fileNames := GetFileNames()
-	folderNames := GetFolderNames()
+	folderNames := ap.GetFolderNames()
+
 	// set and create the output folder and sub folders.
 	// fix the output folder.
+	ap.paths.OutputSitePack = filepath.Join(pwd, outputFolder, folderNames.SitePack)
 	ap.paths.Output = filepath.Join(pwd, outputFolder, appname)
+
 	// output .kickwasm folder and sub folders
 	ap.paths.OutputDotKickwasm = filepath.Join(ap.paths.Output, folderNames.DotKickwasm)
 	ap.paths.OutputDotKickwasmYAML = filepath.Join(ap.paths.OutputDotKickwasm, folderNames.YAML)
 	ap.paths.OutputDotKickwasmFlags = filepath.Join(ap.paths.OutputDotKickwasm, fileNames.FlagDotYAML)
+
 	// output domain folder and sub folders.
 	ap.paths.OutputDomain = filepath.Join(ap.paths.Output, folderNames.Domain)
-	ap.paths.OutputDomainInterfaces = filepath.Join(ap.paths.OutputDomain, folderNames.Interfaces)
-	ap.paths.OutputDomainInterfacesCallers = filepath.Join(ap.paths.OutputDomainInterfaces, folderNames.Caller)
-	ap.paths.OutputDomainInterfacesStorers = filepath.Join(ap.paths.OutputDomainInterfaces, folderNames.Storer)
 	ap.paths.OutputDomainData = filepath.Join(ap.paths.OutputDomain, folderNames.Data)
 	ap.paths.OutputDomainDataFilepaths = filepath.Join(ap.paths.OutputDomainData, folderNames.FilePaths)
-	ap.paths.OutputDomainDataCallIDs = filepath.Join(ap.paths.OutputDomainData, folderNames.CallIDs)
 	ap.paths.OutputDomainDataLogLevels = filepath.Join(ap.paths.OutputDomainData, folderNames.LogLevels)
 	ap.paths.OutputDomainDataSettings = filepath.Join(ap.paths.OutputDomainData, folderNames.Settings)
-	ap.paths.OutputDomainImplementations = filepath.Join(ap.paths.OutputDomain, folderNames.Implementations)
-	ap.paths.OutputDomainImplementationsCalling = filepath.Join(ap.paths.OutputDomainImplementations, folderNames.Calling)
-	ap.paths.OutputDomainImplementationsStoring = filepath.Join(ap.paths.OutputDomainImplementations, folderNames.Storing)
-	ap.paths.OutputDomainImplementationsStoringBolt = filepath.Join(ap.paths.OutputDomainImplementationsStoring, folderNames.BoltStoring)
+	ap.paths.OutputDomainStore = filepath.Join(ap.paths.OutputDomain, folderNames.Store)
+	ap.paths.OutputDomainStoreStoring = filepath.Join(ap.paths.OutputDomainStore, folderNames.Storing)
+	ap.paths.OutputDomainStoreStorer = filepath.Join(ap.paths.OutputDomainStore, folderNames.Storer)
+	ap.paths.OutputDomainStoreRecord = filepath.Join(ap.paths.OutputDomainStore, folderNames.Record)
 	ap.paths.OutputDomainTypes = filepath.Join(ap.paths.OutputDomain, folderNames.Types)
+
 	// output renderer folder and sub folders.
 	ap.paths.OutputRenderer = filepath.Join(ap.paths.Output, folderNames.Renderer)
-	ap.paths.OutputRendererCallClient = filepath.Join(ap.paths.OutputRenderer, folderNames.CallClient)
-	ap.paths.OutputRendererCalls = filepath.Join(ap.paths.OutputRenderer, folderNames.Calls)
 	ap.paths.OutputRendererPanels = filepath.Join(ap.paths.OutputRenderer, folderNames.Panels)
-	ap.paths.OutputRendererInterfaces = filepath.Join(ap.paths.OutputRenderer, folderNames.Interfaces)
-	ap.paths.OutputRendererInterfacesPanelHelper = filepath.Join(ap.paths.OutputRendererInterfaces, folderNames.PanelHelper)
-	ap.paths.OutputRendererImplementations = filepath.Join(ap.paths.OutputRenderer, folderNames.Implementations)
-	ap.paths.OutputRendererImplementationsPanelHelper = filepath.Join(ap.paths.OutputRendererImplementations, folderNames.PanelHelping)
+	ap.paths.OutputRendererSpawns = filepath.Join(ap.paths.OutputRenderer, folderNames.SpawnPanels)
+	ap.paths.OutputRendererPaneling = filepath.Join(ap.paths.OutputRenderer, folderNames.Paneling)
 	ap.paths.OutputRendererViewTools = filepath.Join(ap.paths.OutputRenderer, folderNames.ViewTools)
 	ap.paths.OutputRendererNotJS = filepath.Join(ap.paths.OutputRenderer, folderNames.NotJS)
+	ap.paths.OutputRendererSpawnPack = filepath.Join(ap.paths.OutputRenderer, folderNames.SpawnPack)
 
-	// renderer site folders
+	// output renderer site folders
 	ap.paths.OutputRendererSite = filepath.Join(ap.paths.Output, folderNames.RendererSite)
 	ap.paths.OutputRendererCSS = filepath.Join(ap.paths.OutputRendererSite, folderNames.CSS)
+	ap.paths.OutputRendererMyCSS = filepath.Join(ap.paths.OutputRendererSite, folderNames.MyCSS)
 	ap.paths.OutputRendererTemplates = filepath.Join(ap.paths.OutputRendererSite, folderNames.Templates)
+	ap.paths.OutputRendererSpawnTemplates = filepath.Join(ap.paths.OutputRendererSite, folderNames.SpawnTemplates)
 
 	// output mainprocess folder and sub folders.
 	ap.paths.OutputMainProcess = filepath.Join(ap.paths.Output, folderNames.MainProcess)
-	ap.paths.OutputMainProcessCalls = filepath.Join(ap.paths.OutputMainProcess, folderNames.Calls)
-	ap.paths.OutputMainProcessCallServer = filepath.Join(ap.paths.OutputMainProcess, folderNames.CallServer)
-	ap.paths.OutputMainProcessServices = filepath.Join(ap.paths.OutputMainProcess, folderNames.Services)
+
+	// output lpc
+	ap.paths.OutputDomainLPC = filepath.Join(ap.paths.OutputDomain, folderNames.LPC)
+	ap.paths.OutputDomainLPCMessage = filepath.Join(ap.paths.OutputDomainLPC, folderNames.Message)
+	ap.paths.OutputRendererLPC = filepath.Join(ap.paths.OutputRenderer, folderNames.LPC)
+	ap.paths.OutputMainProcessLPC = filepath.Join(ap.paths.OutputMainProcess, folderNames.LPC)
+	ap.paths.OutputMainProcessLPCDispatch = filepath.Join(ap.paths.OutputMainProcessLPC, folderNames.Dispatch)
 }
 
 // MakeOutput creates the output paths
 func (ap *ApplicationPaths) MakeOutput() (err error) {
 	// output .kickwasm folder and sub folders
-	if err = os.MkdirAll(ap.paths.OutputDotKickwasm, ap.DMode); err != nil {
-		return
-	}
 	if err = os.MkdirAll(ap.paths.OutputDotKickwasmYAML, ap.DMode); err != nil {
-		return
-	}
-	// output domain interfaces
-	if err = os.MkdirAll(ap.paths.OutputDomainInterfaces, ap.DMode); err != nil {
-		return
-	}
-	if err = os.MkdirAll(ap.paths.OutputDomainInterfacesCallers, ap.DMode); err != nil {
-		return
-	}
-	if err = os.MkdirAll(ap.paths.OutputDomainInterfacesStorers, ap.DMode); err != nil {
 		return
 	}
 	// output domain data
 	if err = os.MkdirAll(ap.paths.OutputDomainDataFilepaths, ap.DMode); err != nil {
-		return
-	}
-	if err = os.MkdirAll(ap.paths.OutputDomainDataCallIDs, ap.DMode); err != nil {
 		return
 	}
 	if err = os.MkdirAll(ap.paths.OutputDomainDataLogLevels, ap.DMode); err != nil {
@@ -382,38 +427,37 @@ func (ap *ApplicationPaths) MakeOutput() (err error) {
 	if err = os.MkdirAll(ap.paths.OutputDomainDataSettings, ap.DMode); err != nil {
 		return
 	}
-	// output domain implementations
-	if err = os.MkdirAll(ap.paths.OutputDomainImplementationsCalling, ap.DMode); err != nil {
+	// output domain store
+	if err = os.MkdirAll(ap.paths.OutputDomainStoreRecord, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputDomainImplementationsStoringBolt, ap.DMode); err != nil {
+	if err = os.Mkdir(ap.paths.OutputDomainStoreStorer, ap.DMode); err != nil {
+		return
+	}
+	if err = os.Mkdir(ap.paths.OutputDomainStoreStoring, ap.DMode); err != nil {
 		return
 	}
 	// output domain types
 	if err = os.MkdirAll(ap.paths.OutputDomainTypes, ap.DMode); err != nil {
 		return
 	}
+	// output domain lpc folder and subfolders
+	if err = os.MkdirAll(ap.paths.OutputDomainLPCMessage, ap.DMode); err != nil {
+		return
+	}
+
 	// output mainprocess folder and sub folders.
-	if err = os.MkdirAll(ap.paths.OutputMainProcessCalls, ap.DMode); err != nil {
-		return
-	}
-	if err = os.MkdirAll(ap.paths.OutputMainProcessCallServer, ap.DMode); err != nil {
-		return
-	}
-	if err = os.MkdirAll(ap.paths.OutputMainProcessServices, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputMainProcessLPCDispatch, ap.DMode); err != nil {
 		return
 	}
 	// output renderer folder and sub folders.
 	if err = os.MkdirAll(ap.paths.OutputRendererCSS, ap.DMode); err != nil {
 		return
 	}
+	if err = os.MkdirAll(ap.paths.OutputRendererMyCSS, ap.DMode); err != nil {
+		return
+	}
 	if err = os.MkdirAll(ap.paths.OutputRendererTemplates, ap.DMode); err != nil {
-		return
-	}
-	if err = os.MkdirAll(ap.paths.OutputRendererCallClient, ap.DMode); err != nil {
-		return
-	}
-	if err = os.MkdirAll(ap.paths.OutputRendererCalls, ap.DMode); err != nil {
 		return
 	}
 	if err = os.MkdirAll(ap.paths.OutputRendererPanels, ap.DMode); err != nil {
@@ -425,16 +469,16 @@ func (ap *ApplicationPaths) MakeOutput() (err error) {
 	if err = os.MkdirAll(ap.paths.OutputRendererNotJS, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputRendererInterfaces, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererPaneling, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputRendererInterfacesPanelHelper, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererSpawnPack, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputRendererImplementations, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererLPC, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputRendererImplementationsPanelHelper, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputSitePack, ap.DMode); err != nil {
 		return
 	}
 	return nil

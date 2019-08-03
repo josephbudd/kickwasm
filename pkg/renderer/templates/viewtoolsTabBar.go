@@ -21,11 +21,12 @@ func (tools *Tools) ForceTabButtonClick(button js.Value) {
 }
 
 func (tools *Tools) initializeTabBar() {
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	tools.tabberLastPanelID = "{{.LastPanelID}}"
-	tools.tabberLastPanelLevels = make(map[string]string)
-{{range $level, $id := .LastPanelLevels}}
-	tools.tabberLastPanelLevels["{{$level}}"] = "{{$id}}"{{end}}
+	tools.tabberTabBarLastPanel = make(map[string]string, 20)
+{{range $tabBarID, $lastPanelID := .LastPanelLevels}}
+	// the level is the tab bar id.
+	tools.tabberTabBarLastPanel["{{$tabBarID}}"] = "{{$lastPanelID}}"{{end}}
 	cb := tools.RegisterEventCallBack(
 		func(event js.Value) interface{} {
 			target := notJS.GetEventTarget(event)
@@ -34,14 +35,16 @@ func (tools *Tools) initializeTabBar() {
 		},
 		true, true, true,
 	)
-	for id := range tools.tabberLastPanelLevels {
-		tabbar := notJS.GetElementByID(id)
-		tools.setTabBarOnClicks(tabbar, cb)
+	for id := range tools.tabberTabBarLastPanel {
+		if len(id) > 0 {
+			tabbar := notJS.GetElementByID(id)
+			tools.setTabBarOnClicks(tabbar, cb)
+		}
 	}
 }
 
 func (tools *Tools) setTabBarOnClicks(tabbar js.Value, cb js.Func) {
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	children := notJS.ChildrenSlice(tabbar)
 	for _, ch := range children {
 		if notJS.TagName(ch) == "BUTTON" {
@@ -55,24 +58,24 @@ func (tools *Tools) handleTabButtonOnClick(button js.Value) {
 		return
 	}
 	tools.setTabButtonFocus(button)
-	nextpanelid := tools.notJS.ID(button) + "Panel"
+	nextpanelid := tools.NotJS.ID(button) + "Panel"
 	if nextpanelid != tools.tabberLastPanelID {
 		// clear this level
 		parts := strings.Split(nextpanelid, "-")
 		nextpanellevel := parts[0]
-		tools.IDHide(tools.tabberLastPanelLevels[nextpanellevel])
+		tools.IDHide(tools.tabberTabBarLastPanel[nextpanellevel])
 		// show the next panel
 		tools.IDShow(nextpanelid)
 		// remember next panel. it is now the last panel.
 		tools.tabberLastPanelID = nextpanelid
-		tools.tabberLastPanelLevels[nextpanellevel] = nextpanelid
+		tools.tabberTabBarLastPanel[nextpanellevel] = nextpanelid
 	}
 	tools.SizeApp()
 }
 
 func (tools *Tools) setTabButtonFocus(tabinfocus js.Value) {
 	// focus the tab now in focus
-	notJS := tools.notJS
+	notJS := tools.NotJS
 	notJS.ClassListReplaceClass(tabinfocus, UnSelectedTabClassName, SelectedTabClassName)
 	p := notJS.ParentNode(tabinfocus)
 	children := notJS.ChildrenSlice(p)

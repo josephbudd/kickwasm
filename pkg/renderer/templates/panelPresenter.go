@@ -3,11 +3,11 @@ package templates
 // PanelPresenter is the genereric renderer panel presenter template.
 const PanelPresenter = `package {{call .PackageNameCase .PanelName}}
 
-import (
-	"github.com/pkg/errors"
+import ({{ if .IsTabSiblingPanel }}
+	"strings"
+	"syscall/js"{{ end }}
 
-	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
+	"github.com/pkg/errors"
 )
 
 /*
@@ -16,50 +16,41 @@ import (
 
 */
 
-// Presenter writes to the panel
-type Presenter struct {
-	panelGroup *PanelGroup
-	controler  *Controler
-	caller     *Caller
-	tools      *viewtools.Tools // see {{.ImportRendererViewTools}}
-	notJS      *notjs.NotJS
+// panelPresenter writes to the panel
+type panelPresenter struct {
+	group          *panelGroup
+	controler      *panelControler
+	caller         *panelCaller{{ if .IsTabSiblingPanel }}
+	tabPanelHeader js.Value{{ end }}
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
-	// Declare your Presenter members here.
+	// Declare your panelPresenter members here.
 	// example:
 
-	// import "syscall/js"
-
-	customerName js.Value
+	editCustomerName js.Value
 
 	*/
 }
 
-// defineMembers defines the Presenter members by their html elements.
+// defineMembers defines the panelPresenter members by their html elements.
 // Returns the error.
-func (panelPresenter *Presenter) defineMembers() (err error) {
+func (presenter *panelPresenter) defineMembers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(panelPresenter *Presenter) defineMembers()")
+			err = errors.WithMessage(err, "(presenter *panelPresenter) defineMembers()")
 		}
 	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
-	// Define your Presenter members.
+	// Define your panelPresenter members.
 	// example:
 
-	// import "syscall/js"
-
-	notJS := panelPresenter.notJS
-	tools := panelPresenter.tools
-	null := js.Null()
-
-	// Define the customer name input field.
-	if panelPresenter.customerName = notJS.GetElementByID("customerName"); panelPresenter.customerName == null {
-		err = errors.New("unable to find #customerName")
+	// Define the edit form's customer name input field.
+	if presenter.editCustomerName = notJS.GetElementByID("editCustomerName"); presenter.editCustomerName == null {
+		err = errors.New("unable to find #editCustomerName")
 		return
 	}
 
@@ -68,14 +59,31 @@ func (panelPresenter *Presenter) defineMembers() (err error) {
 	return
 }
 
+{{ if .IsTabSiblingPanel }}// Tab panel heading.
+
+func (presenter *panelPresenter) getTabPanelHeading() (heading string) {
+	heading = notJS.GetInnerText(presenter.tabPanelHeader)
+	return
+}
+
+func (presenter *panelPresenter) setTabPanelHeading(heading string) {
+	heading = strings.TrimSpace(heading)
+	if len(heading) == 0 {
+		tools.ElementHide(presenter.tabPanelHeader)
+	} else {
+		tools.ElementShow(presenter.tabPanelHeader)
+	}
+	notJS.SetInnerText(presenter.tabPanelHeader, heading)
+}{{ end }}
+
 /* NOTE TO DEVELOPER. Step 3 of 3.
 
-// Define your Presenter functions.
+// Define your panelPresenter functions.
 // example:
 
-// displayCustomer displays the customer in the panel.
-func (panelPresenter *Presenter) displayCustomer(record *types.CustomerRecord) {
-	panelPresenter.notJS.SetInnerText(panelPresenter.customerName, record.Name)
+// displayCustomer displays the customer in the edit customer form panel.
+func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
+	notJS.SetValue(presenter.editCustomerName, record.Name)
 }
 
 */

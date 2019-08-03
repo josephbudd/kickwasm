@@ -17,8 +17,8 @@ func createViewToolsTabBarGo(appPaths paths.ApplicationPathsI, builder *project.
 		SelectedTabClass   string
 	}{
 		TabBarIDs:          builder.GenerateTabBarIDs(),
-		LastPanelID:        builder.GenerateOpeningTabPanelID(),
-		LastPanelLevels:    builder.GenerateTabBarLevelStartPanelMap(),
+		LastPanelID:        "",
+		LastPanelLevels:    builder.GenerateTabBarIDStartPanelIDMap(),
 		SelectedTabClass:   builder.Classes.SelectedTab,
 		UnSelectedTabClass: builder.Classes.UnSelectedTab,
 	}

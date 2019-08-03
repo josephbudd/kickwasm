@@ -1,0 +1,121 @@
+
+
+/******************************************************************************
+
+  user content
+  user markup
+
+******************************************************************************/
+
+.vscroll
+{
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+
+.hvscroll
+{
+  overflow:auto;
+}
+
+.user-content
+{
+  /* "user-content" is always used with "vscroll" or "hvscroll" */
+  /* It always wraps "user-markup" */
+  padding-right:30px;
+}
+
+.user-markup
+{
+  /* "user-markup" only wraps user markup templates */
+  letter-spacing: 2px;
+  word-spacing: 4px;
+}
+
+.modal-user-content,
+.closer-user-content
+{
+  overflow-x:hidden;
+  overflow-y:auto;
+  padding-right:10px;
+  letter-spacing: 2px;
+  word-spacing: 4px;
+}
+
+.user-markup button,
+.user-markup input,
+.user-markup label,
+.user-markup legend,
+.user-markup select,
+.user-markup textarea,
+.user-markup th,
+.user-markup td,
+.modal-user-content button,
+.modal-user-content input,
+.modal-user-content label,
+.modal-user-content legend,
+.modal-user-content select,
+.modal-user-content textarea,
+.modal-user-content th,
+.modal-user-content td,
+.closer-user-content button,
+.closer-user-content input,
+.closer-user-content label,
+.closer-user-content legend,
+.closer-user-content select,
+.closer-user-content textarea,
+.closer-user-content th,
+.closer-user-content td
+{
+  font-size:20px
+}
+
+.user-markup button,
+.modal-user-content button,
+.closer-user-content button
+{
+  border-width:1px;
+  border-style:solid;
+  cursor:pointer;
+}
+.user-markup button:hover,
+.modal-user-content button:hover,
+.closer-user-content button:hover
+{
+  cursor:pointer;
+}
+.user-markup button:focus,
+.modal-user-content button:focus,
+.closer-user-content button:focus
+{
+  outline: none;
+}
+
+.user-markup h3,
+.user-markup h4,
+.user-markup h5,
+.user-markup h6,
+.modal-user-content h3,
+.modal-user-content h4,
+.modal-user-content h5,
+.modal-user-content h6,
+.closer-user-content h3,
+.closer-user-content h4,
+.closer-user-content h5,
+.closer-user-content h6
+{
+  font-size:22px;
+}
+
+/*
+	right margin limits the width and brings it away from the scroll bar.
+*/
+.user-markup p,
+.modal-user-content p,
+.closer-user-content p
+{
+  display:block;
+  clear:both;
+  width:100%;
+  margin-right:20px;
+}

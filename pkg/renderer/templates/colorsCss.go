@@ -100,7 +100,7 @@ div.{{.TabBar}} > button.selected-tab
 
 ******************************************************************************/
 
-#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelInner}}
+#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelPad}}
 {
   color:white;
 }

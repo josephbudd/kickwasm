@@ -11,31 +11,19 @@ import (
 func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
 	data := &struct {
-		ApplicationGitPath                       string
-		Stores                                   []string
-		ImportRendererCallClient                 string
-		ImportRendererCalls                      string
-		ImportRendererImplementationsPanelHelper string
-		ImportRendererNotJS                      string
-		ImportRendererViewTools                  string
-		ImportDomainImplementationsCalling       string
-		ImportDomainDataSettings                 string
-		ImportDomainDataCallIDs                  string
-		ImportDomainDataLogLevels                string
-		ImportDomainTypes                        string
+		ApplicationGitPath      string
+		Stores                  []string
+		ImportRendererPaneling  string
+		ImportRendererNotJS     string
+		ImportRendererViewTools string
+		ImportRendererLPC       string
 	}{
-		ApplicationGitPath:                       builder.ImportPath,
-		Stores:                                   builder.Stores,
-		ImportRendererCallClient:                 folderpaths.ImportRendererCallClient,
-		ImportRendererCalls:                      folderpaths.ImportRendererCalls,
-		ImportRendererImplementationsPanelHelper: folderpaths.ImportRendererImplementationsPanelHelper,
-		ImportRendererNotJS:                      folderpaths.ImportRendererNotJS,
-		ImportRendererViewTools:                  folderpaths.ImportRendererViewTools,
-		ImportDomainImplementationsCalling:       folderpaths.ImportDomainImplementationsCalling,
-		ImportDomainDataSettings:                 folderpaths.ImportDomainDataSettings,
-		ImportDomainDataCallIDs:                  folderpaths.ImportDomainDataCallIDs,
-		ImportDomainDataLogLevels:                folderpaths.ImportDomainDataLogLevels,
-		ImportDomainTypes:                        folderpaths.ImportDomainTypes,
+		ApplicationGitPath:      builder.ImportPath,
+		Stores:                  builder.Stores,
+		ImportRendererPaneling:  folderpaths.ImportRendererPaneling,
+		ImportRendererNotJS:     folderpaths.ImportRendererNotJS,
+		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
+		ImportRendererLPC:       folderpaths.ImportRendererLPC,
 	}
 	fileNames := paths.GetFileNames()
 	fname := fileNames.MainDotGo

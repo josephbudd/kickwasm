@@ -15,17 +15,29 @@ import ({{range .Imports}}
 
 */
 
-func doPanels(quitCh chan struct{}, tools *viewtools.Tools, callMap map[types.CallID]caller.Renderer, notJS *notjs.NotJS, helper panelHelper.Helper) (err error) {
-	// 1. Construct the panel code.{{range $name, $path := .PanelNamePath}}
+func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
+	tools *viewtools.Tools, notJS *notjs.NotJS, help *paneling.Help) (err error) {
+
+	// 1. Prepare the spawn panels.{{ range $packageName, $path := .SpawnTabBarNamePath}}
+	{{call $Dot.PackageNameCase $packageName}}.Prepare(client, quitChan, eojChan, receiveChan, sendChan, tools, notJS, help){{end}}
+
+	// 2. Construct the panel code.{{range $name, $path := .PanelNamePath}}
 	var {{call $Dot.LowerCamelCase $name}} *{{call $Dot.PackageNameCase $name}}.Panel
-	if {{call $Dot.LowerCamelCase $name}}, err = {{call $Dot.PackageNameCase $name}}.NewPanel(quitCh, tools, notJS, callMap, helper); err != nil {
+	if {{call $Dot.LowerCamelCase $name}}, err = {{call $Dot.PackageNameCase $name}}.NewPanel(quitChan, eojChan, receiveChan, sendChan, tools, notJS, help); err != nil {
+		tools.ConsoleLog("doPanels: erorr is " + err.Error())
 		return
 	}{{end}}
 
-	// 2. Size the app.
+	// No errors so continue.
+	tools.ConsoleLog("doPanels: no erorrs")
+
+	// 3. Size the app.
 	tools.SizeApp()
 
-	// 3. Start each panel's initial calls.{{range $name, $path := .PanelNamePath}}
+	// 4. Start each panel's listening for the main process.{{range $name, $path := .PanelNamePath}}
+	{{call $Dot.LowerCamelCase $name}}.Listen(){{end}}
+
+	// 5. Start each panel's initial calls.{{range $name, $path := .PanelNamePath}}
 	{{call $Dot.LowerCamelCase $name}}.InitialCalls(){{end}}
 
 	return

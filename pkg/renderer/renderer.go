@@ -51,12 +51,6 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 	if err = createMainDoPanelsGo(appPaths, builder); err != nil {
 		return
 	}
-	if err = createCallerGo(appPaths, builder); err != nil {
-		return
-	}
-	if err = createCalls(appPaths, builder); err != nil {
-		return
-	}
 	if err = createWASMExecJS(appPaths); err != nil {
 		return
 	}
@@ -66,13 +60,34 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 	if err = createNotJS(appPaths); err != nil {
 		return
 	}
+	// Spawn Tabs.
+	if err = createSpawnPack(appPaths); err != nil {
+		return
+	}
+	if err = createSpawnTabHTMLTemplates(appPaths, builder); err != nil {
+		return
+	}
+	if err = createSpawnTabBarFiles(appPaths, builder); err != nil {
+		return
+	}
+	if err = createSpawnTabFiles(appPaths, builder); err != nil {
+		return
+	}
+	if err = createTabSpawnPanels(appPaths, builder); err != nil {
+		return
+	}
+	// LPC
+	if err = createLPC(appPaths, builder); err != nil {
+		return
+	}
+
 	return
 }
 
 // createHTMLTemplates creates the main html template file.
 func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool) (err error) {
 	folderpaths := appPaths.GetPaths()
-	doc := buildIndexHTMLNode(builder, addLocations)
+	doc := buildIndexHTMLNode(appPaths, builder, addLocations)
 	bbuf := &bytes.Buffer{}
 	if err = html.Render(bbuf, doc); err != nil {
 		return
@@ -113,6 +128,33 @@ func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *project.Buil
 			if err = ofile.Close(); err != nil {
 				return
 			}
+		}
+	}
+	return
+}
+
+// createSpawnTabHTMLTemplates creates the spawn tab html template file.
+func createSpawnTabHTMLTemplates(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
+	folderpaths := appPaths.GetPaths()
+	markupPath := builder.GenerateSpawnTabMarkupPanelPathMap()
+	for markup, shortPath := range markupPath {
+		dir := filepath.Dir(shortPath)
+		folderPath := filepath.Join(folderpaths.OutputRendererSpawnTemplates, dir)
+		if err = os.MkdirAll(folderPath, appPaths.GetDMode()); err != nil {
+			return
+		}
+		fname := filepath.Base(shortPath) + ".tmpl"
+		fpath := filepath.Join(folderPath, fname)
+		var ofile *os.File
+		if ofile, err = os.OpenFile(fpath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, appPaths.GetFMode()); err != nil {
+			return
+		}
+		if _, err = ofile.Write([]byte(markup)); err != nil {
+			ofile.Close()
+			return
+		}
+		if err = ofile.Close(); err != nil {
+			return
 		}
 	}
 	return

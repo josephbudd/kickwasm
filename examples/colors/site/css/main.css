@@ -143,17 +143,18 @@ div.inner-panel
 div.tab-bar
 {
   align-content: baseline;
-  height:fit-content;
+  overflow: hidden;
 }
 div.tab-bar > button
 {
+  float: left;
   width: max-intrinsic;
   border-width: 1px;
   border-style: solid;
   border-bottom: none;
   border-radius: 4px 4px 0 0;
   padding:4px 12px;
-  margin:3px 0 0 0;
+  margin:9px 0 0 0;
   font-size:16px;
   cursor:pointer;
   border-spacing: 4px;
@@ -164,7 +165,7 @@ div.tab-bar > button.selected-tab
   position:relative;
   margin:0 0 -1px 0;
   padding:4px 12px 6px 12px;
-  font-size:20px;
+  font-size:26px;
   cursor:default;
 }
 
@@ -258,7 +259,7 @@ div.under-tab-bar .heading-of-panel
 }
 */
 
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner
+#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad
 {
   overflow:hidden;
   /* top and bottom padding for scroll bars */
@@ -269,7 +270,7 @@ div.under-tab-bar .heading-of-panel
   border-radius: 20px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner > .slider-button-pad
+#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad
 {
   overflow-x:hidden;
   overflow-y:auto;
@@ -278,7 +279,7 @@ div.under-tab-bar .heading-of-panel
   word-spacing: 4px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner > .slider-button-pad > button
+#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad > button
 {
   height:200px;
   width:300px;
@@ -290,7 +291,7 @@ div.under-tab-bar .heading-of-panel
   border-style:solid;
   border-radius: 20px 0px 20px 0px;
 }
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-inner > .slider-button-pad > button:focus { outline: none; }
+#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad > button:focus { outline: none; }
 
 #tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel
 {
@@ -315,99 +316,4 @@ div.under-tab-bar .heading-of-panel
   font-size:24px;
   display:inline;
   margin-right: 4px;
-}
-
-/******************************************************************************
-
-  user content
-
-******************************************************************************/
-
-.user-content,
-.modal-user-content,
-.closer-user-content
-{
-  overflow-x:hidden;
-  overflow-y:auto;
-  padding-right:10px;
-  letter-spacing: 2px;
-  word-spacing: 4px;
-}
-
-.user-content button,
-.user-content input,
-.user-content label,
-.user-content legend,
-.user-content select,
-.user-content textarea,
-.user-content th,
-.user-content td,
-.modal-user-content button,
-.modal-user-content input,
-.modal-user-content label,
-.modal-user-content legend,
-.modal-user-content select,
-.modal-user-content textarea,
-.modal-user-content th,
-.modal-user-content td,
-.closer-user-content button,
-.closer-user-content input,
-.closer-user-content label,
-.closer-user-content legend,
-.closer-user-content select,
-.closer-user-content textarea,
-.closer-user-content th,
-.closer-user-content td
-{
-  font-size:20px
-}
-
-.user-content button,
-.modal-user-content button,
-.closer-user-content button
-{
-  border-width:1px;
-  border-style:solid;
-  cursor:pointer;
-}
-.user-content button:hover,
-.modal-user-content button:hover,
-.closer-user-content button:hover
-{
-  cursor:pointer;
-}
-.user-content button:focus,
-.modal-user-content button:focus,
-.closer-user-content button:focus
-{
-  outline: none;
-}
-
-.user-content h3,
-.user-content h4,
-.user-content h5,
-.user-content h6,
-.modal-user-content h3,
-.modal-user-content h4,
-.modal-user-content h5,
-.modal-user-content h6,
-.closer-user-content h3,
-.closer-user-content h4,
-.closer-user-content h5,
-.closer-user-content h6
-{
-  font-size:22px;
-}
-
-/*
-	right margin limits the width and brings it away from the scroll bar.
-*/
-.user-content p,
-.modal-user-content p,
-.closer-user-content p
-{
-  display:block;
-  clear:both;
-  width:100%;
-  margin-right:20px;
 }

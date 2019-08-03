@@ -131,7 +131,7 @@ div.{{.TabPanel}}
   padding:0px 2px 0px 2px;
 }
 
-div.{{.InnerPanel}}
+div.{{.TabPanelGroup}}
 {
   overflow-y:auto;
   padding-left:20px;
@@ -146,17 +146,18 @@ div.{{.InnerPanel}}
 div.{{.TabBar}}
 {
   align-content: baseline;
-  height:fit-content;
+  overflow: hidden;
 }
 div.{{.TabBar}} > button
 {
+  float: left;
   width: max-intrinsic;
   border-width: 1px;
   border-style: solid;
   border-bottom: none;
   border-radius: 4px 4px 0 0;
   padding:4px 12px;
-  margin:3px 0 0 0;
+  margin:9px 0 0 0;
   font-size:16px;
   cursor:pointer;
   border-spacing: 4px;
@@ -167,7 +168,7 @@ div.{{.TabBar}} > button.selected-tab
   position:relative;
   margin:0 0 -1px 0;
   padding:4px 12px 6px 12px;
-  font-size:20px;
+  font-size:26px;
   cursor:default;
 }
 
@@ -261,7 +262,7 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
 }
 */
 
-#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelInner}}
+#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelPad}}
 {
   overflow:hidden;
   /* top and bottom padding for scroll bars */
@@ -272,7 +273,7 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   border-radius: 20px;
 }
 
-#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelInner}} > .{{.SliderButtonPad}}
+#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelPad}} > .{{.SliderButtonPad}}
 {
   overflow-x:hidden;
   overflow-y:auto;
@@ -281,7 +282,7 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   word-spacing: 4px;
 }
 
-#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelInner}} > .{{.SliderButtonPad}} > button
+#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelPad}} > .{{.SliderButtonPad}} > button
 {
   height:200px;
   width:300px;
@@ -293,7 +294,7 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   border-style:solid;
   border-radius: 20px 0px 20px 0px;
 }
-#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelInner}} > .{{.SliderButtonPad}} > button:focus { outline: none; }
+#{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelPad}} > .{{.SliderButtonPad}} > button:focus { outline: none; }
 
 #{{.IDSliderCollection}} > .{{.SliderPanel}} > h2.{{.PanelHeading}}
 {
@@ -314,100 +315,5 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
   font-size:24px;
   display:inline;
   margin-right: 4px;
-}
-
-/******************************************************************************
-
-  user content
-
-******************************************************************************/
-
-.{{.UserContent}},
-.{{.ModalUserContent}},
-.{{.CloserUserContent}}
-{
-  overflow-x:hidden;
-  overflow-y:auto;
-  padding-right:10px;
-  letter-spacing: 2px;
-  word-spacing: 4px;
-}
-
-.{{.UserContent}} button,
-.{{.UserContent}} input,
-.{{.UserContent}} label,
-.{{.UserContent}} legend,
-.{{.UserContent}} select,
-.{{.UserContent}} textarea,
-.{{.UserContent}} th,
-.{{.UserContent}} td,
-.{{.ModalUserContent}} button,
-.{{.ModalUserContent}} input,
-.{{.ModalUserContent}} label,
-.{{.ModalUserContent}} legend,
-.{{.ModalUserContent}} select,
-.{{.ModalUserContent}} textarea,
-.{{.ModalUserContent}} th,
-.{{.ModalUserContent}} td,
-.{{.CloserUserContent}} button,
-.{{.CloserUserContent}} input,
-.{{.CloserUserContent}} label,
-.{{.CloserUserContent}} legend,
-.{{.CloserUserContent}} select,
-.{{.CloserUserContent}} textarea,
-.{{.CloserUserContent}} th,
-.{{.CloserUserContent}} td
-{
-  font-size:20px
-}
-
-.{{.UserContent}} button,
-.{{.ModalUserContent}} button,
-.{{.CloserUserContent}} button
-{
-  border-width:1px;
-  border-style:solid;
-  cursor:pointer;
-}
-.{{.UserContent}} button:hover,
-.{{.ModalUserContent}} button:hover,
-.{{.CloserUserContent}} button:hover
-{
-  cursor:pointer;
-}
-.{{.UserContent}} button:focus,
-.{{.ModalUserContent}} button:focus,
-.{{.CloserUserContent}} button:focus
-{
-  outline: none;
-}
-
-.{{.UserContent}} h3,
-.{{.UserContent}} h4,
-.{{.UserContent}} h5,
-.{{.UserContent}} h6,
-.{{.ModalUserContent}} h3,
-.{{.ModalUserContent}} h4,
-.{{.ModalUserContent}} h5,
-.{{.ModalUserContent}} h6,
-.{{.CloserUserContent}} h3,
-.{{.CloserUserContent}} h4,
-.{{.CloserUserContent}} h5,
-.{{.CloserUserContent}} h6
-{
-  font-size:22px;
-}
-
-/*
-	right margin limits the width and brings it away from the scroll bar.
-*/
-.{{.UserContent}} p,
-.{{.ModalUserContent}} p,
-.{{.CloserUserContent}} p
-{
-  display:block;
-  clear:both;
-  width:100%;
-  margin-right:20px;
 }
 `

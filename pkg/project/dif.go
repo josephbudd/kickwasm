@@ -16,20 +16,23 @@ const (
 //  removals are the entities contained in control but missing in test.
 //  additions are the entities not found in control but found in test.
 //  removals and additions are source locations mapped to a slice sub components which are either missing or added.
-func (control *Builder) Dif(test *Builder) (removals, additions map[string][]string) {
+func (control *Builder) Dif(test *Builder) (removals, additions map[string][]string, somethingMoved bool) {
 	removals = make(map[string][]string)
 	additions = make(map[string][]string)
-	control.difServices(test, removals, additions)
-	return removals, additions
+	somethingMoved = control.difServices(test, removals, additions)
+	return
 }
 
-func (control *Builder) difServices(test *Builder, removals, additions map[string][]string) {
+func (control *Builder) difServices(test *Builder, removals, additions map[string][]string) (somethingMoved bool) {
 	// report removals
-	for _, cService := range control.Services {
+	for ci, cService := range control.Services {
 		var matched *Service
-		for _, tService := range test.Services {
+		for ti, tService := range test.Services {
 			if cService.Name == tService.Name {
 				matched = tService
+				if ci != ti {
+					somethingMoved = true
+				}
 				break
 			}
 		}
@@ -61,12 +64,15 @@ func (control *Builder) difServices(test *Builder, removals, additions map[strin
 		}
 		if matched != nil {
 			// check the service button for difs
-			difServiceButton(matched, tService, removals, additions)
+			if difServiceButton(matched, tService, removals, additions) {
+				somethingMoved = true
+			}
 		}
 	}
+	return
 }
 
-func difServiceButton(control *Service, test *Service, removals, additions map[string][]string) {
+func difServiceButton(control *Service, test *Service, removals, additions map[string][]string) (somethingMoved bool) {
 	// button label
 	if control.Button.Label != test.Button.Label {
 		key := fmt.Sprintf("In the service named %q", control.Name)
@@ -116,31 +122,40 @@ func difServiceButton(control *Service, test *Service, removals, additions map[s
 		}
 	}
 	// walk the unchanged button panels
-	for _, tPanel := range test.Button.Panels {
+	for ti, tPanel := range test.Button.Panels {
 		var matched *Panel
-		for _, cPanel := range control.Button.Panels {
+		for ci, cPanel := range control.Button.Panels {
 			if cPanel.Name == tPanel.Name {
 				matched = cPanel
+				if ti != ci {
+					somethingMoved = true
+				}
 				break
 			}
 		}
 		if matched != nil {
 			// check the service button for difs
-			difPanels(path, matched, tPanel, removals, additions)
+			if difPanels(path, matched, tPanel, removals, additions) {
+				somethingMoved = true
+			}
 		}
 	}
+	return
 }
 
-func difPanels(path string, control, test *Panel, removals, additions map[string][]string) {
+func difPanels(path string, control, test *Panel, removals, additions map[string][]string) (sometingMoved bool) {
 	path = path + fmt.Sprintf(", panel named %q", control.Name)
 	key := fmt.Sprintf(inThe, path)
 	// the panel names already match
 	// report button removals
-	for _, cButton := range control.Buttons {
+	for ci, cButton := range control.Buttons {
 		var matched *Button
-		for _, tButton := range test.Buttons {
+		for ti, tButton := range test.Buttons {
 			if cButton.Label == tButton.Label {
 				matched = tButton
+				if ci != ti {
+					sometingMoved = true
+				}
 				break
 			}
 		}
@@ -152,11 +167,14 @@ func difPanels(path string, control, test *Panel, removals, additions map[string
 		}
 	}
 	// report tab removals
-	for _, cTab := range control.Tabs {
+	for ci, cTab := range control.Tabs {
 		var matched *Tab
-		for _, tTab := range test.Tabs {
-			if cTab.Label == tTab.Label {
+		for ti, tTab := range test.Tabs {
+			if cTab.Spawn == tTab.Spawn && cTab.Label == tTab.Label {
 				matched = tTab
+				if ci != ti {
+					sometingMoved = true
+				}
 				break
 			}
 		}
@@ -169,11 +187,14 @@ func difPanels(path string, control, test *Panel, removals, additions map[string
 	}
 
 	// report button additions
-	for _, tButton := range test.Buttons {
+	for ti, tButton := range test.Buttons {
 		var matched *Button
-		for _, cButton := range control.Buttons {
+		for ci, cButton := range control.Buttons {
 			if cButton.Label == tButton.Label {
 				matched = cButton
+				if ci != ti {
+					sometingMoved = true
+				}
 				break
 			}
 		}
@@ -185,11 +206,14 @@ func difPanels(path string, control, test *Panel, removals, additions map[string
 		}
 	}
 	// report tab additions
-	for _, tTab := range test.Tabs {
+	for ti, tTab := range test.Tabs {
 		var matched *Tab
-		for _, cTab := range control.Tabs {
-			if cTab.Label == tTab.Label {
+		for ci, cTab := range control.Tabs {
+			if cTab.Spawn == tTab.Spawn && cTab.Label == tTab.Label {
 				matched = cTab
+				if ci != ti {
+					sometingMoved = true
+				}
 				break
 			}
 		}
@@ -202,11 +226,14 @@ func difPanels(path string, control, test *Panel, removals, additions map[string
 	}
 
 	// walk the unchanged panel buttons
-	for _, tButton := range test.Buttons {
+	for ti, tButton := range test.Buttons {
 		var matched *Button
-		for _, cButton := range control.Buttons {
+		for ci, cButton := range control.Buttons {
 			if cButton.Label == tButton.Label {
 				matched = cButton
+				if ci != ti {
+					sometingMoved = true
+				}
 				break
 			}
 		}
@@ -216,11 +243,14 @@ func difPanels(path string, control, test *Panel, removals, additions map[string
 		}
 	}
 	// walk the unchanged panel tabs
-	for _, tTab := range test.Tabs {
+	for ti, tTab := range test.Tabs {
 		var matched *Tab
-		for _, cTab := range control.Tabs {
-			if cTab.Label == tTab.Label {
+		for ci, cTab := range control.Tabs {
+			if cTab.Spawn == tTab.Spawn && cTab.Label == tTab.Label {
 				matched = cTab
+				if ci != ti {
+					sometingMoved = true
+				}
 				break
 			}
 		}
@@ -229,9 +259,10 @@ func difPanels(path string, control, test *Panel, removals, additions map[string
 			difTabs(path, matched, tTab, removals, additions)
 		}
 	}
+	return
 }
 
-func difButtons(path string, control, test *Button, removals, additions map[string][]string) {
+func difButtons(path string, control, test *Button, removals, additions map[string][]string) (somethingMoved bool) {
 	path = path + fmt.Sprintf(", button labeled %q", control.Label)
 	key := fmt.Sprintf(inThe, path)
 	// the button labels already match
@@ -278,12 +309,15 @@ func difButtons(path string, control, test *Button, removals, additions map[stri
 		}
 		if matched != nil {
 			// check the button panel for difs
-			difPanels(path, matched, tPanel, removals, additions)
+			if difPanels(path, matched, tPanel, removals, additions) {
+				somethingMoved = true
+			}
 		}
 	}
+	return
 }
 
-func difTabs(path string, control, test *Tab, removals, additions map[string][]string) {
+func difTabs(path string, control, test *Tab, removals, additions map[string][]string) (somethingMoved bool) {
 	path = path + fmt.Sprintf(", tab labeled %q", control.Label)
 	key := fmt.Sprintf(inThe, path)
 	// the tab labels already match
@@ -330,7 +364,10 @@ func difTabs(path string, control, test *Tab, removals, additions map[string][]s
 		}
 		if matched != nil {
 			// check the tab panel for difs
-			difPanels(path, matched, tPanel, removals, additions)
+			if difPanels(path, matched, tPanel, removals, additions) {
+				somethingMoved = true
+			}
 		}
 	}
+	return
 }

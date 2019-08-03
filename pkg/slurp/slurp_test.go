@@ -224,6 +224,14 @@ func TestDo(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 		{
+			name: "fail empty tab",
+			args: args{
+				yamlPath: "testyaml/fails/empty_tab.yaml",
+			},
+			wantErr:        true,
+			wantErrMessage: `the panel named "PNamePanel", has a tab named "OneTab" which has no panels, in testyaml/fails/empty_tab.yaml`,
+		},
+		{
 			name: "fail duplicate service button name",
 			args: args{
 				yamlPath: "testyaml/fails/dup_service_button_name.yaml",

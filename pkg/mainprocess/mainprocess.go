@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/josephbudd/kickwasm/cases"
+	"github.com/josephbudd/kickwasm/pkg/cases"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/project"
 )
@@ -19,18 +19,23 @@ type templateData struct {
 	ServiceTemplatePanelNames          string
 	ServiceEmptyInsidePanelNamePathMap string
 
-	ImportDomainInterfacesStorers          string
-	ImportDomainInterfacesCallers          string
-	ImportDomainDataFilepaths              string
-	ImportDomainDataCallIDs                string
-	ImportDomainDataLogLevels              string
-	ImportDomainDataSettings               string
-	ImportDomainTypes                      string
-	ImportDomainImplementationsCalling     string
-	ImportDomainImplementationsStoringBolt string
+	ImportDomainDataFilepaths string
+	ImportDomainDataLogLevels string
+	ImportDomainDataSettings  string
+	ImportDomainTypes         string
 
-	ImportMainProcessCalls      string
-	ImportMainProcessCallServer string
+	ImportDomainStore        string
+	ImportDomainStoreStoring string
+	ImportDomainStoreStorer  string
+	ImportDomainStoreRecord  string
+
+	ImportRendererSpawnPanels string
+
+	ImportDomainLPC              string
+	ImportDomainLPCMessage       string
+	ImportRendererLPC            string
+	ImportMainProcessLPC         string
+	ImportMainProcessLPCDispatch string
 
 	FileNames *paths.FileNames
 
@@ -50,39 +55,39 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 		ServiceNames:                       builder.GenerateServiceNames(),
 		LowerCamelCase:                     cases.LowerCamelCase,
 		CamelCase:                          cases.CamelCase,
-		ServiceEmptyInsidePanelNamePathMap: strings.Replace(fmt.Sprintf("%#v", builder.GenerateServiceEmptyInsidePanelNamePathMap()), ":", ": ", -1),
+		ServiceEmptyInsidePanelNamePathMap: strings.ReplaceAll(fmt.Sprintf("%#v", builder.GenerateServiceEmptyInsidePanelNamePathMap()), ":", ": "),
 		ServiceTemplatePanelNames:          fmt.Sprintf("%#v", builder.GenerateServiceTemplatePanelName()),
 
-		ImportDomainInterfacesStorers:          folderpaths.ImportDomainInterfacesStorers,
-		ImportDomainInterfacesCallers:          folderpaths.ImportDomainInterfacesCallers,
-		ImportDomainDataFilepaths:              folderpaths.ImportDomainDataFilepaths,
-		ImportDomainDataCallIDs:                folderpaths.ImportDomainDataCallIDs,
-		ImportDomainDataLogLevels:              folderpaths.ImportDomainDataLogLevels,
-		ImportDomainDataSettings:               folderpaths.ImportDomainDataSettings,
-		ImportDomainTypes:                      folderpaths.ImportDomainTypes,
-		ImportDomainImplementationsCalling:     folderpaths.ImportDomainImplementationsCalling,
-		ImportDomainImplementationsStoringBolt: folderpaths.ImportDomainImplementationsStoringBolt,
-		ImportMainProcessCalls:                 folderpaths.ImportMainProcessCalls,
-		ImportMainProcessCallServer:            folderpaths.ImportMainProcessCallServer,
+		ImportDomainDataFilepaths: folderpaths.ImportDomainDataFilepaths,
+		ImportDomainDataLogLevels: folderpaths.ImportDomainDataLogLevels,
+		ImportDomainDataSettings:  folderpaths.ImportDomainDataSettings,
+		ImportDomainTypes:         folderpaths.ImportDomainTypes,
+
+		ImportDomainStore:        folderpaths.ImportDomainStore,
+		ImportDomainStoreStoring: folderpaths.ImportDomainStoreStoring,
+		ImportDomainStoreStorer:  folderpaths.ImportDomainStoreStorer,
+		ImportDomainStoreRecord:  folderpaths.ImportDomainStoreRecord,
+
+		ImportRendererSpawnPanels: folderpaths.ImportRendererSpawnPanels,
+
+		ImportDomainLPC:              folderpaths.ImportDomainLPC,
+		ImportDomainLPCMessage:       folderpaths.ImportDomainLPCMessage,
+		ImportRendererLPC:            folderpaths.ImportRendererLPC,
+		ImportMainProcessLPC:         folderpaths.ImportMainProcessLPC,
+		ImportMainProcessLPCDispatch: folderpaths.ImportMainProcessLPCDispatch,
 
 		FileNames: paths.GetFileNames(),
 
 		SitePackImportPath: builder.SitePackImportPath,
 		SitePackPackage:    builder.SitePackPackage,
 	}
-	if err = createMainGo(appPaths, data); err != nil {
+	if err = createMain(appPaths, data); err != nil {
 		return
 	}
-	if err = createPanelMapGo(appPaths, data); err != nil {
+	if err = createLPC(appPaths, data); err != nil {
 		return
 	}
-	if err = createServeGo(appPaths, data); err != nil {
-		return
-	}
-	if err = createCallServer(appPaths, data); err != nil {
-		return
-	}
-	if err = createCalls(appPaths, data); err != nil {
+	if err = createDispatch(appPaths, data); err != nil {
 		return
 	}
 	return

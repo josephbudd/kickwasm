@@ -1,6 +1,7 @@
 package renderer
 
 import (
+	"fmt"
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/paths"
@@ -42,23 +43,44 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsLocksGo(appPaths); err != nil {
 		return
 	}
+	if err = createViewToolsSpawnTabGo(appPaths, builder); err != nil {
+		return
+	}
 	return
 }
 
 func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
+	panelNameHVScroll := make(map[string]bool, 100)
+	servicePanelNamePanelMap := builder.GenerateServicePanelNamePanelMap()
+	for _, panelNamePanelMap := range servicePanelNamePanelMap {
+		for panelName, panel := range panelNamePanelMap {
+			panelNameHVScroll[panelName] = panel.HVScroll
+		}
+	}
+	// GenerateServiceSpawnPanelNamePanelMap
+	servicePanelNamePanelMap = builder.GenerateServiceSpawnPanelNamePanelMap()
+	for _, panelNamePanelMap := range servicePanelNamePanelMap {
+		for panelName, panel := range panelNamePanelMap {
+			panelNameHVScroll[panelName] = panel.HVScroll
+		}
+	}
 	data := &struct {
-		IDs                 *project.IDs
-		Classes             *project.Classes
-		Attributes          *project.Attributes
-		ApplicationGitPath  string
-		ImportRendererNotJS string
+		IDs                   *project.IDs
+		Classes               *project.Classes
+		Attributes            *project.Attributes
+		ApplicationGitPath    string
+		ImportRendererNotJS   string
+		SpawnIDReplacePattern string
+		PanelNameHVScroll     string
 	}{
-		IDs:                 builder.IDs,
-		Classes:             builder.Classes,
-		Attributes:          builder.Attributes,
-		ApplicationGitPath:  builder.ImportPath,
-		ImportRendererNotJS: folderpaths.ImportRendererNotJS,
+		IDs:                   builder.IDs,
+		Classes:               builder.Classes,
+		Attributes:            builder.Attributes,
+		ApplicationGitPath:    builder.ImportPath,
+		ImportRendererNotJS:   folderpaths.ImportRendererNotJS,
+		SpawnIDReplacePattern: project.SpawnIDReplacePattern,
+		PanelNameHVScroll:     fmt.Sprintf("%#v", panelNameHVScroll),
 	}
 	// execute the template
 	fileNames := paths.GetFileNames()

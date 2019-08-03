@@ -29,8 +29,7 @@ func TestExplore(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGenerateServiceEmptyPanelIDsMap(t, builder)
-	testGenerateServiceEmptyInsidePanelIDsMap(t, builder)
-	testGenerateTabBarLevelStartPanelMap(t, builder)
+	testGenerateTabBarIDStartPanelIDMap(t, builder)
 	testGenerateServiceButtonPanelGroups(t, builder)
 	testgenerateServicePanelNameTemplateMap(t, builder)
 	testGenerateServiceTemplatePanelName(t, builder)
@@ -55,6 +54,9 @@ func TestExplore(t *testing.T) {
 	}
 	builder3 := NewBuilder()
 	if err = builder3.BuildFromServices(longOkServices); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = builder3.ToHTML("masterid", false); err != nil {
 		t.Fatal(err)
 	}
 	testGenerateButtonIDsPanelIDs(t, builder3)
@@ -133,28 +135,11 @@ Service2:
 	}
 }
 
-func testGenerateTabBarLevelStartPanelMap(t *testing.T, builder *Builder) {
+func testGenerateTabBarIDStartPanelIDMap(t *testing.T, builder *Builder) {
 	wants := map[string]string{}
-	results := builder.GenerateTabBarLevelStartPanelMap()
+	results := builder.GenerateTabBarIDStartPanelIDMap()
 	if ok := reflect.DeepEqual(results, wants); !ok {
-		t.Fatalf(`builder.GenerateTabBarLevelStartPanelMap() generated %#v\n\nwant: %#v`, results, wants)
-	}
-}
-
-func testGenerateServiceEmptyInsidePanelIDsMap(t *testing.T, builder *Builder) {
-	wants := map[string]map[string]string{
-		"Service1": {
-			"OnePanel": "masterid-home-pad-OneButton-OnePanel-inner-user-content",
-			"TwoPanel": "masterid-home-pad-OneButton-TwoPanel-inner-user-content",
-		},
-		"Service2": {
-			"FourPanel":  "masterid-home-pad-TwoButton-FourPanel-inner-user-content",
-			"ThreePanel": "masterid-home-pad-TwoButton-ThreePanel-inner-user-content",
-		},
-	}
-	results := builder.GenerateServiceEmptyInsidePanelIDsMap()
-	if ok := reflect.DeepEqual(results, wants); !ok {
-		t.Fatalf(`builder.GenerateServiceEmptyInsidePanelIDsMap() generated %#v\n\nwant: %#v`, results, wants)
+		t.Fatalf(`builder.GenerateTabBarIDStartPanelIDMap() generated %#v\n\nwant: %#v`, results, wants)
 	}
 }
 
@@ -375,6 +360,7 @@ func testGenerateTabIDsPanelIDs(t *testing.T, builder *Builder) {
 	wantTabs := map[string][]string{
 		"OtherTabPanel-OneTab": {"LastTabPanel"},
 		"TabPanel-OneTab":      {"OnlyPanel"},
+		"TabPanel-ZeroTab":     {"ZeroTabFirstPanel", "ZeroTabSecondPanel"},
 	}
 	t.Run("testGenerateTabIDsPanelIDs", func(t *testing.T) {
 		if gotTabs := builder.GenerateTabIDsPanelIDs(); !reflect.DeepEqual(gotTabs, wantTabs) {

@@ -1,7 +1,0 @@
-name : RemoveContactSelectPanel
-note : A mapvlist allowing the user to select a contact to remove.
-markup : |
-  <p>
-    <b>Select A Contact.</b>
-  </p>
-  <div id="contact-remove-select"></div>

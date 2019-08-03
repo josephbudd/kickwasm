@@ -20,6 +20,10 @@ var templatePath string
 var shortTemplatePath string
 var shortSitePath string
 
+// spawnTemplates
+var spawnTemplatePath string
+var shortSpawnTemplatePath string
+
 // fmode is the applications mode for files.
 var fmode = os.FileMode(0666)
 
@@ -54,13 +58,15 @@ func initialize() {
 		initerr = fmt.Errorf("os.Getwd() error is %s", initerr.Error())
 		return
 	}
-	appSettingsPath = filepath.Join(pwd, "http.yaml")
-	shortAppSettingsPath = "http.yaml"
+	appSettingsPath = filepath.Join(pwd, "Http.yaml")
+	shortAppSettingsPath = "Http.yaml"
 	applicationSitePath = filepath.Join(pwd, "site")
 	faviconPath = filepath.Join(applicationSitePath, "favicon.ico")
 	templatePath = filepath.Join(applicationSitePath, "templates")
+	spawnTemplatePath = filepath.Join(applicationSitePath, "spawnTemplates")
 	shortSitePath = "site"
 	shortTemplatePath = filepath.Join(shortSitePath, "templates")
+	shortSpawnTemplatePath = filepath.Join(shortSitePath, "spawnTemplates")
 	initialized = true
 }
 

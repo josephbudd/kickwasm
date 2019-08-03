@@ -86,6 +86,7 @@ func (builder *Builder) toButtonSliderPanelsHTML(serviceName string, b *Button, 
 			seen = false
 		} else {
 			// this panel is a markup panel.
+			builder.MarkupPanelCount++
 			markupPanel, innerid := builder.toSliderMarkupPanelHTML(serviceName, p, b, locations, (seen && (i == 0)), addLocations)
 			b.PanelInnerHTMLID = innerid
 			panels = append(panels, markupPanel)
