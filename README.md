@@ -1,40 +1,46 @@
 # kickwasm version 5.0.0
 
-## Still experimental because syscall/js is still experimental
+I just got the new kickwasm, its tools and the crud app uploaded to github. Now I'm working on getting the new videos uploaded, some minor details in the wikis and redoing the go report card stuff.
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm) That A+ is for both kickwasm and the framework source code in the examples folder.
+## Still experimental because syscall/js is still experimental
 
 ## Summary
 
-* Kickwasm is a rapid development, desktop application framework generator for linux, windows and apple.
-* It builds a framework that has 2 processes.
-  1. The renderer process.
-  1. The main process.
-* The framework provides the GUI's layout, styles and behavior with 4 basic interfaces.
-  1. button pads,
-  1. tab bars,
-  1. a back button,
-  1. your own markup panels. A markup panel has it's own HTML template and go package, both of which are under your control. The framework only provides scrolling, sizing and some editable styles for markup panels.
-* The framework provides the messaging model for the renderer and main processes.
-* The framework provides the database model for the main process.
+* Kickwasm is a rapid development, desktop application framework generator for linux. In the future, windows and apple.
+* Kickwasm reads your simple yaml file and builds a framework.
+
+### The framework provides
+
+1. Two processes.
+   1. The renderer process.
+   1. The main process.
+1. The GUI's layout, styles and behavior with 4 basic interfaces.
+   1. A button pad that contains your buttons.
+   1. A tab-bar that contains your tabs.
+   1. A markup panel that contains your markup.
+   1. A back button.
+1. The go package model and html template model for your markup panels.
+1. The message model for passing messages between the renderer process and the main processes.
+1. The database model.
 
 ## The CRUD application
 
 The [CRUD application](https://github.com/josephbudd/crud) is very important because
 
 1. I tested the kickwasm version 5 by building the CRUD.
-1. The crud has a wiki were I detail the steps I took when I built the crud.
+1. The crud has a wiki were I detail the steps I took when I built the crud. A lot of what is mysteriously implied here in this short README is explicitly demonstrated in the crud wiki.
 
 ### The CRUD WIKI
 
 In the CRUD wiki, I begin with a complete plan for the full application.
 
-Then create a small part of the application which allows me to only need to write and debug
+I write a kickwasm.yaml file to define a small part of the GUI. Then use kickwasm to create that small part of the framework. Then, one markup panel at a time
 
-* a small amount of my own go code for my markup panel packages in the renderer process,
-* a small amount of my own go code for what is needed in the main process.
+1. I add a small amount of my own go code for my markup panel package in the renderer process.
+1. I add a small amount of my own go code for what is needed in the main process.
+1. I debug.
 
-I repeately use the tools to add another missing part to the application, writing and debuging a little more of my own code to the added part. Eventually, I have added all of the parts, all of my own code, and the application is complete.
+I repeately use the kickwasm tools to add another missing part to the application, writing and debuging a little more of my own code to the added part. Eventually, I have added all of the parts, all of my own code, and the application is complete.
 
 ### If you really want to get a feel for kickwasm read the CRUD wiki
 
@@ -68,15 +74,16 @@ Version 5 is not backwards compatible. Version 5 is an implementation of these 4
 
 1. **kicklpc** is a new **Local Process Communications ( LPC )** tool. It lets you add to or remove from your application, messages sent between the main process and the renderer process.
    * Example: **kicklpc -add UpdateCustomer** would add the empty message **UpdateCustomerRenderToMainProcess** and the other empty message **UpdateCustomerMainProcessToRenderer**.
-     * You would finish defining the 2 messages defined in **domain/lpc/messages/UpdateCustomer.go** so that they can contain the information you want sent.
-     * You would add message handlers in your markup panel Callers that will send and or receive the messages.
-     * You would finish the main process's message handler at **mainprocess/lpc/dispatch/UpdateCustomer.go** so that it processes the message and does what you need done with it.
-     * You would send and receive those messages through the send and receive channels.
+     * You would complete the definitions of the 2 messages in **domain/lpc/messages/UpdateCustomer.go** so that they can contain the information you want sent.
+     * You would add message handlers in your markup panel callers. Each markup panel has a caller which communicates with the main process. In a markup panel's caller you could send an **UpdateCustomerRenderToMainProcess** message to the main process through the caller's send channel and receive an **UpdateCustomerMainProcessToRenderer** message from the main process through the caller's receive channel.
+     * You would add the functionality to the main process's message handler at **mainprocess/lpc/dispatch/UpdateCustomer.go** so that it processes the **UpdateCustomerRenderToMainProcess** message received from the renderer process and does what you need done with it. The handler could send an **UpdateCustomerMainProcessToRenderer** message back to the renderer through the handler's send channel.
 1. **kickstore** is a new tool that lets you add or remove **data stores** in your application. A data store is an overly simple API to a table in the application's bolt database and it's record.
    * Example: **kickstore -add Customer** would add the **Customer** store with it's API and the empty **Customer** record.
    * You would complete the the store's record definition in **domain/store/record/Customer.go** so that it contains the information needed.
-   * If you want to modify the stores API, then you would edit it's interface in **domain/store/storer/Customer.go** and it's implementation in **domain/store/storing/Customer.go**.
-   * In your code you would call the store's methods to update, remove, get etc.
+   * If you want to modify behavior of the store's API, then you would
+     1. Edit the API interface in **domain/store/storer/Customer.go**.
+     1. Edit the API implementation in **domain/store/storing/Customer.go**.
+   * In your main process code you would call the store's methods to update, remove, get etc.
 1. **rekickwasm** is an old tool that lets you refactor your application's GUI. It has been refactored to work with kickwasm version 5.
 1. **kickpack** is another old tool that allows your application to be compiled into a single executable. I made some improvements regarding error handling. You won't use kickpack but the framework's build scripts in the renderer/ folder do.
 
@@ -123,9 +130,14 @@ The examples/ folder contains 2 examples.
 
 ## The example videos
 
+The videos make very clear how the framework functions.
+
+1. A framework always begins with a button pad where the user gets a general idea of what the application does.
+1. From there, the GUI behaves according how the framework was designed.
+
 ### Colors
 
-The colors example is 100% pure kickwasm generated framework. Nothing more.
+The colors example is 100% pure kickwasm generated framework. Nothing more. I designed the framework with button pads and markup panels but no tab bars.
 
 The video demonstrates some of what the framework does on its own without any code from a developer. It also demonstrates that each service has it's own color.
 
@@ -137,11 +149,9 @@ The spawntabs example is a simple tab spawning and unspawning application.
 
 The video shows tabs being spawned and unspawned.
 
-## The WIKI
+## The kickwasm WIKI
 
-The WIKI contains important information not included in the CRUD wiki. While the CRUD wiki shows how I wrote an application, this kickwasm wiki gets more into the reasons why things are the way they are in kickwasm.
-
-The WIKI is a work in progress.
+The kickwasm WIKI contains important information not included in the CRUD wiki. It is a work in progress.
 
 The WIKI has been updated to kickwasm version 5.0.0.
 
@@ -153,4 +163,4 @@ The renderer build scripts are currently written for bash on ubuntu. Versions fo
 
 ### The tool kickstore
 
-The tool kickstore has the potential to work with other types of stores.
+The tool kickstore, like kickwasm is a work in progress. Kickstore needs to work with more types of databases. That will require some more refactoring with kickwasm as the bolt database is built into the framework.

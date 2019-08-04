@@ -1,3 +1,7 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm) That A+ is for both kickwasm and the framework source code in the examples folder.
+
+
+
 nil@NIL:~/go/src/github.com/josephbudd/crud$ ./crud 
 2019/08/03 13:01:43 listen and serve:  http://127.0.0.1:43185
 2019/08/03 13:01:43 listening for receiveChan
