@@ -20,7 +20,8 @@ func NewApplicationSettings() (settings *types.ApplicationSettings, err error) {
 	var found bool
 	fpath = filepaths.GetShortSettingsPath()
 	if contents, found = colorssitepack.Contents(fpath); !found {
-		err = errors.New(fmt.Sprintf("can't find %q", fpath))
+		emsg := fmt.Sprintf("can't find %q", fpath)
+		err = errors.New(emsg)
 		return
 	}
 	settings = &types.ApplicationSettings{}

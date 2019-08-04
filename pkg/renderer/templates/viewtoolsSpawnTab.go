@@ -122,7 +122,8 @@ func (tools *Tools) SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText st
 		}
 		var hvscroll bool
 		if hvscroll, found = tools.panelNameHVScroll[panelName]; !found {
-			err = errors.New(fmt.Sprintf("Unable to find panel name %q in tools.panelNameHVScroll", panelName))
+			emsg := fmt.Sprintf("Unable to find panel name %q in tools.panelNameHVScroll", panelName)
+			err = errors.New(emsg)
 			return
 		}
 		if hvscroll {
