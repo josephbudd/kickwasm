@@ -2,7 +2,7 @@
 
 Sunday August 4, 2019:
 
-I updated the crud wiki with corrections. Uploaded all the new videos.
+I updated the crud wiki with corrections. Uploaded all the new videos. Uploaded files I didn't get uploaded so all the projects are fully uploaded.
 
 Saturday August 3, 2019:
 
