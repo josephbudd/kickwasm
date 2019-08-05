@@ -1,5 +1,11 @@
 # kickwasm version 5.0.0
 
+Sunday August 4, 2019:
+
+I updated the crud wiki with corrections. Uploaded all the new videos.
+
+Saturday August 3, 2019:
+
 I just got the new kickwasm, its tools and the crud app uploaded to github. Now I'm working on getting the new videos uploaded, some minor details in the wikis and redoing the go report card stuff.
 
 ## Still experimental because syscall/js is still experimental
