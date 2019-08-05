@@ -141,13 +141,15 @@ The colors example is 100% pure kickwasm generated framework. Nothing more. I de
 
 The video demonstrates some of what the framework does on its own without any code from a developer. It also demonstrates that each service has it's own color.
 
-[![building and running the colors example](https://i.vimeocdn.com/video/744492343_640.webp)](https://vimeo.com/305091395)
+[![building and running the colors example](https://i.vimeocdn.com/video/744492343_640.webp?mw=550&amp;mh=310&amp;q=70)](https://vimeo.com/305091395)
 
 ### Spawntabs
 
 The spawntabs example is a simple tab spawning and unspawning application.
 
 The video shows tabs being spawned and unspawned.
+
+[![building and running the spawntabs example](https://i.vimeocdn.com/video/803691454.webp?mw=550&amp;mh=310&amp;q=70)](https://vimeo.com/351948165)
 
 ## The kickwasm WIKI
 
