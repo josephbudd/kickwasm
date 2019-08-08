@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/josephbudd/kickwasm/examples/colorssitepack"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/data/filepaths"
+	"github.com/josephbudd/kickwasm/examples/colorssitepack"
 )
 
 /*

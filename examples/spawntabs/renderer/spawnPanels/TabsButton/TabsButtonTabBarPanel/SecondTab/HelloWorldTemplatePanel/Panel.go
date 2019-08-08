@@ -10,12 +10,12 @@ import (
 
 */
 
-// spawnedPanel has a controler, presenter and caller.
+// spawnedPanel has a controller, presenter and caller.
 type spawnedPanel struct {
 	uniqueID    uint64
 	tabButton   js.Value
 	panelNameID map[string]string
-	controler   *panelControler
+	controller  *panelController
 	presenter   *panelPresenter
 	caller      *panelCaller
 	group       *panelGroup
@@ -23,15 +23,15 @@ type spawnedPanel struct {
 
 // newPanel constructs a new panel.
 func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, panelNameID map[string]string, spawnData interface{}, unspawn func() error) (panel *spawnedPanel) {
-	
+
 	group := &panelGroup{
 		uniqueID:    uniqueID,
 		panelNameID: panelNameID,
 	}
-	controler := &panelControler{
+	controller := &panelController{
 		group:    group,
 		uniqueID: uniqueID,
-		unspawn: unspawn,
+		unspawn:  unspawn,
 	}
 	presenter := &panelPresenter{
 		group:          group,
@@ -68,24 +68,24 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 		presenter.serverName = spawnData.ServerName
 		presenter.channelName = spawnData.ChannelName
 	}
-	
+
 	*/
 
 	panel = &spawnedPanel{
-		uniqueID:  uniqueID,
-		tabButton: tabButton,
-		controler: controler,
-		presenter: presenter,
+		uniqueID:   uniqueID,
+		tabButton:  tabButton,
+		controller: controller,
+		presenter:  presenter,
 		caller:     caller,
-		group:     group,
+		group:      group,
 	}
 
-	controler.panel = panel
-	controler.presenter = presenter
-	controler.caller = caller
-	presenter.controler = controler
+	controller.panel = panel
+	controller.presenter = presenter
+	controller.caller = caller
+	presenter.controller = controller
 	presenter.caller = caller
-	caller.controler = controler
+	caller.controller = controller
 	caller.presenter = presenter
 
 	return

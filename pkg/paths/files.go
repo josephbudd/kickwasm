@@ -59,7 +59,7 @@ type FileNames struct {
 
 	// markup panels
 	CallerDotGo     string
-	ControlerDotGo  string
+	ControllerDotGo  string
 	DataDotGo       string
 	PanelGroupDotGo string
 	PanelDotGo      string
@@ -131,7 +131,7 @@ func GetFileNames() *FileNames {
 
 		// markup panels
 		CallerDotGo:     "Caller.go",
-		ControlerDotGo:  "Controler.go",
+		ControllerDotGo:  "Controller.go",
 		DataDotGo:       "Data.go",
 		PanelGroupDotGo: "group.go",
 		PanelDotGo:      "Panel.go",

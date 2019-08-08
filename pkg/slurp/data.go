@@ -4,7 +4,7 @@ package slurp
 type Slurper struct {
 	panelNames   map[string]string   // name : source path
 	tabNames     map[string]string   // name : source path
-	buttonNames  map[string]string   // nmae : source path
+	buttonNames  map[string]string   // name : source path
 	buttonIDs    map[string][]string // panel name : button names
 	tabIDs       map[string][]string // panel name : tab names
 	maxLevel     int

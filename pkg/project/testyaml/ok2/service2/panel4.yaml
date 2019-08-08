@@ -2,12 +2,12 @@ id : p4
 name : Panel4Panel
 note : p4 note
 markup : <p>Panel 4-1</p>
-controlerData :
+controllerData :
   - id : p4cdid1
     name : p4cdname1
   - id : p4cdid2
     name : p4cdname2
-controlerCode : |
+controllerCode : |
   p4cf1: function(){},
   p4cf2: function(){},
 

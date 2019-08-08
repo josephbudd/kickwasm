@@ -10,6 +10,7 @@ STEP 1: Edit the file Helping.go here in renderer/paneling/
 	// Help helps initialize panels.
 	type Help struct{}
 	
+	// NewHelp constructs a new Help.
 	func NewHelp() *Help {
 		return &Help{}
 	}
@@ -34,7 +35,7 @@ STEP 1: Edit the file Helping.go here in renderer/paneling/
 
 	
 STEP 2: In renderer/panels/ and renderer/spawnPanels/
-		Add any members new members to your controlers, presenters, and callers.
+		Add any members new members to your controllers, presenters, and callers.
 		Set those new members in the panel constructor using help *paneling.Help
 
 	Example: Some of my panel callers send the same message to the main process

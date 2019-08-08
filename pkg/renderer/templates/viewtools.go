@@ -51,7 +51,7 @@ const (
 	CookieCrumbClassName            = "{{.Classes.CookieCrumb}}"
 	CookieCrumbLevelPrefixClassName = "{{.Classes.CookieCrumbLevelPrefix}}"
 
-	VScrollClassName =  "{{.Classes.VScroll}}"
+	VScrollClassName  = "{{.Classes.VScroll}}"
 	HVScrollClassName = "{{.Classes.HVScroll}}"	
 
 	MasterID           = "{{.IDs.Master}}"

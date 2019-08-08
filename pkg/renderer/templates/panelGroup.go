@@ -19,10 +19,9 @@ import (
 
 // panelGroup is a group of {{$lpg}} panel{{if gt $lpg 1}}s{{end}}.
 // It also has {{if eq $lpg 1}}a {{end}}show panel func{{if gt $lpg 1}}s{{end}} for each panel in this panel group.
-type panelGroup struct {
-{{range $panel := .PanelGroup}}
+type panelGroup struct {{.StartBracket}}{{range $panel := .PanelGroup}}
 	{{call $Dot.LowerCamelCase $panel.Name}} js.Value{{end}}
-}
+{{.EndBracket}}
 
 func (group *panelGroup) defineMembers() (err error) {
 
@@ -43,7 +42,7 @@ func (group *panelGroup) defineMembers() (err error) {
 /*
 	Show panel funcs.
 
-	Call these from the controler, presenter and caller.
+	Call these from the controller, presenter and caller.
 */{{if .IsTabSiblingPanel}}{{range $panel := .PanelGroup}}
 
 // show{{$panel.Name}} shows the panel you named {{$panel.Name}} while hiding any other panels in this panel group.

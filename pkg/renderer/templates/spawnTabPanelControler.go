@@ -1,7 +1,7 @@
 package templates
 
-// SpawnTabPanelControler is the genereric renderer panel controler template.
-const SpawnTabPanelControler = `package {{call .PackageNameCase .PanelName}}
+// SpawnTabPanelController is the genereric renderer panel controller template.
+const SpawnTabPanelController = `package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"
@@ -13,18 +13,18 @@ import (
 
 */
 
-// panelControler controls user input.
-type panelControler struct {
+// panelController controls user input.
+type panelController struct {
 	uniqueID  uint64
 	panel     *spawnedPanel
 	group     *panelGroup
 	presenter *panelPresenter
 	caller    *panelCaller
-	unspawn    func() error
+	unspawn   func() error
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
-	// Declare your panelControler members.
+	// Declare your panelController members.
 	// example:
 
 	// my spawn template has a name input field and a submit button.
@@ -39,19 +39,19 @@ type panelControler struct {
 	*/
 }
 
-// defineControlsSetHandlers defines controler members and sets their handlers.
+// defineControlsSetHandlers defines controller members and sets their handlers.
 // Returns the error.
-func (controler *panelControler) defineControlsSetHandlers() (err error) {
+func (controller *panelController) defineControlsSetHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(controler *panelControler) defineControlsSetHandlers()")
+			err = errors.WithMessage(err, "(controller *panelController) defineControlsSetHandlers()")
 		}
 	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 4.
 
-	// Define the panelControler members by their html elements.
+	// Define the panelController members by their html elements.
 	// Set their handlers.
 	// example:
 
@@ -62,22 +62,22 @@ func (controler *panelControler) defineControlsSetHandlers() (err error) {
 	var cb js.Func
 
 	// Define the customer name input field.
-	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controler.uniqueID)
-	if controler.addCustomerName = notJS.GetElementByID(id); controler.addCustomerName == null {
+	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerName = notJS.GetElementByID(id); controller.addCustomerName == null {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 
 	// Define the submit button and set it's handler.
-	id = tools.FixSpawnID("addCustomerSubmit{{.SpawnID}}", controler.uniqueID)
-	if controler.addCustomerSubmit = notJS.GetElementByID(id); controler.addCustomerSubmit == null {
+	id = tools.FixSpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerSubmit = notJS.GetElementByID(id); controller.addCustomerSubmit == null {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 	// see render/viewtools/callback.go
 	// use the event call back func for spawned panels and set propagations.
-	cb = tools.RegisterSpawnEventCallBack(controler.handleSubmit, true, true, true, controler.uniqueID)
-	notJS.SetOnClick(controler.addCustomerSubmit, cb)
+	cb = tools.RegisterSpawnEventCallBack(controller.handleSubmit, true, true, true, controller.uniqueID)
+	notJS.SetOnClick(controller.addCustomerSubmit, cb)
 
 	*/
 
@@ -91,8 +91,8 @@ func (controler *panelControler) defineControlsSetHandlers() (err error) {
 
 // import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
 
-func (controler *panelControler) handleSubmit(event js.Value) (nilReturn interface{}) {
-	name := strings.TrimSpace(notJS.GetValue(controler.addCustomerName))
+func (controller *panelController) handleSubmit(event js.Value) (nilReturn interface{}) {
+	name := strings.TrimSpace(notJS.GetValue(controller.addCustomerName))
 	if len(name) == 0 {
 		tools.Error("Customer Name is required.")
 		return
@@ -100,14 +100,14 @@ func (controler *panelControler) handleSubmit(event js.Value) (nilReturn interfa
 	r := &record.CustomerRecord{
 		Name: name,
 	}
-	controler.caller.AddCustomer(r)
+	controller.caller.AddCustomer(r)
 	return
 }
 
 */
 
-// initialCalls runs the first code that the controler needs to run.
-func (controler *panelControler) initialCalls() {
+// initialCalls runs the first code that the controller needs to run.
+func (controller *panelController) initialCalls() {
 
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
@@ -115,7 +115,7 @@ func (controler *panelControler) initialCalls() {
 	// I use this to start up widgets. For example a virtual list widget.
 	// example:
 
-	controler.customerSelectWidget.start()
+	controller.customerSelectWidget.start()
 
 	*/
 

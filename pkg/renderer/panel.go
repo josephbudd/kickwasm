@@ -51,13 +51,15 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					ImportRendererPaneling    string
 					ImportDomainDataLogLevels string
 					ImportDomainStoreRecord   string
-					ImportDomainTypes         string
 					ImportDomainLPCMessage    string
 
 					CamelCase       func(string) string
 					LowerCamelCase  func(string) string
 					SplitTabJoin    func(string) string
 					PackageNameCase func(string) string
+
+					StartBracket string
+					EndBracket   string
 				}{
 					PanelName:                 panelName,
 					PanelID:                   panel.HTMLID,
@@ -71,7 +73,6 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					ImportRendererPaneling:    folderpaths.ImportRendererPaneling,
 					ImportDomainDataLogLevels: folderpaths.ImportDomainDataLogLevels,
 					ImportDomainStoreRecord:   folderpaths.ImportDomainStoreRecord,
-					ImportDomainTypes:         folderpaths.ImportDomainTypes,
 					ImportDomainLPCMessage:    folderpaths.ImportDomainLPCMessage,
 
 					CamelCase:      cases.CamelCase,
@@ -81,6 +82,9 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 						return "\t" + strings.Join(ss, "\n\t")
 					},
 					PackageNameCase: cases.ToGoPackageName,
+
+					StartBracket: "{",
+					EndBracket:   "}",
 				}
 				var fname string
 				var oPath string
@@ -99,9 +103,9 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 				if err = templates.ProcessTemplate(fname, oPath, templates.Panel, data, appPaths); err != nil {
 					return
 				}
-				fname = fileNames.ControlerDotGo
+				fname = fileNames.ControllerDotGo
 				oPath = filepath.Join(folderpath, fname)
-				if err = templates.ProcessTemplate(fname, oPath, templates.PanelControler, data, appPaths); err != nil {
+				if err = templates.ProcessTemplate(fname, oPath, templates.PanelController, data, appPaths); err != nil {
 					return
 				}
 				fname = fileNames.PresenterDotGo

@@ -24,7 +24,6 @@ type templateData struct {
 	ServiceEmptyInsidePanelNamePathMap string
 
 	ImportDomainDataFilepaths string
-	ImportDomainTypes         string
 
 	ImportDomainStore        string
 	ImportDomainStoreRecord  string
@@ -64,7 +63,6 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 		// domain
 
 		ImportDomainDataFilepaths: imports.ImportDomainDataFilepaths,
-		ImportDomainTypes:         imports.ImportDomainTypes,
 
 		ImportDomainStore:        imports.ImportDomainStore,
 		ImportDomainStoreRecord:  imports.ImportDomainStoreRecord,
@@ -104,9 +102,6 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 		return
 	}
 	if err = createStoreRecord(appPaths, data); err != nil {
-		return
-	}
-	if err = createTypes(appPaths, data); err != nil {
 		return
 	}
 	if err = createSettingsYAML(appPaths, data); err != nil {

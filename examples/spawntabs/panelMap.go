@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/josephbudd/kickwasm/examples/spawntabssitepack"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/domain/data/filepaths"
+	"github.com/josephbudd/kickwasm/examples/spawntabssitepack"
 )
 
 /*

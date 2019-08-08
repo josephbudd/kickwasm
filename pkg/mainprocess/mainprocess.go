@@ -22,7 +22,6 @@ type templateData struct {
 	ImportDomainDataFilepaths string
 	ImportDomainDataLogLevels string
 	ImportDomainDataSettings  string
-	ImportDomainTypes         string
 
 	ImportDomainStore        string
 	ImportDomainStoreStoring string
@@ -61,7 +60,6 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 		ImportDomainDataFilepaths: folderpaths.ImportDomainDataFilepaths,
 		ImportDomainDataLogLevels: folderpaths.ImportDomainDataLogLevels,
 		ImportDomainDataSettings:  folderpaths.ImportDomainDataSettings,
-		ImportDomainTypes:         folderpaths.ImportDomainTypes,
 
 		ImportDomainStore:        folderpaths.ImportDomainStore,
 		ImportDomainStoreStoring: folderpaths.ImportDomainStoreStoring,

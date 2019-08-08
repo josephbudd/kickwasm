@@ -17,7 +17,7 @@ func (tools *Tools) FixSpawnID(id string, uniqueID uint64) (fixedID string) {
 	fixedID = strings.ReplaceAll(id, spawnIDReplacePattern, fmt.Sprint(uniqueID))
 	return
 }
-
+ 
 // SpawnTab adds an html tab button and panels to the html document.
 // It returns their uniqueID, the tab button id, panels names mapped to their ids.
 func (tools *Tools) SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userContentPanelPaths []string) (tabButton, tabPanelHeader js.Value, uniqueID uint64, panelNameID map[string]string, err error) {
@@ -161,7 +161,7 @@ func (tools *Tools) SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText st
 
 // UnSpawnTab removes a tab button and panels from the html document.
 // Returns the error.
-func (tools *Tools) UnSpawnTab(tabButton js.Value) (err error) {
+func (tools *Tools) UnSpawnTab(tabButton js.Value) (err error ) {
 
 	defer func() {
 		if err != nil {

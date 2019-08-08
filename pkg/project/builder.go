@@ -456,7 +456,7 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 	innerPanel.AppendChild(userContentPanel)
 	attributes := make([]html.Attribute, 0, 1)
 	if !panel.HVScroll {
-		// this panel will not horizontaly scroll so size the width.
+		// this panel will not horizontally scroll so size the width.
 		attributes = append(attributes, html.Attribute{Key: "class", Val: classResizeMeWidthClassName})
 	}
 	markupPanel := &html.Node{

@@ -8,13 +8,18 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/josephbudd/kickwasm/examples/colors/domain/data/filepaths"
-	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
 	"github.com/josephbudd/kickwasm/examples/colorssitepack"
 )
 
+// ApplicationSettings are the settings for this application.
+type ApplicationSettings struct {
+	Host string `yaml:"host"`
+	Port uint64 `yaml:"port"`
+}
+
 // NewApplicationSettings makes a new ApplicationSettings.
 // Returns a pointer to the ApplicationSettings and the error.
-func NewApplicationSettings() (settings *types.ApplicationSettings, err error) {
+func NewApplicationSettings() (settings *ApplicationSettings, err error) {
 	var fpath string
 	var contents []byte
 	var found bool
@@ -24,7 +29,7 @@ func NewApplicationSettings() (settings *types.ApplicationSettings, err error) {
 		err = errors.New(emsg)
 		return
 	}
-	settings = &types.ApplicationSettings{}
+	settings = &ApplicationSettings{}
 	err = yaml.Unmarshal(contents, settings)
 	return
 }

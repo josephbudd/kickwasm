@@ -17,7 +17,6 @@ import (
 // panelGroup is a group of 1 panel.
 // It also has a show panel func for each panel in this panel group.
 type panelGroup struct {
-
 	createPanel js.Value
 }
 
@@ -40,7 +39,7 @@ func (group *panelGroup) defineMembers() (err error) {
 /*
 	Show panel funcs.
 
-	Call these from the controler, presenter and caller.
+	Call these from the controller, presenter and caller.
 */
 
 // showCreatePanel shows the panel you named CreatePanel while hiding any other panels in this panel group.
@@ -51,4 +50,3 @@ Button to create a new hello world.
 func (group *panelGroup) showCreatePanel() {
 	tools.ShowPanelInTabGroup(group.createPanel)
 }
-

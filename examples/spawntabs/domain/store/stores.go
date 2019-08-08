@@ -2,7 +2,7 @@ package store
 
 import (
 	"strings"
-	
+
 	"github.com/pkg/errors"
 )
 

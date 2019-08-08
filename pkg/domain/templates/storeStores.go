@@ -5,9 +5,9 @@ const StoreStoresGo = `package store
 
 import (
 	"strings"
-	
-	"github.com/pkg/errors"{{ if gt (len .Stores) 0 }}
+{{ if gt (len .Stores) 0 }}
 	"{{.ApplicationGitPath}}{{.ImportDomainStoreStorer}}"{{ end }}
+	"github.com/pkg/errors"
 )
 
 /*

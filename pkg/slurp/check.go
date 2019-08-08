@@ -155,7 +155,7 @@ func (sl *Slurper) checkButtonPanelInfo(panel *PanelInfo, fpath string, level in
 		err = errors.New(errMessage)
 		return
 	}
-	if len(panel.Markup) == 0 && len(panel.Buttons) == 0 && len(panel.Tabs) == 0 {
+	if len(panel.Markup) == 0 && len(panel.Note) == 0 && len(panel.Buttons) == 0 && len(panel.Tabs) == 0 {
 		errMessage = fmt.Sprintf(`the button panel named %q must have markup, buttons or tabs in %s`, panel.Name, fpath)
 		err = errors.New(errMessage)
 		return

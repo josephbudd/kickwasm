@@ -7,8 +7,8 @@ import (
 	"syscall/js"
 
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 

@@ -113,7 +113,7 @@ then
 fi
 
 echo " * Success."
-echo " * You have sucessfully compiled the ${sitepack_package_name} package object code."
+echo " * You have successfully compiled the ${sitepack_package_name} package object code."
 echo " * In other words, you have compiled your entire renderer process into object code."
 
 echo ""

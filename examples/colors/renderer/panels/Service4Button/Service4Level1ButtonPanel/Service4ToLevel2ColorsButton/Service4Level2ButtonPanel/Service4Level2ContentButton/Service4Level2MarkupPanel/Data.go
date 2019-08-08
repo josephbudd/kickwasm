@@ -18,7 +18,7 @@ var (
 	// quitCh will close the application
 	quitCh chan struct{}
 
-	// eojCh will signal go routines to stop and return becuase the application is ending.
+	// eojCh will signal go routines to stop and return because the application is ending.
 	eojCh chan struct{}
 
 	// receiveCh receives messages from the main process.

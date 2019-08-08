@@ -55,7 +55,6 @@ func createTabSpawnPanels(appPaths paths.ApplicationPathsI, builder *project.Bui
 					ImportDomainStoreRecord   string
 					ImportDomainLPC           string
 					ImportDomainLPCMessage    string
-					ImportDomainTypes         string
 
 					CamelCase       func(string) string
 					LowerCamelCase  func(string) string
@@ -82,7 +81,6 @@ func createTabSpawnPanels(appPaths paths.ApplicationPathsI, builder *project.Bui
 					ImportDomainStoreRecord:   folderpaths.ImportDomainStoreRecord,
 					ImportDomainLPC:           folderpaths.ImportDomainLPC,
 					ImportDomainLPCMessage:    folderpaths.ImportDomainLPCMessage,
-					ImportDomainTypes:         folderpaths.ImportDomainTypes,
 
 					CamelCase:      cases.CamelCase,
 					LowerCamelCase: cases.LowerCamelCase,
@@ -106,9 +104,9 @@ func createTabSpawnPanels(appPaths paths.ApplicationPathsI, builder *project.Bui
 				if err = templates.ProcessTemplate(fname, oPath, templates.SpawnTabPanelCaller, data, appPaths); err != nil {
 					return
 				}
-				fname = fileNames.ControlerDotGo
+				fname = fileNames.ControllerDotGo
 				oPath = filepath.Join(folderpath, fname)
-				if err = templates.ProcessTemplate(fname, oPath, templates.SpawnTabPanelControler, data, appPaths); err != nil {
+				if err = templates.ProcessTemplate(fname, oPath, templates.SpawnTabPanelController, data, appPaths); err != nil {
 					return
 				}
 				fname = fileNames.DataDotGo

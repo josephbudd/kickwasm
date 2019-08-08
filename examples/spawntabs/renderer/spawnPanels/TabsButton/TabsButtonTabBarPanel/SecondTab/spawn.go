@@ -101,7 +101,7 @@ func (tab *Tab) unSpawn() (err error) {
 	if err = tools.UnSpawnTab(tab.hTMLButton); err != nil {
 		messages = append(messages, err.Error())
 	}
-	// Unregister each panel controler's javascript call backs.
+	// Unregister each panel controller's javascript call backs.
 	if err = tools.UnRegisterCallBacks(tab.uniqueID); err != nil {
 		messages = append(messages, err.Error())
 	}

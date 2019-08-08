@@ -24,7 +24,6 @@ type FolderNames struct {
 	Storer          string
 	Storing         string
 	Templates       string
-	Types           string
 	ViewTools       string
 	WASM            string
 	YAML            string
@@ -65,7 +64,6 @@ func GetFolderNames() *FolderNames {
 		Storer:          "storer",
 		Storing:         "storing",
 		Templates:       "templates",
-		Types:           "types",
 		ViewTools:       "viewtools",
 		WASM:            "wasm",
 		YAML:            "yaml",

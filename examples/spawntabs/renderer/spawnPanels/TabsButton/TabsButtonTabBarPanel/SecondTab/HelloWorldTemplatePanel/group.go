@@ -23,7 +23,7 @@ const (
 // panelGroup is a group of 1 panel.
 // It also has a show panel func for each panel in this panel group.
 type panelGroup struct {
-	uniqueID uint64
+	uniqueID    uint64
 	panelNameID map[string]string
 
 	helloWorldTemplatePanel js.Value
@@ -50,7 +50,7 @@ func (group *panelGroup) defineMembers() (err error) {
 /*
 	Show panel funcs.
 
-	Call these from the controler, presenter and caller.
+	Call these from the controller, presenter and caller.
 */
 
 // showHelloWorldTemplatePanel shows the panel you named HelloWorldTemplatePanel while hiding any other panels in this panel group.
@@ -61,4 +61,3 @@ Yet another "hello world".
 func (group *panelGroup) showHelloWorldTemplatePanel() {
 	tools.ShowPanelInTabGroup(group.helloWorldTemplatePanel)
 }
-

@@ -10,7 +10,7 @@ package service2level5markuppanel
 type panelCaller struct {
 	group      *panelGroup
 	presenter  *panelPresenter
-	controler  *panelControler
+	controller *panelController
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 

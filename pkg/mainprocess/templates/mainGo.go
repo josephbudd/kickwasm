@@ -10,7 +10,6 @@ import (
 
 	"{{.ApplicationGitPath}}{{.ImportDomainDataSettings}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainStore}}"
-	"{{.ApplicationGitPath}}{{.ImportDomainTypes}}"
 	"{{.ApplicationGitPath}}{{.ImportMainProcessLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportMainProcessLPCDispatch}}"
 )
@@ -43,7 +42,7 @@ func main() {
 	defer stores.Close()
 
 	// get the application's host and port and then setup the listener.
-	var appSettings *types.ApplicationSettings
+	var appSettings *settings.ApplicationSettings
 	if appSettings, err = settings.NewApplicationSettings(); err != nil {
 		log.Println(err)
 		return
@@ -99,8 +98,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"{{.SitePackImportPath}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
+	"{{.SitePackImportPath}}"
 )
 
 /*
@@ -197,8 +196,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"{{.SitePackImportPath}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
+	"{{.SitePackImportPath}}"
 )
 
 const (
@@ -210,7 +209,7 @@ const (
 /*
 
 	TODO: Modify func serve for your special needs.
-	  
+
 	If for example you want this main process to serve your own css files in /site/widgetcss/.
 
 	  1. In func serve below add the following 2 lines:

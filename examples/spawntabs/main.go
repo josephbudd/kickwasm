@@ -7,7 +7,6 @@ import (
 
 	"github.com/josephbudd/kickwasm/examples/spawntabs/domain/data/settings"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/domain/store"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/domain/types"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/mainprocess/lpc"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/mainprocess/lpc/dispatch"
 )
@@ -40,7 +39,7 @@ func main() {
 	defer stores.Close()
 
 	// get the application's host and port and then setup the listener.
-	var appSettings *types.ApplicationSettings
+	var appSettings *settings.ApplicationSettings
 	if appSettings, err = settings.NewApplicationSettings(); err != nil {
 		log.Println(err)
 		return

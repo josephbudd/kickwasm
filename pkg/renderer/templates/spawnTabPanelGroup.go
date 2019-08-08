@@ -26,7 +26,7 @@ const (
 // panelGroup is a group of {{$lpg}} panel{{if gt $lpg 1}}s{{end}}.
 // It also has {{if eq $lpg 1}}a {{end}}show panel func{{if gt $lpg 1}}s{{end}} for each panel in this panel group.
 type panelGroup struct {
-	uniqueID uint64
+	uniqueID    uint64
 	panelNameID map[string]string
 {{range $panel := .PanelGroup}}
 	{{call $Dot.LowerCamelCase $panel.Name}} js.Value{{end}}
@@ -53,7 +53,7 @@ func (group *panelGroup) defineMembers() (err error) {
 /*
 	Show panel funcs.
 
-	Call these from the controler, presenter and caller.
+	Call these from the controller, presenter and caller.
 */{{range $panel := .PanelGroup}}
 
 // show{{$panel.Name}} shows the panel you named {{$panel.Name}} while hiding any other panels in this panel group.
@@ -63,6 +63,5 @@ func (group *panelGroup) defineMembers() (err error) {
 */
 func (group *panelGroup) show{{$panel.Name}}() {
 	tools.ShowPanelInTabGroup(group.{{call $Dot.LowerCamelCase $panel.Name}})
-}
-{{end}}
+}{{end}}
 `

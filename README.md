@@ -1,4 +1,14 @@
-# kickwasm version 5.0.0
+# kickwasm version 6.0.0
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+
+August 8, 2019:
+
+Another backwards compatibility break. This time in order to better comply with the go report card. This change resulted in simpler framework source code and some spelling corrections.
+
+I also made the same backwards compatibility breaking changes to the tools. This wiki is updated.
+
+I rebuild the crud with version 6.0.0.
 
 Sunday August 4, 2019:
 
@@ -131,8 +141,8 @@ $ go install
 
 The examples/ folder contains 2 examples.
 
-1. The colors example is just a plain untouched framework. It was built with kickwasm version 5.0.0.
-1. The spawntabs example only implements spawned tabs in a tab bar. It was built with kickwasm version 5.0.0.
+1. The colors example is just a plain untouched framework. It was built with kickwasm version 6.0.0.
+1. The spawntabs example only implements spawned tabs in a tab bar. It was built with kickwasm version 6.0.0.
 
 ## The example videos
 
@@ -161,7 +171,7 @@ The video shows tabs being spawned and unspawned.
 
 The kickwasm WIKI contains important information not included in the CRUD wiki. It is a work in progress.
 
-The WIKI has been updated to kickwasm version 5.0.0.
+The WIKI has been updated to kickwasm version 6.0.0.
 
 ## To Do
 

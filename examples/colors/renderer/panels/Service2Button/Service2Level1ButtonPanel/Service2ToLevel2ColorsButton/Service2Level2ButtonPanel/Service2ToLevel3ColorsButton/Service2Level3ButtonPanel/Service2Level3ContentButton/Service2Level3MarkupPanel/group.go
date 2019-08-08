@@ -17,7 +17,6 @@ import (
 // panelGroup is a group of 1 panel.
 // It also has a show panel func for each panel in this panel group.
 type panelGroup struct {
-
 	service2Level3MarkupPanel js.Value
 }
 
@@ -40,7 +39,7 @@ func (group *panelGroup) defineMembers() (err error) {
 /*
 	Show panel funcs.
 
-	Call these from the controler, presenter and caller.
+	Call these from the controller, presenter and caller.
 */
 
 // showService2Level3MarkupPanel shows the panel you named Service2Level3MarkupPanel while hiding any other panels in this panel group.

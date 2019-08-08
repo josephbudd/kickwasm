@@ -7,7 +7,6 @@ import (
 
 	"github.com/josephbudd/kickwasm/examples/colors/domain/data/settings"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/store"
-	"github.com/josephbudd/kickwasm/examples/colors/domain/types"
 	"github.com/josephbudd/kickwasm/examples/colors/mainprocess/lpc"
 	"github.com/josephbudd/kickwasm/examples/colors/mainprocess/lpc/dispatch"
 )
@@ -40,7 +39,7 @@ func main() {
 	defer stores.Close()
 
 	// get the application's host and port and then setup the listener.
-	var appSettings *types.ApplicationSettings
+	var appSettings *settings.ApplicationSettings
 	if appSettings, err = settings.NewApplicationSettings(); err != nil {
 		log.Println(err)
 		return

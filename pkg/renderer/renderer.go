@@ -54,7 +54,7 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 	if err = createWASMExecJS(appPaths); err != nil {
 		return
 	}
-	if err = createPanelHelper(appPaths); err != nil {
+	if err = createPaneling(appPaths); err != nil {
 		return
 	}
 	if err = createNotJS(appPaths); err != nil {

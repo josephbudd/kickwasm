@@ -4,8 +4,8 @@ import (
 	"syscall/js"
 
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/paneling"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/paneling"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/viewtools"
 )
 

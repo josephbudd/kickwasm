@@ -178,7 +178,7 @@ func NewClient(host string, port uint64, tools *viewtools.Tools, quitCh chan str
 		EOJChan:     eojCh,
 		QuitCh:      quitCh,
 		nReceivers:  {{.NumberOfMarkupPanels}},
-		nSpawns: 0,
+		nSpawns:     0,
 	}
 	// Shut the renderer down when the connection breaks.
 	v.SetOnConnectionBreak(

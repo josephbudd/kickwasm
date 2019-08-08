@@ -19,10 +19,6 @@ const (
 	importDomainDataLogLevels = "/domain/data/loglevels"
 	importDomainDataSettings  = "/domain/data/settings"
 
-	// domain types
-
-	importDomainTypes = "/domain/types"
-
 	// domain lpc
 
 	importDomainLPC        = "/domain/lpc"
@@ -72,10 +68,6 @@ type Imports struct {
 	ImportDomainDataLogLevels string
 	ImportDomainDataSettings  string
 
-	// domain types
-
-	ImportDomainTypes string
-
 	// lpc
 
 	ImportDomainLPC              string
@@ -116,10 +108,6 @@ func GetImports() *Imports {
 		ImportDomainDataFilepaths: importDomainDataFilepaths,
 		ImportDomainDataLogLevels: importDomainDataLogLevels,
 		ImportDomainDataSettings:  importDomainDataSettings,
-
-		// domain types
-
-		ImportDomainTypes: importDomainTypes,
 
 		// lpc
 
@@ -197,7 +185,6 @@ func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 	ap.paths.ImportDomainDataFilepaths = importDomainDataFilepaths
 	ap.paths.ImportDomainDataLogLevels = importDomainDataLogLevels
 	ap.paths.ImportDomainDataSettings = importDomainDataSettings
-	ap.paths.ImportDomainTypes = importDomainTypes
 
 	// lpc
 
@@ -278,8 +265,6 @@ type Paths struct {
 	OutputDomainStoreStorer  string
 	OutputDomainStoreRecord  string
 
-	OutputDomainTypes string
-
 	// output domain lpc
 
 	OutputDomainLPC        string
@@ -318,7 +303,6 @@ type Paths struct {
 	ImportDomainDataFilepaths string
 	ImportDomainDataLogLevels string
 	ImportDomainDataSettings  string
-	ImportDomainTypes         string
 
 	// import domain lpc
 
@@ -382,7 +366,6 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	ap.paths.OutputDomainStoreStoring = filepath.Join(ap.paths.OutputDomainStore, folderNames.Storing)
 	ap.paths.OutputDomainStoreStorer = filepath.Join(ap.paths.OutputDomainStore, folderNames.Storer)
 	ap.paths.OutputDomainStoreRecord = filepath.Join(ap.paths.OutputDomainStore, folderNames.Record)
-	ap.paths.OutputDomainTypes = filepath.Join(ap.paths.OutputDomain, folderNames.Types)
 
 	// output renderer folder and sub folders.
 	ap.paths.OutputRenderer = filepath.Join(ap.paths.Output, folderNames.Renderer)
@@ -435,10 +418,6 @@ func (ap *ApplicationPaths) MakeOutput() (err error) {
 		return
 	}
 	if err = os.Mkdir(ap.paths.OutputDomainStoreStoring, ap.DMode); err != nil {
-		return
-	}
-	// output domain types
-	if err = os.MkdirAll(ap.paths.OutputDomainTypes, ap.DMode); err != nil {
 		return
 	}
 	// output domain lpc folder and subfolders

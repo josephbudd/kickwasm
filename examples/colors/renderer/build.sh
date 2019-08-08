@@ -111,7 +111,7 @@ then
 fi
 
 echo " * Success."
-echo " * You have sucessfully compiled the ${sitepack_package_name} package object code."
+echo " * You have successfully compiled the ${sitepack_package_name} package object code."
 
 echo ""
 (( step += 1 ))

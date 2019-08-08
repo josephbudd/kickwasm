@@ -19,7 +19,7 @@ import (
 type panelPresenter struct {
 	uniqueID       uint64
 	group          *panelGroup
-	controler      *panelControler
+	controller     *panelController
 	caller         *panelCaller
 	tabButton      js.Value
 	tabPanelHeader js.Value
@@ -55,7 +55,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	// Define the customer name input field.
 	// Build it's id using the uniqueID.
-	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controler.uniqueID)
+	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
 	if presenter.addCustomerName = notJS.GetElementByID(id); presenter.addCustomerName == null {
 		err = errors.New("unable to find #" + id)
 		return

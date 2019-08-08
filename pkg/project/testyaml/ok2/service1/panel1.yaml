@@ -2,12 +2,12 @@ id : p1
 name : Panel1
 note : p1 note
 markup : <p>Panel 1-1</p>
-controlerData :
+controllerData :
   - id : p1cdid1
     name : p1cdname1
   - id : p1cdid2
     name : p1cdname2
-controlerCode : |
+controllerCode : |
   p1cf1: function(){},
   p1cf2: function(){},
 

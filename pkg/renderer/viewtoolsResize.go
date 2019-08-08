@@ -8,7 +8,7 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
 )
 
-func createResizeGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
+func createResizeGo(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	data := &struct {
 		IDs        *project.IDs
 		Classes    *project.Classes
@@ -18,9 +18,18 @@ func createResizeGo(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 		Classes:    builder.Classes,
 		Attributes: builder.Attributes,
 	}
-	// execute the template
 	folderpaths := appPaths.GetPaths()
-	fname := "resize.go"
-	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
-	return templates.ProcessTemplate(fname, oPath, templates.ViewToolsResize, data, appPaths)
+	var fname string
+	var oPath string
+
+	fname = "resize.go"
+	oPath = filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	if err = templates.ProcessTemplate(fname, oPath, templates.ViewToolsResize, data, appPaths); err != nil {
+		return
+	}
+
+	fname = "resizeSlider.go"
+	oPath = filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	err = templates.ProcessTemplate(fname, oPath, templates.ViewToolsResizeSliderPanel, data, appPaths)
+	return
 }

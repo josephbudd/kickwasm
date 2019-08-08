@@ -5,8 +5,9 @@ const PanelPresenter = `package {{call .PackageNameCase .PanelName}}
 
 import ({{ if .IsTabSiblingPanel }}
 	"strings"
-	"syscall/js"{{ end }}
+	"syscall/js"
 
+{{ end }}
 	"github.com/pkg/errors"
 )
 
@@ -18,10 +19,12 @@ import ({{ if .IsTabSiblingPanel }}
 
 // panelPresenter writes to the panel
 type panelPresenter struct {
-	group          *panelGroup
-	controler      *panelControler
-	caller         *panelCaller{{ if .IsTabSiblingPanel }}
-	tabPanelHeader js.Value{{ end }}
+	{{ if .IsTabSiblingPanel }}group          *panelGroup
+	controller     *panelController
+	caller         *panelCaller
+	tabPanelHeader js.Value{{else}}group      *panelGroup
+	controller *panelController
+	caller     *panelCaller{{ end }}
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
@@ -58,7 +61,6 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	return
 }
-
 {{ if .IsTabSiblingPanel }}// Tab panel heading.
 
 func (presenter *panelPresenter) getTabPanelHeading() (heading string) {
@@ -74,8 +76,8 @@ func (presenter *panelPresenter) setTabPanelHeading(heading string) {
 		tools.ElementShow(presenter.tabPanelHeader)
 	}
 	notJS.SetInnerText(presenter.tabPanelHeader, heading)
-}{{ end }}
-
+}
+{{ end }}
 /* NOTE TO DEVELOPER. Step 3 of 3.
 
 // Define your panelPresenter functions.

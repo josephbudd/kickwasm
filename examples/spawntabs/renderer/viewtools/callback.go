@@ -9,7 +9,7 @@ import (
 // UnRegisterCallBacks deletes the call backs for a panel.
 // Param uniqueID is the spawn panel's unique id.
 func (tools *Tools) UnRegisterCallBacks(uniqueID uint64) (err error) {
-	if (uniqueID == 0) {
+	if uniqueID == 0 {
 		return
 	}
 	var funcs []js.Func

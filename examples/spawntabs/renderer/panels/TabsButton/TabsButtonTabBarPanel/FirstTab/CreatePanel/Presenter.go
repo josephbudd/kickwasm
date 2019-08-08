@@ -16,7 +16,7 @@ import (
 // panelPresenter writes to the panel
 type panelPresenter struct {
 	group          *panelGroup
-	controler      *panelControler
+	controller     *panelController
 	caller         *panelCaller
 	tabPanelHeader js.Value
 

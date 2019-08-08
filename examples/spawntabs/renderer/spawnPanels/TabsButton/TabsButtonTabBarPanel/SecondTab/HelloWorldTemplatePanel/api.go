@@ -6,9 +6,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/paneling"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/lpc"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/paneling"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/viewtools"
 )
 
@@ -26,14 +26,14 @@ import (
 
 // Prepare prepares the panel to be spawned.
 // This is called once by package main when the application starts.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, help *paneling.Help) {
+func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, phelp *paneling.Help) {
 	quitCh = quitChan
 	eojCh = eojChan
 	receiveCh = receiveChan
 	sendCh = sendChan
 	tools = vtools
 	notJS = njs
-	help = help
+	help = phelp
 }
 
 // BuildPanel builds the panel's go code.
@@ -54,14 +54,14 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID
 	if err = panel.group.defineMembers(); err != nil {
 		return
 	}
-	if err = panel.controler.defineControlsSetHandlers(); err != nil {
+	if err = panel.controller.defineControlsSetHandlers(); err != nil {
 		return
 	}
 	if err = panel.presenter.defineMembers(); err != nil {
 		return
 	}
 	panel.caller.listen()
-	panel.controler.initialCalls()
+	panel.controller.initialCalls()
 	panel.caller.initialCalls()
 
 	return

@@ -6,9 +6,9 @@ const Panel = `{{$Dot := .}}package {{call .PackageNameCase .PanelName}}
 import (
 	"github.com/pkg/errors"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
@@ -18,12 +18,12 @@ import (
 
 */
 
-// Panel has a controler, presenter and caller.
+// Panel has a controller, presenter and caller.
 // It also has show panel funcs for each panel in this panel group.
 type Panel struct {
-	controler *panelControler
-	presenter *panelPresenter
-	caller    *panelCaller
+	controller *panelController
+	presenter  *panelPresenter
+	caller     *panelCaller
 }
 
 // NewPanel constructs a new panel.
@@ -43,12 +43,12 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	notJS = njs
 
 	group := &panelGroup{}
-	controler := &panelControler{
+	controller := &panelController{
 		group: group,
 	}
 	presenter := &panelPresenter{
-		group:          group,{{ if .IsTabSiblingPanel }}
-		tabPanelHeader: notJS.GetElementByID("{{.PanelH3ID}}"),{{ end }}
+{{ if .IsTabSiblingPanel }}		group:          group,
+		tabPanelHeader: notJS.GetElementByID("{{.PanelH3ID}}"),{{ else }}		group: group,{{ end }}
 	}
 	caller := &panelCaller{
 		group: group,
@@ -56,26 +56,26 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 
 	/* NOTE TO DEVELOPER. Step 1 of 1.
 
-	// Set any controler, presenter or caller members that you added.
+	// Set any controller, presenter or caller members that you added.
 	// Use your custom help funcs if needed.
 	// example:
 
 	caller.state = help.GetStateAdd()
-	
+
 	*/
 
-	controler.presenter = presenter
-	controler.caller = caller
-	presenter.controler = controler
+	controller.presenter = presenter
+	controller.caller = caller
+	presenter.controller = controller
 	presenter.caller = caller
-	caller.controler = controler
+	caller.controller = controller
 	caller.presenter = presenter
 
 	// completions
 	if err = group.defineMembers(); err != nil {
 		return
 	}
-	if err = controler.defineControlsSetHandlers(); err != nil {
+	if err = controller.defineControlsSetHandlers(); err != nil {
 		return
 	}
 	if err = presenter.defineMembers(); err != nil {
@@ -84,8 +84,8 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 
 	// No errors so define the panel.
 	panel = &Panel{
-		controler: controler,
-		presenter: presenter,
+		controller: controller,
+		presenter:  presenter,
 		caller:     caller,
 	}
 	return
@@ -98,7 +98,7 @@ func (panel *Panel) Listen() {
 
 // InitialCalls runs the first code that the panel needs to run.
 func (panel *Panel) InitialCalls() {
-	panel.controler.initialCalls()
+	panel.controller.initialCalls()
 	panel.caller.initialCalls()
 }
 `

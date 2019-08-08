@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/josephbudd/kickwasm/examples/spawntabssitepack"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/domain/data/filepaths"
+	"github.com/josephbudd/kickwasm/examples/spawntabssitepack"
 )
 
 const (
@@ -20,7 +20,7 @@ const (
 /*
 
 	TODO: Modify func serve for your special needs.
-	  
+
 	If for example you want this main process to serve your own css files in /site/widgetcss/.
 
 	  1. In func serve below add the following 2 lines:
