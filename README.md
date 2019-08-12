@@ -1,6 +1,12 @@
-# kickwasm version 6.0.0
+# kickwasm version 6.0.1
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+
+August 12, 2019:
+
+Minor changes for the go report card.
+
+Now the renderer's notJS package has create funcs for all useful html elements.
 
 August 8, 2019:
 
@@ -60,7 +66,7 @@ I repeately use the kickwasm tools to add another missing part to the applicatio
 
 ### If you really want to get a feel for kickwasm read the CRUD wiki
 
-## This is kickwasm version 5.0.0
+## The previous version, 5.0.0.
 
 Version 5 is not backwards compatible. Version 5 is an implementation of these 4 priciples.
 
@@ -141,7 +147,7 @@ $ go install
 
 The examples/ folder contains 2 examples.
 
-1. The colors example is just a plain untouched framework. It was built with kickwasm version 6.0.0.
+1. The colors example is just a plain untouched framework. It was built with kickwasm version 6.0.1.
 1. The spawntabs example only implements spawned tabs in a tab bar. It was built with kickwasm version 6.0.0.
 
 ## The example videos

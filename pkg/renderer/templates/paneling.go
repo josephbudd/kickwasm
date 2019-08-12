@@ -13,7 +13,7 @@ STEP 1: Edit the file Helping.go here in renderer/paneling/
 	// Help helps initialize panels.
 	type Help struct{}
 	
-	// NewHelp constructs a new Help.
+	// NewHelp constructs a new *Help.
 	func NewHelp() *Help {
 		return &Help{}
 	}
@@ -63,6 +63,7 @@ const PanelHelperImplementation = `package paneling
 // Help helps initialize panels.
 type Help struct{}
 
+// NewHelp constructs a new *Help.
 func NewHelp() *Help {
 	return &Help{}
 }

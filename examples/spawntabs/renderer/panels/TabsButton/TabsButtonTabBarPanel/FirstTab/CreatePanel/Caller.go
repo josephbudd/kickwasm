@@ -8,8 +8,8 @@ package createpanel
 
 // panelCaller communicates with the main process via an asynchrounous connection.
 type panelCaller struct {
-	group     *panelGroup
-	presenter *panelPresenter
+	group      *panelGroup
+	presenter  *panelPresenter
 	controller *panelController
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.

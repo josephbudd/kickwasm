@@ -1,9 +1,11 @@
 package templates
 
 // NotJSCreateGetGo is the file renderer/notjs/createGet.go
-var NotJSCreateGetGo = `package notjs
+var NotJSCreateGetGo = `{{ $Dot := . }}package notjs
 
 import "syscall/js"
+
+// GET
 
 // GetElementByID inovokes the document;s getElementById.
 func (notjs *NotJS) GetElementByID(id string) js.Value {
@@ -21,13 +23,22 @@ func (notjs *NotJS) GetElementsByTagName(tagName string) []js.Value {
 	return tagNames
 }
 
+// VARIOUS CREATES
+
+// CreateTextNode invokes the document's createElement.
+func (notjs *NotJS) CreateTextNode(text string) js.Value {
+	return notjs.document.Call("createTextNode", text)
+}
+
 // CreateElement invokes the document's createElement.
 func (notjs *NotJS) CreateElement(tagName string) js.Value {
 	return notjs.document.Call(createElementMethodName, tagName)
 }
 
-// CreateElementInput creates a text input element.
-func (notjs *NotJS) CreateElementInput() js.Value {
+// CREATE FORM INPUT VARIATIONS.
+
+// CreateElementINPUT creates a text input element.
+func (notjs *NotJS) CreateElementINPUT() js.Value {
 	input := notjs.document.Call(createElementMethodName, inputTypeName)
 	input.Set(typeAttributeName, "text")
 	return input
@@ -63,75 +74,10 @@ func (notjs *NotJS) CreateElementRadio() js.Value {
 	input := notjs.document.Call(createElementMethodName, inputTypeName)
 	input.Set(typeAttributeName, radioTypeName)
 	return input
-}
+}{{ range .HTMLNames}}
 
-// CreateElementSpan invokes the document's createElement.
-func (notjs *NotJS) CreateElementSpan() js.Value {
-	return notjs.document.Call(createElementMethodName, "span")
-}
-
-// CreateElementB invokes the document's createElement.
-func (notjs *NotJS) CreateElementB() js.Value {
-	return notjs.document.Call(createElementMethodName, "b")
-}
-
-// CreateElementBR invokes the document's createElement.
-func (notjs *NotJS) CreateElementBR() js.Value {
-	return notjs.document.Call(createElementMethodName, "br")
-}
-
-// CreateElementP invokes the document's createElement.
-func (notjs *NotJS) CreateElementP() js.Value {
-	return notjs.document.Call(createElementMethodName, "p")
-}
-
-// CreateElementBUTTON invokes the document's createElement.
-func (notjs *NotJS) CreateElementBUTTON() js.Value {
-	return notjs.document.Call(createElementMethodName, "button")
-}
-
-// CreateElementDIV invokes the document's createElement.
-func (notjs *NotJS) CreateElementDIV() js.Value {
-	return notjs.document.Call(createElementMethodName, "div")
-}
-
-// CreateElementH3 invokes the document's createElement.
-func (notjs *NotJS) CreateElementH3() js.Value {
-	return notjs.document.Call(createElementMethodName, "h3")
-}
-
-// CreateElementH4 invokes the document's createElement.
-func (notjs *NotJS) CreateElementH4() js.Value {
-	return notjs.document.Call(createElementMethodName, "h4")
-}
-
-// CreateElementH5 invokes the document's createElement.
-func (notjs *NotJS) CreateElementH5() js.Value {
-	return notjs.document.Call(createElementMethodName, "h5")
-}
-
-// CreateElementH6 invokes the document's createElement.
-func (notjs *NotJS) CreateElementH6() js.Value {
-	return notjs.document.Call(createElementMethodName, "h6")
-}
-
-// CreateTextNode invokes the document's createElement.
-func (notjs *NotJS) CreateTextNode(text string) js.Value {
-	return notjs.document.Call("createTextNode", text)
-}
-
-// CreateElementTH invokes the document's createElement.
-func (notjs *NotJS) CreateElementTH() js.Value {
-	return notjs.document.Call(createElementMethodName, "th")
-}
-
-// CreateElementTR invokes the document's createElement.
-func (notjs *NotJS) CreateElementTR() js.Value {
-	return notjs.document.Call(createElementMethodName, "tr")
-}
-
-// CreateElementTD invokes the document's createElement.
-func (notjs *NotJS) CreateElementTD() js.Value {
-	return notjs.document.Call(createElementMethodName, "td")
-}
+// CreateElement{{ call $Dot.ToUpper . }} invokes the document's createElement.
+func (notjs *NotJS) CreateElement{{ call $Dot.ToUpper . }}() js.Value {
+	return notjs.document.Call(createElementMethodName, "{{ call $Dot.ToLower . }}")
+}{{ end }}
 `

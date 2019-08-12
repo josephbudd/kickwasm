@@ -49,7 +49,7 @@ const (
 	CookieCrumbLevelPrefixClassName = "cookie-crumb-level-"
 
 	VScrollClassName  = "vscroll"
-	HVScrollClassName = "hvscroll"	
+	HVScrollClassName = "hvscroll"
 
 	MasterID           = "tabsMasterView"
 	HomeID             = "tabsMasterView-home"

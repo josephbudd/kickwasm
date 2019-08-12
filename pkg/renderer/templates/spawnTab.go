@@ -45,12 +45,10 @@ import (
 
 */
 
-
 const (
 	tabBarID = "{{.TabBarID}}"
 	tabName  = "{{.TabName}}"
 )
-
 
 var (
 	markupTemplatePaths = {{.MarkupTemplatePaths}}
@@ -92,8 +90,8 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 	}
 	// Define the tab.
 	tab := &Tab{
-		hTMLButton :   tabButton,
-		uniqueID :     uniqueID,
+		hTMLButton:    tabButton,
+		uniqueID:      uniqueID,
 		stopListeners: make([]func(), 0, 20),
 	}
 	unspawn = tab.unSpawn

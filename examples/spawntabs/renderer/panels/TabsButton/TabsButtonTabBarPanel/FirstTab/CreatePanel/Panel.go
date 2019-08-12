@@ -19,8 +19,8 @@ import (
 // It also has show panel funcs for each panel in this panel group.
 type Panel struct {
 	controller *panelController
-	presenter *panelPresenter
-	caller    *panelCaller
+	presenter  *panelPresenter
+	caller     *panelCaller
 }
 
 // NewPanel constructs a new panel.
@@ -58,7 +58,7 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	// example:
 
 	caller.state = help.GetStateAdd()
-	
+
 	*/
 
 	controller.presenter = presenter
@@ -82,8 +82,8 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	// No errors so define the panel.
 	panel = &Panel{
 		controller: controller,
-		presenter: presenter,
-		caller:    caller,
+		presenter:  presenter,
+		caller:     caller,
 	}
 	return
 }

@@ -49,7 +49,7 @@ const (
 	CookieCrumbLevelPrefixClassName = "cookie-crumb-level-"
 
 	VScrollClassName  = "vscroll"
-	HVScrollClassName = "hvscroll"	
+	HVScrollClassName = "hvscroll"
 
 	MasterID           = "tabsMasterView"
 	HomeID             = "tabsMasterView-home"
@@ -134,7 +134,7 @@ func NewTools(notJS *notjs.NotJS) *Tools {
 		console:         g.Get("console"),
 		jsCallBacks:     make(map[uint64][]js.Func, 100),
 
-		panelNameHVScroll: map[string]bool{"CreatePanel":false, "HelloWorldTemplatePanel":false, "TabsButtonTabBarPanel":false},
+		panelNameHVScroll: map[string]bool{"CreatePanel": false, "HelloWorldTemplatePanel": false, "TabsButtonTabBarPanel": false},
 	}
 	bodies := notJS.GetElementsByTagName("body")
 	v.body = bodies[0]

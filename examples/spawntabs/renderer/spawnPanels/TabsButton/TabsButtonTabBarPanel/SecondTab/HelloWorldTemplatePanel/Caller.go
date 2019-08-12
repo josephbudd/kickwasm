@@ -11,7 +11,7 @@ type panelCaller struct {
 	uniqueID     uint64
 	group        *panelGroup
 	presenter    *panelPresenter
-	controller    *panelController
+	controller   *panelController
 	unspawn      func() error
 	UnSpawningCh chan struct{}
 
