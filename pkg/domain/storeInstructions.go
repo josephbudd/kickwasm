@@ -8,14 +8,18 @@ import (
 )
 
 // RebuildStoreInstructions rebuilds the store instructions.
-func RebuildStoreInstructions(appPaths paths.ApplicationPathsI, storeNames []string) (err error) {
+func RebuildStoreInstructions(appPaths paths.ApplicationPathsI, boltStoreNames, remoteDBNames, remoteRecordNames []string) (err error) {
 	folderpaths := appPaths.GetPaths()
 	filenames := appPaths.GetFileNames()
 
 	data := &struct {
-		Stores []string
+		BoltStores    []string
+		RemoteDBs     []string
+		RemoteRecords []string
 	}{
-		Stores: storeNames,
+		BoltStores:    boltStoreNames,
+		RemoteDBs:     remoteDBNames,
+		RemoteRecords: remoteRecordNames,
 	}
 	fname := filenames.InstructionsDotTXT
 	oPath := filepath.Join(folderpaths.OutputDomainStore, fname)

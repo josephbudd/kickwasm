@@ -1,6 +1,7 @@
 package project
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -357,14 +358,17 @@ func testGenerateButtonIDsPanelIDs(t *testing.T, builder *Builder) {
 }
 
 func testGenerateTabIDsPanelIDs(t *testing.T, builder *Builder) {
-	wantTabs := map[string][]string{
-		"OtherTabPanel-OneTab": {"LastTabPanel"},
-		"TabPanel-OneTab":      {"OnlyPanel"},
-		"TabPanel-ZeroTab":     {"ZeroTabFirstPanel", "ZeroTabSecondPanel"},
+	wantTabs := map[string]TabSpawnPanelIDs{
+		"OneTab":  TabSpawnPanelIDs{Spawn: false, PanelIDs: []string{"OnlyPanel"}},
+		"TwoTab":  TabSpawnPanelIDs{Spawn: true, PanelIDs: []string{"LastTabPanel"}},
+		"ZeroTab": TabSpawnPanelIDs{Spawn: true, PanelIDs: []string{"ZeroTabFirstPanel", "ZeroTabSecondPanel"}},
 	}
+
 	t.Run("testGenerateTabIDsPanelIDs", func(t *testing.T) {
 		if gotTabs := builder.GenerateTabIDsPanelIDs(); !reflect.DeepEqual(gotTabs, wantTabs) {
-			t.Errorf("Builder.GenerateTabIDsPanelIDs() = %#v, want %#v", gotTabs, wantTabs)
+			fmt.Printf("Builder.GenerateTabIDsPanelIDs() = %#v, want %#v", gotTabs, wantTabs)
+			t.Fatal("oej")
+			// t.Errorf("Builder.GenerateTabIDsPanelIDs() = %#v, want %#v", gotTabs, wantTabs)
 		}
 	})
 }

@@ -1,7 +1,52 @@
 package templates
 
-// StoreStoringGo is the domain/store/storing/<store name>.go template.
-const StoreStoringGo = `package storing
+// RemoteStoreStoringGo is the domain/store/storing/<store name>.go template for a remote database.
+const RemoteStoreStoringGo = `package storing
+
+import (
+	"github.com/pkg/errors"
+)
+
+// {{.Store}}RemoteDB is the API of the {{.Store}} remote database connection.
+// It is the implementation of the interface in {{.ImportDomainStoreStorer}}{{.Store}}.go.
+type {{.Store}}RemoteDB struct {}
+
+// New{{.Store}}RemoteDB constructs a new {{.Store}}RemoteDB.
+// Returns a pointer to the new {{.Store}}RemoteDB.
+func New{{.Store}}RemoteDB() (store *{{.Store}}RemoteDB) {
+	store = &{{.Store}}RemoteDB{}
+	return
+}
+
+// Open opens the connection to the remote database.
+// Returns the error.
+func (store *{{.Store}}RemoteDB) Open() (err error) {
+
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "{{.Store}}RemoteDB.Open")
+		}
+	}()
+
+	return
+}
+
+// Close closes the connection to the remote database.
+// Returns the error.
+func (store *{{.Store}}RemoteDB) Close() (err error) {
+
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "{{.Store}}RemoteDB.Open")
+		}
+	}()
+
+	return
+}
+`
+
+// LocalBoltStoreStoringGo is the domain/store/storing/<store name>.go template.
+const LocalBoltStoreStoringGo = `package storing
 
 import (
 	"encoding/json"
@@ -9,30 +54,26 @@ import (
 	"os"
 
 	"github.com/boltdb/bolt"
+	"github.com/pkg/errors"
+
 	"{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
 )
 
-/*
-	type {{.Store}}BoltDB
-	is the implementation of the {{.ImportDomainStoreStorer}}.{{.Store}}Storer interface
-	  for the bolt database.
-*/
-
 const {{call .LowerCamelCase .Store}}BucketName string = "{{call .LowerCamelCase .Store}}"
 
-// {{.Store}}BoltDB is the bolt db for key codes.
-type {{.Store}}BoltDB struct {
+// {{.Store}}LocalBoltStore is the API of the {{.Store}} local bolt store.
+// It is the implementation of the interface in {{.ImportDomainStoreStorer}}{{.Store}}.go.
+type {{.Store}}LocalBoltStore struct {
 	DB    *bolt.DB
 	path  string
 	perms os.FileMode
 }
 
-// New{{.Store}}BoltDB constructs a new {{.Store}}BoltDB.
+// New{{.Store}}LocalBoltStore constructs a new {{.Store}}LocalBoltStore.
 // Param db is an open bolt data-store.
-// Returns a pointer to the new {{.Store}}BoltDB.
-func New{{.Store}}BoltDB(db *bolt.DB, path string, perms os.FileMode) (store *{{.Store}}BoltDB) {
-	store = &{{.Store}}BoltDB{
-		DB:    db,
+// Returns a pointer to the new {{.Store}}LocalBoltStore.
+func New{{.Store}}LocalBoltStore(path string, perms os.FileMode) (store *{{.Store}}LocalBoltStore) {
+	store = &{{.Store}}LocalBoltStore{
 		path:  path,
 		perms: perms,
 	}
@@ -41,14 +82,30 @@ func New{{.Store}}BoltDB(db *bolt.DB, path string, perms os.FileMode) (store *{{
 
 // Open opens the bolt data-store.
 // Returns the error.
-func (store *{{.Store}}BoltDB) Open() (err error) {
-	// the bolt db is already open
+func (store *{{.Store}}LocalBoltStore) Open() (err error) {
+
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "{{.Store}}LocalBoltStore.Open")
+		}
+	}()
+
+	if store.DB, err = bolt.Open(store.path, store.perms, nil); err != nil {
+		err = errors.WithMessage(err, "bolt.Open(path, filepaths.GetFmode(), nil)")
+	}
 	return
 }
 
 // Close closes the bolt data-store.
 // Returns the error.
-func (store *{{.Store}}BoltDB) Close() (err error) {
+func (store *{{.Store}}LocalBoltStore) Close() (err error) {
+
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "{{.Store}}LocalBoltStore.Close")
+		}
+	}()
+
 	err = store.DB.Close()
 	return
 }
@@ -57,7 +114,7 @@ func (store *{{.Store}}BoltDB) Close() (err error) {
 // Param id is the record id.
 // Returns the record and error.
 // If no record is found returns a nil record and a nil error.
-func (store *{{.Store}}BoltDB) Get(id uint64) (r *record.{{.Store}}, err error) {
+func (store *{{.Store}}LocalBoltStore) Get(id uint64) (r *record.{{.Store}}, err error) {
 	ids := fmt.Sprintf("%d", id)
 	err = store.DB.View(func(tx *bolt.Tx) (er error) {
 		bucketname := []byte({{call .LowerCamelCase .Store}}BucketName)
@@ -81,10 +138,10 @@ func (store *{{.Store}}BoltDB) Get(id uint64) (r *record.{{.Store}}, err error) 
 }
 
 // GetAll retrieves all of the record.{{.Store}} from the bolt data-store.
-// If no record is found then it calls store.initialize() and tries again. See *{{.Store}}BoltDB.initialize().
+// If no record is found then it calls store.initialize() and tries again. See *{{.Store}}LocalBoltStore.initialize().
 // Returns the records and error.
 // If no record is found returns a zero length records and a nil error.
-func (store *{{.Store}}BoltDB) GetAll() (rr []*record.{{.Store}}, err error) {
+func (store *{{.Store}}LocalBoltStore) GetAll() (rr []*record.{{.Store}}, err error) {
 	if rr, err = store.getAll(); len(rr) == 0 && err == nil {
 		store.initialize()
 		rr, err = store.getAll()
@@ -92,7 +149,7 @@ func (store *{{.Store}}BoltDB) GetAll() (rr []*record.{{.Store}}, err error) {
 	return
 }
 
-func (store *{{.Store}}BoltDB) getAll() (rr []*record.{{.Store}}, err error) {
+func (store *{{.Store}}LocalBoltStore) getAll() (rr []*record.{{.Store}}, err error) {
 	err = store.DB.View(func(tx *bolt.Tx) (er error) {
 		bucketname := []byte({{call .LowerCamelCase .Store}}BucketName)
 		var bucket *bolt.Bucket
@@ -118,7 +175,7 @@ func (store *{{.Store}}BoltDB) getAll() (rr []*record.{{.Store}}, err error) {
 // Param r is the record to be updated.
 // If r is a new record then r.ID is updated with the new record id.
 // Returns the error.
-func (store *{{.Store}}BoltDB) Update(r *record.{{.Store}}) (err error) {
+func (store *{{.Store}}LocalBoltStore) Update(r *record.{{.Store}}) (err error) {
 	err = store.update(r)
 	return
 }
@@ -127,7 +184,7 @@ func (store *{{.Store}}BoltDB) Update(r *record.{{.Store}}) (err error) {
 // Param id the key of the record to be removed.
 // If the record is not found returns a nil error.
 // Returns the error.
-func (store *{{.Store}}BoltDB) Remove(id uint64) (err error) {
+func (store *{{.Store}}LocalBoltStore) Remove(id uint64) (err error) {
 	err = store.DB.Update(func(tx *bolt.Tx) (er error) {
 		bucketname := []byte({{call .LowerCamelCase .Store}}BucketName)
 		var bucket *bolt.Bucket
@@ -145,7 +202,7 @@ func (store *{{.Store}}BoltDB) Remove(id uint64) (err error) {
 // Param record the record to be updated.
 // If the record is new then it's ID is updated.
 // Returns the error.
-func (store *{{.Store}}BoltDB) update(r *record.{{.Store}}) (err error) {
+func (store *{{.Store}}LocalBoltStore) update(r *record.{{.Store}}) (err error) {
 	err = store.DB.Update(func(tx *bolt.Tx) (er error) {
 		bucketname := []byte({{call .LowerCamelCase .Store}}BucketName)
 		var bucket *bolt.Bucket
@@ -170,7 +227,7 @@ func (store *{{.Store}}BoltDB) update(r *record.{{.Store}}) (err error) {
 
 // initialize is only useful if you want to add the default records to the bolt data-store.
 // otherwise you don't need it to do anything.
-func (store *{{.Store}}BoltDB) initialize() (err error) {
+func (store *{{.Store}}LocalBoltStore) initialize() (err error) {
 	/*
 		example code:
 

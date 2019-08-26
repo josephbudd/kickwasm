@@ -8,6 +8,7 @@ type FolderNames struct {
 	Data            string
 	Domain          string
 	DotKickwasm     string
+	DotKickstore    string
 	FilePaths       string
 	Implementations string
 	Interfaces      string
@@ -48,6 +49,7 @@ func GetFolderNames() *FolderNames {
 		Data:            "data",
 		Domain:          "domain",
 		DotKickwasm:     ".kickwasm",
+		DotKickstore:    ".kickstore",
 		FilePaths:       "filepaths",
 		Implementations: "implementations",
 		Interfaces:      "interfaces",

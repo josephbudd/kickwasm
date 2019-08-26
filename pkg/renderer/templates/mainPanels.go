@@ -3,8 +3,10 @@ package templates
 // MainDoPanelsGo is ./panels.go.
 const MainDoPanelsGo = `{{$Dot := .}}package main
 
-import ({{range .Imports}}
-	"{{.}}"{{end}}
+import (
+	"github.com/pkg/errors"
+{{ range .Imports }}
+	{{.}}{{end}}
 )
 
 /*
@@ -17,6 +19,13 @@ import ({{range .Imports}}
 
 func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
 	tools *viewtools.Tools, notJS *notjs.NotJS, help *paneling.Help) (err error) {
+	
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "doPanels")
+			tools.ConsoleLog("Error: " + err.Error())
+		}
+	}()
 
 	// 1. Prepare the spawn panels.{{ range $packageName, $path := .SpawnTabBarNamePath}}
 	{{call $Dot.PackageNameCase $packageName}}.Prepare(client, quitChan, eojChan, receiveChan, sendChan, tools, notJS, help){{end}}
@@ -24,12 +33,8 @@ func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan l
 	// 2. Construct the panel code.{{range $name, $path := .PanelNamePath}}
 	var {{call $Dot.LowerCamelCase $name}} *{{call $Dot.PackageNameCase $name}}.Panel
 	if {{call $Dot.LowerCamelCase $name}}, err = {{call $Dot.PackageNameCase $name}}.NewPanel(quitChan, eojChan, receiveChan, sendChan, tools, notJS, help); err != nil {
-		tools.ConsoleLog("doPanels: erorr is " + err.Error())
 		return
 	}{{end}}
-
-	// No errors so continue.
-	tools.ConsoleLog("doPanels: no erorrs")
 
 	// 3. Size the app.
 	tools.SizeApp()

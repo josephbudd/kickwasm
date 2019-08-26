@@ -1,12 +1,12 @@
 package templates
 
 // StoreStoresGo is the domain/store/stores.go file.
-const StoreStoresGo = `package store
+const StoreStoresGo = `{{ $Dot := . }}{{ $firstBoltStore := "" }}{{ if gt (len .BoltStores) 0 }}{{ $firstBoltStore = index .BoltStores 0 }}{{ end }}package store
 
 import (
 	"strings"
-{{ if gt (len .Stores) 0 }}
-	"{{.ApplicationGitPath}}{{.ImportDomainStoreStorer}}"{{ end }}
+{{ if gt (len .BoltStores) 0 }}
+	"{{.ApplicationGitPath}}{{.ImportDomainStoreStoring}}"{{ end }}
 	"github.com/pkg/errors"
 )
 
@@ -24,28 +24,61 @@ import (
 	  so that they can use the stores.
 */
 
-// Stores is each of the application's storers.
-// Each storer is defined here as an interface.{{ if eq (len .Stores) 0 }}
-// However, you haven't added any stores yet.{{ end }}
+// Stores is each of the application's storers.{{ if eq (len .BoltStores) 0 }}
+// You haven't added any stores yet.
+// Use kickstore to add or remote local bolt stores and remote databases.{{ end }}
 type Stores struct {
-{{ range .Stores }}	{{.}} storer.{{.}}Storer
-{{ end }}}
+{{ if gt (len .BoltStores) 0 }}	// Local bolt stores.
+{{ range (call .SameWidth .BoltStores) }}	{{.}} *storing.{{ (call $Dot.TrimSpace .) }}LocalBoltStore
+{{ end }}{{ end }} {{- if gt (len .RemoteDBs) 0 }}	// Remote databases.
+{{ range (call .SameWidth .RemoteDBs) }}	{{.}} *storing.{{ (call $Dot.TrimSpace .) }}RemoteDB
+{{ end }}{{ end }}}
 
-// Close closes every store.
+// Open opens every store.
 // It returns all of the errors as one single error.
-func (stores *Stores) Close() (err error) {
+func (stores *Stores) Open() (err error) {
 
-	errList := make([]string, 0, {{len .Stores}})
+	errList := make([]string, 0, {{len .BoltStores}})
 	defer func() {
 		if len(errList) > 0 {
 			msg := strings.Join(errList, "\n")
 			err = errors.New(msg)
 		}
 	}()
-{{ if gt (len .Stores) 0 }}
-{{ range .Stores }}	if err = stores.{{.}}.Close(); err != nil {
+{{ if gt (len .BoltStores) 0 }}
+	// Local bolt stores.
+	if err = stores.{{$firstBoltStore}}.Open(); err != nil {
+		errList = append(errList, err.Error())
+	} else { {{- range $i, $bs := .BoltStores }}{{ if ne $i 0}}
+		stores.{{$bs}}.DB = stores.{{$firstBoltStore}}.DB{{ end }}{{ end }}
+	}{{ end }}{{ if gt (len .RemoteDBs) 0 }}
+	// Remote databases.{{ range .RemoteDBs }}
+	if err = stores.{{.}}.Open(); err != nil {
 		errList = append(errList, err.Error())
 	}{{ end }}{{ end }}
+
+	return
+}
+
+// Close closes every store.
+// It returns all of the errors as one single error.
+func (stores *Stores) Close() (err error) {
+
+	errList := make([]string, 0, {{len .BoltStores}})
+	defer func() {
+		if len(errList) > 0 {
+			msg := strings.Join(errList, "\n")
+			err = errors.New(msg)
+		}
+	}()
+{{ if gt (len .BoltStores) 0 }}
+	if err = stores.{{$firstBoltStore}}.Close(); err != nil {
+		errList = append(errList, err.Error())
+	}{{ end }}{{ if gt (len .RemoteDBs) 0 }}{{ range .RemoteDBs }}
+	if err = stores.{{.}}.Close(); err != nil {
+		errList = append(errList, err.Error())
+	}{{ end }}{{ end }}
+
 	return
 }
 `

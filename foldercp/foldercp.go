@@ -23,8 +23,7 @@ func CopyYAML(appPaths *paths.ApplicationPaths, appYamlFilePath string, panelFil
 	// copy the panel yaml files.
 	var relPath string
 	for _, srcPath := range panelFilePaths {
-		relPath, err = filepath.Rel(srcFolder, srcPath)
-		if err != nil {
+		if relPath, err = filepath.Rel(srcFolder, srcPath); err != nil {
 			return
 		}
 		destPath := filepath.Join(folderPaths.OutputDotKickwasmYAML, relPath)
@@ -41,28 +40,24 @@ func copyYaml(appPaths *paths.ApplicationPaths, src, dest string) (err error) {
 	}
 	// read
 	var ifile *os.File
-	ifile, err = os.Open(src)
-	if err != nil {
+	if ifile, err = os.Open(src); err != nil {
 		err = fmt.Errorf(`os.Open(src) error is %s`, err.Error())
 		return
 	}
 	var info os.FileInfo
-	info, err = ifile.Stat()
-	if err != nil {
+	if info, err = ifile.Stat(); err != nil {
 		err = fmt.Errorf(`ifile.Stat() error is %s`, err.Error())
 		return
 	}
 	size := info.Size()
 	bb := make([]byte, size, size)
-	_, err = ifile.Read(bb)
-	if err != nil {
+	if _, err = ifile.Read(bb); err != nil {
 		err = fmt.Errorf(`ifile.Read(bb) error is %s`, err.Error())
 		return
 	}
 	// write
 	var ofile *os.File
-	ofile, err = os.OpenFile(dest, os.O_WRONLY|os.O_CREATE, appPaths.FMode)
-	if err != nil {
+	if ofile, err = os.OpenFile(dest, os.O_WRONLY|os.O_CREATE, appPaths.FMode); err != nil {
 		err = fmt.Errorf(`os.OpenFile(dest, os.O_WRONLY | os.O_CREATE, paths.FMode) error is %s`, err.Error())
 		return
 	}

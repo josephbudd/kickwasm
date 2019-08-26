@@ -9,8 +9,8 @@ button :
     - name : OtherTabPanel
       note : another tab bar
       tabs :
-        - label : Tab 1
-          name : OneTab
+        - label : Tab 2
+          name : TwoTab
           spawn: true
           panels :
             - name : LastTabPanel

@@ -3,15 +3,15 @@ name: PurchaseOrderAddPanel
 note: A form to add a po.
 
 tabs:
-  - name: InstructionsTab
+  - name: PurchaseOrderAddInstructionsTab
     label: Instructions
     panelFiles:
       - instructions.yaml
-  - name: PriceDropTab
+  - name: PurchaseOrderAddPriceDropTab
     label: PriceDrop
     panelFiles:
       - price_drop.yaml
-  - name: SaveTab
+  - name: PurchaseOrderAddSaveTab
     label: Save
     panelFiles:
       - save.yaml

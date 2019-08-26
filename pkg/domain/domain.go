@@ -98,7 +98,8 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 	if err = createStoreStoresGo(appPaths, data); err != nil {
 		return
 	}
-	if err = RebuildStoreInstructions(appPaths, make([]string, 0)); err != nil {
+	// if err = RebuildStoreInstructions(appPaths, make([]string, 0)); err != nil {
+	if err = RebuildStoreInstructions(appPaths, nil, nil, nil); err != nil {
 		return
 	}
 	if err = createStoreRecord(appPaths, data); err != nil {

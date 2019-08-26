@@ -1,6 +1,14 @@
-# kickwasm version 6.0.1
+# kickwasm version 7.0.0
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+
+August 26, 2019:
+
+Version 7.0.0 brings another backwards compatibility break. Added remote databases.
+
+August 20, 2019:
+
+Updated the tests for version 6.0.1.
 
 August 12, 2019:
 

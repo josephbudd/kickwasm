@@ -23,7 +23,7 @@ func createStoreRecord(appPaths paths.ApplicationPathsI, data *templateData) (er
 		fname := store + ".go"
 		oPath := filepath.Join(folderpaths.OutputDomainStoreRecord, fname)
 		rdata.Store = store
-		if err = templates.ProcessTemplate(fname, oPath, templates.StoreRecordGo, rdata, appPaths); err != nil {
+		if err = templates.ProcessTemplate(fname, oPath, templates.LocalBoltStoreRecordGo, rdata, appPaths); err != nil {
 			return
 		}
 	}
@@ -45,7 +45,26 @@ func CreateStoreRecord(appPaths paths.ApplicationPathsI, importPath string, stor
 	// These are editable files so the are capped.
 	fname := storeName + ".go"
 	oPath := filepath.Join(folderpaths.OutputDomainStoreRecord, fname)
-	err = templates.ProcessTemplate(fname, oPath, templates.StoreRecordGo, data, appPaths)
+	err = templates.ProcessTemplate(fname, oPath, templates.LocalBoltStoreRecordGo, data, appPaths)
+	return
+}
+
+// CreateRemoteDatabaseRecord creates a single store's file in domain/store/storer/.
+func CreateRemoteDatabaseRecord(appPaths paths.ApplicationPathsI, importPath string, storeName string) (err error) {
+	folderpaths := appPaths.GetPaths()
+	data := &struct {
+		Store                   string
+		ApplicationGitPath      string
+		ImportDomainStoreRecord string
+	}{
+		Store:                   storeName,
+		ApplicationGitPath:      importPath,
+		ImportDomainStoreRecord: folderpaths.ImportDomainStoreRecord,
+	}
+	// These are editable files so the are capped.
+	fname := storeName + ".go"
+	oPath := filepath.Join(folderpaths.OutputDomainStoreRecord, fname)
+	err = templates.ProcessTemplate(fname, oPath, templates.RemoteDatabaseRecordGo, data, appPaths)
 	return
 }
 

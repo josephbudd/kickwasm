@@ -2,7 +2,9 @@ package mainprocess
 
 import (
 	"path/filepath"
+	"strings"
 
+	"github.com/josephbudd/kickwasm/pkg/format"
 	"github.com/josephbudd/kickwasm/pkg/mainprocess/templates"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 )
@@ -29,13 +31,13 @@ func createMain(appPaths paths.ApplicationPathsI, data *templateData) (err error
 		return
 	}
 
-	err = RebuildStoresGo(appPaths, data.ApplicationGitPath, data.Stores)
+	err = RebuildStoresGo(appPaths, data.ApplicationGitPath, nil, nil, nil)
 
 	return
 }
 
 // RebuildStoresGo rebuilds stores.go.
-func RebuildStoresGo(appPaths paths.ApplicationPathsI, importPath string, storesNames []string) (err error) {
+func RebuildStoresGo(appPaths paths.ApplicationPathsI, importPath string, boltStoreNames, remoteDBNames, remoteRecordNames []string) (err error) {
 	folderpaths := appPaths.GetPaths()
 	fileNames := paths.GetFileNames()
 	data := struct {
@@ -43,18 +45,26 @@ func RebuildStoresGo(appPaths paths.ApplicationPathsI, importPath string, stores
 		ImportDomainDataFilepaths string
 		ImportDomainStore         string
 		ImportDomainStoreStoring  string
-		Stores                    []string
+		BoltStores                []string
+		RemoteDBs                 []string
+		RemoteRecords             []string
+		SameWidth                 func([]string) []string
+		TrimSpace                 func(string) string
 	}{
 		ApplicationGitPath:        importPath,
 		ImportDomainDataFilepaths: folderpaths.ImportDomainDataFilepaths,
 		ImportDomainStore:         folderpaths.ImportDomainStore,
 		ImportDomainStoreStoring:  folderpaths.ImportDomainStoreStoring,
-		Stores:                    storesNames,
+		BoltStores:                boltStoreNames,
+		RemoteDBs:                 remoteDBNames,
+		RemoteRecords:             remoteRecordNames,
+		SameWidth:                 format.SameWidth,
+		TrimSpace:                 strings.TrimSpace,
 	}
 	fname := fileNames.StoresDotGo
 	oPath := filepath.Join(folderpaths.Output, fname)
 	var temp string
-	if len(storesNames) == 0 {
+	if len(boltStoreNames) == 0 {
 		temp = templates.NoStoresGo
 	} else {
 		temp = templates.StoresGo

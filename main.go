@@ -17,9 +17,9 @@ import (
 const (
 	outputFolder = "output"
 
-	versionBreaking = 6 // Each new version breaks backwards compatibility.
+	versionBreaking = 7 // Each new version breaks backwards compatibility.
 	versionFeature  = 0 // Each new version adds features. Retains backwards compatibility.
-	versionPatch    = 1 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
+	versionPatch    = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
 
 )
 
@@ -27,9 +27,9 @@ var (
 	versionDescription = []string{
 		"Experimental because the go package syscall/js is still experimental.",
 		"Updated to the experimental go version 1.12 syscall/js package.",
-		"6: Backwards Compatibility: Broken from version 5.",
-		"0: ",
-		"1: Minor changes for the go report card.",
+		fmt.Sprintf("%d: Backwards Compatibility: Broken from the previous version %d.", versionBreaking, (versionBreaking - 1)),
+		fmt.Sprintf("%d: Features: ", versionFeature),
+		fmt.Sprintf("%d: Bug Patch:", versionPatch),
 	}
 	version = []string{
 		`kickwasm:`,

@@ -12,70 +12,39 @@ import (
 
 func TestOutsideExplore(t *testing.T) {
 	var want = map[string]map[string]map[string][]string{
-		"PriceList": {
-			"": {
-				"PriceListsButton": {
-					"PriceListsButton",
-				},
+		"Customer": map[string]map[string][]string{
+			"": map[string][]string{
+				"CustomersButton": []string{"CustomersButton"},
 			},
-			"PriceListPanel": {
-				"ImportButton": {
-					"PriceListsButton", "PriceListPanel", "ImportButton",
-				},
-				"EditButton": {
-					"PriceListsButton", "PriceListPanel", "EditButton",
-				},
-				"ViewButton": {
-					"PriceListsButton", "PriceListPanel", "ViewButton",
-				},
+			"CustomerPanel": map[string][]string{
+				"CustomerAddButton":  []string{"CustomersButton", "CustomerPanel", "CustomerAddButton"},
+				"CustomerEditButton": []string{"CustomersButton", "CustomerPanel", "CustomerEditButton"},
 			},
 		},
-		"Customer": {
-			"": {
-				"CustomersButton": {
-					"CustomersButton",
-				},
-			},
-			"CustomerPanel": {
-				"AddButton": {
-					"CustomersButton", "CustomerPanel", "AddButton",
-				},
-				"EditButton": {
-					"CustomersButton", "CustomerPanel", "EditButton",
-				},
+		"PriceDrop": map[string]map[string][]string{
+			"": map[string][]string{"PriceDropsButton": []string{"PriceDropsButton"}},
+			"PriceDropPanel": map[string][]string{
+				"PriceDropAddButton":        []string{"PriceDropsButton", "PriceDropPanel", "PriceDropAddButton"},
+				"PriceDropViewButton":       []string{"PriceDropsButton", "PriceDropPanel", "PriceDropViewButton"},
+				"PriceDropVoidUnvoidButton": []string{"PriceDropsButton", "PriceDropPanel", "PriceDropVoidUnvoidButton"},
 			},
 		},
-		"PriceDrop": {
-			"": {
-				"PriceDropsButton": {
-					"PriceDropsButton",
-				},
+		"PriceList": map[string]map[string][]string{
+			"": map[string][]string{
+				"PriceListsButton": []string{"PriceListsButton"},
 			},
-			"PriceDropPanel": {
-				"ViewButton": {
-					"PriceDropsButton", "PriceDropPanel", "ViewButton",
-				},
-				"AddButton": {
-					"PriceDropsButton", "PriceDropPanel", "AddButton",
-				},
-				"VoidUnvoidButton": {
-					"PriceDropsButton", "PriceDropPanel", "VoidUnvoidButton",
-				},
+			"PriceListPanel": map[string][]string{"PriceListEditButton": []string{"PriceListsButton", "PriceListPanel", "PriceListEditButton"},
+				"PriceListImportButton": []string{"PriceListsButton", "PriceListPanel", "PriceListImportButton"},
+				"PriceListViewButton":   []string{"PriceListsButton", "PriceListPanel", "PriceListViewButton"},
 			},
 		},
-		"PurchaseOrder": {
-			"": {
-				"PurchaseOrdersButton": {
-					"PurchaseOrdersButton",
-				},
+		"PurchaseOrder": map[string]map[string][]string{
+			"": map[string][]string{
+				"PurchaseOrdersButton": []string{"PurchaseOrdersButton"},
 			},
-			"PurchaseOrderButtonPadPanel": {
-				"AddButton": {
-					"PurchaseOrdersButton", "PurchaseOrderButtonPadPanel", "AddButton",
-				},
-				"VoidUnvoidButton": {
-					"PurchaseOrdersButton", "PurchaseOrderButtonPadPanel", "VoidUnvoidButton",
-				},
+			"PurchaseOrderButtonPadPanel": map[string][]string{
+				"PurchaseOrderAddButton":        []string{"PurchaseOrdersButton", "PurchaseOrderButtonPadPanel", "PurchaseOrderAddButton"},
+				"PurchaseOrderVoidUnvoidButton": []string{"PurchaseOrdersButton", "PurchaseOrderButtonPadPanel", "PurchaseOrderVoidUnvoidButton"},
 			},
 		},
 	}

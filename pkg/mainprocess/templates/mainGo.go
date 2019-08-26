@@ -32,13 +32,18 @@ import (
 
 func main() {
 	var err error
-	// build the stores and setup the close.
+	// Build the application's data store APIs.
 	var stores *store.Stores
 	if stores, err = buildStores(); err != nil {
 		log.Println(err)
 		return
 	}
-	// close the bolt store later.
+	// Open the stores.
+	if err = stores.Open(); err != nil {
+		log.Println(err)
+		return
+	}
+	// Close the stores later.
 	defer stores.Close()
 
 	// get the application's host and port and then setup the listener.

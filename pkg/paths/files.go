@@ -42,6 +42,7 @@ type FileNames struct {
 	SettingsDotGo      string
 	SizeDotGo          string
 	StoresDotGo        string
+	StoresDotYAML      string
 	StyleDotGo         string
 	ViewToolsDotGo     string
 	WasmExecJS         string
@@ -59,7 +60,7 @@ type FileNames struct {
 
 	// markup panels
 	CallerDotGo     string
-	ControllerDotGo  string
+	ControllerDotGo string
 	DataDotGo       string
 	PanelGroupDotGo string
 	PanelDotGo      string
@@ -114,6 +115,7 @@ func GetFileNames() *FileNames {
 		SettingsDotGo:      "settings.go",
 		SizeDotGo:          "size.go",
 		StoresDotGo:        "stores.go",
+		StoresDotYAML:      "stores.yaml",
 		StyleDotGo:         "style.go",
 		ViewToolsDotGo:     "viewtools.go",
 		WasmExecJS:         "wasm_exec.js",
@@ -131,7 +133,7 @@ func GetFileNames() *FileNames {
 
 		// markup panels
 		CallerDotGo:     "Caller.go",
-		ControllerDotGo:  "Controller.go",
+		ControllerDotGo: "Controller.go",
 		DataDotGo:       "Data.go",
 		PanelGroupDotGo: "group.go",
 		PanelDotGo:      "Panel.go",

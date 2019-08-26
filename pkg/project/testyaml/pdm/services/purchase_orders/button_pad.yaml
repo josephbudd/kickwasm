@@ -1,13 +1,13 @@
 name: PurchaseOrderButtonPadPanel
 
 buttons:
-  - name : AddButton
+  - name : PurchaseOrderAddButton
     label : Add
     heading : Create a New Purchase Order.
     panelFiles:
       - add_tab_bar/add.yaml
       - add_tab_bar/not_ready.yaml
-  - name : VoidUnvoidButton
+  - name : PurchaseOrderVoidUnvoidButton
     label : Void / Unvoid
     heading : Void / Unvoid a Purchase Order.
     panelFiles :

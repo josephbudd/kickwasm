@@ -35,7 +35,8 @@ func LowerCamelCase(s string) string {
 
 // ToGoPackageName makes a word a valid go package name.
 func ToGoPackageName(s string) (newName string) {
-	return strings.ToLower(s)
+	newName = strings.ToLower(toJSVarName(s))
+	return
 }
 
 // toJSVarName removes chars unless a-z, A-Z, 0-9, underscore.

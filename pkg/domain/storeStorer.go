@@ -55,6 +55,27 @@ func CreateStoreStorer(appPaths paths.ApplicationPathsI, importPath string, stor
 	return
 }
 
+// CreateRemoteStoreStorer creates remote database's storer file in domain/store/storer/.
+func CreateRemoteStoreStorer(appPaths paths.ApplicationPathsI, importPath string, storeName string) (err error) {
+	folderpaths := appPaths.GetPaths()
+	data := &struct {
+		Store                   string
+		LowerCamelCase          func(string) string
+		ApplicationGitPath      string
+		ImportDomainStoreRecord string
+	}{
+		Store:                   storeName,
+		LowerCamelCase:          cases.LowerCamelCase,
+		ApplicationGitPath:      importPath,
+		ImportDomainStoreRecord: folderpaths.ImportDomainStoreRecord,
+	}
+	// These are editable files so the are capped.
+	fname := storeName + ".go"
+	oPath := filepath.Join(folderpaths.OutputDomainStoreStorer, fname)
+	err = templates.ProcessTemplate(fname, oPath, templates.RemoteStoreStorerGo, data, appPaths)
+	return
+}
+
 // DeleteStoreStorer deletes a single store's file in domain/store/storer/.
 func DeleteStoreStorer(appPaths paths.ApplicationPathsI, storeName string) (err error) {
 	folderpaths := appPaths.GetPaths()

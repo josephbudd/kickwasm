@@ -3,32 +3,42 @@ package domain
 import (
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/josephbudd/kickwasm/pkg/cases"
 	"github.com/josephbudd/kickwasm/pkg/domain/templates"
+	"github.com/josephbudd/kickwasm/pkg/format"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 )
 
 func createStoreStoresGo(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
-	err = RebuildStoreStores(appPaths, data.ApplicationGitPath, data.Stores)
+	err = RebuildStoreStores(appPaths, data.ApplicationGitPath, nil, nil, nil)
 	return
 }
 
 // RebuildStoreStores recreates domain/store/stores.go.
-func RebuildStoreStores(appPaths paths.ApplicationPathsI, importPath string, storeNames []string) (err error) {
+func RebuildStoreStores(appPaths paths.ApplicationPathsI, importPath string, boltStoreNames, remoteDBNames, remoteRecordNames []string) (err error) {
 	folderpaths := appPaths.GetPaths()
 	fileNames := appPaths.GetFileNames()
 
 	data := &struct {
-		Stores                  []string
-		LowerCamelCase          func(string) string
-		ApplicationGitPath      string
-		ImportDomainStoreStorer string
+		BoltStores               []string
+		RemoteDBs                []string
+		RemoteRecords            []string
+		LowerCamelCase           func(string) string
+		SameWidth                func([]string) []string
+		TrimSpace                func(string) string
+		ApplicationGitPath       string
+		ImportDomainStoreStoring string
 	}{
-		Stores:                  storeNames,
-		LowerCamelCase:          cases.LowerCamelCase,
-		ApplicationGitPath:      importPath,
-		ImportDomainStoreStorer: folderpaths.ImportDomainStoreStorer,
+		BoltStores:               boltStoreNames,
+		RemoteDBs:                remoteDBNames,
+		RemoteRecords:            remoteRecordNames,
+		LowerCamelCase:           cases.LowerCamelCase,
+		SameWidth:                format.SameWidth,
+		TrimSpace:                strings.TrimSpace,
+		ApplicationGitPath:       importPath,
+		ImportDomainStoreStoring: folderpaths.ImportDomainStoreStoring,
 	}
 	fname := fileNames.StoresDotGo
 	oPath := filepath.Join(folderpaths.OutputDomainStore, fname)

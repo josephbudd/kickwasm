@@ -1,22 +1,43 @@
 package templates
 
-// StoreRecordGo is the domain/records/ <store>.go template.
-const StoreRecordGo = `{{$Dot := .}}package record
+// LocalBoltStoreRecordGo is the domain/records/ <store>.go template.
+const LocalBoltStoreRecordGo = `{{$Dot := .}}package record
 
 /*
 
 	TODO:
 
-	You need to complete this record definition.
+	You need to complete this local bolt store record definition.
 
 */
 
-// {{.Store}} is a {{.Store}} record.
+// {{.Store}} is the local bolt store {{.Store}} record.
 type {{.Store}} struct {
 	ID uint64
 }
 
-// New{{.Store}} constructs a new {{.Store}} record.
+// New{{.Store}} constructs a new local bolt store {{.Store}}.
+func New{{.Store}}() *{{.Store}} {
+	v := &{{.Store}}{}
+	return v
+}
+`
+
+// RemoteDatabaseRecordGo is the domain/records/ <store>.go template.
+const RemoteDatabaseRecordGo = `{{$Dot := .}}package record
+
+/*
+
+	TODO:
+
+	You need to complete this remote database record definition.
+
+*/
+
+// {{.Store}} is the remote database {{.Store}} record.
+type {{.Store}} struct {}
+
+// New{{.Store}} constructs a new remote database {{.Store}}.
 func New{{.Store}}() *{{.Store}} {
 	v := &{{.Store}}{}
 	return v

@@ -248,6 +248,8 @@ type Paths struct {
 	OutputDotKickwasmYAML  string
 	OutputDotKickwasmFlags string
 
+	OutputDotKickstore string
+
 	// output sitepack
 	OutputSitePack string
 
@@ -356,6 +358,9 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	ap.paths.OutputDotKickwasmYAML = filepath.Join(ap.paths.OutputDotKickwasm, folderNames.YAML)
 	ap.paths.OutputDotKickwasmFlags = filepath.Join(ap.paths.OutputDotKickwasm, fileNames.FlagDotYAML)
 
+	// output .kickstore folder and sub folder
+	ap.paths.OutputDotKickstore = filepath.Join(ap.paths.Output, folderNames.DotKickstore)
+
 	// output domain folder and sub folders.
 	ap.paths.OutputDomain = filepath.Join(ap.paths.Output, folderNames.Domain)
 	ap.paths.OutputDomainData = filepath.Join(ap.paths.OutputDomain, folderNames.Data)
@@ -398,6 +403,10 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 func (ap *ApplicationPaths) MakeOutput() (err error) {
 	// output .kickwasm folder and sub folders
 	if err = os.MkdirAll(ap.paths.OutputDotKickwasmYAML, ap.DMode); err != nil {
+		return
+	}
+	// output .kickstore folder
+	if err = os.MkdirAll(ap.paths.OutputDotKickstore, ap.DMode); err != nil {
 		return
 	}
 	// output domain data

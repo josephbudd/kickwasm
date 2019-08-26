@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/josephbudd/kickwasm/pkg/cases"
+	"github.com/josephbudd/kickwasm/pkg/format"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
@@ -49,7 +50,7 @@ func createMainDoPanelsGo(appPaths paths.ApplicationPathsI, builder *project.Bui
 		LowerCamelCase      func(string) string
 		PackageNameCase     func(string) string
 	}{
-		Imports:             imports,
+		Imports:             format.FixImports(imports),
 		ApplicationGitPath:  builder.ImportPath,
 		PanelNamePath:       panelNamePath,
 		SpawnTabBarNamePath: tabBarNamePath,

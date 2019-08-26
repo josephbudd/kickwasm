@@ -1,38 +1,38 @@
 name: PriceDropAddPanel
 
 tabs:
-  - name: InstructionsTab
+  - name: PriceDropAddInstructionsTab
     label: Instructions
     panelFiles:
       - instructions.yaml
-  - name: PriceListTab
+  - name: PriceDropAddPriceListTab
     label: Price List
     panelFiles:
       - pricelist_not_ready.yaml
       - pricelist_select.yaml
-  - name: CustomerTab
+  - name: PriceDropAddCustomerTab
     label: Customer
     panelFiles:
       - customer_not_ready.yaml
       - customer_select.yaml
-  - name: DatesTab
+  - name: PriceDropAddDatesTab
     label: Dates
     panelFiles:
       - dates_not_ready.yaml
       - dates_enter.yaml
-  - name: ItemsTab
+  - name: PriceDropAddItemsTab
     label: Items
     panelFiles:
       - items_not_ready.yaml
       - items_manifest.yaml
       - items_select.yaml
       - items_edit.yaml
-  - name: SecondDropTab
+  - name: PriceDropAddSecondDropTab
     label: Second Drop
     panelFiles:
       - second_drop_not_ready.yaml
       - second_drop_select.yaml
-  - name: SaveAndPrintTab
+  - name: PriceDropAddSaveAndPrintTab
     label: Save And Print
     panelFiles:
       - save_not_ready_panel.yaml

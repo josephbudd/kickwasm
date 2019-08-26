@@ -88,5 +88,8 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 	if err = createDispatch(appPaths, data); err != nil {
 		return
 	}
+	if err = createKickstore(appPaths, data); err != nil {
+		return
+	}
 	return
 }

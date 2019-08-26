@@ -1,18 +1,18 @@
 name : PriceDropPanel
 buttons :
-  - name : AddButton
+  - name : PriceDropAddButton
     label : Add
     heading : Add A New Price Drop.
     panelFiles : 
       - add_tab_bar/add_tab_bar.yaml
-  - name : VoidUnvoidButton
+  - name : PriceDropVoidUnvoidButton
     label : Void / Unvoid
     heading : Void / Unvoid A Price Drop.
     panelFiles : 
       - void_button/void_not_ready.yaml
       - void_button/void_select.yaml
       - void_button/void_confirm.yaml
-  - name : ViewButton
+  - name : PriceDropViewButton
     label : View
     heading : View A Price Drop.
     panelFiles : 

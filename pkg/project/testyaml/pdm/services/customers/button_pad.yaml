@@ -1,11 +1,11 @@
 name: CustomerPanel
 buttons:
-  - name: AddButton
+  - name: CustomerAddButton
     label: Add
     heading: Add A New Customer.
     panelFiles:
       - add_button/add.yaml
-  - name: EditButton
+  - name: CustomerEditButton
     label: Edit
     heading: Edit One of Your Customers.
     panelFiles:
