@@ -121,7 +121,7 @@ Version 5 is not backwards compatible. Version 5 is an implementation of these 4
 
 * The videos below.
 * The wiki linked to above.
-* The CRUD application and it's wiki.
+* The [CRUD application](https://github.com/josephbudd/crud) and it's wiki.
 
 ### The framework imports
 
