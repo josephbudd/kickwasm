@@ -1,6 +1,10 @@
-# kickwasm version 7.0.0
+# kickwasm version 7.0.1
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+
+August 29, 2019:
+
+While building another app to test my remote database changes I found a bug in how domain/store/stores.go gets rebuilt when using kickstore. The import statement was not complete becuase remote databases were not being counted.
 
 August 26, 2019:
 

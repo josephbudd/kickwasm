@@ -5,7 +5,7 @@ const StoreStoresGo = `{{ $Dot := . }}{{ $firstBoltStore := "" }}{{ if gt (len .
 
 import (
 	"strings"
-{{ if gt (len .BoltStores) 0 }}
+{{ if or (gt (len .BoltStores) 0) (gt (len .RemoteDBs) 0) }}
 	"{{.ApplicationGitPath}}{{.ImportDomainStoreStoring}}"{{ end }}
 	"github.com/pkg/errors"
 )
