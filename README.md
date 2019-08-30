@@ -71,7 +71,8 @@ services:
      * You would complete the definitions of the 2 messages in **domain/lpc/messages/UpdateCustomer.go** so that they can contain the information you want sent.
      * You would add message handlers in your markup panel callers. Each markup panel has a caller which communicates with the main process. In a markup panel's caller you could send an **UpdateCustomerRenderToMainProcess** message to the main process through the caller's send channel and receive an **UpdateCustomerMainProcessToRenderer** message from the main process through the caller's receive channel.
      * You would add the functionality to the main process's message handler at **mainprocess/lpc/dispatch/UpdateCustomer.go** so that it processes the **UpdateCustomerRenderToMainProcess** message received from the renderer process and does what you need done with it. The handler could send an **UpdateCustomerMainProcessToRenderer** message back to the renderer through the handler's send channel.
-1. **kickstore** is how you manage your application's data storage model.      * You can add local bolt data stores. A local bolt store is an API and a record. It runs locally in the application's bolt database.
+1. **kickstore** is how you manage your application's data storage model.
+   * You can add local bolt data stores. A local bolt store is an API and a record. It runs locally in the application's bolt database.
    * You can add remote APIs and remote API records. A remote API can be for a remote database or maybe a remote server that has some service you want to use. You must complete a remote API's functionality.
    * You can add a remote API record which is just a struct representing a record in a remote database or data for sending or receiving data from a remote server.
    * Example: **kickstore -add Customer** would add the local bolt **Customer** store API and the empty **Customer** record.
