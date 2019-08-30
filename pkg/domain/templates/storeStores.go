@@ -24,7 +24,7 @@ import (
 	  so that they can use the stores.
 */
 
-// Stores is each of the application's storers.{{ if eq (len .BoltStores) 0 }}
+// Stores is each of the application's storers.{{ if and (eq (len .BoltStores) 0) (eq (len .RemoteDBs) 0) }}
 // You haven't added any stores yet.
 // Use kickstore to add or remote local bolt stores and remote databases.{{ end }}
 type Stores struct {

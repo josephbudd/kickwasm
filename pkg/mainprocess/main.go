@@ -64,7 +64,7 @@ func RebuildStoresGo(appPaths paths.ApplicationPathsI, importPath string, boltSt
 	fname := fileNames.StoresDotGo
 	oPath := filepath.Join(folderpaths.Output, fname)
 	var temp string
-	if len(boltStoreNames) == 0 {
+	if len(boltStoreNames) == 0 && len(remoteDBNames) == 0 {
 		temp = templates.NoStoresGo
 	} else {
 		temp = templates.StoresGo

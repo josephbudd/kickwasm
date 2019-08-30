@@ -27,12 +27,12 @@ func buildStores() (stores *store.Stores, err error) {
 const StoresGo = `{{ $Dot := . }}package main
 
 import (
-	"path/filepath"
+{{ if gt (len .BoltStores) 0 }}	"path/filepath"
 
-	"github.com/pkg/errors"
+{{ end }}	"github.com/pkg/errors"
 
-	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
-	"{{.ApplicationGitPath}}{{.ImportDomainStore}}"
+{{ if gt (len .BoltStores) 0 }}	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
+{{ end }}	"{{.ApplicationGitPath}}{{.ImportDomainStore}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainStoreStoring}}"
 )
 
@@ -46,8 +46,9 @@ import (
 */
 
 // buildStores makes and opens the data stores.
-// It makes each bolt data stores and opens the bolt database.
-// It makes each remote data database store and opens it.
+// It makes each local bolt data store API.
+// It makes each remote database API.
+// All of the stores can be opened with stores.Open()
 // All of the stores can be close with stores.Close()
 func buildStores() (stores *store.Stores, err error) {
 
@@ -62,11 +63,11 @@ func buildStores() (stores *store.Stores, err error) {
 		err = errors.WithMessage(err, "filepaths.BuildUserSubFoldersPath(\"boltdb\")")
 		return
 	}
-	path = filepath.Join(path, "stores.nosql")
-	stores = &store.Stores{
+	path = filepath.Join(path, "stores.nosql"){{ end }}
+	stores = &store.Stores{ {{- if gt (len .BoltStores) 0 }}
 		// Local bolt stores.
 {{ range (call .SameWidth .BoltStores) }}		{{.}}: storing.New{{ (call $Dot.TrimSpace .) }}LocalBoltStore(path, filepaths.GetFmode()),
-{{ end }}{{ end }}{{ if gt (len .RemoteDBs) 0 }}
+{{ end }}{{ end }}{{- if gt (len .RemoteDBs) 0 }}
 		// Remote databases.
 {{ range (call .SameWidth .RemoteDBs) }}		{{.}}: storing.New{{ call $Dot.TrimSpace . }}RemoteDB(),
 {{ end }}{{ end }}	}

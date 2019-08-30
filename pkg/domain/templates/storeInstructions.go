@@ -84,8 +84,8 @@ MANAGING DATA STORES WITH kickstore.
     * Delete the file domain/store/storing/CustomerBoltDB.go.
     * Update the file stores.go.
 
-* Adding a remote data base:
-  $ kickstore -add-remote-db Inventory
+* Adding a remote api:
+  $ kickstore -add-remote-api Inventory
   1. kickstore would
     * Update the file domain/store/instructions.txt.
     * Update the file domain/store/stores.go.

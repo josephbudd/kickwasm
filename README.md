@@ -1,6 +1,10 @@
-# kickwasm version 7.0.1
+# kickwasm version 7.0.2
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+
+August 30, 2019:
+
+Again while building another app to test my remote database changes I found one or more bugs along the same lines. The templates needed some adjustments because remote database were not being counted.
 
 August 29, 2019:
 
@@ -67,7 +71,9 @@ services:
      * You would complete the definitions of the 2 messages in **domain/lpc/messages/UpdateCustomer.go** so that they can contain the information you want sent.
      * You would add message handlers in your markup panel callers. Each markup panel has a caller which communicates with the main process. In a markup panel's caller you could send an **UpdateCustomerRenderToMainProcess** message to the main process through the caller's send channel and receive an **UpdateCustomerMainProcessToRenderer** message from the main process through the caller's receive channel.
      * You would add the functionality to the main process's message handler at **mainprocess/lpc/dispatch/UpdateCustomer.go** so that it processes the **UpdateCustomerRenderToMainProcess** message received from the renderer process and does what you need done with it. The handler could send an **UpdateCustomerMainProcessToRenderer** message back to the renderer through the handler's send channel.
-1. **kickstore** is how you manage your application's data storage model. You can add local bolt data stores. A local bolt store is an API and a record. You can add remote databases and remote records. A remote database is an API that you must complete. A remote record a struct representing a record in a remote database. You will use it for your remote database APIs.
+1. **kickstore** is how you manage your application's data storage model.      * You can add local bolt data stores. A local bolt store is an API and a record.
+   * You can add remote APIs and remote API records. A remote API can be for a remote database or maybe a remote server that has some service you want to use. You must complete a remote API's functionality.
+   * You can add a remote API record which is just a struct representing a record in a remote database or data for sending or receiving data from a remote server.
    * Example: **kickstore -add Customer** would add the local bolt **Customer** store API and the empty **Customer** record.
    * You would complete the the store's record definition in **domain/store/record/Customer.go** so that it contains the information needed.
    * If you want to modify behavior of the store's API, then you would
