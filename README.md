@@ -1,4 +1,4 @@
-# kickwasm version 8.0.0
+# kickwasm version 8.1.0
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
