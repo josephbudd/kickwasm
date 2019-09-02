@@ -17,9 +17,9 @@ import (
 const (
 	outputFolder = "output"
 
-	versionBreaking = 7 // Each new version breaks backwards compatibility.
+	versionBreaking = 8 // Each new version breaks backwards compatibility.
 	versionFeature  = 0 // Each new version adds features. Retains backwards compatibility.
-	versionPatch    = 2 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
+	versionPatch    = 0 // Each new version only fixes bugs. No added features. Retains backwards compatibility.
 
 )
 

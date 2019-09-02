@@ -62,7 +62,7 @@ func CreateStoreStoring(appPaths paths.ApplicationPathsI, importPath string, sto
 	return
 }
 
-// CreateRemoteStoreStoring creates a remote database's storing file in domain/store/storing/
+// CreateRemoteStoreStoring creates a remote service's storing file in domain/store/storing/
 func CreateRemoteStoreStoring(appPaths paths.ApplicationPathsI, importPath string, storeName string) (err error) {
 	folderpaths := appPaths.GetPaths()
 

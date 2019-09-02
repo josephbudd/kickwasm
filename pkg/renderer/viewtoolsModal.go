@@ -9,7 +9,8 @@ import (
 
 func createViewToolsModalGo(appPaths paths.ApplicationPathsI) error {
 	folderpaths := appPaths.GetPaths()
-	fname := "modal.go"
+	fileNames := appPaths.GetFileNames()
+	fname := fileNames.ModalDotGo
 	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return appPaths.WriteFile(oPath, []byte(templates.ViewToolsModal))
 }

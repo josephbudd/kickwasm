@@ -11,6 +11,7 @@ type FileNames struct {
 	ColorsDotCSS       string
 	CreateGetDotGo     string
 	DocumentDotGo      string
+	EventDotGo         string
 	ExampleDotTXT      string
 	ExampleGoDotTXT    string
 	EventsDotGo        string
@@ -31,6 +32,8 @@ type FileNames struct {
 	MainDotGo          string
 	MainDotTMPL        string
 	MapDotGo           string
+	MarkupDotGo        string
+	ModalDotGo         string
 	UserContentDotCSS  string
 	NotJSDotGo         string
 	PanelsDotGo        string
@@ -84,6 +87,7 @@ func GetFileNames() *FileNames {
 		ColorsDotCSS:       "colors.css",
 		CreateGetDotGo:     "createGet.go",
 		DocumentDotGo:      "document.go",
+		EventDotGo:         "event.go",
 		ExampleDotTXT:      "example.txt",
 		ExampleGoDotTXT:    "exampleGo.txt",
 		EventsDotGo:        "events.go",
@@ -104,6 +108,8 @@ func GetFileNames() *FileNames {
 		MainDotGo:          "main.go",
 		MainDotTMPL:        "main.tmpl",
 		MapDotGo:           "map.go",
+		MarkupDotGo:        "markup.go",
+		ModalDotGo:         "modal.go",
 		UserContentDotCSS:  "Usercontent.css",
 		NotJSDotGo:         "notJS.go",
 		PanelsDotGo:        "panels.go",

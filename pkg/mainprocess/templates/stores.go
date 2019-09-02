@@ -47,9 +47,9 @@ import (
 
 // buildStores makes and opens the data stores.
 // It makes each local bolt data store API.
-// It makes each remote database API.
-// All of the stores can be opened with stores.Open()
-// All of the stores can be close with stores.Close()
+// It makes each remote service API.
+// All of the stores and APIs can be opened with stores.Open()
+// All of the stores and APIs can be close with stores.Close()
 func buildStores() (stores *store.Stores, err error) {
 
 	defer func() {
@@ -69,7 +69,7 @@ func buildStores() (stores *store.Stores, err error) {
 {{ range (call .SameWidth .BoltStores) }}		{{.}}: storing.New{{ (call $Dot.TrimSpace .) }}LocalBoltStore(path, filepaths.GetFmode()),
 {{ end }}{{ end }}{{- if gt (len .RemoteDBs) 0 }}
 		// Remote databases.
-{{ range (call .SameWidth .RemoteDBs) }}		{{.}}: storing.New{{ call $Dot.TrimSpace . }}RemoteDB(),
+{{ range (call .SameWidth .RemoteDBs) }}		{{.}}: storing.New{{ call $Dot.TrimSpace . }}RemoteAPI(),
 {{ end }}{{ end }}	}
 	return
 }

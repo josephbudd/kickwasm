@@ -50,3 +50,4 @@ Button to create a new hello world.
 func (group *panelGroup) showCreatePanel() {
 	tools.ShowPanelInTabGroup(group.createPanel)
 }
+

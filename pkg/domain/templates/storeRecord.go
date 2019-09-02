@@ -30,14 +30,14 @@ const RemoteDatabaseRecordGo = `{{$Dot := .}}package record
 
 	TODO:
 
-	You need to complete this remote database record definition.
+	You need to complete this remote record definition.
 
 */
 
-// {{.Store}} is the remote database {{.Store}} record.
+// {{.Store}} is the remote {{.Store}} record.
 type {{.Store}} struct {}
 
-// New{{.Store}} constructs a new remote database {{.Store}}.
+// New{{.Store}} constructs a new remote {{.Store}} record.
 func New{{.Store}}() *{{.Store}} {
 	v := &{{.Store}}{}
 	return v

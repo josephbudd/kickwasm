@@ -5,6 +5,8 @@ const SpawnTabPanelPanel = `{{$Dot := .}}package {{call .PackageNameCase .PanelN
 
 import (
 	"syscall/js"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -35,6 +37,7 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 		group:    group,
 		uniqueID: uniqueID,
 		unspawn:  unspawn,
+		eventCh:  make(chan viewtools.Event, 1024),
 	}
 	presenter := &panelPresenter{
 		group:          group,

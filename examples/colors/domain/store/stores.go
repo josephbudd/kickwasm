@@ -22,7 +22,7 @@ import (
 
 // Stores is each of the application's storers.
 // You haven't added any stores yet.
-// Use kickstore to add or remote local bolt stores and remote databases.
+// Use kickstore to add or remove local bolt stores and remote service APIs.
 type Stores struct {
 }
 

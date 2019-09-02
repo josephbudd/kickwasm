@@ -19,10 +19,6 @@ type panelCaller struct {
 
 	// 1.1: Declare your panelCaller members.
 
-	// example:
-
-	state uint64
-
 	*/
 }
 
@@ -31,37 +27,11 @@ type panelCaller struct {
 // 2.1: Define your funcs which send a message to the main process.
 // 2.2: Define your funcs which receive a message from the main process.
 
-// example:
-
-// import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/lpc/message"
-// import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/store/record"
-
-// Add Customer.
-
-func (caller *panelCaller) addCustomer(r *record.Customer) {
-	msg := &message.AddCustomerRendererToMainProcess{
-		UniqueID: caller.uniqueID,
-		Record:   r,
-	}
-	sendCh <- msg
-}
-
-func (caller *panelCaller) addCustomerRX(msg *message.AddCustomerMainProcessToRenderer) {
-	if msg.UniqueID == caller.uniqueID {
-		if msg.Error {
-			tools.Error(msg.ErrorMessage)
-			return
-		}
-		// no errors
-		tools.Success("Customer Added.")
-	}
-}
-
 */
 
-// listen listens for messages from the main process.
+// dispatchMessages dispatches LPC messages from the main process.
 // It stops when it receives on the eoj channel.
-func (caller *panelCaller) listen() {
+func (caller *panelCaller) dispatchMessages() {
 	go func() {
 		for {
 			select {
@@ -79,13 +49,6 @@ func (caller *panelCaller) listen() {
 				// 3.2.a: Add a case for each of the messages
 				//          that you are expecting from the main process.
 				// 3.2.b: In that case statement, pass the message to your message receiver func.
-
-				// example:
-
-				// import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/lpc/message"
-
-				case *message.AddCustomerMainProcessToRenderer:
-					caller.addCustomerRX(msg)
 
 				*/
 
@@ -105,17 +68,6 @@ func (caller *panelCaller) initialCalls() {
 	/* NOTE TO DEVELOPER. Step 4 of 4.
 
 	//4.1: Make any initial calls to the main process that must be made when the app starts.
-
-	// example:
-
-	// import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/data/loglevels"
-	// import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/lpc/message"
-
-	msg := &message.LogRendererToMainProcess{
-		Level:   loglevels.LogLevelInfo,
-		Message: "Started",
-	}
-	sendCh <- msg
 
 	*/
 

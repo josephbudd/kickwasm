@@ -55,7 +55,7 @@ func CreateStoreStorer(appPaths paths.ApplicationPathsI, importPath string, stor
 	return
 }
 
-// CreateRemoteStoreStorer creates remote database's storer file in domain/store/storer/.
+// CreateRemoteStoreStorer creates a remote service API storer file in domain/store/storer/.
 func CreateRemoteStoreStorer(appPaths paths.ApplicationPathsI, importPath string, storeName string) (err error) {
 	folderpaths := appPaths.GetPaths()
 	data := &struct {

@@ -46,6 +46,12 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsSpawnTabGo(appPaths, builder); err != nil {
 		return
 	}
+	if err = createViewToolsEvent(appPaths); err != nil {
+		return
+	}
+	if err = createViewToolsMarkupGo(appPaths, builder); err != nil {
+		return
+	}
 	return
 }
 
@@ -73,6 +79,7 @@ func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builde
 		ImportRendererNotJS   string
 		SpawnIDReplacePattern string
 		PanelNameHVScroll     string
+		NumberOfMarkupPanels  uint64
 	}{
 		IDs:                   builder.IDs,
 		Classes:               builder.Classes,
@@ -81,6 +88,7 @@ func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builde
 		ImportRendererNotJS:   folderpaths.ImportRendererNotJS,
 		SpawnIDReplacePattern: project.SpawnIDReplacePattern,
 		PanelNameHVScroll:     fmt.Sprintf("%#v", panelNameHVScroll),
+		NumberOfMarkupPanels:  builder.MarkupPanelCount,
 	}
 	// execute the template
 	fileNames := paths.GetFileNames()

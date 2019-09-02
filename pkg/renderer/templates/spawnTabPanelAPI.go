@@ -57,13 +57,14 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID
 	if err = panel.group.defineMembers(); err != nil {
 		return
 	}
-	if err = panel.controller.defineControlsSetHandlers(); err != nil {
+	if err = panel.controller.defineControlsReceiveEvents(); err != nil {
 		return
 	}
 	if err = panel.presenter.defineMembers(); err != nil {
 		return
 	}
-	panel.caller.listen()
+	panel.controller.dispatchEvents()
+	panel.caller.dispatchMessages()
 	panel.controller.initialCalls()
 	panel.caller.initialCalls()
 

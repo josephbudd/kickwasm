@@ -44,7 +44,7 @@ func main() {
 
 	// finish initializing the caller client.
 	err := client.Connect(func() {
-		if er := doPanels(client, quitChan, eojChan, receiveChan, sendChan, tools, notJS, help); er != nil {
+		if er := doPanels(quitChan, eojChan, receiveChan, sendChan, tools, notJS, help); er != nil {
 			errmsg := er.Error()
 			tools.ConsoleLog(errmsg)
 			tools.Alert(errmsg)

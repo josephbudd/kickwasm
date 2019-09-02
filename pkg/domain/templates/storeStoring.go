@@ -1,43 +1,43 @@
 package templates
 
-// RemoteStoreStoringGo is the domain/store/storing/<store name>.go template for a remote database.
+// RemoteStoreStoringGo is the domain/store/storing/<store name>.go template for a remote service API.
 const RemoteStoreStoringGo = `package storing
 
 import (
 	"github.com/pkg/errors"
 )
 
-// {{.Store}}RemoteDB is the API of the {{.Store}} remote database connection.
+// {{.Store}}RemoteAPI is the API of the {{.Store}} remote service connection.
 // It is the implementation of the interface in {{.ImportDomainStoreStorer}}{{.Store}}.go.
-type {{.Store}}RemoteDB struct {}
+type {{.Store}}RemoteAPI struct {}
 
-// New{{.Store}}RemoteDB constructs a new {{.Store}}RemoteDB.
-// Returns a pointer to the new {{.Store}}RemoteDB.
-func New{{.Store}}RemoteDB() (store *{{.Store}}RemoteDB) {
-	store = &{{.Store}}RemoteDB{}
+// New{{.Store}}RemoteAPI constructs a new {{.Store}}RemoteAPI.
+// Returns a pointer to the new {{.Store}}RemoteAPI.
+func New{{.Store}}RemoteAPI() (store *{{.Store}}RemoteAPI) {
+	store = &{{.Store}}RemoteAPI{}
 	return
 }
 
-// Open opens the connection to the remote database.
+// Open opens the connection to the remote service.
 // Returns the error.
-func (store *{{.Store}}RemoteDB) Open() (err error) {
+func (store *{{.Store}}RemoteAPI) Open() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "{{.Store}}RemoteDB.Open")
+			err = errors.WithMessage(err, "{{.Store}}RemoteAPI.Open")
 		}
 	}()
 
 	return
 }
 
-// Close closes the connection to the remote database.
+// Close closes the connection to the remote service.
 // Returns the error.
-func (store *{{.Store}}RemoteDB) Close() (err error) {
+func (store *{{.Store}}RemoteAPI) Close() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "{{.Store}}RemoteDB.Open")
+			err = errors.WithMessage(err, "{{.Store}}RemoteAPI.Open")
 		}
 	}()
 

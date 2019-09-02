@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	"github.com/josephbudd/kickwasm/pkg/cases"
+	"github.com/josephbudd/kickwasm/pkg/format"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/project"
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
@@ -30,14 +30,13 @@ func createSpawnTabFiles(appPaths paths.ApplicationPathsI, builder *project.Buil
 	// Build the core imports for each api.go.
 	// Let each tab bar add the rest of the imports.
 	prepareCoreImports := make([]string, 4)
-	prepareCoreImports[0] = folderpaths.ImportRendererLPC
-	prepareCoreImports[1] = folderpaths.ImportRendererViewTools
-	prepareCoreImports[2] = folderpaths.ImportRendererNotJS
-	prepareCoreImports[3] = folderpaths.ImportRendererPaneling
+	prepareCoreImports[0] = builder.ImportPath + folderpaths.ImportRendererLPC
+	prepareCoreImports[1] = builder.ImportPath + folderpaths.ImportRendererViewTools
+	prepareCoreImports[2] = builder.ImportPath + folderpaths.ImportRendererNotJS
+	prepareCoreImports[3] = builder.ImportPath + folderpaths.ImportRendererPaneling
 
-	spawnCoreImports := make([]string, 2)
-	spawnCoreImports[0] = folderpaths.ImportRendererLPC
-	spawnCoreImports[1] = folderpaths.ImportRendererViewTools
+	spawnCoreImports := make([]string, 1)
+	spawnCoreImports[0] = builder.ImportPath + folderpaths.ImportRendererViewTools
 	// Build the tab bar template data.
 	// Let each tab bar set the rest of the spawnTabData members.
 	data := &spawnTabData{
@@ -99,15 +98,15 @@ func createSpawnTabFiles(appPaths paths.ApplicationPathsI, builder *project.Buil
 			copy(prepareImports, prepareCoreImports)
 			lsci := len(spawnCoreImports)
 			spawnImports := make([]string, lp+lsci)
-			copy(spawnImports, prepareCoreImports)
+			copy(spawnImports, spawnCoreImports)
 			for i, path := range paths {
 				markupTemplatePaths[i] = filepath.Join(folderNames.SpawnTemplates, path) + ".tmpl"
-				ipath := folderpaths.ImportRendererSpawnPanels + "/" + path
+				ipath := builder.ImportPath + folderpaths.ImportRendererSpawnPanels + "/" + path
 				prepareImports[lpci+i] = ipath
 				spawnImports[lsci+i] = ipath
 			}
-			sort.Strings(prepareImports)
-			sort.Strings(spawnImports)
+			prepareImports = format.FixImports(prepareImports)
+			spawnImports = format.FixImports(spawnImports)
 
 			// Step 3: For this tab
 			//         Customize the template data.

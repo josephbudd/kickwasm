@@ -42,7 +42,7 @@ import (
 
 */
 
-func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
+func doPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
 	tools *viewtools.Tools, notJS *notjs.NotJS, help *paneling.Help) (err error) {
 	
 	defer func() {
@@ -159,32 +159,32 @@ func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan l
 	// 3. Size the app.
 	tools.SizeApp()
 
-	// 4. Start each panel's listening for the main process.
-	service1Level1MarkupPanel.Listen()
-	service1Level2MarkupPanel.Listen()
-	service1Level3MarkupPanel.Listen()
-	service1Level4MarkupPanel.Listen()
-	service1Level5MarkupPanel.Listen()
-	service2Level1MarkupPanel.Listen()
-	service2Level2MarkupPanel.Listen()
-	service2Level3MarkupPanel.Listen()
-	service2Level4MarkupPanel.Listen()
-	service2Level5MarkupPanel.Listen()
-	service3Level1MarkupPanel.Listen()
-	service3Level2MarkupPanel.Listen()
-	service3Level3MarkupPanel.Listen()
-	service3Level4MarkupPanel.Listen()
-	service3Level5MarkupPanel.Listen()
-	service4Level1MarkupPanel.Listen()
-	service4Level2MarkupPanel.Listen()
-	service4Level3MarkupPanel.Listen()
-	service4Level4MarkupPanel.Listen()
-	service4Level5MarkupPanel.Listen()
-	service5Level1MarkupPanel.Listen()
-	service5Level2MarkupPanel.Listen()
-	service5Level3MarkupPanel.Listen()
-	service5Level4MarkupPanel.Listen()
-	service5Level5MarkupPanel.Listen()
+	// 4. Start each panel's message and event dispatchers.
+	service1Level1MarkupPanel.StartDispatchers()
+	service1Level2MarkupPanel.StartDispatchers()
+	service1Level3MarkupPanel.StartDispatchers()
+	service1Level4MarkupPanel.StartDispatchers()
+	service1Level5MarkupPanel.StartDispatchers()
+	service2Level1MarkupPanel.StartDispatchers()
+	service2Level2MarkupPanel.StartDispatchers()
+	service2Level3MarkupPanel.StartDispatchers()
+	service2Level4MarkupPanel.StartDispatchers()
+	service2Level5MarkupPanel.StartDispatchers()
+	service3Level1MarkupPanel.StartDispatchers()
+	service3Level2MarkupPanel.StartDispatchers()
+	service3Level3MarkupPanel.StartDispatchers()
+	service3Level4MarkupPanel.StartDispatchers()
+	service3Level5MarkupPanel.StartDispatchers()
+	service4Level1MarkupPanel.StartDispatchers()
+	service4Level2MarkupPanel.StartDispatchers()
+	service4Level3MarkupPanel.StartDispatchers()
+	service4Level4MarkupPanel.StartDispatchers()
+	service4Level5MarkupPanel.StartDispatchers()
+	service5Level1MarkupPanel.StartDispatchers()
+	service5Level2MarkupPanel.StartDispatchers()
+	service5Level3MarkupPanel.StartDispatchers()
+	service5Level4MarkupPanel.StartDispatchers()
+	service5Level5MarkupPanel.StartDispatchers()
 
 	// 5. Start each panel's initial calls.
 	service1Level1MarkupPanel.InitialCalls()

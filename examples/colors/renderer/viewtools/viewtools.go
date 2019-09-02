@@ -117,6 +117,11 @@ type Tools struct {
 	// user content
 
 	panelNameHVScroll map[string]bool
+
+	// markup panels
+
+	countMarkupPanels        int
+	countSpawnedMarkupPanels int
 }
 
 // NewTools constructs a new Tools
@@ -135,6 +140,8 @@ func NewTools(notJS *notjs.NotJS) *Tools {
 		jsCallBacks:     make(map[uint64][]js.Func, 100),
 
 		panelNameHVScroll: map[string]bool{"Service1Level1ButtonPanel":false, "Service1Level1MarkupPanel":false, "Service1Level2ButtonPanel":false, "Service1Level2MarkupPanel":false, "Service1Level3ButtonPanel":false, "Service1Level3MarkupPanel":false, "Service1Level4ButtonPanel":false, "Service1Level4MarkupPanel":false, "Service1Level5ButtonPanel":false, "Service1Level5MarkupPanel":false, "Service2Level1ButtonPanel":false, "Service2Level1MarkupPanel":false, "Service2Level2ButtonPanel":false, "Service2Level2MarkupPanel":false, "Service2Level3ButtonPanel":false, "Service2Level3MarkupPanel":false, "Service2Level4ButtonPanel":false, "Service2Level4MarkupPanel":false, "Service2Level5ButtonPanel":false, "Service2Level5MarkupPanel":false, "Service3Level1ButtonPanel":false, "Service3Level1MarkupPanel":false, "Service3Level2ButtonPanel":false, "Service3Level2MarkupPanel":false, "Service3Level3ButtonPanel":false, "Service3Level3MarkupPanel":false, "Service3Level4ButtonPanel":false, "Service3Level4MarkupPanel":false, "Service3Level5ButtonPanel":false, "Service3Level5MarkupPanel":false, "Service4Level1ButtonPanel":false, "Service4Level1MarkupPanel":false, "Service4Level2ButtonPanel":false, "Service4Level2MarkupPanel":false, "Service4Level3ButtonPanel":false, "Service4Level3MarkupPanel":false, "Service4Level4ButtonPanel":false, "Service4Level4MarkupPanel":false, "Service4Level5ButtonPanel":false, "Service4Level5MarkupPanel":false, "Service5Level1ButtonPanel":false, "Service5Level1MarkupPanel":false, "Service5Level2ButtonPanel":false, "Service5Level2MarkupPanel":false, "Service5Level3ButtonPanel":false, "Service5Level3MarkupPanel":false, "Service5Level4ButtonPanel":false, "Service5Level4MarkupPanel":false, "Service5Level5ButtonPanel":false, "Service5Level5MarkupPanel":false},
+
+		countMarkupPanels: 25,
 	}
 	bodies := notJS.GetElementsByTagName("body")
 	v.body = bodies[0]

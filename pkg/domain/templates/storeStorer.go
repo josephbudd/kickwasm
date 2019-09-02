@@ -1,16 +1,16 @@
 package templates
 
-// RemoteStoreStorerGo is the template /domain/store/storer/<rem db name>.go for a remote database.
+// RemoteStoreStorerGo is the template /domain/store/storer/<rem db name>.go for a remote service API.
 const RemoteStoreStorerGo = `{{$Dot := .}}package storer
 
-// {{.Store}}Storer defines the behavior (API) of a remote database connection.
+// {{.Store}}Storer defines the API for a remote service.
 type {{.Store}}Storer interface {
 
-	// Open opens the connection to the remote database.
+	// Open opens the connection to the remote service.
 	// Returns the error.
 	Open() (err error)
 
-	// Close closes the connection to the remote database.
+	// Close closes the connection to the remote service.
 	// Returns the error.
 	Close() (err error)
 }

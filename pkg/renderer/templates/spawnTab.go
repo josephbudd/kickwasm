@@ -4,7 +4,7 @@ package templates
 const SpawnTabPrepare = `{{$Dot := .}}package {{call .PackageNameCase .TabName}}
 
 import ({{ range .PrepareImports }}
-	"{{$Dot.ApplicationGitPath}}{{.}}"{{end}}
+	{{.}}{{end}}
 )
 
 /*
@@ -16,8 +16,7 @@ import ({{ range .PrepareImports }}
 */
 
 // Prepare initializes this package in preparation for spawning.
-func Prepare(cl *lpc.Client, quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, help *paneling.Help) {
-	client = cl
+func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, help *paneling.Help) {
 	tools = vtools
 {{ range .PanelNames }}
 	{{ call $Dot.PackageNameCase . }}.Prepare(quitChan, eojChan, receiveChan, sendChan, vtools, njs, help){{end}}
@@ -34,7 +33,7 @@ import (
 
 	"github.com/pkg/errors"
 {{ range .SpawnImports }}
-	"{{$Dot.ApplicationGitPath}}{{.}}"{{end}}
+	{{.}}{{end}}
 )
 
 /*
@@ -52,9 +51,6 @@ const (
 
 var (
 	markupTemplatePaths = {{.MarkupTemplatePaths}}
-	// client is needed for client.IncReceivers() with spawns
-	//   and client.DecReceivers() with unspawns.
-	client *lpc.Client
 	tools  *viewtools.Tools
 )
 
@@ -102,7 +98,7 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 		return
 	}
 	tab.stopListeners = append(tab.stopListeners, f){{end}}
-	client.IncReceivers(len(tab.stopListeners))
+	tools.IncSpawnedPanels(len(tab.stopListeners))
 	return
 }
 
@@ -117,7 +113,7 @@ func (tab *Tab) unSpawn() (err error) {
 		}
 	}()
 
-	client.DecReceivers(len(tab.stopListeners))
+	tools.DecSpawnedPanels(len(tab.stopListeners))
 
 	messages := make([]string, 0, 2)
 	// Remove the tab and panels from the DOM.

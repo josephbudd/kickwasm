@@ -1,11 +1,13 @@
 package main
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/lpc"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/paneling"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/panels/TabsButton/TabsButtonTabBarPanel/FirstTab/CreatePanel"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/spawnPanels/TabsButton/TabsButtonTabBarPanel"
+	createpanel "github.com/josephbudd/kickwasm/examples/spawntabs/renderer/panels/TabsButton/TabsButtonTabBarPanel/FirstTab/CreatePanel"
+	tabsbuttontabbarpanel "github.com/josephbudd/kickwasm/examples/spawntabs/renderer/spawnPanels/TabsButton/TabsButtonTabBarPanel"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/viewtools"
 )
 
@@ -17,27 +19,30 @@ import (
 
 */
 
-func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
+func doPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
 	tools *viewtools.Tools, notJS *notjs.NotJS, help *paneling.Help) (err error) {
+	
+	defer func() {
+		if err != nil {
+			err = errors.WithMessage(err, "doPanels")
+			tools.ConsoleLog("Error: " + err.Error())
+		}
+	}()
 
 	// 1. Prepare the spawn panels.
-	tabsbuttontabbarpanel.Prepare(client, quitChan, eojChan, receiveChan, sendChan, tools, notJS, help)
+	tabsbuttontabbarpanel.Prepare(quitChan, eojChan, receiveChan, sendChan, tools, notJS, help)
 
 	// 2. Construct the panel code.
 	var createPanel *createpanel.Panel
 	if createPanel, err = createpanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, tools, notJS, help); err != nil {
-		tools.ConsoleLog("doPanels: erorr is " + err.Error())
 		return
 	}
-
-	// No errors so continue.
-	tools.ConsoleLog("doPanels: no erorrs")
 
 	// 3. Size the app.
 	tools.SizeApp()
 
-	// 4. Start each panel's listening for the main process.
-	createPanel.Listen()
+	// 4. Start each panel's message and event dispatchers.
+	createPanel.StartDispatchers()
 
 	// 5. Start each panel's initial calls.
 	createPanel.InitialCalls()

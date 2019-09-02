@@ -153,8 +153,6 @@ type Client struct {
 	ReceiveChan Receiving
 	EOJChan     chan struct{}
 	QuitCh      chan struct{}
-	nReceivers  int
-	nSpawns     int
 
 	// OnOpenCallBack func()
 	lpcing bool
@@ -177,8 +175,6 @@ func NewClient(host string, port uint64, tools *viewtools.Tools, quitCh chan str
 		ReceiveChan: receiving,
 		EOJChan:     eojCh,
 		QuitCh:      quitCh,
-		nReceivers:  {{.NumberOfMarkupPanels}},
-		nSpawns:     0,
 	}
 	// Shut the renderer down when the connection breaks.
 	v.SetOnConnectionBreak(
@@ -206,9 +202,8 @@ func (client *Client) Connect(callBack func()) (err error) {
 	}()
 
 	client.OnOpenCallBack = callBack
-	tools := client.tools
 	if client.connected {
-		tools.ConsoleLog("client is connected")
+		client.tools.ConsoleLog("client is connected")
 	}
 	// setup the web socket
 	ws := client.tools.Global.Get("WebSocket")
@@ -222,23 +217,10 @@ func (client *Client) Connect(callBack func()) (err error) {
 		err = errors.New("readystate is undefined")
 		return
 	}
-	client.connection.Set("onopen", tools.RegisterCallBack(client.onOpen))
-	client.connection.Set("onclose", tools.RegisterCallBack(client.onClose))
-	client.connection.Set("onmessage", tools.RegisterCallBack(client.onMessage))
+	client.connection.Set("onopen", client.tools.RegisterCallBack(client.onOpen))
+	client.connection.Set("onclose", client.tools.RegisterCallBack(client.onClose))
+	client.connection.Set("onmessage", client.tools.RegisterCallBack(client.onMessage))
 	return
-}
-
-// IncReceivers increments the number of receivers. ( panel callers )
-func (client *Client) IncReceivers(n int) {
-	client.nSpawns += n
-}
-
-// DecReceivers decrements the number of receivers. ( panel callers )
-func (client *Client) DecReceivers(n int) {
-	client.nSpawns -= n
-	if client.nSpawns < 0 {
-		client.nSpawns = 0
-	}
 }
 
 func (client *Client) dispatch() {
@@ -255,8 +237,8 @@ func (client *Client) dispatch() {
 			client.tools.Alert(err.Error())
 			return
 		}
-		n := client.nReceivers + client.nSpawns
-		for i := 0; i < n; i++ {
+		panelsCount := client.tools.CountMarkupPanels()
+		for i := 0; i < panelsCount; i++ {
 			client.ReceiveChan <- cargo
 		}
 		client.dispatching = len(client.queue) > 0
@@ -292,9 +274,15 @@ func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interfac
 					client.connection.Call("send", string(payload))
 				}
 			case <-client.QuitCh:
-				last := client.nReceivers + 1 // +1 for func main.
+				// each markup panel has a caller and controller listener.
+				countWaiting := client.tools.CountMarkupPanels()
+				countWaiting *= 2
+				// func main
+				countWaiting++
+				// widgets
+				countWaiting += client.tools.CountWidgetsWaiting()
 				eoj := struct{}{}
-				for i := 0; i < last; i++ {
+				for i := 0; i < countWaiting; i++ {
 					client.EOJChan <- eoj
 				}
 				client.lpcing = false

@@ -26,12 +26,12 @@ import (
 
 // Stores is each of the application's storers.{{ if and (eq (len .BoltStores) 0) (eq (len .RemoteDBs) 0) }}
 // You haven't added any stores yet.
-// Use kickstore to add or remote local bolt stores and remote databases.{{ end }}
+// Use kickstore to add or remove local bolt stores and remote service APIs.{{ end }}
 type Stores struct {
 {{ if gt (len .BoltStores) 0 }}	// Local bolt stores.
 {{ range (call .SameWidth .BoltStores) }}	{{.}} *storing.{{ (call $Dot.TrimSpace .) }}LocalBoltStore
 {{ end }}{{ end }} {{- if gt (len .RemoteDBs) 0 }}	// Remote databases.
-{{ range (call .SameWidth .RemoteDBs) }}	{{.}} *storing.{{ (call $Dot.TrimSpace .) }}RemoteDB
+{{ range (call .SameWidth .RemoteDBs) }}	{{.}} *storing.{{ (call $Dot.TrimSpace .) }}RemoteAPI
 {{ end }}{{ end }}}
 
 // Open opens every store.

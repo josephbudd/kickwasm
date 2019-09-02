@@ -41,7 +41,8 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 
 	group := &panelGroup{}
 	controller := &panelController{
-		group: group,
+		group:   group,
+		eventCh: make(chan viewtools.Event, 1024),
 	}
 	presenter := &panelPresenter{
 		group: group,
@@ -71,7 +72,7 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	if err = group.defineMembers(); err != nil {
 		return
 	}
-	if err = controller.defineControlsSetHandlers(); err != nil {
+	if err = controller.defineControlsReceiveEvents(); err != nil {
 		return
 	}
 	if err = presenter.defineMembers(); err != nil {
@@ -87,9 +88,10 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	return
 }
 
-// Listen get the panel caller listening for main process messages.
-func (panel *Panel) Listen() {
-	panel.caller.listen()
+// StartDispatchers starts the event and message dispatchers.
+func (panel *Panel) StartDispatchers() {
+	panel.controller.dispatchEvents()
+	panel.caller.dispatchMessages()
 }
 
 // InitialCalls runs the first code that the panel needs to run.

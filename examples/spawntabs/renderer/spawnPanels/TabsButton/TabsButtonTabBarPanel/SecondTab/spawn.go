@@ -7,8 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel"
+	helloworldtemplatepanel "github.com/josephbudd/kickwasm/examples/spawntabs/renderer/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/viewtools"
 )
 
@@ -20,18 +19,13 @@ import (
 
 */
 
-
 const (
 	tabBarID = "tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar"
 	tabName  = "SecondTab"
 )
 
-
 var (
 	markupTemplatePaths = []string{"spawnTemplates/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel.tmpl"}
-	// client is needed for client.IncReceivers() with spawns
-	//   and client.DecReceivers() with unspawns.
-	client *lpc.Client
 	tools  *viewtools.Tools
 )
 
@@ -67,8 +61,8 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 	}
 	// Define the tab.
 	tab := &Tab{
-		hTMLButton :   tabButton,
-		uniqueID :     uniqueID,
+		hTMLButton:    tabButton,
+		uniqueID:      uniqueID,
 		stopListeners: make([]func(), 0, 20),
 	}
 	unspawn = tab.unSpawn
@@ -79,7 +73,7 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 		return
 	}
 	tab.stopListeners = append(tab.stopListeners, f)
-	client.IncReceivers(len(tab.stopListeners))
+	tools.IncSpawnedPanels(len(tab.stopListeners))
 	return
 }
 
@@ -94,7 +88,7 @@ func (tab *Tab) unSpawn() (err error) {
 		}
 	}()
 
-	client.DecReceivers(len(tab.stopListeners))
+	tools.DecSpawnedPanels(len(tab.stopListeners))
 
 	messages := make([]string, 0, 2)
 	// Remove the tab and panels from the DOM.

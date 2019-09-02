@@ -62,9 +62,9 @@ func (caller *panelCaller) addCustomerRX(msg *message.AddCustomerMainProcessToRe
 
 */
 
-// listen listens for messages from the main process.
+// dispatchMessages dispatches LPC messages from the main process.
 // It stops when it receives on the eoj channel.
-func (caller *panelCaller) listen() {
+func (caller *panelCaller) dispatchMessages() {
 	go func() {
 		for {
 			select {

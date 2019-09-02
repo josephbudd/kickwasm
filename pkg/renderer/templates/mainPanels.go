@@ -17,7 +17,7 @@ import (
 
 */
 
-func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
+func doPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
 	tools *viewtools.Tools, notJS *notjs.NotJS, help *paneling.Help) (err error) {
 	
 	defer func() {
@@ -28,7 +28,7 @@ func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan l
 	}()
 
 	// 1. Prepare the spawn panels.{{ range $packageName, $path := .SpawnTabBarNamePath}}
-	{{call $Dot.PackageNameCase $packageName}}.Prepare(client, quitChan, eojChan, receiveChan, sendChan, tools, notJS, help){{end}}
+	{{call $Dot.PackageNameCase $packageName}}.Prepare(quitChan, eojChan, receiveChan, sendChan, tools, notJS, help){{end}}
 
 	// 2. Construct the panel code.{{range $name, $path := .PanelNamePath}}
 	var {{call $Dot.LowerCamelCase $name}} *{{call $Dot.PackageNameCase $name}}.Panel
@@ -39,8 +39,8 @@ func doPanels(client *lpc.Client, quitChan, eojChan chan struct{}, receiveChan l
 	// 3. Size the app.
 	tools.SizeApp()
 
-	// 4. Start each panel's listening for the main process.{{range $name, $path := .PanelNamePath}}
-	{{call $Dot.LowerCamelCase $name}}.Listen(){{end}}
+	// 4. Start each panel's message and event dispatchers.{{range $name, $path := .PanelNamePath}}
+	{{call $Dot.LowerCamelCase $name}}.StartDispatchers(){{end}}
 
 	// 5. Start each panel's initial calls.{{range $name, $path := .PanelNamePath}}
 	{{call $Dot.LowerCamelCase $name}}.InitialCalls(){{end}}

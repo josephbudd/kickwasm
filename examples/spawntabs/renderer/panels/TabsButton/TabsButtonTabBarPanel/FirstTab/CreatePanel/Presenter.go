@@ -4,6 +4,7 @@ import (
 	"strings"
 	"syscall/js"
 
+
 	"github.com/pkg/errors"
 )
 
@@ -55,7 +56,6 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	return
 }
-
 // Tab panel heading.
 
 func (presenter *panelPresenter) getTabPanelHeading() (heading string) {
