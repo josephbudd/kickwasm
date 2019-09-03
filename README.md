@@ -11,7 +11,6 @@ Version 8.1.0
 
 I need to update the wiki since version 8.1.0 is so different.
 
-
 Sept 1, 2019
 
 Version 8.0.0 brings another backwards compatibility break.
@@ -125,6 +124,8 @@ services:
 The [CRUD application](https://github.com/josephbudd/crud) is very important because the crud has a wiki were I detail the steps I took when I built the crud.
 
 ### The CRUD WIKI
+
+Sept 2, 2019: The CRUD WIKI has been updated to the latest CRUD version built with kickwasm 8.1.0.
 
 In the CRUD wiki, I begin with a complete plan for the full application.
 
