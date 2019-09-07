@@ -13,6 +13,12 @@ This panel is the only panel in it's panel group.
 
 <p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
 <p>
+    <label for="input{{.SpawnID}}">Tab Label</label>
+    <input type="text" id="input{{.SpawnID}}"/>
+    <br/>
+    <button id="setButton{{.SpawnID}}">Set Label</button>
+</p>
+<p>
     <button id="closeSpawnButton{{.SpawnID}}">Close</button>
 </p>
 

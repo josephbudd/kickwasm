@@ -16,13 +16,14 @@ import (
 
 // panelController controls user input.
 type panelController struct {
-	uniqueID  uint64
-	panel     *spawnedPanel
-	group     *panelGroup
-	presenter *panelPresenter
-	caller    *panelCaller
-	eventCh   chan viewtools.Event
-	unspawn   func() error
+	uniqueID     uint64
+	panel        *spawnedPanel
+	group        *panelGroup
+	presenter    *panelPresenter
+	caller       *panelCaller
+	eventCh      chan viewtools.Event
+	unSpawningCh chan struct{}
+	unspawn      func() error
 
 	/* NOTE TO DEVELOPER. Step 1 of 5.
 
@@ -30,8 +31,12 @@ type panelController struct {
 
 	*/
 
-	// closeSpawnButton{{.SpawnID}}
+	//closeSpawnButton{{.SpawnID}}
 	closeSpawnButton js.Value
+	//input{{.SpawnID}}
+	input js.Value
+	// setButton{{.SpawnID}}
+	setButton js.Value
 }
 
 // defineControlsReceiveEvents defines controller members and starts receiving their events.
@@ -61,6 +66,21 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 	}
 	controller.receiveEvent(controller.closeSpawnButton, "onclick", false, false, false)
 
+	// Define the label input.
+	id = tools.FixSpawnID("input{{.SpawnID}}", controller.uniqueID)
+	if controller.input = notJS.GetElementByID(id); controller.input == null {
+		err = errors.New("unable to find #" + id)
+		return
+	}
+
+	// Define the label set button and set it's handler.
+	id = tools.FixSpawnID("setButton{{.SpawnID}}", controller.uniqueID)
+	if controller.setButton = notJS.GetElementByID(id); controller.setButton == null {
+		err = errors.New("unable to find #" + id)
+		return
+	}
+	controller.receiveEvent(controller.setButton, "onclick", false, false, false)
+
 	return
 }
 
@@ -70,11 +90,19 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 
 */
 
-func (controller *panelController) handleClick(event js.Value) (nilReturn interface{}) {
+func (controller *panelController) handleClick(event js.Value) {
 	if err := controller.unspawn(); err != nil {
 		tools.Error(err.Error())
 	}
-	return
+}
+
+func (controller *panelController) handleSetClick(event js.Value) {
+	var text string
+	if text = notJS.GetValue(controller.input); len(text) == 0 {
+		tools.Error("Enter some text for the tab label.")
+		return
+	}
+	controller.presenter.setTabLabel(text)
 }
 
 // dispatchEvents dispatches events from the controls.
@@ -85,6 +113,8 @@ func (controller *panelController) dispatchEvents() {
 		for {
 			select {
 			case <-eojCh:
+				return
+			case <-controller.unSpawningCh:
 				return
 			case event = <-controller.eventCh:
 				// An event that this controller is receiving from one of its members.
@@ -100,6 +130,8 @@ func (controller *panelController) dispatchEvents() {
 
 				case controller.closeSpawnButton:
 					controller.handleClick(event.Event)
+				case controller.setButton:
+					controller.handleSetClick(event.Event)
 				}
 			}
 		}
@@ -115,8 +147,12 @@ func (controller *panelController) initialCalls() {
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
+	// example:
+
+	controller.customerSelectWidget.start()
 
 	*/
+
 }
 
 func (controller *panelController) receiveEvent(element js.Value, event string, preventDefault, stopPropagation, stopImmediatePropagation bool) {

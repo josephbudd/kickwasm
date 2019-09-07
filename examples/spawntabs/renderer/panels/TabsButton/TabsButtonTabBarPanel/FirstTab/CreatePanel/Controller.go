@@ -66,7 +66,7 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 
 */
 
-func (controller *panelController) handleClick(event js.Value) (nilReturn interface{}) {
+func (controller *panelController) handleClick(event js.Value) {
 	spawnCount++
 	n := spawnCount
 	tabLabel := fmt.Sprintf("Tab %d", n)
@@ -74,7 +74,6 @@ func (controller *panelController) handleClick(event js.Value) (nilReturn interf
 	if _, err := secondtab.Spawn(tabLabel, panelHeading, nil); err != nil {
 		tools.Error(err.Error())
 	}
-	return
 }
 
 // dispatchEvents dispatches events from the controls.

@@ -21,22 +21,4 @@ func (tools *Tools) DecSpawnedPanels(n int) {
 		tools.countSpawnedMarkupPanels = 0
 	}
 }
-
-// CountWidgetsWaiting returns the number of widgets widgets listening to the eoj channel.
-func (tools *Tools) CountWidgetsWaiting() (count int) {
-	count = tools.countWidgetsWaiting
-	return
-}
-
-// IncWidgetWaiting increments the number of widgets listening to the eoj channel.
-func (tools *Tools) IncWidgetWaiting() {
-	tools.countWidgetsWaiting++
-}
-
-// DecWidgetWaiting decrements the number of widgets listening to the eoj channel.
-func (tools *Tools) DecWidgetWaiting() {
-	if tools.countWidgetsWaiting > 0 {
-		tools.countWidgetsWaiting--
-	}
-}
 `

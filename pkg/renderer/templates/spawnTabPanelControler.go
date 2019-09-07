@@ -25,6 +25,7 @@ type panelController struct {
 	presenter *panelPresenter
 	caller    *panelCaller
 	eventCh   chan viewtools.Event
+	unSpawningCh chan struct{}
 	unspawn   func() error
 
 	/* NOTE TO DEVELOPER. Step 1 of 5.
@@ -112,6 +113,8 @@ func (controller *panelController) dispatchEvents() {
 		for {
 			select {
 			case <-eojCh:
+				return
+			case <-controller.unSpawningCh:
 				return
 			case event = <-controller.eventCh:
 				// An event that this controller is receiving from one of its members.

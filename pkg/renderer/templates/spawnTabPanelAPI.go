@@ -73,6 +73,7 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID
 
 // StopListener stops the caller's go routine listening for messages.
 func (panel *spawnedPanel) StopListener() {
-	panel.caller.UnSpawningCh <- struct{}{}
+	panel.caller.unSpawningCh <- struct{}{}
+	panel.controller.unSpawningCh <- struct{}{}
 }
 `

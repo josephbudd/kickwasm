@@ -49,7 +49,10 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsEvent(appPaths); err != nil {
 		return
 	}
-	if err = createViewToolsMarkupGo(appPaths, builder); err != nil {
+	if err = createViewToolsMarkupGo(appPaths); err != nil {
+		return
+	}
+	if err = createViewToolsWidgetsGo(appPaths); err != nil {
 		return
 	}
 	return

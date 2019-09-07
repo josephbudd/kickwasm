@@ -1,6 +1,16 @@
-# kickwasm version 8.1.0
+# kickwasm version 8.2.0
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+
+## Sept 07, 2019
+
+Added viewtools.widgets.go for adding widgets to spawned tab panels. The example spawnwidgets demonstrates the use of a spawned tab's markup panel using a spawned close button widget.
+
+Updated the kickwasm wiki to kickwasm 8.1.0. I still have to update it about using widgets in spawned tabs.
+
+## Sept 4, 2019
+
+Fixed tab spawned panel's unspawning so that the controller's event dispatcher stops just like the caller's message dispatcher stops. Not really an issue now but it could be in the future when go wasm has real go routines.
 
 ## Sept 2, 2019
 
@@ -177,7 +187,9 @@ $ go install
 
 ## The examples
 
-The examples/ folder contains 2 examples. Their videos make very clear how the framework functions.
+The examples/ folder contains 3 examples. The new example the spawnwidgets. It demonstrates how to create and use widgets with spawned tab panels.
+
+The 2 videos below make very clear how the framework functions.
 
 1. A framework always begins with a button pad where the user gets a general idea of what the application does.
 1. From there, the GUI behaves according how the framework was designed.
@@ -202,7 +214,7 @@ The video shows tabs being spawned and unspawned.
 
 The kickwasm WIKI contains important information not included in the CRUD wiki. It is a work in progress.
 
-The WIKI has been updated to kickwasm version 7.0.0.
+The WIKI has been updated to kickwasm version 8.2.0. However I still have to add information about using widgets with spawned tab panels.
 
 ## To Do
 

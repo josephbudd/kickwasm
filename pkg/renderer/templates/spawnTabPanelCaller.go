@@ -16,7 +16,7 @@ type panelCaller struct {
 	presenter    *panelPresenter
 	controller   *panelController
 	unspawn      func() error
-	UnSpawningCh chan struct{}
+	unSpawningCh chan struct{}
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -64,13 +64,14 @@ func (caller *panelCaller) addCustomerRX(msg *message.AddCustomerMainProcessToRe
 
 // dispatchMessages dispatches LPC messages from the main process.
 // It stops when it receives on the eoj channel.
+// It also stops when it receives on the unspawning channel.
 func (caller *panelCaller) dispatchMessages() {
 	go func() {
 		for {
 			select {
 			case <-eojCh:
 				return
-			case <-caller.UnSpawningCh:
+			case <-caller.unSpawningCh:
 				return
 			case msg := <-receiveCh:
 				// A message sent from the main process to the renderer.

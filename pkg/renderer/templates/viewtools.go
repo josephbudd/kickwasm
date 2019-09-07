@@ -126,6 +126,10 @@ type Tools struct {
 	countMarkupPanels        int
 	countSpawnedMarkupPanels int
 	countWidgetsWaiting      int
+
+	// spawned widgets
+
+	spawnedWidgets map[uint64]spawnedWidgetInfo
 }
 
 // NewTools constructs a new Tools
@@ -146,6 +150,8 @@ func NewTools(notJS *notjs.NotJS) *Tools {
 		panelNameHVScroll: {{.PanelNameHVScroll}},
 
 		countMarkupPanels: {{.NumberOfMarkupPanels}},
+
+		spawnedWidgets: make(map[uint64]spawnedWidgetInfo, 100),
 	}
 	bodies := notJS.GetElementsByTagName("body")
 	v.body = bodies[0]

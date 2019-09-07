@@ -73,6 +73,9 @@ type FileNames struct {
 	APIDotGo     string
 	PrepareDotGo string
 	SpawnDotGo   string
+
+	// widgets
+	WidgetsDotGo string
 }
 
 // GetFileNames returns the file names.
@@ -149,5 +152,8 @@ func GetFileNames() *FileNames {
 		APIDotGo:     "api.go",
 		PrepareDotGo: "prepare.go",
 		SpawnDotGo:   "spawn.go",
+
+		// widgets
+		WidgetsDotGo: "widgets.go",
 	}
 }
