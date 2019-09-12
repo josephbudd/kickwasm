@@ -6,7 +6,7 @@
 
 Version 8.2.2
 
-I found a version issue while rewriting [CWT](https://github.com/josephbudd/cwt). I'm stil working on the new CWT.
+I found an issue while rewriting [CWT](https://github.com/josephbudd/cwt). I'm still working on the new CWT.
 
 The issue took advantage of a behavior in versions prior to 1.13 which is no longer present. The issue was in renderer/notjs/document.go func HostPort().
 
