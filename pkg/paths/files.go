@@ -65,6 +65,7 @@ type FileNames struct {
 	CallerDotGo     string
 	ControllerDotGo string
 	DataDotGo       string
+	LCDataDotGo     string
 	PanelGroupDotGo string
 	PanelDotGo      string
 	PresenterDotGo  string
@@ -144,6 +145,7 @@ func GetFileNames() *FileNames {
 		CallerDotGo:     "Caller.go",
 		ControllerDotGo: "Controller.go",
 		DataDotGo:       "Data.go",
+		LCDataDotGo:     "data.go",
 		PanelGroupDotGo: "group.go",
 		PanelDotGo:      "Panel.go",
 		PresenterDotGo:  "Presenter.go",

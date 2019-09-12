@@ -6,6 +6,7 @@ const LPCChannelsGo = `{{ $Dot := . }}package lpc
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"github.com/pkg/errors"
 
@@ -32,6 +33,9 @@ type EOJer interface {
 type EOJing struct {
 	ch    chan struct{}
 	count int
+	signaled    bool
+	countMutex  *sync.Mutex
+	signalMutex *sync.Mutex
 }
 
 var (
@@ -46,6 +50,8 @@ func init() {
 	eoj = &EOJing{
 		ch:    make(chan struct{}, 1024),
 		count: 0,
+		countMutex:  &sync.Mutex{},
+		signalMutex: &sync.Mutex{},
 	}
 }
 
@@ -126,23 +132,34 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 
 // Signal sends on the eoj channel signaling lpc go funcs to quit.
 func (eoj EOJing) Signal() {
-	end := struct{}{}
-	for i := 0; i < eoj.count; i++ {
-		eoj.ch <- end
+	eoj.signalMutex.Lock()
+	if !eoj.signaled {
+		eoj.signaled = true
+		end := struct{}{}
+		for i := 0; i < eoj.count; i++ {
+			eoj.ch <- end
+		}
 	}
+	eoj.signalMutex.Unlock()
 }
 
 // NewEOJ returns a new eoj channel and increments the usage count.
 func (eoj EOJing) NewEOJ() (ch chan struct{}) {
+	eoj.countMutex.Lock()
 	eoj.count++
 	ch = eoj.ch
+	eoj.countMutex.Unlock()
 	return
 }
 
 // Release decrements the usage count.
 // Call this at the end of your lpc handler func.
 func (eoj EOJing) Release() {
-	eoj.count--
+	eoj.countMutex.Lock()
+	if eoj.count > 0 {
+		eoj.count--
+	}
+	eoj.countMutex.Unlock()
 }
 `
 

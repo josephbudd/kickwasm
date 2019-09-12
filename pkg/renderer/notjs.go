@@ -16,7 +16,7 @@ func createNotJS(appPaths paths.ApplicationPathsI) (err error) {
 		//&templates.NotJSCallbackGo:    fileNames.CallBackDotGo,
 		&templates.NotJSClassGo: fileNames.ClassDotGo,
 		// &templates.NotJSCreateGetGo:   fileNames.CreateGetDotGo,
-		&templates.NotJSDataGo:        fileNames.DataDotGo,
+		&templates.NotJSDataGo:        fileNames.LCDataDotGo,
 		&templates.NotJSDocumentGo:    fileNames.DocumentDotGo,
 		&templates.NotJSEventsGo:      fileNames.EventsDotGo,
 		&templates.NotJSFormsGo:       fileNames.FormsDotGo,

@@ -74,7 +74,7 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 
 // import "github.com/josephbudd/kickwasm/examples/colors/domain/store/record"
 
-func (controller *panelController) handleSubmit(event js.Value) (nilReturn interface{}) {
+func (controller *panelController) handleSubmit(event js.Value) {
 	name := strings.TrimSpace(notJS.GetValue(controller.addCustomerName))
 	if len(name) == 0 {
 		tools.Error("Customer Name is required.")
@@ -84,7 +84,6 @@ func (controller *panelController) handleSubmit(event js.Value) (nilReturn inter
 		Name: name,
 	}
 	controller.caller.AddCustomer(r)
-	return
 }
 
 */

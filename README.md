@@ -1,34 +1,16 @@
-# kickwasm version 8.2.0
+# kickwasm version 8.2.2
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## Sept 07, 2019
+## Sept 12, 2019
 
-Added viewtools.widgets.go for adding widgets to spawned tab panels. The example spawnwidgets demonstrates the use of a spawned tab's markup panel using a spawned close button widget.
+Version 8.2.2
+Fixed my wasm bug revealed in go version 1.13. The bug was in renderer/notjs/document.go func HostPort().
 
-Updated the kickwasm wiki to kickwasm 8.1.0. I still have to update it about using widgets in spawned tabs.
+## Sept 10, 2019
 
-## Sept 4, 2019
-
-Fixed tab spawned panel's unspawning so that the controller's event dispatcher stops just like the caller's message dispatcher stops. Not really an issue now but it could be in the future when go wasm has real go routines.
-
-## Sept 2, 2019
-
-Version 8.1.0
-
-* Further changes relating to HTML event handling in controllers.
-* Updated examples.
-
-I need to update the wiki since version 8.1.0 is so different.
-
-Sept 1, 2019
-
-Version 8.0.0 brings another backwards compatibility break.
-
-1. Each markup panel's controler
-   * Now receives events through it's event channel.
-   * It's dispatchEvents func distributes events to it's handlers.
-1. Minor bug fixes from incomplete changes in the previous transitional version.
+Version 8.2.1
+Made the main process's eoj channel thread safe.
 
 ## Still experimental because syscall/js is still experimental
 
@@ -111,7 +93,7 @@ services:
 
 ## Tools
 
-1. **kicklpc** is how you manage your application's **LPC** message model. **Local Process Communications ( LPCs )** are the messages are sent between the main process and the renderer process.
+1. **kicklpc** is how you manage your application's **LPC** message model. **Local Process Communications ( LPCs )** are the messages that are sent between the main process and the renderer process.
    * Example: **kicklpc -add UpdateCustomer** would add the empty message **UpdateCustomerRenderToMainProcess** and the other empty message **UpdateCustomerMainProcessToRenderer**.
      * You would complete the definitions of the 2 messages in **domain/lpc/messages/UpdateCustomer.go** so that they can contain the information you want sent.
      * You would add message handlers in your markup panel callers. Each markup panel has a caller which communicates with the main process. In a markup panel's caller you could send an **UpdateCustomerRenderToMainProcess** message to the main process through the caller's send channel and receive an **UpdateCustomerMainProcessToRenderer** message from the main process through the caller's receive channel.
@@ -187,7 +169,7 @@ $ go install
 
 ## The examples
 
-The examples/ folder contains 3 examples. The new example the spawnwidgets. It demonstrates how to create and use widgets with spawned tab panels.
+The examples/ folder contains 3 examples. The new example is **spawnwidgets**. It demonstrates how to create and use widgets with spawned tab panels.
 
 The 2 videos below make very clear how the framework functions.
 

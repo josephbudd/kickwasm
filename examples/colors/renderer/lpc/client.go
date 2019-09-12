@@ -155,11 +155,15 @@ func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interfac
 					client.connection.Call("send", string(payload))
 				}
 			case <-client.QuitCh:
-				countMarkupPanels := client.tools.CountMarkupPanels()
-				countMarkupPanels *= 2 // each markup panel has a caller and controller listener.
-				countMarkupPanels++ // func main
+				// each markup panel has a caller and controller listener.
+				countWaiting := client.tools.CountMarkupPanels()
+				countWaiting *= 2
+				// func main
+				countWaiting++
+				// widgets
+				countWaiting += client.tools.CountWidgetsWaiting()
 				eoj := struct{}{}
-				for i := 0; i < countMarkupPanels; i++ {
+				for i := 0; i < countWaiting; i++ {
 					client.EOJChan <- eoj
 				}
 				client.lpcing = false

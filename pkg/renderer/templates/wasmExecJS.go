@@ -268,7 +268,15 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 						const id = this._nextCallbackTimeoutID;
 						this._nextCallbackTimeoutID++;
 						this._scheduledTimeouts.set(id, setTimeout(
-							() => { this._resume(); },
+							() => {
+								this._resume();
+								while (this._scheduledTimeouts.has(id)) {
+									// for some reason Go failed to register the timeout event, log and try again
+									// (temporary workaround for https://github.com/golang/go/issues/28975)
+									console.warn("scheduleTimeoutEvent: missed timeout event");
+									this._resume();
+								}
+							},
 							getInt64(sp + 8) + 1, // setTimeout has been seen to fire up to 1 millisecond early
 						));
 						mem().setInt32(sp + 16, id, true);
@@ -382,6 +390,34 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 						mem().setUint8(sp + 24, loadValue(sp + 8) instanceof loadValue(sp + 16));
 					},
 
+					// func copyBytesToGo(dst []byte, src ref) (int, bool)
+					"syscall/js.copyBytesToGo": (sp) => {
+						const dst = loadSlice(sp + 8);
+						const src = loadValue(sp + 32);
+						if (!(src instanceof Uint8Array)) {
+							mem().setUint8(sp + 48, 0);
+							return;
+						}
+						const toCopy = src.subarray(0, dst.length);
+						dst.set(toCopy);
+						setInt64(sp + 40, toCopy.length);
+						mem().setUint8(sp + 48, 1);
+					},
+
+					// func copyBytesToJS(dst ref, src []byte) (int, bool)
+					"syscall/js.copyBytesToJS": (sp) => {
+						const dst = loadValue(sp + 8);
+						const src = loadSlice(sp + 16);
+						if (!(dst instanceof Uint8Array)) {
+							mem().setUint8(sp + 48, 0);
+							return;
+						}
+						const toCopy = src.subarray(0, dst.length);
+						dst.set(toCopy);
+						setInt64(sp + 40, toCopy.length);
+						mem().setUint8(sp + 48, 1);
+					},
+
 					"debug": (value) => {
 						console.log(value);
 					},
@@ -398,7 +434,6 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 				true,
 				false,
 				global,
-				this._inst.exports.mem,
 				this,
 			];
 			this._refs = new Map();
@@ -410,9 +445,13 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 			let offset = 4096;
 
 			const strPtr = (str) => {
-				let ptr = offset;
-				new Uint8Array(mem.buffer, offset, str.length + 1).set(encoder.encode(str + "\0"));
-				offset += str.length + (8 - (str.length % 8));
+				const ptr = offset;
+				const bytes = encoder.encode(str + "\0");
+				new Uint8Array(mem.buffer, offset, bytes.length).set(bytes);
+				offset += bytes.length;
+				if (offset % 8 !== 0) {
+					offset += 8 - (offset % 8);
+				}
 				return ptr;
 			};
 
@@ -426,7 +465,7 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 			const keys = Object.keys(this.env).sort();
 			argvPtrs.push(keys.length);
 			keys.forEach((key) => {
-			argvPtrs.push(strPtr("${key}=${this.env[key]}"));
+				argvPtrs.push(strPtr(` + "`${key}=${this.env[key]}`" + `));
 			});
 
 			const argv = offset;
@@ -472,7 +511,7 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 		!global.process.versions.electron
 	) {
 		if (process.argv.length < 3) {
-			process.stderr.write("usage: go_js_wasm_exec [wasm binary] [arguments]\n");
+			console.error("usage: go_js_wasm_exec [wasm binary] [arguments]");
 			process.exit(1);
 		}
 
@@ -490,7 +529,8 @@ const WASMExecJS = `// Copyright 2018 The Go Authors. All rights reserved.
 			});
 			return go.run(result.instance);
 		}).catch((err) => {
-			throw err;
+			console.error(err);
+			process.exit(1);
 		});
 	}
 })();
