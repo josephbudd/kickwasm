@@ -5,7 +5,14 @@
 ## Sept 12, 2019
 
 Version 8.2.2
-Fixed my wasm bug revealed in go version 1.13. The bug was in renderer/notjs/document.go func HostPort().
+
+I found a version issue while rewriting [CWT](https://github.com/josephbudd/cwt). The issue took advantage of a behavior in versions prior to 1.13 which is no longer present. The bug was in renderer/notjs/document.go func HostPort().
+
+* I rebuilt examples/colors.
+* I need to rebuilt
+  * examples/spawntabs,
+  * examples/spawnwidgets,
+  * The [CRUD application](https://github.com/josephbudd/crud)
 
 ## Sept 10, 2019
 
