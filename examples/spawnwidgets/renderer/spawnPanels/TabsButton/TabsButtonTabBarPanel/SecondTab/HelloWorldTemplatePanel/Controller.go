@@ -95,7 +95,6 @@ func (controller *panelController) dispatchEvents() {
 				// 4.1.b: In that case statement, pass the event to your event handler.
 
 				*/
-
 				}
 			}
 		}
@@ -111,9 +110,6 @@ func (controller *panelController) initialCalls() {
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
-	// example:
-
-	controller.customerSelectWidget.start()
 
 	*/
 

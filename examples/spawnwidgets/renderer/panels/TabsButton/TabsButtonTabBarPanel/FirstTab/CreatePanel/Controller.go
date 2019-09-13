@@ -96,8 +96,6 @@ func (controller *panelController) dispatchEvents() {
 				//          that you are receiving events for.
 				// 4.1.b: In that case statement, pass the event to your event handler.
 
-				}
-
 				*/
 
 				case controller.newHelloWorldButton:
@@ -119,7 +117,6 @@ func (controller *panelController) initialCalls() {
 	// I use this to start up widgets. For example a virtual list widget.
 
 	*/
-
 }
 
 // receiveEvent gets this controller listening for element's event.

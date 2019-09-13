@@ -147,9 +147,6 @@ func (controller *panelController) initialCalls() {
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
-	// example:
-
-	controller.customerSelectWidget.start()
 
 	*/
 

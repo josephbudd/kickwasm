@@ -1,25 +1,21 @@
-# kickwasm version 8.2.2
+# kickwasm version 8.2.3
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## Sept 12, 2019
+## Sept 13, 2019
+
+Edited styles so that secondary button pads are smaller than the primary button pad which starts the application.
+
+* I rebuilt [CWT](https://github.com/josephbudd/cwt).
+* I rebuilt all of the examples in the kickwasm/examples/ folder.
+* I need to rebuild the [CRUD application](https://github.com/josephbudd/crud)
+* I still have to redo the vids.
+
+### Sept 12, 2019
 
 Version 8.2.2
 
-I found an issue while rewriting [CWT](https://github.com/josephbudd/cwt). I'm still working on the new CWT.
-
-The issue took advantage of a behavior in versions prior to 1.13 which is no longer present. The issue was in renderer/notjs/document.go func HostPort().
-
-* I rebuilt examples/colors.
-* I need to rebuilt
-  * examples/spawntabs,
-  * examples/spawnwidgets,
-  * The [CRUD application](https://github.com/josephbudd/crud)
-
-## Sept 10, 2019
-
-Version 8.2.1
-Made the main process's eoj channel thread safe.
+I found an issue while rewriting [CWT](https://github.com/josephbudd/cwt). The issue took advantage of a wasm behavior which is no longer present in go version 1.13. The issue was in the framework's renderer/notjs/document.go func HostPort().
 
 ## Still experimental because syscall/js is still experimental
 
@@ -29,9 +25,9 @@ Kickwasm is a rapid development, desktop application framework generator for lin
 
 ### Kickwasm is rapid development because
 
-#### kickwasm instantly builds your framework including the entire GUI
+Kickwasm instantly builds your framework including the entire GUI.
 
-* You define your application in a kickwasm.yaml file and kickwasm instantly builds your framework including the entire GUI as it reads your kickwasm.yaml. That framework is ready to build and run before you add any code to it.
+You define your application in a kickwasm.yaml file and kickwasm instantly builds your framework including the entire GUI as it reads your kickwasm.yaml. That framework is ready to build and run before you add any code to it.
 
 #### The tool rekickwasm instantly modifies your GUI
 
@@ -77,7 +73,7 @@ services:
 ### The kickwasm framework provides
 
 1. Two processes.
-   1. The renderer process which runs inside the browser.
+   1. The renderer process ( the GUI ) which runs inside the browser.
    1. The main process.
 1. The GUI's layout, styles and behavior with 4 basic interfaces.
    1. **The application's opening button pad.** It is auto functioning and made from each service's button in your kickwasm.yaml file. Each service button in your kickwasm.yaml file has a group of one or more panels.
@@ -103,20 +99,20 @@ services:
 ## Tools
 
 1. **kicklpc** is how you manage your application's **LPC** message model. **Local Process Communications ( LPCs )** are the messages that are sent between the main process and the renderer process.
-   * Example: **kicklpc -add UpdateCustomer** would add the empty message **UpdateCustomerRenderToMainProcess** and the other empty message **UpdateCustomerMainProcessToRenderer**.
-     * You would complete the definitions of the 2 messages in **domain/lpc/messages/UpdateCustomer.go** so that they can contain the information you want sent.
+   * Example: **kicklpc -add UpdateCustomer** would add the structs defining the message **UpdateCustomerRenderToMainProcess** and the other empty message **UpdateCustomerMainProcessToRenderer**.
+     * You would complete the definitions of the 2 messages in **domain/lpc/messages/UpdateCustomer.go** so that those structs contain the fields that you want.
      * You would add message handlers in your markup panel callers. Each markup panel has a caller which communicates with the main process. In a markup panel's caller you could send an **UpdateCustomerRenderToMainProcess** message to the main process through the caller's send channel and receive an **UpdateCustomerMainProcessToRenderer** message from the main process through the caller's receive channel.
      * You would add the functionality to the main process's message handler at **mainprocess/lpc/dispatch/UpdateCustomer.go** so that it processes the **UpdateCustomerRenderToMainProcess** message received from the renderer process and does what you need done with it. The handler could send an **UpdateCustomerMainProcessToRenderer** message back to the renderer through the handler's send channel.
 1. **kickstore** is how you manage your application's data storage model.
    * You can add local bolt data stores. A local bolt store is an API and a record. It runs locally in the application's bolt database.
    * You can add remote APIs. A remote API can be for a remote database or maybe a remote server that has some service you want to use. You must complete a remote API's functionality.
    * You can add remote records. A remote record is just a struct representing a record in a remote database or data for sending or receiving data from a remote server.
-   * Example: **kickstore -add Customer** would add the local bolt **Customer** store API and the empty **Customer** record.
-   * You would complete the the store's record definition in **domain/store/record/Customer.go** so that it contains the information needed.
+   * Example: **kickstore -add Customer** would add the fully defined local bolt **Customer** store API and the empty **Customer** record.
+   * You would complete the the store's **Customer** record struct which is defined in **domain/store/record/Customer.go** so that it contains the fields that you want.
    * If you want to modify behavior of the store's API, then you would
      1. Edit the API interface in **domain/store/storer/Customer.go**.
      1. Edit the API implementation in **domain/store/storing/Customer.go**.
-   * In your main process code you would call the store's methods to update, remove, get etc.
+   * In your main process code you would call the store's API methods to update, remove, get etc.
 1. **rekickwasm** is a tool that lets you refactor your application's GUI. It let's you edit the application's kickwasm.yaml file. Rekickwasm then makes the required changes to your framework's GUI.
 1. **kickpack** is another tool. You won't use kickpack but the framework's build scripts in the renderer/ folder do.
 

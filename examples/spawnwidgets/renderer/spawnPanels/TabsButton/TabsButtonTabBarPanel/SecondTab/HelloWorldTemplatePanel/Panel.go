@@ -31,10 +31,10 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 		panelNameID: panelNameID,
 	}
 	controller := &panelController{
-		group:        group,
-		uniqueID:     uniqueID,
-		unspawn:      unspawn,
-		eventCh:      make(chan viewtools.Event, 1024),
+		group:    group,
+		uniqueID: uniqueID,
+		unspawn:  unspawn,
+		eventCh:  make(chan viewtools.Event, 1024),
 		unSpawningCh: make(chan struct{}),
 	}
 	presenter := &panelPresenter{
@@ -78,8 +78,8 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 	//     from the main process into a *spawndata.JoinedChatRoomSpawnData.
 	// * Below is how I could use the *spawndata.JoinedChatRoomSpawnData here
 	//     in this constructor as I build this panel package.
-
-	// import "{{.ApplicationGitPath}}{{.ImportRenderer}}/spawndata"
+	
+	// import "github.com/josephbudd/kickwasm/examples/spawnwidgets/renderer/spawndata"
 
 	switch spawnData := spawnData.(type) {
 	case *spawndata.JoinedChatRoomSpawnData:

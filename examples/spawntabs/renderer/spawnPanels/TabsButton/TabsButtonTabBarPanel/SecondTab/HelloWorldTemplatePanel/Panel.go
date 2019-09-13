@@ -31,10 +31,10 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 		panelNameID: panelNameID,
 	}
 	controller := &panelController{
-		group:        group,
-		uniqueID:     uniqueID,
-		unspawn:      unspawn,
-		eventCh:      make(chan viewtools.Event, 1024),
+		group:    group,
+		uniqueID: uniqueID,
+		unspawn:  unspawn,
+		eventCh:  make(chan viewtools.Event, 1024),
 		unSpawningCh: make(chan struct{}),
 	}
 	presenter := &panelPresenter{
@@ -52,9 +52,9 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 
 	/* NOTE TO DEVELOPER. Step 1 of 2.
 
-	// Param spawnData interface{}.
-	//
-	// If you have your own spawnData defined
+	// param spawnData interface{}.
+
+	// If you have your own type spawnData defined
 	//   then you can use it here.
 	//
 	// Example:
@@ -78,8 +78,8 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 	//     from the main process into a *spawndata.JoinedChatRoomSpawnData.
 	// * Below is how I could use the *spawndata.JoinedChatRoomSpawnData here
 	//     in this constructor as I build this panel package.
-
-	// import "{{.ApplicationGitPath}}{{.ImportRenderer}}/spawndata"
+	
+	// import "github.com/josephbudd/kickwasm/examples/spawntabs/renderer/spawndata"
 
 	switch spawnData := spawnData.(type) {
 	case *spawndata.JoinedChatRoomSpawnData:
@@ -93,7 +93,7 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 	/* NOTE TO DEVELOPER. Step 2 of 2.
 
 	// var help.
-	//
+
 	// This package's var help in Data.go is a pointer to the renderer/paneling.Help.
 	// If you redefined paneling.Help in renderer/paneling/Helping.go,
 	//   then you may need to use it here.

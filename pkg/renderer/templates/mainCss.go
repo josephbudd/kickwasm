@@ -284,15 +284,15 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
 
 #{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelPad}} > .{{.SliderButtonPad}} > button
 {
-  height:200px;
-  width:300px;
-  font-size: 200%;
+  height:150px;
+  width:225px;
+  font-size: 150%;
   text-align: center;
   vertical-align: middle;
   margin:40px;
   border-width:1px;
   border-style:solid;
-  border-radius: 20px 0px 20px 0px;
+  border-radius: 15px;
 }
 #{{.IDSliderCollection}} > .{{.SliderPanel}} > .{{.SliderPanelPad}} > .{{.SliderButtonPad}} > button:focus { outline: none; }
 
