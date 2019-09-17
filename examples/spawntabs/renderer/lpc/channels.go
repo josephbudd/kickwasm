@@ -62,6 +62,11 @@ func (sending Sending) Payload(msg interface{}) (payload []byte, err error) {
 			return
 		}
 		id = 0
+	case *message.InitRendererToMainProcess:
+		if bb, err = json.Marshal(msg); err != nil {
+			return
+		}
+		id = 1
 	default:
 		bb = []byte("Unknown!")
 		id = 999

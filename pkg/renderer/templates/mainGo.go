@@ -6,6 +6,7 @@ const MainGo = `package main
 import (
 	"log"
 
+	"{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
@@ -51,7 +52,9 @@ func main() {
 			errmsg := er.Error()
 			tools.ConsoleLog(errmsg)
 			tools.Alert(errmsg)
+			return
 		}
+		sendChan <- &message.InitRendererToMainProcess{}
 	})
 	if err != nil {
 		log.Println(err.Error())

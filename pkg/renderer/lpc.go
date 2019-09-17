@@ -48,14 +48,14 @@ func RebuildChannelsDotGo(appPaths paths.ApplicationPathsI, importPath string, l
 		ImportDomainLPCMessage  string
 		ImportRendererViewTools string
 		LPCNames                []string
-		Inc                     func(int) int
+		Inc2                    func(int) int
 	}{
 		ApplicationGitPath:      importPath,
 		ImportDomainLPC:         folderpaths.ImportDomainLPC,
 		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
 		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
 		LPCNames:                lpcNames,
-		Inc:                     func(i int) int { return i + 1 },
+		Inc2:                    func(i int) int { return i + 2 },
 	}
 	fname := fileNames.ChannelsDotGo
 	oPath := filepath.Join(folderpaths.OutputRendererLPC, fname)

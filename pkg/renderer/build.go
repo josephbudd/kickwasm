@@ -19,14 +19,14 @@ func createBuildSH(appPaths paths.ApplicationPathsI) (err error) {
 	data := &struct {
 		AppDotWASM  string
 		HTTPDotYAML string
-		MainDotGo   string
+		UCMainDotGo string
 		PanelsDotGo string
 		SiteFolder  string
 		ServeDotGo  string
 	}{
 		AppDotWASM:  fileNames.AppDotWASM,
 		HTTPDotYAML: fileNames.HTTPDotYAML,
-		MainDotGo:   fileNames.MainDotGo,
+		UCMainDotGo: fileNames.UCMainDotGo,
 		PanelsDotGo: fileNames.PanelsDotGo,
 		SiteFolder:  folderNames.RendererSite,
 		ServeDotGo:  fileNames.ServeDotGo,

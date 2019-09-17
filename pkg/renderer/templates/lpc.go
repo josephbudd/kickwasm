@@ -64,12 +64,17 @@ func (sending Sending) Payload(msg interface{}) (payload []byte, err error) {
 		if bb, err = json.Marshal(msg); err != nil {
 			return
 		}
-		id = 0{{ range $index, $name := .LPCNames }}
+		id = 0
+	case *message.InitRendererToMainProcess:
+		if bb, err = json.Marshal(msg); err != nil {
+			return
+		}
+		id = 1{{ range $index, $name := .LPCNames }}
 	case *message.{{ $name }}RendererToMainProcess:
 		if bb, err = json.Marshal(msg); err != nil {
 			return
 		}
-		id = {{ call $Dot.Inc $index }}{{ end }}
+		id = {{ call $Dot.Inc2 $index }}{{ end }}
 	default:
 		bb = []byte("Unknown!")
 		id = 999
@@ -102,7 +107,7 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 			return
 		}
 		cargo = msg{{ range $index, $name := .LPCNames }}
-	case {{ call $Dot.Inc $index }}:
+	case {{ call $Dot.Inc2 $index }}:
 		msg := &message.{{ $name }}MainProcessToRenderer{}
 		if err = json.Unmarshal(payload.Cargo, msg); err != nil {
 			return

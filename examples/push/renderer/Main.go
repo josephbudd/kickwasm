@@ -3,10 +3,11 @@ package main
 import (
 	"log"
 
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/notjs"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/paneling"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/renderer/viewtools"
+	"github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
+	"github.com/josephbudd/kickwasm/examples/push/renderer/lpc"
+	"github.com/josephbudd/kickwasm/examples/push/renderer/notjs"
+	"github.com/josephbudd/kickwasm/examples/push/renderer/paneling"
+	"github.com/josephbudd/kickwasm/examples/push/renderer/viewtools"
 )
 
 /*
@@ -48,7 +49,9 @@ func main() {
 			errmsg := er.Error()
 			tools.ConsoleLog(errmsg)
 			tools.Alert(errmsg)
+			return
 		}
+		sendChan <- &message.InitRendererToMainProcess{}
 	})
 	if err != nil {
 		log.Println(err.Error())

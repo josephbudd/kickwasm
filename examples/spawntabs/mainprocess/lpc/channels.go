@@ -77,6 +77,11 @@ func (sending Sending) Payload(msg interface{}) (payload []byte, err error) {
 			return
 		}
 		id = 0
+	case *message.InitMainProcessToRenderer:
+		if bb, err = json.Marshal(msg); err != nil {
+			return
+		}
+		id = 1
 	default:
 		bb = []byte("Unknown!")
 		id = 999
@@ -109,6 +114,12 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 			return
 		}
 		cargo = msg
+	case 1:
+		msg := &message.InitRendererToMainProcess{}
+		if err = json.Unmarshal(payload.Cargo, msg); err != nil {
+			return
+		}
+		cargo = msg
 	default:
 		errMsg := fmt.Sprintf("no case found for payload id %d", payload.ID)
 		err = errors.New(errMsg)
@@ -117,7 +128,7 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 }
 
 // Signal sends on the eoj channel signaling lpc go funcs to quit.
-func (eoj EOJing) Signal() {
+func (eoj *EOJing) Signal() {
 	eoj.signalMutex.Lock()
 	if !eoj.signaled {
 		eoj.signaled = true
@@ -130,7 +141,7 @@ func (eoj EOJing) Signal() {
 }
 
 // NewEOJ returns a new eoj channel and increments the usage count.
-func (eoj EOJing) NewEOJ() (ch chan struct{}) {
+func (eoj *EOJing) NewEOJ() (ch chan struct{}) {
 	eoj.countMutex.Lock()
 	eoj.count++
 	ch = eoj.ch
@@ -140,7 +151,7 @@ func (eoj EOJing) NewEOJ() (ch chan struct{}) {
 
 // Release decrements the usage count.
 // Call this at the end of your lpc handler func.
-func (eoj EOJing) Release() {
+func (eoj *EOJing) Release() {
 	eoj.countMutex.Lock()
 	if eoj.count > 0 {
 		eoj.count--

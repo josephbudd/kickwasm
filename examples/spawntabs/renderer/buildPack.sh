@@ -52,8 +52,8 @@ echo ""
 (( step += 1 ))
 echo "STEP ${step}:"
 echo "BUILD THE RENDERER GO CODE INTO WEB ASSEMBLY CODE AT ../site/app.wasm"
-echo "GOARCH=wasm GOOS=js go build -o ../site/app.wasm main.go panels.go"
-GOARCH=wasm GOOS=js go build -o ../site/app.wasm main.go panels.go
+echo "GOARCH=wasm GOOS=js go build -o ../site/app.wasm Main.go panels.go"
+GOARCH=wasm GOOS=js go build -o ../site/app.wasm Main.go panels.go
 if [ $? -gt 0 ]
 then
     echo "Oops!"

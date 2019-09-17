@@ -15,8 +15,17 @@ func createDispatch(appPaths paths.ApplicationPathsI, data *templateData) (err e
 	fileNames := paths.GetFileNames()
 
 	RebuildDispatchDotGo(appPaths, data.ApplicationGitPath, nil)
-	fname := fileNames.LogDotGo
-	oPath := filepath.Join(folderpaths.OutputMainProcessLPCDispatch, fname)
+
+	var fname, oPath string
+
+	// Init message.
+	fname = fileNames.InitDotGo
+	oPath = filepath.Join(folderpaths.OutputMainProcessLPCDispatch, fname)
+	err = templates.ProcessTemplate(fname, oPath, templates.DispatchInitGo, data, appPaths)
+
+	// Log message.
+	fname = fileNames.LogDotGo
+	oPath = filepath.Join(folderpaths.OutputMainProcessLPCDispatch, fname)
 	err = templates.ProcessTemplate(fname, oPath, templates.DispatchLogGo, data, appPaths)
 	return
 }

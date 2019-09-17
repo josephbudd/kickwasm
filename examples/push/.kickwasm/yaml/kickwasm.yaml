@@ -1,0 +1,14 @@
+title : Example MP pushing time.
+
+importPath : github.com/josephbudd/kickwasm/examples/push
+
+services:
+  - name: PushTime
+    button:
+      name: PushButton
+      label: Watch the pushes.
+      panels:
+        - name: PushPanel
+          note: Display time pushed from the main process.
+          markup: <p>The time is <span id="timeSpan"></span><p>
+      

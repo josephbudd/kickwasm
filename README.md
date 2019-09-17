@@ -1,8 +1,22 @@
-# kickwasm version 8.2.3
+# kickwasm version 9.0.0
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## Sept 13, 2019
+## Sept 15, 2019
+
+Another major change to the framework code.
+
+* The new message **Init** is automatically sent from the renderer to the main process to signal that the renderer is alive and running. So in the main process' Init message handler in mainprocess/lpc/dispatches/Init.go you can setup message pushes to the renderer process. See examples/push/.
+* Capitalized the file name renderer/main.go to **renderer/Main.go**.
+* Fixed a bug in mainprocess/lpc/channels.go.
+
+All the examples in the examples/ folder have been rebuilt.
+
+The tool **kicklpc** has been updated to kickwasm version 9.0.0.
+
+I need to update the kickwasm.wiki.
+
+### Sept 13, 2019
 
 Edited styles so that secondary button pads are smaller than the primary button pad which starts the application.
 
@@ -16,6 +30,14 @@ Edited styles so that secondary button pads are smaller than the primary button 
 Version 8.2.2
 
 I found an issue while rewriting [CWT](https://github.com/josephbudd/cwt). The issue took advantage of a wasm behavior which is no longer present in go version 1.13. The issue was in the framework's renderer/notjs/document.go func HostPort().
+
+## Future API breaking changes
+
+### Modules
+
+So not long ago I realized all of the steps needed with **go get** the source code of an applicaiton like [CWT](https://github.com/josephbudd/cwt) or [CRUD application](https://github.com/josephbudd/crud) with all of their dependencies. I corrected the installation instructions in the READMEs for those applications.
+
+I don't know anything about go modules but I am looking into how go modules could simplify framework source code.
 
 ## Still experimental because syscall/js is still experimental
 
@@ -84,7 +106,7 @@ services:
       * Functionality that you must provide in it's own go package.
    1. **An auto functioning back button.**
 1. The go package model and html template model for your markup panels.
-1. The message model for passing messages between the renderer process and the main processes.
+1. The message model for passing messages between the renderer process and the main processes through send and receive channels.
 1. The database model for a default local bolt database and or remote databases and or remote services.
 
 ### Source code folder structure
@@ -98,7 +120,7 @@ services:
 
 ## Tools
 
-1. **kicklpc** is how you manage your application's **LPC** message model. **Local Process Communications ( LPCs )** are the messages that are sent between the main process and the renderer process.
+1. **kicklpc** is how you manage your application's **LPC** message model. **Local Process Communications ( LPCs )** are the messages that are sent between the main process and the renderer process through send and receive channels.
    * Example: **kicklpc -add UpdateCustomer** would add the structs defining the message **UpdateCustomerRenderToMainProcess** and the other empty message **UpdateCustomerMainProcessToRenderer**.
      * You would complete the definitions of the 2 messages in **domain/lpc/messages/UpdateCustomer.go** so that those structs contain the fields that you want.
      * You would add message handlers in your markup panel callers. Each markup panel has a caller which communicates with the main process. In a markup panel's caller you could send an **UpdateCustomerRenderToMainProcess** message to the main process through the caller's send channel and receive an **UpdateCustomerMainProcessToRenderer** message from the main process through the caller's receive channel.

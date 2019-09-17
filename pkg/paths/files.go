@@ -24,12 +24,14 @@ type FileNames struct {
 	HelpingDotGo       string
 	HTTPDotYAML        string
 	InnerDotGo         string
+	InitDotGo          string
 	InstructionsDotTXT string
 	LogLevelsDotGo     string
 	KickwasmDotYAML    string // yamlFileName
 	KickwasmDotYML     string // ymlFileName
 	MainDotCSS         string
 	MainDotGo          string
+	UCMainDotGo        string
 	MainDotTMPL        string
 	MapDotGo           string
 	MarkupDotGo        string
@@ -104,12 +106,14 @@ func GetFileNames() *FileNames {
 		HelpingDotGo:       "Helping.go",
 		HTTPDotYAML:        "Http.yaml",
 		InnerDotGo:         "inner.go",
+		InitDotGo:          "Init.go",
 		InstructionsDotTXT: "instructions.txt",
 		LogLevelsDotGo:     "LogLevels.go",
 		KickwasmDotYAML:    "kickwasm.yaml",
 		KickwasmDotYML:     "kickwasm.yml",
 		MainDotCSS:         "main.css",
 		MainDotGo:          "main.go",
+		UCMainDotGo:        "Main.go",
 		MainDotTMPL:        "main.tmpl",
 		MapDotGo:           "map.go",
 		MarkupDotGo:        "markup.go",

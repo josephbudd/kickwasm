@@ -17,6 +17,7 @@ func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) er
 		ImportRendererNotJS     string
 		ImportRendererViewTools string
 		ImportRendererLPC       string
+		ImportDomainLPCMessage  string
 	}{
 		ApplicationGitPath:      builder.ImportPath,
 		Stores:                  builder.Stores,
@@ -24,9 +25,10 @@ func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) er
 		ImportRendererNotJS:     folderpaths.ImportRendererNotJS,
 		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
 		ImportRendererLPC:       folderpaths.ImportRendererLPC,
+		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
 	}
 	fileNames := paths.GetFileNames()
-	fname := fileNames.MainDotGo
+	fname := fileNames.UCMainDotGo
 	oPath := filepath.Join(folderpaths.OutputRenderer, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.MainGo, data, appPaths)
 }

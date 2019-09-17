@@ -19,14 +19,24 @@ func createLPC(appPaths paths.ApplicationPathsI, data *templateData) (err error)
 	if err = templates.ProcessTemplate(fname, oPath, templates.LPCPayloadGo, data, appPaths); err != nil {
 		return
 	}
-	// parameters
+	// log
 	fname = fileNames.LogDotGo
 	oPath = filepath.Join(folderpaths.OutputDomainLPCMessage, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.LPCLogGo, data, appPaths); err != nil {
 		return
 	}
-	parts := strings.Split(fname, ".")
-	err = RebuildDomainLPCInstructions(appPaths, data.ApplicationGitPath, []string{parts[0]})
+	// init
+	fname = fileNames.InitDotGo
+	oPath = filepath.Join(folderpaths.OutputDomainLPCMessage, fname)
+	if err = templates.ProcessTemplate(fname, oPath, templates.LPCInitGo, data, appPaths); err != nil {
+		return
+	}
+	names := make([]string, 2, 2)
+	parts := strings.Split(fileNames.LogDotGo, ".")
+	names[0] = parts[0]
+	parts = strings.Split(fileNames.InitDotGo, ".")
+	names[1] = parts[0]
+	err = RebuildDomainLPCInstructions(appPaths, data.ApplicationGitPath, names)
 	return
 }
 
@@ -64,11 +74,13 @@ func RebuildDomainLPCInstructions(appPaths paths.ApplicationPathsI, importGitPat
 	fileNames := appPaths.GetFileNames()
 	fixedLPCNames := make([]string, 0, len(lpcNames))
 	// build the unwanted lpc file names.
-	unwanted := make([]string, 2, 2)
+	unwanted := make([]string, 3, 3)
 	parts := strings.Split(fileNames.InstructionsDotTXT, ".")
 	unwanted[0] = parts[0]
 	parts = strings.Split(fileNames.LogDotGo, ".")
 	unwanted[1] = parts[0]
+	parts = strings.Split(fileNames.InitDotGo, ".")
+	unwanted[2] = parts[0]
 	// filter the lpc names
 	for _, lpcName := range lpcNames {
 		found := false

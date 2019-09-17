@@ -117,6 +117,7 @@ func (controller *panelController) initialCalls() {
 	// I use this to start up widgets. For example a virtual list widget.
 
 	*/
+
 }
 
 // receiveEvent gets this controller listening for element's event.

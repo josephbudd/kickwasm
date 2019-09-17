@@ -18,13 +18,13 @@ func RebuildLPCChannels(appPaths paths.ApplicationPathsI, importPath string, lpc
 		ImportDomainLPC        string
 		ImportDomainLPCMessage string
 		LPCNames               []string
-		Inc                    func(int) int
+		Inc2                   func(int) int
 	}{
 		ApplicationGitPath:     importPath,
 		ImportDomainLPC:        folderpaths.ImportDomainLPC,
 		ImportDomainLPCMessage: folderpaths.ImportDomainLPCMessage,
 		LPCNames:               lpcNames,
-		Inc:                    func(i int) int { return i + 1 },
+		Inc2:                   func(i int) int { return i + 2 },
 	}
 
 	fname := fileNames.ChannelsDotGo
@@ -35,6 +35,7 @@ func RebuildLPCChannels(appPaths paths.ApplicationPathsI, importPath string, lpc
 	err = templates.ProcessTemplate(fname, oPath, templates.LPCChannelsGo, data, appPaths)
 	return
 }
+
 func createLPC(appPaths paths.ApplicationPathsI, data *templateData) (err error) {
 
 	if err = RebuildLPCChannels(appPaths, data.ApplicationGitPath, make([]string, 0)); err != nil {

@@ -25,6 +25,11 @@ func Do(cargo interface{}, sending lpc.Sending, eojing lpc.EOJer, stores *store.
 	case *message.LogRendererToMainProcess:
 		// Log does not need a lpc.EOJer because it does not have a go routine.
 		handleLog(cargo, sending)
+	case *message.InitRendererToMainProcess:
+		// Init signals that
+		// * the renderer process is up and running,
+		// * the main process may push messages to the renderer process.
+		handleInit(cargo, sending, eojing, stores)
 	default:
 		log.Println("dispatch Do: unknown cargo type.")
 	}

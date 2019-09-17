@@ -52,6 +52,7 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 
 	*/
 
+	// The button widget handles it's own events not this controller.
 	controller.widget = widgets.NewButton(tools, notJS, eojCh)
 	id := tools.FixSpawnID("widgetWrapper{{.SpawnID}}", controller.uniqueID)
 	widgetWrapper := notJS.GetElementByID(id)
@@ -66,8 +67,13 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 
 */
 
+// handleClick unspawns.
+// First it unspawns the widget.
+// Then it unspawns the tab.
 func (controller *panelController) handleClick(event js.Value) {
+	// Unspawn the widget.
 	controller.widget.UnSpawn()
+	// Unspawn this panel's tab and all of it's panels.
 	if err := controller.unspawn(); err != nil {
 		tools.Error(err.Error())
 	}
@@ -95,6 +101,7 @@ func (controller *panelController) dispatchEvents() {
 				// 4.1.b: In that case statement, pass the event to your event handler.
 
 				*/
+
 				}
 			}
 		}
@@ -110,6 +117,9 @@ func (controller *panelController) initialCalls() {
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
+	// example:
+
+	controller.customerSelectWidget.start()
 
 	*/
 
