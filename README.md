@@ -117,8 +117,6 @@ The [CRUD application](https://github.com/josephbudd/crud) is very important bec
 
 ### The CRUD WIKI
 
-Sept 2, 2019: The CRUD WIKI has been updated to the latest CRUD version built with kickwasm 8.1.0.
-
 In the CRUD wiki, I begin with a complete plan for the full application.
 
 I write a kickwasm.yaml file to define a small part of the GUI. Then use kickwasm to create that small part of the framework. Then, one markup panel at a time
