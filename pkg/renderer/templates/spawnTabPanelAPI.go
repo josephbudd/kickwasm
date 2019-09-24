@@ -57,13 +57,12 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID
 	if err = panel.group.defineMembers(); err != nil {
 		return
 	}
-	if err = panel.controller.defineControlsReceiveEvents(); err != nil {
+	if err = panel.controller.defineControlsHandlers(); err != nil {
 		return
 	}
 	if err = panel.presenter.defineMembers(); err != nil {
 		return
 	}
-	panel.controller.dispatchEvents()
 	panel.caller.dispatchMessages()
 	panel.controller.initialCalls()
 	panel.caller.initialCalls()
@@ -74,6 +73,6 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID
 // StopListener stops the caller's go routine listening for messages.
 func (panel *spawnedPanel) StopListener() {
 	panel.caller.unSpawningCh <- struct{}{}
-	panel.controller.unSpawningCh <- struct{}{}
+	panel.controller.UnSpawning()
 }
 `

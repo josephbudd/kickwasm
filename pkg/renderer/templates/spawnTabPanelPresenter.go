@@ -27,6 +27,7 @@ type panelPresenter struct {
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
 	// Declare your panelPresenter members here.
+
 	// example:
 
 	addCustomerName js.Value
@@ -47,6 +48,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
 	// Define your panelPresenter members.
+
 	// example:
 	// my spawn template has a name input field and a submit button.
 	// <label for="addCustomerName{{.SpawnID}}">Name</label><input type="text" id="addCustomerName{{.SpawnID}}">
@@ -91,6 +93,7 @@ func (presenter *panelPresenter) setTabPanelHeading(heading string) {
 /* NOTE TO DEVELOPER. Step 3 of 3.
 
 // Define your panelPresenter functions.
+
 // example:
 
 // displayCustomer displays the customer in the add customer form.

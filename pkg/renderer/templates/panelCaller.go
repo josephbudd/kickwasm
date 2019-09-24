@@ -90,7 +90,6 @@ func (caller *panelCaller) dispatchMessages() {
 
 				default:
 					_ = msg
-
 				}
 			}
 		}

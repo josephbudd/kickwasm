@@ -19,6 +19,7 @@ type panelPresenter struct {
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
 	// Declare your panelPresenter members here.
+
 	// example:
 
 	editCustomerName js.Value
@@ -39,6 +40,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 	/* NOTE TO DEVELOPER. Step 2 of 3.
 
 	// Define your panelPresenter members.
+
 	// example:
 
 	// Define the edit form's customer name input field.
@@ -55,6 +57,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 /* NOTE TO DEVELOPER. Step 3 of 3.
 
 // Define your panelPresenter functions.
+
 // example:
 
 // displayCustomer displays the customer in the edit customer form panel.

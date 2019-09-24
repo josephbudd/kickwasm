@@ -38,12 +38,17 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 				if err = os.MkdirAll(folderpath, appPaths.GetDMode()); err != nil {
 					return
 				}
+				var tabButtonID string
+				if buttonPanelGroups.IsTabButton {
+					tabButtonID = buttonPanelGroups.ButtonID
+				}
 				data := &struct {
 					PanelName                 string
 					PanelID                   string
 					PanelH3ID                 string
 					PanelGroup                []*project.Panel
 					IsTabSiblingPanel         bool
+					TabButtonID               string
 					ApplicationGitPath        string
 					ImportRendererLPC         string
 					ImportRendererNotJS       string
@@ -66,6 +71,7 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					PanelH3ID:                 panel.H3ID,
 					PanelGroup:                panelGroup,
 					IsTabSiblingPanel:         buttonPanelGroups.IsTabButton,
+					TabButtonID:               tabButtonID,
 					ApplicationGitPath:        builder.ImportPath,
 					ImportRendererLPC:         folderpaths.ImportRendererLPC,
 					ImportRendererNotJS:       folderpaths.ImportRendererNotJS,

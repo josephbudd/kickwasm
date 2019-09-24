@@ -38,7 +38,6 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 		uniqueID: uniqueID,
 		unspawn:  unspawn,
 		eventCh:  make(chan viewtools.Event, 1024),
-		unSpawningCh: make(chan struct{}),
 	}
 	presenter := &panelPresenter{
 		group:          group,
@@ -60,7 +59,7 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 	// If you have your own type spawnData defined
 	//   then you can use it here.
 	//
-	// Example:
+	// example:
 	//
 	// * Let's say that I define my spawn data types
 	//     in my own new folder at renderer/spawndata/

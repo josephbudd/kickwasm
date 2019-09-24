@@ -155,9 +155,8 @@ func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interfac
 					client.connection.Call("send", string(payload))
 				}
 			case <-client.QuitCh:
-				// each markup panel has a caller and controller listener.
+				// each markup panel has a caller listener.
 				countWaiting := client.tools.CountMarkupPanels()
-				countWaiting *= 2
 				// func main
 				countWaiting++
 				// widgets

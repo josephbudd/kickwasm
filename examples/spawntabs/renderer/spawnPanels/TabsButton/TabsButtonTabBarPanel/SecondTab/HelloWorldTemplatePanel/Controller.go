@@ -16,14 +16,13 @@ import (
 
 // panelController controls user input.
 type panelController struct {
-	uniqueID     uint64
-	panel        *spawnedPanel
-	group        *panelGroup
-	presenter    *panelPresenter
-	caller       *panelCaller
-	eventCh      chan viewtools.Event
-	unSpawningCh chan struct{}
-	unspawn      func() error
+	uniqueID  uint64
+	panel     *spawnedPanel
+	group     *panelGroup
+	presenter *panelPresenter
+	caller    *panelCaller
+	eventCh   chan viewtools.Event
+	unspawn   func() error
 
 	/* NOTE TO DEVELOPER. Step 1 of 5.
 
@@ -39,20 +38,40 @@ type panelController struct {
 	setButton js.Value
 }
 
-// defineControlsReceiveEvents defines controller members and starts receiving their events.
+// defineControlsHandlers defines the GUI's controllers and their event handlers.
 // Returns the error.
-func (controller *panelController) defineControlsReceiveEvents() (err error) {
+func (controller *panelController) defineControlsHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(controller *panelController) defineControlsReceiveEvents()")
+			err = errors.WithMessage(err, "(controller *panelController) defineControlsHandlers()")
 		}
 	}()
 
 	/* NOTE TO DEVELOPER. Step 2 of 5.
 
-	// Define the controller members by their html elements.
-	// Receive their events.
+	// Define each controller in the GUI by it's html element.
+	// Handle each controller's events.
+
+	// example:
+
+	var id string
+
+	// Define the customer name input field.
+	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerName = notJS.GetElementByID(id); controller.addCustomerName == null {
+		err = errors.New("unable to find #" + id)
+		return
+	}
+
+	// Define the submit button.
+	id = tools.FixSpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerSubmit = notJS.GetElementByID(id); controller.addCustomerSubmit == null {
+		err = errors.New("unable to find #" + id)
+		return
+	}
+	// Handle the submit button's onclick event.
+	tools.AddSpawnEventHandler(controller.handleSubmit, controller.addCustomerSubmit, "click", false, controller.uniqueID)
 
 	*/
 
@@ -64,7 +83,8 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 		err = errors.New("unable to find #" + id)
 		return
 	}
-	controller.receiveEvent(controller.closeSpawnButton, "onclick", false, false, false)
+	// Handle the submit button's onclick event.
+	tools.AddSpawnEventHandler(controller.handleClick, controller.closeSpawnButton, "click", false, controller.uniqueID)
 
 	// Define the label input.
 	id = tools.FixSpawnID("input{{.SpawnID}}", controller.uniqueID)
@@ -79,7 +99,8 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 		err = errors.New("unable to find #" + id)
 		return
 	}
-	controller.receiveEvent(controller.setButton, "onclick", false, false, false)
+	// Handle the submit button's onclick event.
+	tools.AddSpawnEventHandler(controller.handleSetClick, controller.setButton, "click", false, controller.uniqueID)
 
 	return
 }
@@ -90,54 +111,35 @@ func (controller *panelController) defineControlsReceiveEvents() (err error) {
 
 */
 
-func (controller *panelController) handleClick(event js.Value) {
+func (controller *panelController) handleClick(event viewtools.Event) (nilReturn interface{}) {
 	if err := controller.unspawn(); err != nil {
 		tools.Error(err.Error())
 	}
+	return
 }
 
-func (controller *panelController) handleSetClick(event js.Value) {
+func (controller *panelController) handleSetClick(event viewtools.Event) (nilReturn interface{}) {
 	var text string
 	if text = notJS.GetValue(controller.input); len(text) == 0 {
 		tools.Error("Enter some text for the tab label.")
 		return
 	}
 	controller.presenter.setTabLabel(text)
+	return
 }
 
-// dispatchEvents dispatches events from the controls.
-// It stops when it receives on the eoj channel.
-func (controller *panelController) dispatchEvents() {
-	go func() {
-		var event viewtools.Event
-		for {
-			select {
-			case <-eojCh:
-				return
-			case <-controller.unSpawningCh:
-				return
-			case event = <-controller.eventCh:
-				// An event that this controller is receiving from one of its members.
-				switch event.Target {
+func (controller *panelController) UnSpawning() {
 
-				/* NOTE TO DEVELOPER. Step 4 of 5.
+	/* NOTE TO DEVELOPER. Step 4 of 5.
 
-				// 4.1.a: Add a case for each controller member
-				//          that you are receiving events for.
-				// 4.1.b: In that case statement, pass the event to your event handler.
+	// This func is called when this tab and it's panels are in the process of unspawning.
+	// So if you have some cleaning up to do then do it now.
+	//
+	// For example if you have a widget that needs to be unspawned
+	//   because maybe it has a go routine running that needs to be stopped
+	//   then do it here.
 
-				*/
-
-				case controller.closeSpawnButton:
-					controller.handleClick(event.Event)
-				case controller.setButton:
-					controller.handleSetClick(event.Event)
-				}
-			}
-		}
-	}()
-
-	return
+	*/
 }
 
 // initialCalls runs the first code that the controller needs to run.
@@ -149,9 +151,4 @@ func (controller *panelController) initialCalls() {
 	// I use this to start up widgets. For example a virtual list widget.
 
 	*/
-
-}
-
-func (controller *panelController) receiveEvent(element js.Value, event string, preventDefault, stopPropagation, stopImmediatePropagation bool) {
-	tools.SendSpawnEvent(controller.eventCh, element, event, preventDefault, stopPropagation, stopImmediatePropagation, controller.uniqueID)
 }

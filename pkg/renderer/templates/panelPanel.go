@@ -49,7 +49,8 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	}
 	presenter := &panelPresenter{
 {{ if .IsTabSiblingPanel }}		group:          group,
-		tabPanelHeader: notJS.GetElementByID("{{.PanelH3ID}}"),{{ else }}		group: group,{{ end }}
+		tabPanelHeader: notJS.GetElementByID("{{.PanelH3ID}}"),
+		tabButton: notJS.GetElementByID("{{.TabButtonID}}"),{{ else }}		group: group,{{ end }}
 	}
 	caller := &panelCaller{
 		group: group,
@@ -59,6 +60,7 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 
 	// Set any controller, presenter or caller members that you added.
 	// Use your custom help funcs if needed.
+
 	// example:
 
 	caller.state = help.GetStateAdd()
@@ -76,7 +78,7 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	if err = group.defineMembers(); err != nil {
 		return
 	}
-	if err = controller.defineControlsReceiveEvents(); err != nil {
+	if err = controller.defineControlsHandlers(); err != nil {
 		return
 	}
 	if err = presenter.defineMembers(); err != nil {
@@ -94,7 +96,6 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 
 // StartDispatchers starts the event and message dispatchers.
 func (panel *Panel) StartDispatchers() {
-	panel.controller.dispatchEvents()
 	panel.caller.dispatchMessages()
 }
 

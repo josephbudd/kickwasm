@@ -26,36 +26,35 @@ func (tools *Tools) hideSlider() {
 
 func (tools *Tools) initializeSlider() {
 	notJS := tools.NotJS
-	buttoncb := tools.RegisterEventCallBack(
-		tools.handlePadButtonOnClick,
-		true, true, true,
-	)
 	divs := notJS.GetElementsByTagName("DIV")
 	for _, div := range divs {
 		if notJS.ClassListContains(div, SliderButtonPadClassName) {
 			children := notJS.ChildrenSlice(div)
 			for _, ch := range children {
 				if notJS.TagName(ch) == "BUTTON" {
-					notJS.SetOnClick(ch, buttoncb)
+					tools.AddEventHandler(tools.handlePadButtonOnClick, ch, "click", false)
 				}
 			}
 		} else if div == tools.tabsMasterviewHomeButtonPad {
 			children := notJS.ChildrenSlice(div)
 			for _, ch := range children {
 				if notJS.TagName(ch) == "BUTTON" {
-					notJS.SetOnClick(ch, buttoncb)
+					tools.AddEventHandler(tools.handlePadButtonOnClick, ch, "click", false)
 				}
 			}
 		}
 	}
-	backcb := tools.RegisterEventCallBack(tools.handleBack, true, true, true)
-	notJS.SetOnClick(tools.tabsMasterviewHomeSliderBack, backcb)
+	f := func(e Event) (nilReturn interface{}) {
+		tools.handleBack(e.Target)
+		return
+	}
+	tools.AddEventHandler(f, tools.tabsMasterviewHomeSliderBack, "click", false)
 }
 
-func (tools *Tools) handlePadButtonOnClick(event js.Value) interface{} {
+func (tools *Tools) handlePadButtonOnClick(e Event) interface{} {
 	// get back div
 	notJS := tools.NotJS
-	target := notJS.GetEventTarget(event)
+	target := e.Target
 	backid := target.Call("getAttribute", BackIDAttribute).String()
 	backdiv := notJS.GetElementByID(backid)
 	// get forward div

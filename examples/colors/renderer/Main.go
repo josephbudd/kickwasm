@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/josephbudd/kickwasm/examples/colors/domain/lpc/message"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/lpc"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/notjs"
 	"github.com/josephbudd/kickwasm/examples/colors/renderer/paneling"
@@ -48,7 +49,9 @@ func main() {
 			errmsg := er.Error()
 			tools.ConsoleLog(errmsg)
 			tools.Alert(errmsg)
+			return
 		}
+		sendChan <- &message.InitRendererToMainProcess{}
 	})
 	if err != nil {
 		log.Println(err.Error())

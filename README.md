@@ -1,12 +1,23 @@
-# kickwasm version 9.0.0
+# kickwasm version 10.0.0
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## Sept 15, 2019
+## Sept 24, 2019
+
+Version 10.0.0:
+The framework's DOM event handling model has been replaced with a simpler one.
+
+The examples in the examples folder have been rebuilt with kickwasm version 10.
+
+### Sept 19, 2019
+
+Minor upgrade to tabs.
+
+### Sept 15, 2019
 
 Another major change to the framework code.
 
-* The new message **Init** is automatically sent from the renderer to the main process to signal that the renderer is alive and running. So in the main process' Init message handler in mainprocess/lpc/dispatches/Init.go you can setup message pushes to the renderer process. See examples/push/.
+* The new message **Init** is automatically sent from the renderer to the main process to signal that the renderer is alive and running. So in the main process' Init message handler in mainprocess/lpc/dispatches/Init.go,you can setup message pushes to the renderer process. See examples/push/.
 * Capitalized the file name renderer/main.go to **renderer/Main.go**.
 * Fixed a bug in mainprocess/lpc/channels.go.
 
@@ -30,14 +41,6 @@ Edited styles so that secondary button pads are smaller than the primary button 
 Version 8.2.2
 
 I found an issue while rewriting [CWT](https://github.com/josephbudd/cwt). The issue took advantage of a wasm behavior which is no longer present in go version 1.13. The issue was in the framework's renderer/notjs/document.go func HostPort().
-
-## Future API breaking changes
-
-### Modules
-
-So not long ago I realized all of the steps needed with **go get** the source code of an applicaiton like [CWT](https://github.com/josephbudd/cwt) or [CRUD application](https://github.com/josephbudd/crud) with all of their dependencies. I corrected the installation instructions in the READMEs for those applications.
-
-I don't know anything about go modules but I am looking into how go modules could simplify framework source code.
 
 ## Still experimental because syscall/js is still experimental
 

@@ -5,7 +5,6 @@ const ViewToolsModal = `package viewtools
 
 import (
 	"fmt"
-	"syscall/js"
 )
 
 /*
@@ -94,12 +93,12 @@ func (tools *Tools) unQueueModal() *modalViewData {
 	return m
 }
 
-func (tools *Tools) handleModalMasterViewClose(event js.Value) interface{} {
+func (tools *Tools) handleModalMasterViewClose(e Event) (nilReturn interface{}) {
 	if tools.modalCallBack != nil {
 		tools.modalCallBack()
 		tools.modalCallBack = nil
 	}
 	tools.beNotModal()
-	return nil
+	return
 }
 `

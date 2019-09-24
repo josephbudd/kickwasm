@@ -168,8 +168,7 @@ func NewTools(notJS *notjs.NotJS) *Tools {
 	v.modalMasterViewClose = notJS.GetElementByID("modalInformationMasterView-close")
 	v.modalQueue = make([]*modalViewData, 5, 5)
 	v.modalQueueLastIndex = -1
-	cb := v.RegisterEventCallBack(v.handleModalMasterViewClose, true, true, true)
-	notJS.SetOnClick(v.modalMasterViewClose, cb)
+	v.AddEventHandler(v.handleModalMasterViewClose, v.modalMasterViewClose, "click", false)
 
 	// misc
 	v.initializeGroups()

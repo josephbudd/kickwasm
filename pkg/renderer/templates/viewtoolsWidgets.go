@@ -28,9 +28,8 @@ func (tools *Tools) DecWidgetWaiting() {
 // Spawned Widgets.
 
 type spawnedWidgetInfo struct {
-	element   js.Value
-	id        uint64
-	unspawnCh chan struct{}
+	element js.Value
+	id      uint64
 }
 
 // NewSpawnWidgetUniqueID returns a new id for a widget in a spawned panel.
@@ -40,14 +39,12 @@ func (tools *Tools) NewSpawnWidgetUniqueID() (spawnWidgetID uint64) {
 }
 
 // SpawnWidget spawns a widget.
-func (tools *Tools) SpawnWidget(spawnWidgetID uint64, widget, parent js.Value) (unspawnCh chan struct{}) {
+func (tools *Tools) SpawnWidget(spawnWidgetID uint64, widget, parent js.Value) {
 	tools.IncWidgetWaiting()
 	tools.NotJS.AppendChild(parent, widget)
-	unspawnCh = make(chan struct{}, 1)
 	tools.spawnedWidgets[spawnWidgetID] = spawnedWidgetInfo{
-		element:   widget,
-		id:        spawnWidgetID,
-		unspawnCh: unspawnCh,
+		element: widget,
+		id:      spawnWidgetID,
 	}
 	return
 }
@@ -59,7 +56,6 @@ func (tools *Tools) UnSpawnWidget(spawnWidgetID uint64) {
 	if info, found = tools.spawnedWidgets[spawnWidgetID]; !found {
 		return
 	}
-	info.unspawnCh <- struct{}{}
 	parent := tools.NotJS.ParentNode(info.element)
 	tools.NotJS.RemoveChild(parent, info.element)
 	tools.DecWidgetWaiting()

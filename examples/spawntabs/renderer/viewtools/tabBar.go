@@ -24,28 +24,14 @@ func (tools *Tools) initializeTabBar() {
 
 	// the level is the tab bar id.
 	tools.tabberTabBarLastPanel["tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar"] = "tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel"
-	cb := tools.RegisterEventCallBack(
-		func(event js.Value) interface{} {
-			target := notJS.GetEventTarget(event)
-			tools.handleTabButtonOnClick(target)
-			return nil
-		},
-		true, true, true,
-	)
+	f := func(e Event) (nilReturn interface{}) {
+		tools.handleTabButtonOnClick(e.Target)
+		return
+	}
 	for id := range tools.tabberTabBarLastPanel {
 		if len(id) > 0 {
 			tabbar := notJS.GetElementByID(id)
-			tools.setTabBarOnClicks(tabbar, cb)
-		}
-	}
-}
-
-func (tools *Tools) setTabBarOnClicks(tabbar js.Value, cb js.Func) {
-	notJS := tools.NotJS
-	children := notJS.ChildrenSlice(tabbar)
-	for _, ch := range children {
-		if notJS.TagName(ch) == "BUTTON" {
-			ch.Set("onclick", cb)
+			tools.AddEventHandler(f, tabbar, "click", false)
 		}
 	}
 }

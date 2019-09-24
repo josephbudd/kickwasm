@@ -1,30 +1,22 @@
 package viewtools
 
-import (
-	"syscall/js"
-)
-
 // Initialize inititializes the closer.
 func (tools *Tools) initializeCloser() {
 	notJS := tools.NotJS
 	// closer master view close button
-	cb := tools.RegisterEventCallBack(
-		func(event js.Value) interface{} {
-			tools.Quit()
-			return nil
-		},
-		true, true, true,
-	)
+	f := func(e Event) (nilReturn interface{}) {
+		tools.Quit()
+		return
+	}
 	button := notJS.GetElementByID("closerMasterView-close")
-	notJS.SetOnClick(button, cb)
+	tools.AddEventHandler(f, button, "click", false)
 	// closer master view cancel button
-	cb = tools.RegisterEventCallBack(tools.toggleCloser, true, true, true)
 	button = notJS.GetElementByID("closerMasterView-cancel")
-	notJS.SetOnClick(button, cb)
+	tools.AddEventHandler(tools.toggleCloser, button, "click", false)
 }
 
 // ToggleCloser toggles the closer master view.
-func (tools *Tools) toggleCloser(event js.Value) interface{} {
+func (tools *Tools) toggleCloser(e Event) (nilReturn interface{}) {
 	notJS := tools.NotJS
 	if !tools.ElementIsShown(tools.closerMasterView) {
 		// closer view is not visible
@@ -43,13 +35,13 @@ func (tools *Tools) toggleCloser(event js.Value) interface{} {
 		}
 		// show the closer main div
 		tools.ElementShow(tools.closerMasterView)
-		return nil
+		return
 	}
 	// closer view is visible
 	// so hide the closer view and show the last main div.
 	tools.ElementHide(tools.closerMasterView)
 	tools.ElementShow(tools.lastMasterView)
-	return nil
+	return
 }
 
 // Quit closes the application renderer.

@@ -35,5 +35,4 @@ import (
 func handleInit(rxmessage *message.InitRendererToMainProcess, sending lpc.Sending, eojing lpc.EOJer, stores *store.Stores) {
 	log.Println("dispatch.handleInit")
 	timing.Do(sending, eojing, stores)
-	return
 }
