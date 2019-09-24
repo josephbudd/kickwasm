@@ -4,43 +4,13 @@
 
 ## Sept 24, 2019
 
-Version 10.0.0:
+Version 10.0.0: A framework API breaking change.
+
 The framework's DOM event handling model has been replaced with a simpler one.
 
 The examples in the examples folder have been rebuilt with kickwasm version 10.
 
-### Sept 19, 2019
-
-Minor upgrade to tabs.
-
-### Sept 15, 2019
-
-Another major change to the framework code.
-
-* The new message **Init** is automatically sent from the renderer to the main process to signal that the renderer is alive and running. So in the main process' Init message handler in mainprocess/lpc/dispatches/Init.go,you can setup message pushes to the renderer process. See examples/push/.
-* Capitalized the file name renderer/main.go to **renderer/Main.go**.
-* Fixed a bug in mainprocess/lpc/channels.go.
-
-All the examples in the examples/ folder have been rebuilt.
-
-The tool **kicklpc** has been updated to kickwasm version 9.0.0.
-
-I need to update the kickwasm.wiki.
-
-### Sept 13, 2019
-
-Edited styles so that secondary button pads are smaller than the primary button pad which starts the application.
-
-* I rebuilt [CWT](https://github.com/josephbudd/cwt).
-* I rebuilt all of the examples in the kickwasm/examples/ folder.
-* I need to rebuild the [CRUD application](https://github.com/josephbudd/crud)
-* I still have to redo the vids.
-
-### Sept 12, 2019
-
-Version 8.2.2
-
-I found an issue while rewriting [CWT](https://github.com/josephbudd/cwt). The issue took advantage of a wasm behavior which is no longer present in go version 1.13. The issue was in the framework's renderer/notjs/document.go func HostPort().
+The wiki has been updated.
 
 ## Still experimental because syscall/js is still experimental
 
