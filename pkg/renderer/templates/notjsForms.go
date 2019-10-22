@@ -1,7 +1,9 @@
 package templates
 
 // NotJSFormsGo is the file renderer/notjs/forms.go
-var NotJSFormsGo = `package notjs
+var NotJSFormsGo = `// +build js, wasm
+
+package notjs
 
 import (
 	"strconv"

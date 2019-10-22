@@ -1,7 +1,9 @@
 package templates
 
 // SpawnTabPanelPanel is the genereric renderer spawn panel template.
-const SpawnTabPanelPanel = `{{$Dot := .}}package {{call .PackageNameCase .PanelName}}
+const SpawnTabPanelPanel = `{{$Dot := .}}// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"syscall/js"
@@ -15,14 +17,14 @@ import (
 
 */
 
-// spawnedPanel has a controller, presenter and caller.
+// spawnedPanel has a controller, presenter and messenger.
 type spawnedPanel struct {
 	uniqueID    uint64
 	tabButton   js.Value
 	panelNameID map[string]string
 	controller  *panelController
 	presenter   *panelPresenter
-	caller      *panelCaller
+	messenger   *panelMessenger
 	group       *panelGroup
 }
 
@@ -45,7 +47,7 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 		tabButton:      tabButton,
 		tabPanelHeader: tabPanelHeader,
 	}
-	caller := &panelCaller{
+	messenger := &panelMessenger{
 		group:        group,
 		uniqueID:     uniqueID,
 		unspawn:      unspawn,
@@ -67,7 +69,7 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 	//   type JoinedChatRoomSpawnData struct {
 	// 	     ServerName   string // Use for the panel heading.
 	// 	     ChannelName  string // Use for the tab label and panel heading.
-	// 	     ConnectionID string // The caller needs this.
+	// 	     ConnectionID string // The messenger needs this.
 	//   }
 	// * Let's say that this panel is an IRC chat room panel
 	//     where the user can read the chat room conversation log and write into
@@ -85,7 +87,7 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 
 	switch spawnData := spawnData.(type) {
 	case *spawndata.JoinedChatRoomSpawnData:
-		caller.ircConnectionID = spawnData.ConnectionID
+		messenger.ircConnectionID = spawnData.ConnectionID
 		presenter.serverName = spawnData.ServerName
 		presenter.channelName = spawnData.ChannelName
 	}
@@ -99,12 +101,12 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 	// This package's var help in Data.go is a pointer to the renderer/paneling.Help.
 	// If you redefined paneling.Help in renderer/paneling/Helping.go,
 	//   then you may need to use it here.
-	// Set any controller, presenter or caller members that you added.
-	// Below is an example of me using help to set the caller's state.
+	// Set any controller, presenter or messenger members that you added.
+	// Below is an example of me using help to set the messenger's state.
 	//
 	// Example:
 
-	caller.state = help.GetStateAdd()
+	messenger.state = help.GetStateAdd()
 
 	*/
 
@@ -113,17 +115,17 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 		tabButton:  tabButton,
 		controller: controller,
 		presenter:  presenter,
-		caller:     caller,
+		messenger:  messenger,
 		group:      group,
 	}
 
 	controller.panel = panel
 	controller.presenter = presenter
-	controller.caller = caller
+	controller.messenger = messenger
 	presenter.controller = controller
-	presenter.caller = caller
-	caller.controller = controller
-	caller.presenter = presenter
+	presenter.messenger = messenger
+	messenger.controller = controller
+	messenger.presenter = presenter
 
 	return
 }

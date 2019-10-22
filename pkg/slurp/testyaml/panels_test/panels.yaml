@@ -5,7 +5,7 @@ importPath : github.com/josephbudd/kickwasm/examples/colors
 stores :
   - Colors
 
-services :
+homes :
   - name : Colors
     button :
       name : NextButton
@@ -44,7 +44,7 @@ services :
                                         - name : Level5Panel
                                           note : level 5 note
                                           markup : |
-                                            <h3>The User Experiences Your Services Not This Interface.</h3>
+                                            <h3>The User Experiences Your Homes Not This Interface.</h3>
                                             <p>
                                             This is an example of content that you would provide.
                                             It has the same shape and the same background color as this level's button pad.
@@ -70,7 +70,7 @@ services :
                                             It allows the user to focus on
                                             <ul>
                                               <li>your content,</li>
-                                              <li>the complexity of your services.</li>
+                                              <li>the complexity of your homes.</li>
                                             </ul>
                                             </p>
                                             <p>

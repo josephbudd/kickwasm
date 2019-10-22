@@ -1,7 +1,9 @@
 package templates
 
 // SpawnTabBarPrepare is the genereric renderer spawn tab bar prepare.go template.
-const SpawnTabBarPrepare = `{{$Dot := .}}package {{call .PackageNameCase .TabBarName}}
+const SpawnTabBarPrepare = `{{$Dot := .}}// +build js, wasm
+
+package {{call .PackageNameCase .TabBarName}}
 
 import (
 {{ range .Imports }}	"{{$Dot.ApplicationGitPath}}{{.}}"

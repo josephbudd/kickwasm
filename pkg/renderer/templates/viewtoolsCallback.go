@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsCallBack is the file /renderer/tools/callback.go
-var ViewToolsCallBack = `package viewtools
+var ViewToolsCallBack = `// +build js, wasm
+
+package viewtools
 
 import (
 	"syscall/js"

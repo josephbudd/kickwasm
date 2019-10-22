@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsResizeSliderPanel is the renerer/viewtools/resizeSliderPanel.go file.
-const ViewToolsResizeSliderPanel = `package viewtools
+const ViewToolsResizeSliderPanel = `// +build js, wasm
+
+package viewtools
 
 import (
 	"fmt"
@@ -97,6 +99,10 @@ func (tools *Tools) sizeSliderPanelInnerPanelUserContent(userContent js.Value, w
 	h -= notJS.HeightExtras(userContent)
 	notJS.SetStyleWidth(userContent, w)
 	notJS.SetStyleHeight(userContent, h)
+	if !notJS.ClassListContains(userContent, VScrollClassName) {
+		// Don't size the user content width.
+		return
+	}
 	// The user content div wraps the template markup.
 	children := notJS.ChildrenSlice(userContent)
 	markup := children[0]
@@ -110,7 +116,7 @@ func (tools *Tools) sizeSliderPanelInnerPanelUserContent(userContent js.Value, w
 	for _, ch := range children {
 		if !notJS.ClassListContains(ch, UnSeenClassName) {
 			if notJS.ClassListContains(ch, ResizeMeWidthClassName) {
-				tools.resizeMe(ch, w, h)
+				tools.resizeTemplateMarkup(ch, w, h)
 			}
 		}
 	}
@@ -188,7 +194,7 @@ func (tools *Tools) sizeSliderPanelInnerPanelTabBar(tabbar, underTabbar js.Value
 						for _, ch := range children4 {
 							if !notJS.ClassListContains(ch, UnSeenClassName) {
 								if notJS.ClassListContains(ch, ResizeMeWidthClassName) {
-									tools.resizeMe(ch, w-chwx1-chwx2-chwx3, h)
+									tools.resizeTemplateMarkup(ch, w-chwx1-chwx2-chwx3, h)
 								}
 							}
 						}
@@ -196,6 +202,20 @@ func (tools *Tools) sizeSliderPanelInnerPanelTabBar(tabbar, underTabbar js.Value
 				}
 			}
 			break
+		}
+	}
+}
+
+func (tools *Tools) resizeTemplateMarkup(mine js.Value, w, h float64) {
+	notJS := tools.NotJS
+	w = w - notJS.WidthExtras(mine)
+	notJS.SetStyleWidth(mine, w)
+	children := notJS.ChildrenSlice(mine)
+	for _, ch := range children {
+		if !notJS.ClassListContains(ch, UnSeenClassName) {
+			if notJS.ClassListContains(ch, ResizeMeWidthClassName) {
+				tools.resizeTemplateMarkup(ch, w, h)
+			}
 		}
 	}
 }

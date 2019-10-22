@@ -1,7 +1,9 @@
 package templates
 
 // MainDoPanelsGo is ./panels.go.
-const MainDoPanelsGo = `{{$Dot := .}}package main
+const MainDoPanelsGo = `{{$Dot := .}}// +build js, wasm
+
+package main
 
 import (
 	"github.com/pkg/errors"
@@ -43,7 +45,7 @@ func doPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	{{call $Dot.LowerCamelCase $name}}.StartDispatchers(){{end}}
 
 	// 5. Start each panel's initial calls.{{range $name, $path := .PanelNamePath}}
-	{{call $Dot.LowerCamelCase $name}}.InitialCalls(){{end}}
+	{{call $Dot.LowerCamelCase $name}}.InitialJobs(){{end}}
 
 	return
 }

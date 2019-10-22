@@ -1,7 +1,9 @@
 package templates
 
 // NotJSCreateGetGo is the file renderer/notjs/createGet.go
-var NotJSCreateGetGo = `{{ $Dot := . }}package notjs
+const NotJSCreateGetGo = `{{ $Dot := . }}// +build js, wasm
+
+package notjs
 
 import "syscall/js"
 

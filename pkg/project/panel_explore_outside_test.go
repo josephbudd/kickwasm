@@ -56,11 +56,11 @@ func TestOutsideExplore(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	testBuilder_GenerateServicePanelButtonFolderPathMap(t, builder, want)
+	testBuilder_GenerateHomePanelButtonFolderPathMap(t, builder, want)
 }
 
-func testBuilder_GenerateServicePanelButtonFolderPathMap(t *testing.T, builder *project.Builder, want map[string]map[string]map[string][]string) {
-	if got := builder.GenerateServicePanelButtonFolderPathMap(); !reflect.DeepEqual(got, want) {
-		t.Errorf("Builder.GenerateServicePanelButtonFolderPathMap() = %#v, want %v", got, want)
+func testBuilder_GenerateHomePanelButtonFolderPathMap(t *testing.T, builder *project.Builder, want map[string]map[string]map[string][]string) {
+	if got := builder.GenerateHomePanelButtonFolderPathMap(); !reflect.DeepEqual(got, want) {
+		t.Errorf("Builder.GenerateHomePanelButtonFolderPathMap() = %#v, want %v", got, want)
 	}
 }

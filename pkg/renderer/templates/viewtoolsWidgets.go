@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsWidgetGo is the renderer/viewtools/widget.go file.
-const ViewToolsWidgetGo = `package viewtools
+const ViewToolsWidgetGo = `// +build js, wasm
+
+package viewtools
 
 import (
 	"syscall/js"

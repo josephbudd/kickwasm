@@ -61,15 +61,15 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
 	panelNameHVScroll := make(map[string]bool, 100)
-	servicePanelNamePanelMap := builder.GenerateServicePanelNamePanelMap()
-	for _, panelNamePanelMap := range servicePanelNamePanelMap {
+	homePanelNamePanelMap := builder.GenerateHomePanelNamePanelMap()
+	for _, panelNamePanelMap := range homePanelNamePanelMap {
 		for panelName, panel := range panelNamePanelMap {
 			panelNameHVScroll[panelName] = panel.HVScroll
 		}
 	}
-	// GenerateServiceSpawnPanelNamePanelMap
-	servicePanelNamePanelMap = builder.GenerateServiceSpawnPanelNamePanelMap()
-	for _, panelNamePanelMap := range servicePanelNamePanelMap {
+	// GenerateHomeSpawnPanelNamePanelMap
+	homePanelNamePanelMap = builder.GenerateHomeSpawnPanelNamePanelMap()
+	for _, panelNamePanelMap := range homePanelNamePanelMap {
 		for panelName, panel := range panelNamePanelMap {
 			panelNameHVScroll[panelName] = panel.HVScroll
 		}

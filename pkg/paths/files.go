@@ -64,7 +64,7 @@ type FileNames struct {
 	WebSocketDotGo string
 
 	// markup panels
-	CallerDotGo     string
+	MessengerDotGo  string
 	ControllerDotGo string
 	DataDotGo       string
 	LCDataDotGo     string
@@ -79,6 +79,10 @@ type FileNames struct {
 
 	// widgets
 	WidgetsDotGo string
+
+	// vscode
+	VSCodeMPWorkSpaceJSON string
+	VSCodeRPWorkSpaceJSON string
 }
 
 // GetFileNames returns the file names.
@@ -146,7 +150,7 @@ func GetFileNames() *FileNames {
 		WebSocketDotGo: "websocket.go",
 
 		// markup panels
-		CallerDotGo:     "Caller.go",
+		MessengerDotGo:  "Messenger.go",
 		ControllerDotGo: "Controller.go",
 		DataDotGo:       "Data.go",
 		LCDataDotGo:     "data.go",
@@ -161,5 +165,9 @@ func GetFileNames() *FileNames {
 
 		// widgets
 		WidgetsDotGo: "widgets.go",
+
+		// vscode
+		VSCodeMPWorkSpaceJSON: "mainprocess.code-workspace",
+		VSCodeRPWorkSpaceJSON: "rendererprocess.code-workspace",
 	}
 }

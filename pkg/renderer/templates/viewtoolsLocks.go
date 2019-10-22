@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsLocks is the viewtools/locks.go file.
-const ViewToolsLocks = `package viewtools
+const ViewToolsLocks = `// +build js, wasm
+
+package viewtools
 
 // LockButtons blocks the tab and back buttons from working.
 func (tools *Tools) LockButtons() {

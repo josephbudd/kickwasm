@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../site"
+		},
+		{
+			"path": "../domain"
+		},
+	],
+	"settings": {
+		"go":{
+			"toolsEnvVars":{
+				"GOARCH":"wasm",
+				"GOOS":"js",
+			},
+			"testEnvVars": {
+				"GOARCH":"wasm",
+				"GOOS":"js",
+			},
+			"installDependenciesWhenBuilding": false,
+		},
+	},
+}

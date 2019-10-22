@@ -1,7 +1,9 @@
 package templates
 
 // SitePack is the {{.PackageName}}/{{.PackageName}}.go file.
-const SitePack = `package {{.PackageName}}
+const SitePack = `// +build js, wasm
+
+package {{.PackageName}}
 
 /*
 	Note Well:

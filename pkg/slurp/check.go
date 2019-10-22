@@ -63,43 +63,34 @@ func (sl *Slurper) checkApplicationInfo(yamlbb []byte, fpath string) (appInfo *A
 		return
 	}
 
-	// make sure there are services
-	if len(appInfo.Services) == 0 {
-		err = errors.New("services is missing in " + fpath)
+	// make sure there are homes
+	if len(appInfo.Homes) == 0 {
+		err = errors.New("homes is missing in " + fpath)
 		return
 	}
-	serviceButtonMap := make(map[string]string)
-	for _, service := range appInfo.Services {
-		// service name
-		sName := service.Name
-		service.SourcePath = fpath
-		if len(sName) == 0 {
-			err = errors.New("a service is missing a name")
+	homeButtonMap := make(map[string]string)
+	for _, homeButton := range appInfo.Homes {
+		// home name
+		homeButton.SourcePath = fpath
+		if len(homeButton.ID) == 0 {
+			err = errors.New("a home is missing a name")
 			return
 		}
-		if _, found := serviceButtonMap[sName]; found {
-			errMessage = fmt.Sprintf(`the service name %q is used more than once`, sName)
+		if _, found := homeButtonMap[homeButton.ID]; found {
+			errMessage = fmt.Sprintf(`the home name %q is used more than once`, homeButton.ID)
 			err = errors.New(errMessage)
 			return
 		}
-		// service button
-		if service.Button == nil {
-			errMessage = fmt.Sprintf(`the service named %q is missing a button`, sName)
-			err = errors.New(errMessage)
-			return
-		}
-		buttonName := service.Button.ID
-		for _, bn := range serviceButtonMap {
-			if bn == buttonName {
-				errMessage = fmt.Sprintf(`the service button name %q is used more than once`, buttonName)
+		for _, bn := range homeButtonMap {
+			if bn == homeButton.ID {
+				errMessage = fmt.Sprintf(`the home button name %q is used more than once`, homeButton.ID)
 				err = errors.New(errMessage)
 				return
 			}
 		}
-		serviceButtonMap[sName] = buttonName
-		service.Button.SourcePath = fpath
-		if err = sl.checkButtonInfo(service.Button); err != nil {
-			errMessage = fmt.Sprintf(`in the service named %q, %s`, sName, err.Error())
+		homeButtonMap[homeButton.ID] = homeButton.ID
+		if err = sl.checkButtonInfo(homeButton); err != nil {
+			errMessage = fmt.Sprintf(`in the home named %q, %s`, homeButton.ID, err.Error())
 			err = errors.New(errMessage)
 			return
 		}

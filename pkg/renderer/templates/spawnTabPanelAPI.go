@@ -1,7 +1,9 @@
 package templates
 
 // SpawnTabPanelAPI is the genereric renderer spawn data.go template.
-const SpawnTabPanelAPI = `{{$Dot := .}}package {{call .PackageNameCase .PanelName}}
+const SpawnTabPanelAPI = `{{$Dot := .}}// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"fmt"
@@ -41,7 +43,7 @@ func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCha
 
 // BuildPanel builds the panel's go code.
 // Returns the error.
-func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID map[string]string, panelData interface{}, unspawn func() error) (stopListener func(), err error) {
+func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID map[string]string, panelData interface{}, unspawn func() error) (prepareToUnSpawn func(), err error) {
 
 	defer func() {
 		if err != nil {
@@ -52,7 +54,7 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID
 
 	// make the panel
 	panel := newPanel(uniqueID, tabButton, tabPanelHeader, panelNameID, panelData, unspawn)
-	stopListener = panel.StopListener
+	prepareToUnSpawn = panel.PrepareToUnSpawn
 
 	if err = panel.group.defineMembers(); err != nil {
 		return
@@ -63,16 +65,16 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID
 	if err = panel.presenter.defineMembers(); err != nil {
 		return
 	}
-	panel.caller.dispatchMessages()
+	panel.messenger.dispatchMessages()
 	panel.controller.initialCalls()
-	panel.caller.initialCalls()
+	panel.messenger.initialSends()
 
 	return
 }
 
-// StopListener stops the caller's go routine listening for messages.
-func (panel *spawnedPanel) StopListener() {
-	panel.caller.unSpawningCh <- struct{}{}
+// PrepareToUnSpawn prepares to unspawn.
+func (panel *spawnedPanel) PrepareToUnSpawn() {
+	panel.messenger.unSpawningCh <- struct{}{}
 	panel.controller.UnSpawning()
 }
 `

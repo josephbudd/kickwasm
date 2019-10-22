@@ -2,7 +2,7 @@ title: Spawn Tabs
 importPath: github.com/josephbudd/spawn
 stores:
   - Tabs
-services:
+homes:
   - name: Tabs
     button:
       name: TabsButton

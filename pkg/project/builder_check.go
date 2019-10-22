@@ -9,19 +9,19 @@ import (
 )
 
 type checker struct {
-	serviceNames   []string
+	homeNames      []string
 	panelNames     []string
 	panelButtonIDs map[string][]string
 	panelTabIDs    map[string][]string
 }
 
-func (ch *checker) isNewServiceName(name string) bool {
-	for _, n := range ch.serviceNames {
+func (ch *checker) isNewHomeName(name string) bool {
+	for _, n := range ch.homeNames {
 		if n == name {
 			return false
 		}
 	}
-	ch.serviceNames = append(ch.serviceNames, name)
+	ch.homeNames = append(ch.homeNames, name)
 	return true
 }
 
@@ -74,45 +74,26 @@ func (ch *checker) isNewTabID(panel *Panel, tab *Tab) bool {
 	return true
 }
 
-// BuildFromServices builds from services.
-func (builder *Builder) BuildFromServices(services []*Service) (err error) {
+// BuildFromHomes builds from homes.
+func (builder *Builder) BuildFromHomes(homes []*Button) (err error) {
 	ch := &checker{
 		panelNames:     make([]string, 0, 5),
-		serviceNames:   make([]string, 0, 5),
+		homeNames:      make([]string, 0, 5),
 		panelButtonIDs: make(map[string][]string),
 		panelTabIDs:    make(map[string][]string),
 	}
-	for _, s := range services {
-		if err = checkServiceValidity(s, 0, ch); err != nil {
+	for _, home := range homes {
+		if err = checkHomeValidity(home, 0, ch); err != nil {
 			return
 		}
 	}
-	builder.Services = services
+	builder.Homes = homes
 	return
 }
 
-func checkServiceValidity(s *Service, level uint, ch *checker) (err error) {
-	if err = isValidServiceName(s.Name); err != nil {
-		return err
-	}
-	if !ch.isNewServiceName(s.Name) {
-		return fmt.Errorf("the service name %q is not new", s.Name)
-	}
-	if s.Button == nil {
-		return fmt.Errorf("the serviced name %q has no button", s.Name)
-	}
-	return checkButtonValidity(fmt.Sprintf("the %s service panel", s.Name), s.Button, 0, ch)
-}
-
-func isValidServiceName(name string) (err error) {
-	if len(name) == 0 {
-		return errors.New("a service is missing a name")
-	}
-	cs := cases.CamelCase(name)
-	if cs != name {
-		return fmt.Errorf("the service name %q is not camel cased", name)
-	}
-	return nil
+func checkHomeValidity(home *Button, level uint, ch *checker) (err error) {
+	err = checkButtonValidity(fmt.Sprintf("the %s home panel", home.ID), home, 0, ch)
+	return
 }
 
 func isValidButtonID(id string) (err error) {

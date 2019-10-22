@@ -127,14 +127,14 @@ type spawnTabBarData struct {
 // tabBarTabPanelGroups map[string]map[string][]*project.TabPanelGroup
 // map tab bar name : tab name : *project.TabPanelGroup
 func buildMapTabpanelGroup(builder *project.Builder) (tabBarTabPanelGroups map[string]map[string]*project.TabPanelGroup) {
-	serviceNames := builder.GenerateServiceNames()
-	serviceTabPanelGroups := builder.GenerateServiceSpawnTabButtonPanelGroups()
-	l := len(serviceNames)
+	homeNames := builder.GenerateHomeButtonNames()
+	homeTabPanelGroups := builder.GenerateHomeSpawnTabButtonPanelGroups()
+	l := len(homeNames)
 	tabBarTabPanelGroups = make(map[string]map[string]*project.TabPanelGroup, l)
-	for _, serviceName := range serviceNames {
+	for _, homeName := range homeNames {
 		// tabPanelGroups will be used to construct a map
 		//  of tab bars mapped to their panel groups.
-		groups := serviceTabPanelGroups[serviceName]
+		groups := homeTabPanelGroups[homeName]
 		// groups is []*project.TabPanelGroup
 		for _, group := range groups {
 			var found bool

@@ -59,7 +59,7 @@ func GetFolderNames() *FolderNames {
 		Paneling:        "paneling",
 		Panels:          "panels",
 		Record:          "record",
-		Renderer:        "renderer",
+		Renderer:        "rendererprocess",
 		RendererSite:    "site",
 		Settings:        "settings",
 		Store:           "store",
@@ -78,6 +78,6 @@ func GetFolderNames() *FolderNames {
 		Dispatch: "dispatch",
 		Message:  "message",
 
-		SitePack: "",
+		SitePack: "sitepack",
 	}
 }

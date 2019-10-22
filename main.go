@@ -11,13 +11,12 @@ import (
 	"github.com/josephbudd/kickwasm/pkg"
 	"github.com/josephbudd/kickwasm/pkg/kickwasm"
 	"github.com/josephbudd/kickwasm/pkg/paths"
-	"github.com/josephbudd/kickwasm/pkg/slurp"
 )
 
 const (
 	outputFolder = "output"
 
-	versionBreaking = 10 // Each new version breaks backwards compatibility.
+	versionBreaking = 11 // Each new version breaks backwards compatibility.
 	versionFeature  = 0  // Each new version adds features. Retains backwards compatibility.
 	versionPatch    = 0  // Each new version only fixes bugs. No added features. Retains backwards compatibility.
 
@@ -43,12 +42,11 @@ var (
 	ticBB   = []byte("`")
 )
 
-type info struct {
-	Title      string               `yaml:"title"`
-	ImportPath string               `yaml:"importPath"`
-	Stores     []string             `yaml:"stores"`
-	Services   []*slurp.ServiceInfo `yaml:"services"`
-}
+// type info struct {
+// 	Title      string              `yaml:"title"`
+// 	ImportPath string              `yaml:"importPath"`
+// 	Homes      []*slurp.ButtonInfo `yaml:"buttons"`
+// }
 
 //YAMLFileFlag is the file.
 var YAMLFileFlag string

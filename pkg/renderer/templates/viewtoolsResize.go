@@ -1,22 +1,20 @@
 package templates
 
 // ViewToolsResize is the renderer/viewtools/resize.go template.
-const ViewToolsResize = `package viewtools
+const ViewToolsResize = `// +build js, wasm
+
+package viewtools
 
 import (
 	"fmt"
-	"syscall/js"
 )
 
 func (tools *Tools) initializeResize() {
-	cb := tools.RegisterEventCallBack(
-		func(event js.Value) interface{} {
-			tools.SizeApp()
-			return nil
-		},
-		true, true, true,
-	)
-	tools.Global.Set("onresize", cb)
+	f := func(e Event) (nilReturn interface{}) {
+		tools.SizeApp()
+		return
+	}
+	tools.AddEventHandler(f, tools.Global, "resize", false)
 }
 
 // SizeApp resizes the app
@@ -155,21 +153,6 @@ func (tools *Tools) sizeModalMasterView(w, h float64) {
 func (tools *Tools) sizeCloserMasterView(w, h float64) {
 	if tools.ElementIsShown(tools.closerMasterView) {
 		tools.NotJS.SetStyleHeight(tools.closerMasterView, h)
-	}
-}
-
-
-func (tools *Tools) resizeMe(mine js.Value, w, h float64) {
-	notJS := tools.NotJS
-	w = w - notJS.WidthExtras(mine)
-	notJS.SetStyleWidth(mine, w)
-	children := notJS.ChildrenSlice(mine)
-	for _, ch := range children {
-		if !notJS.ClassListContains(ch, UnSeenClassName) {
-			if notJS.ClassListContains(ch, ResizeMeWidthClassName) {
-				tools.resizeMe(ch, w, h)
-			}
-		}
 	}
 }
 `

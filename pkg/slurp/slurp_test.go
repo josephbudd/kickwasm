@@ -229,15 +229,15 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/empty_tab.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the panel named "PNamePanel", has a tab named "OneTab" which has no panels, in testyaml/fails/empty_tab.yaml`,
+			wantErrMessage: `a tab labeled "One" is missing panel files in testyaml/fails/empty_tab.yaml`,
 		},
 		{
-			name: "fail duplicate service button name",
+			name: "fail duplicate home button name",
 			args: args{
 				yamlPath: "testyaml/fails/dup_service_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the service button name "NextButton" is used more than once`,
+			wantErrMessage: `the home button name "NextButton" is used more than once`,
 		},
 		{
 			name: "fail bad panel name",
@@ -253,7 +253,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/bad_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the XXX service panel button name "Next" should end with the suffix "Button"`,
+			wantErrMessage: `the XXX home panel button name "Next" should end with the suffix "Button"`,
 		},
 		{
 			name: "fail bad tab name",
@@ -261,7 +261,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/bad_tab_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the XXX service panel: the panel named "PNamePanel" tab name "One" should end with the suffix "Tab"`,
+			wantErrMessage: `the XXX home panel: the panel named "PNamePanel" tab name "One" should end with the suffix "Tab"`,
 		},
 
 		{
@@ -278,7 +278,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/dup_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the button panel named "PNamePanel" has more then one button named "OneButton"`,
+			wantErrMessage: `the button name "OneButton" used in testyaml/fails/dup_button_name.yaml has already been used in testyaml/fails/dup_button_name.yaml`,
 		},
 		{
 			name: "fail duplicate tab name",
@@ -286,7 +286,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/dup_tab_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the tab panel named "PNamePanel" has more then one tab named "OneTab"`,
+			wantErrMessage: `the tab name "OneTab" used in testyaml/fails/dup_tab_name.yaml has already been used in testyaml/fails/dup_tab_name.yaml`,
 		},
 		{
 			name: "fail missing panel name",
@@ -302,21 +302,23 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/missing_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `in the service named "XXX", a button is missing a name in testyaml/fails/missing_button_name.yaml`,
+			wantErrMessage: `in the home named "XXX", a button is missing a name in testyaml/fails/missing_button_name.yaml`,
 		},
 		{
 			name: "panels",
 			args: args{
 				yamlPath: "testyaml/panels_test/panels.yaml",
 			},
+			wantErr:        true,
+			wantErrMessage: `the button name "NextColorsButton" used in testyaml/panels_test/panels.yaml has already been used in testyaml/panels_test/panels.yaml`,
 		},
 		{
 			name: "colors",
 			args: args{
 				yamlPath: "testyaml/deep_test/colors.yaml",
 			},
-			wantErr:        false, // levels are no longer limited.
-			wantErrMessage: `the panel named "LevelSixPanel" is too deep to have buttons in testyaml/deep_test/level2/level3/level4/level5/level6/panel.yaml`,
+			wantErr:        true, // levels are no longer limited.
+			wantErrMessage: `the button name "ClickHereButton" used in testyaml/deep_test/colors.yaml has already been used in testyaml/deep_test/colors.yaml`,
 		},
 		{
 			name: "pass",
@@ -328,28 +330,22 @@ func TestDo(t *testing.T) {
 			wantAppInfo: &ApplicationInfo{
 				Title:      "Test 1",
 				ImportPath: "github.com/josephbudd/kickwasm/examples/test1",
-				Services: []*ServiceInfo{
+				Homes: []*ButtonInfo{
 					{
-						Name: "Service1",
-						Button: &ButtonInfo{
-							ID:         "1Button",
-							Label:      "Button 1",
-							Heading:    "Button 1",
-							CC:         "",
-							PanelFiles: []string{"service1/panel1.yaml", "service1/panel2.yaml"},
-							Panels:     []*PanelInfo{},
-						},
+						ID:         "1Button",
+						Label:      "Button 1",
+						Heading:    "Button 1",
+						CC:         "",
+						PanelFiles: []string{"home1/panel1.yaml", "home1/panel2.yaml"},
+						Panels:     []*PanelInfo{},
 					},
 					{
-						Name: "Service2",
-						Button: &ButtonInfo{
-							ID:         "2Button",
-							Label:      "Button 2",
-							Heading:    "Button 2 Heading.",
-							CC:         "",
-							PanelFiles: []string{"service2/panel3.yaml", "service2/panel5.yaml"},
-							Panels:     []*PanelInfo{},
-						},
+						ID:         "2Button",
+						Label:      "Button 2",
+						Heading:    "Button 2 Heading.",
+						CC:         "",
+						PanelFiles: []string{"home2/panel3.yaml", "home2/panel5.yaml"},
+						Panels:     []*PanelInfo{},
 					},
 				},
 			},
@@ -369,32 +365,23 @@ func TestDo(t *testing.T) {
 					return
 				}
 				if tt.wantAppInfo != nil {
-					if len(got.Services) != len(tt.wantAppInfo.Services) {
-						t.Error(`sl.Gulp(...) error len(got.Services) != len(tt.wantAppInfo.Services)`)
+					if len(got.Homes) != len(tt.wantAppInfo.Homes) {
+						t.Error(`sl.Gulp(...) error len(got.Homes) != len(tt.wantAppInfo.Homes)`)
 						t.Errorf("sl.Gulp(...) = %v, want %v", got, tt.want)
 					}
-					if got.Services[0].Name != tt.wantAppInfo.Services[0].Name {
-						t.Error(`sl.Gulp(...) error got.Services[0].Name != tt.wantAppInfo.Services[0].Name`)
+					if got.Homes[0].ID != tt.wantAppInfo.Homes[0].ID {
+						t.Error(`sl.Gulp(...) error got.Homes[0].ID != tt.wantAppInfo.Homes[0].ID`)
 					}
-					if got.Services[1].Name != tt.wantAppInfo.Services[1].Name {
-						t.Error(`sl.Gulp(...) error got.Services[1].Name != tt.wantAppInfo.Services[1].Name`)
+					if got.Homes[1].ID != tt.wantAppInfo.Homes[1].ID {
+						t.Error(`sl.Gulp(...) error got.Homes[1].ID != tt.wantAppInfo.Homes[1].ID`)
 					}
-					if got.Services[0].Button.Label != tt.wantAppInfo.Services[0].Button.Label {
-						t.Error(`sl.Gulp(...) error got.Services[0].Button.Label != tt.wantAppInfo.Services[0].Button.Label`)
+					if got.Homes[0].Label != tt.wantAppInfo.Homes[0].Label {
+						t.Error(`sl.Gulp(...) error got.Homes[0].Label != tt.wantAppInfo.Homes[0].Label`)
 					}
-					if got.Services[1].Button.Label != tt.wantAppInfo.Services[1].Button.Label {
-						t.Error(`sl.Gulp(...) error got.Services[1].Button.Label != tt.wantAppInfo.Services[1].Button.Label`)
+					if got.Homes[1].Label != tt.wantAppInfo.Homes[1].Label {
+						t.Error(`sl.Gulp(...) error got.Homes[1].Label != tt.wantAppInfo.Homes[1].Label`)
 					}
 				}
-				/*if !reflect.DeepEqual(got, tt.want) {
-					t.Errorf("sl.Gulp(...) = %v, want %v", got, tt.want)
-				}
-				bb, err := yaml.Marshal(got)
-				if err != nil {
-					t.Fatal(err)
-				}
-				t.Error(string(bb))
-				*/
 			}
 		})
 	}
@@ -407,7 +394,7 @@ func Test_slurpApplication(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    *ApplicationInfo
+		want    string
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -416,217 +403,176 @@ func Test_slurpApplication(t *testing.T) {
 			args: args{
 				fpath: "testyaml/simple_test/app.yaml",
 			},
-			want: &ApplicationInfo{
-				SourcePath: "testyaml/simple_test/app.yaml",
-				Title:      "Test 1",
-				ImportPath: "github.com/josephbudd/kickwasm/examples/test1",
-				Services: []*ServiceInfo{
-					{
-						SourcePath: "testyaml/simple_test/app.yaml",
-						Name:       "Service1",
-						Button: &ButtonInfo{
-							SourcePath: "testyaml/simple_test/app.yaml",
-							ID:         "OneButton",
-							Label:      "Button 1",
-							Heading:    "Button 1 Heading.",
-							CC:         "Button 1",
-							PanelFiles: []string{
-								"service1/panel1.yaml",
-								"service1/panel2.yaml",
-							},
-							Panels: []*PanelInfo{
-								{
-									SourcePath: "testyaml/simple_test/service1/panel1.yaml",
-									Level:      1,
-									ID:         "",
-									Name:       "OnePanel",
-									Note:       "p1 note",
-									Buttons:    []*ButtonInfo(nil),
-									Tabs:       []*TabInfo(nil),
-									Markup:     "<p>Panel 1-1</p>",
-								},
-								{
-									SourcePath: "testyaml/simple_test/service1/panel2.yaml",
-									Level:      1,
-									ID:         "",
-									Name:       "TwoPanel",
-									Note:       "p2 note",
-									Buttons:    []*ButtonInfo(nil),
-									Tabs:       []*TabInfo(nil),
-									Markup:     "<p>Panel 2-1</p>",
-								},
-							},
-						},
-					},
-					{
-						SourcePath: "testyaml/simple_test/app.yaml",
-						Name:       "Service2",
-						Button: &ButtonInfo{
-							SourcePath: "testyaml/simple_test/app.yaml",
-							ID:         "TwoButton",
-							Label:      "Button 2",
-							Heading:    "Button 2 Heading.",
-							CC:         "Button 2",
-							PanelFiles: []string{
-								"service2/panel3.yaml",
-								"service2/panel5.yaml",
-							},
-							Panels: []*PanelInfo{
-								{
-									SourcePath: "testyaml/simple_test/service2/panel3.yaml",
-									Level:      1,
-									ID:         "",
-									Name:       "ThreePanel",
-									Note:       "p3 note",
-									Buttons: []*ButtonInfo{
-										{
-											SourcePath: "testyaml/simple_test/service2/panel3.yaml",
-											ID:         "Panel31Button",
-											Label:      "Panel 3 Button 1",
-											Heading:    "Panel 3 Button 1 Heading.",
-											CC:         "Panel 3 Button 1",
-											PanelFiles: []string{
-												"panel3-button1-panels/panel1.yaml",
-												"panel3-button1-panels/panel2.yaml",
-											},
-											Panels: []*PanelInfo{
-												{
-													SourcePath: "testyaml/simple_test/service2/panel3-button1-panels/panel1.yaml",
-													Level:      2,
-													ID:         "",
-													Name:       "Panel3Button1OnePanel",
-													Note:       "Panel3Button1Panel1 Note",
-													Buttons:    []*ButtonInfo{},
-													Tabs:       []*TabInfo(nil),
-													Markup:     "Panel3Button1Panel1 Markup",
-												},
-												{
-													SourcePath: "testyaml/simple_test/service2/panel3-button1-panels/panel2.yaml",
-													Level:      2,
-													ID:         "",
-													Name:       "Panel3Button1TwoPanel",
-													Note:       "Panel3Button1Panel2 Note",
-													Buttons:    []*ButtonInfo{},
-													Tabs:       []*TabInfo(nil),
-													Markup:     "Panel3Button1Panel2 Markup",
-												},
-											},
-										},
-										{
-											SourcePath: "testyaml/simple_test/service2/panel3.yaml",
-											ID:         "Panel32Button",
-											Label:      "Panel 3 Button 2",
-											Heading:    "Panel 3 Button 2 Heading.",
-											CC:         "Panel 3 Button 2",
-											PanelFiles: []string{
-												"panel3-button2-panels/panel1.yaml",
-												"panel3-button2-panels/panel2.yaml",
-											},
-											Panels: []*PanelInfo{
-												{
-													SourcePath: "testyaml/simple_test/service2/panel3-button2-panels/panel1.yaml",
-													Level:      2,
-													ID:         "",
-													Name:       "Panel3Button2OnePanel",
-													Note:       "Panel3Button2Panel1 Note",
-													Buttons:    []*ButtonInfo{},
-													Tabs:       []*TabInfo(nil),
-													Markup:     "Panel3Button2Panel1 Markup",
-												},
-												{
-													SourcePath: "testyaml/simple_test/service2/panel3-button2-panels/panel2.yaml",
-													Level:      2,
-													ID:         "",
-													Name:       "Panel3Button2TwoPanel",
-													Note:       "Panel3Button2Panel2 Note",
-													Buttons:    []*ButtonInfo{},
-													Tabs:       []*TabInfo(nil),
-													Markup:     "Panel3Button2Panel2 Markup",
-												},
-											},
-										},
-									},
-									Tabs:   []*TabInfo(nil),
-									Markup: "",
-								},
-								{
-									SourcePath: "testyaml/simple_test/service2/panel5.yaml",
-									Level:      1,
-									ID:         "",
-									Name:       "FivePanel",
-									Note:       "p5 note",
-									Buttons:    []*ButtonInfo{},
-									Tabs: []*TabInfo{
-										{
-											SourcePath: "testyaml/simple_test/service2/panel5.yaml",
-											ID:         "P51Tab",
-											Label:      "P5T1 Label",
-											PanelFiles: []string{
-												"panel5-tab1-panels/panel1.yaml",
-												"panel5-tab1-panels/panel2.yaml",
-											},
-											Panels: []*PanelInfo{
-												{
-													SourcePath: "testyaml/simple_test/service2/panel5-tab1-panels/panel1.yaml",
-													Level:      2,
-													ID:         "",
-													Name:       "Panel5Tab1OnePanel",
-													Note:       "Panel5Tab1Panel1 Note",
-													Buttons:    []*ButtonInfo{},
-													Tabs:       []*TabInfo(nil),
-													Markup:     "Panel5Tab1Panel1 Markup",
-												},
-												{
-													SourcePath: "testyaml/simple_test/service2/panel5-tab1-panels/panel2.yaml",
-													Level:      2,
-													ID:         "",
-													Name:       "Panel5Tab1TwoPanel",
-													Note:       "Panel5Tab1Panel2 Note",
-													Buttons:    []*ButtonInfo{},
-													Tabs:       []*TabInfo(nil),
-													Markup:     "Panel5Tab1Panel2 Markup",
-												},
-											},
-										},
-										{
-											SourcePath: "testyaml/simple_test/service2/panel5.yaml",
-											ID:         "P52Tab",
-											Label:      "P5T2 Label",
-											PanelFiles: []string{
-												"panel5-tab2-panels/panel1.yaml",
-												"panel5-tab2-panels/panel2.yaml",
-											},
-											Panels: []*PanelInfo{
-												{
-													SourcePath: "testyaml/simple_test/service2/panel5-tab2-panels/panel1.yaml",
-													Level:      2,
-													ID:         "",
-													Name:       "Panel5Tab2OnePanel",
-													Note:       "Panel5Tab2Panel1 Note",
-													Buttons:    []*ButtonInfo{},
-													Tabs:       []*TabInfo(nil),
-													Markup:     "Panel5Tab2Panel1 Markup",
-												},
-												{
-													SourcePath: "testyaml/simple_test/service2/panel5-tab2-panels/panel2.yaml",
-													Level:      2,
-													ID:         "",
-													Name:       "Panel5Tab2TwoPanel",
-													Note:       "Panel5Tab2Panel2 Note",
-													Buttons:    []*ButtonInfo{},
-													Tabs:       []*TabInfo(nil),
-													Markup:     "Panel5Tab2Panel2 Markup",
-												},
-											},
-										},
-									},
-									Markup: "",
-								},
-							},
-						},
-					},
-				},
-			},
+			want: `
+sourcePath: testyaml/simple_test/app.yaml
+title: Test 1
+importPath: github.com/josephbudd/kickwasm/examples/test1
+homes:
+- sourcePath: testyaml/simple_test/app.yaml
+  name: Home1
+  button:
+    sourcePath: testyaml/simple_test/app.yaml
+    name: OneButton
+    label: Button 1
+    heading: Button 1 Heading.
+    cc: Button 1
+    panelFiles:
+    - home1/panel1.yaml
+    - home1/panel2.yaml
+    panels:
+    - sourcePath: testyaml/simple_test/home1/panel1.yaml
+      level: 1
+      id: ""
+      name: OnePanel
+      buttons: []
+      tabs: []
+      markup: <p>Panel 1-1</p>
+      note: p1 note
+      HVScroll: false
+    - sourcePath: testyaml/simple_test/home1/panel2.yaml
+      level: 1
+      id: ""
+      name: TwoPanel
+      buttons: []
+      tabs: []
+      markup: <p>Panel 2-1</p>
+      note: p2 note
+      HVScroll: false
+- sourcePath: testyaml/simple_test/app.yaml
+  name: Home2
+  button:
+    sourcePath: testyaml/simple_test/app.yaml
+    name: TwoButton
+    label: Button 2
+    heading: Button 2 Heading.
+    cc: Button 2
+    panelFiles:
+    - home2/panel3.yaml
+    - home2/panel5.yaml
+    panels:
+    - sourcePath: testyaml/simple_test/home2/panel3.yaml
+      level: 1
+      id: ""
+      name: ThreePanel
+      buttons:
+      - sourcePath: testyaml/simple_test/home2/panel3.yaml
+        name: Panel31Button
+        label: Panel 3 Button 1
+        heading: Panel 3 Button 1 Heading.
+        cc: Panel 3 Button 1
+        panelFiles:
+        - panel3-button1-panels/panel1.yaml
+        - panel3-button1-panels/panel2.yaml
+        panels:
+        - sourcePath: testyaml/simple_test/home2/panel3-button1-panels/panel1.yaml
+          level: 2
+          id: ""
+          name: Panel3Button1OnePanel
+          buttons: []
+          tabs: []
+          markup: Panel3Button1Panel1 Markup
+          note: Panel3Button1Panel1 Note
+          HVScroll: false
+        - sourcePath: testyaml/simple_test/home2/panel3-button1-panels/panel2.yaml
+          level: 2
+          id: ""
+          name: Panel3Button1TwoPanel
+          buttons: []
+          tabs: []
+          markup: Panel3Button1Panel2 Markup
+          note: Panel3Button1Panel2 Note
+          HVScroll: false
+      - sourcePath: testyaml/simple_test/home2/panel3.yaml
+        name: Panel32Button
+        label: Panel 3 Button 2
+        heading: Panel 3 Button 2 Heading.
+        cc: Panel 3 Button 2
+        panelFiles:
+        - panel3-button2-panels/panel1.yaml
+        - panel3-button2-panels/panel2.yaml
+        panels:
+        - sourcePath: testyaml/simple_test/home2/panel3-button2-panels/panel1.yaml
+          level: 2
+          id: ""
+          name: Panel3Button2OnePanel
+          buttons: []
+          tabs: []
+          markup: Panel3Button2Panel1 Markup
+          note: Panel3Button2Panel1 Note
+          HVScroll: false
+        - sourcePath: testyaml/simple_test/home2/panel3-button2-panels/panel2.yaml
+          level: 2
+          id: ""
+          name: Panel3Button2TwoPanel
+          buttons: []
+          tabs: []
+          markup: Panel3Button2Panel2 Markup
+          note: Panel3Button2Panel2 Note
+          HVScroll: false
+      tabs: []
+      note: p3 note
+      HVScroll: false
+    - sourcePath: testyaml/simple_test/home2/panel5.yaml
+      level: 1
+      id: ""
+      name: FivePanel
+      buttons: []
+      tabs:
+      - sourcePath: testyaml/simple_test/home2/panel5.yaml
+        name: P51Tab
+        label: P5T1 Label
+        heading: P5T1 Label
+        panelFiles:
+        - panel5-tab1-panels/panel1.yaml
+        - panel5-tab1-panels/panel2.yaml
+        panels:
+        - sourcePath: testyaml/simple_test/home2/panel5-tab1-panels/panel1.yaml
+          level: 2
+          id: ""
+          name: Panel5Tab1OnePanel
+          buttons: []
+          tabs: []
+          markup: Panel5Tab1Panel1 Markup
+          note: Panel5Tab1Panel1 Note
+          HVScroll: false
+        - sourcePath: testyaml/simple_test/home2/panel5-tab1-panels/panel2.yaml
+          level: 2
+          id: ""
+          name: Panel5Tab1TwoPanel
+          buttons: []
+          tabs: []
+          markup: Panel5Tab1Panel2 Markup
+          note: Panel5Tab1Panel2 Note
+          HVScroll: false
+      - sourcePath: testyaml/simple_test/home2/panel5.yaml
+        name: P52Tab
+        label: P5T2 Label
+        heading: P5T2 Label
+        panelFiles:
+        - panel5-tab2-panels/panel1.yaml
+        - panel5-tab2-panels/panel2.yaml
+        panels:
+        - sourcePath: testyaml/simple_test/home2/panel5-tab2-panels/panel1.yaml
+          level: 2
+          id: ""
+          name: Panel5Tab2OnePanel
+          buttons: []
+          tabs: []
+          markup: Panel5Tab2Panel1 Markup
+          note: Panel5Tab2Panel1 Note
+          HVScroll: false
+        - sourcePath: testyaml/simple_test/home2/panel5-tab2-panels/panel2.yaml
+          level: 2
+          id: ""
+          name: Panel5Tab2TwoPanel
+          buttons: []
+          tabs: []
+          markup: Panel5Tab2Panel2 Markup
+          note: Panel5Tab2Panel2 Note
+          HVScroll: false
+      note: p5 note
+      HVScroll: false
+`,
 			wantErr: false,
 		},
 	}
@@ -635,42 +581,190 @@ func Test_slurpApplication(t *testing.T) {
 			sl := NewSlurper()
 			got, err := sl.slurpApplication(tt.args.fpath)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("sl.slurpApplication() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("sl.slurpApplication() got error %#v, want error %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
+			want := &ApplicationInfo{}
+			if err = yaml.Unmarshal([]byte(tt.want), want); err != nil {
+				t.Fatal("yaml.Unmarshal([]byte(tt.want), want) err is " + err.Error())
+			}
+			if !checkApplicaitonInfo(got, want) {
 				gotbb, err := yaml.Marshal(got)
 				if err != nil {
 					t.Fatal(err)
 				}
-				wantbb, err := yaml.Marshal(tt.want)
-				if err != nil {
-					t.Fatal(err)
-				}
-				if string(gotbb) != string(wantbb) {
-					t.Errorf("not equal")
-					t.Errorf("sl.slurpApplication() = %s\n\nwant:\n%s", gotbb, wantbb)
-					gots := string(gotbb)
-					wants := string(wantbb)
-					lg := len(gots)
-					lw := len(wants)
-					if lg > lw {
-						lg = lw
-					}
-					for i := 1; i < lg; i++ {
-						gs := gots[:i]
-						ws := wants[:i]
-						if gs != ws {
-							t.Fatalf("\n error at\n%s", gs)
-						}
-					}
-				}
+				t.Errorf("sl.slurpApplication(): !reflect.DeepEqual(want, got): got %s\n\nwant:\n%s", gotbb, tt.want)
 			}
-			/*
-				s := got.Services[0]
-				t.Errorf("%#v", *s.Button.Panels[1].LPCCallIns[0])
-				t.Errorf("%#v", *s.Button.Panels[1].LPCCallIns[1])
-			*/
 		})
 	}
+}
+
+func checkApplicaitonInfo(control, test *ApplicationInfo) (equal bool) {
+	if control.SourcePath != test.SourcePath {
+		return
+	}
+	if control.Title != test.Title {
+		return
+	}
+	if control.ImportPath != test.ImportPath {
+		return
+	}
+	if len(control.Homes) != len(test.Homes) {
+		return
+	}
+	for i, cHomeButton := range control.Homes {
+		tHomeButton := test.Homes[i]
+		if cHomeButton.SourcePath != tHomeButton.SourcePath {
+			return
+		}
+		if cHomeButton.Label != tHomeButton.Label {
+			return
+		}
+		if cHomeButton.ID != tHomeButton.ID {
+			return
+		}
+		if cHomeButton.Heading != tHomeButton.Heading {
+			return
+		}
+		if cHomeButton.CC != tHomeButton.CC {
+			return
+		}
+		if len(cHomeButton.PanelFiles) != len(tHomeButton.PanelFiles) {
+			return
+		}
+		for i, cFile := range cHomeButton.PanelFiles {
+			if cFile != tHomeButton.PanelFiles[i] {
+				return
+			}
+		}
+		if len(cHomeButton.Panels) != len(tHomeButton.Panels) {
+			return
+		}
+		for i, cPanel := range cHomeButton.Panels {
+			if equal = checkPanelInfo(cPanel, tHomeButton.Panels[i]); !equal {
+				return
+			}
+		}
+	}
+	equal = true
+	return
+}
+
+func checkPanelInfo(control, test *PanelInfo) (equal bool) {
+	if control.SourcePath != test.SourcePath {
+		return
+	}
+	if control.Level != test.Level {
+		return
+	}
+	if control.ID != test.ID {
+		return
+	}
+	if control.Name != test.Name {
+		return
+	}
+	if control.Markup != test.Markup {
+		return
+	}
+	if control.Note != test.Note {
+		return
+	}
+	if control.HVScroll != test.HVScroll {
+		return
+	}
+	if control.Note != test.Note {
+		return
+	}
+	if len(control.Buttons) != len(test.Buttons) {
+		return
+	}
+	for i, cButton := range control.Buttons {
+		tButton := test.Buttons[i]
+		if equal = checkButtonInfo(cButton, tButton); !equal {
+			return
+		}
+	}
+	if len(control.Tabs) != len(test.Tabs) {
+		return
+	}
+	for i, cTab := range control.Tabs {
+		tTab := test.Tabs[i]
+		if equal = checkTabInfo(cTab, tTab); !equal {
+			return
+		}
+	}
+	equal = true
+	return
+}
+
+func checkButtonInfo(control, test *ButtonInfo) (equal bool) {
+	if control.SourcePath != test.SourcePath {
+		return
+	}
+	if control.Label != test.Label {
+		return
+	}
+	if control.ID != test.ID {
+		return
+	}
+	if control.Heading != test.Heading {
+		return
+	}
+	if control.CC != test.CC {
+		return
+	}
+	if len(control.PanelFiles) != len(test.PanelFiles) {
+		return
+	}
+	for i, cFile := range control.PanelFiles {
+		if cFile != test.PanelFiles[i] {
+			return
+		}
+	}
+	if len(control.Panels) != len(test.Panels) {
+		return
+	}
+	for i, cPanel := range control.Panels {
+		if equal = checkPanelInfo(cPanel, test.Panels[i]); !equal {
+			return
+		}
+	}
+	equal = true
+	return
+}
+
+func checkTabInfo(control, test *TabInfo) (equal bool) {
+	if control.SourcePath != test.SourcePath {
+		return
+	}
+	if control.Label != test.Label {
+		return
+	}
+	if control.ID != test.ID {
+		return
+	}
+	if control.Heading != test.Heading {
+		return
+	}
+	if control.Spawn != test.Spawn {
+		return
+	}
+	if len(control.PanelFiles) != len(test.PanelFiles) {
+		return
+	}
+	for i, cFile := range control.PanelFiles {
+		if cFile != test.PanelFiles[i] {
+			return
+		}
+	}
+	if len(control.Panels) != len(test.Panels) {
+		return
+	}
+	for i, cPanel := range control.Panels {
+		if equal = checkPanelInfo(cPanel, test.Panels[i]); !equal {
+			return
+		}
+	}
+	equal = true
+	return
 }

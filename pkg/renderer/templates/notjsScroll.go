@@ -1,7 +1,9 @@
 package templates
 
 // NotJSScrollGo is the file renderer/notjs/scroll.go
-var NotJSScrollGo = `package notjs
+var NotJSScrollGo = `// +build js, wasm
+
+package notjs
 
 import "syscall/js"
 

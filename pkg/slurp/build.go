@@ -35,7 +35,7 @@ func (sl *Slurper) GetPanelFilePaths() []string {
 }
 
 // Gulp reads the application yaml file at path and processes it.
-// It constructs a slice of tab.Services and uses them to build the project.Builder.
+// It constructs a slice of tab.Homes and uses them to build the project.Builder.
 // It returns the builder and the error.
 func (sl *Slurper) Gulp(yamlPath string) (builder *project.Builder, err error) {
 	var appInfo *ApplicationInfo
@@ -50,28 +50,23 @@ func (sl *Slurper) Gulp(yamlPath string) (builder *project.Builder, err error) {
 	i := strings.LastIndex(appInfo.ImportPath, forwardSlash)
 	builder.SitePackPackage = appInfo.ImportPath[i+1:] + "sitepack"
 	builder.SitePackImportPath = appInfo.ImportPath[:i] + forwardSlash + builder.SitePackPackage
-	services := make([]*project.Service, 0, len(appInfo.Services))
-	for _, sinfo := range appInfo.Services {
-		service := &project.Service{
-			Name: sinfo.Name,
-		}
-		binfo := sinfo.Button
-		button := &project.Button{
-			ID:       binfo.ID,
-			Label:    binfo.Label,
-			Heading:  binfo.Heading,
-			Location: binfo.CC,
+	homes := make([]*project.Button, 0, len(appInfo.Homes))
+	for _, hbinfo := range appInfo.Homes {
+		homeButton := &project.Button{
+			ID:       hbinfo.ID,
+			Label:    hbinfo.Label,
+			Heading:  hbinfo.Heading,
+			Location: hbinfo.CC,
 			Panels:   make([]*project.Panel, 0, 5),
 		}
-		service.Button = button
-		for _, pinfo := range binfo.Panels {
-			if err = constructButtonPanel(button, pinfo); err != nil {
+		for _, pinfo := range hbinfo.Panels {
+			if err = constructButtonPanel(homeButton, pinfo); err != nil {
 				return
 			}
 		}
-		services = append(services, service)
+		homes = append(homes, homeButton)
 	}
-	if err = builder.BuildFromServices(services); err != nil {
+	if err = builder.BuildFromHomes(homes); err != nil {
 		return
 	}
 	return
@@ -79,12 +74,13 @@ func (sl *Slurper) Gulp(yamlPath string) (builder *project.Builder, err error) {
 
 func constructButtonPanel(button *project.Button, pinfo *PanelInfo) (err error) {
 	panel := &project.Panel{
-		ID:      pinfo.ID,
-		Name:    pinfo.Name,
-		Note:    pinfo.Note,
-		Markup:  pinfo.Markup,
-		Buttons: make([]*project.Button, 0, 5),
-		Tabs:    make([]*project.Tab, 0, 5),
+		ID:       pinfo.ID,
+		Name:     pinfo.Name,
+		Note:     pinfo.Note,
+		Markup:   pinfo.Markup,
+		HVScroll: pinfo.HVScroll,
+		Buttons:  make([]*project.Button, 0, 5),
+		Tabs:     make([]*project.Tab, 0, 5),
 	}
 	for _, binfo := range pinfo.Buttons {
 		if err = constructButton(panel, binfo); err != nil {
@@ -102,12 +98,13 @@ func constructButtonPanel(button *project.Button, pinfo *PanelInfo) (err error) 
 
 func constructTabPanel(tab *project.Tab, pinfo *PanelInfo) (err error) {
 	panel := &project.Panel{
-		ID:      pinfo.ID,
-		Name:    pinfo.Name,
-		Note:    pinfo.Note,
-		Markup:  pinfo.Markup,
-		Buttons: make([]*project.Button, 0, 5),
-		Tabs:    make([]*project.Tab, 0, 5),
+		ID:       pinfo.ID,
+		Name:     pinfo.Name,
+		Note:     pinfo.Note,
+		Markup:   pinfo.Markup,
+		HVScroll: pinfo.HVScroll,
+		Buttons:  make([]*project.Button, 0, 5),
+		Tabs:     make([]*project.Tab, 0, 5),
 	}
 	for _, binfo := range pinfo.Buttons {
 		if err = constructButton(panel, binfo); err != nil {

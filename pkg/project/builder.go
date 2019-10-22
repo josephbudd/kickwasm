@@ -78,8 +78,7 @@ type Builder struct {
 	Name               string
 	Title              string
 	ImportPath         string
-	Stores             []string
-	Services           []*Service
+	Homes              []*Button
 	panel              *Panel
 	sliderPanelIndent  uint
 	Classes            *Classes
@@ -95,8 +94,7 @@ type Builder struct {
 // NewBuilder constructs a new builder.
 func NewBuilder() *Builder {
 	return &Builder{
-		Stores: make([]string, 0),
-		panel:  newPanel(),
+		panel: newPanel(),
 		Classes: &Classes{
 			Tab:           classTab,
 			SelectedTab:   classSelected,
@@ -149,7 +147,7 @@ func NewBuilder() *Builder {
 	}
 }
 
-// ToHTML converts services to html
+// ToHTML converts homes to html
 func (builder *Builder) ToHTML(masterid string, addLocations bool) (markup string, err error) {
 	node := builder.ToHTMLNode(masterid, addLocations)
 	bb := &bytes.Buffer{}
@@ -166,9 +164,9 @@ func (builder *Builder) ToHTMLNode(masterid string, addLocations bool) (master *
 		panic("builder already marked up")
 	}
 	builder.markedUp = true
-	// convert "{service}" to service.Name
-	for _, service := range builder.Services {
-		service.cleanMarkup()
+	// convert "{home}" to home.Name
+	for _, homeButton := range builder.Homes {
+		cleanHomeMarkup(homeButton)
 	}
 	builder.panel.ID = "home" + suffixPanel
 	builder.panel.HTMLID = fmt.Sprintf("%s-%s", masterid, builder.panel.ID)
@@ -224,9 +222,9 @@ func (builder *Builder) toHomeHTML(addLocations bool) (home *html.Node) {
 		},
 	}
 	home.AppendChild(homePad)
-	// add each service's button to the home button pad.
-	for _, s := range builder.Services {
-		button := s.Button.toButtonHTML(builder.IDs.HomePad, builder.IDs.Home, s.Name)
+	// add each home's button to the home button pad.
+	for _, homeButton := range builder.Homes {
+		button := homeButton.toButtonHTML(builder.IDs.HomePad, builder.IDs.Home, homeButton.ID)
 		homePad.AppendChild(button)
 	}
 	return
@@ -273,12 +271,11 @@ func (builder *Builder) toSliderCollectionHTML(addLocations bool) (slider *html.
 		},
 	}
 	slider.AppendChild(sliderCollection)
-	// add each service's slider panels to the collection.
+	// add each home's slider panels to the collection.
 	// slider panels for every button
 	locations := make([]string, 0, 10)
-	for _, s := range builder.Services {
-		//locations[0] = s.Button.Location
-		sliderButtonPanels := builder.toButtonSliderPanelsHTML(s.Name, s.Button, locations, builder.IDs.Home, true, addLocations)
+	for _, homeButton := range builder.Homes {
+		sliderButtonPanels := builder.toButtonSliderPanelsHTML(homeButton.ID, homeButton, locations, builder.IDs.Home, true, addLocations)
 		for _, p := range sliderButtonPanels {
 			sliderCollection.AppendChild(p)
 		}
@@ -288,15 +285,15 @@ func (builder *Builder) toSliderCollectionHTML(addLocations bool) (slider *html.
 	return
 }
 
-func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) (sliderPanel *html.Node) {
+func (builder *Builder) toSliderButtonPadPanelHTML(homeName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) (sliderPanel *html.Node) {
 	colorLevelUint := uint(len(locations))
 	var backLevel string
 	if colorLevelUint == 1 {
 		backLevel = "0"
 	} else {
-		backLevel = serviceName
+		backLevel = homeName
 	}
-	//backLevel := serviceName - 1 // color level of the previous button pad
+	//backLevel := homeName - 1 // color level of the previous button pad
 	// keep track how far the color levels go for css.
 	if builder.Colors.LastColorLevel < colorLevelUint {
 		builder.Colors.LastColorLevel = colorLevelUint
@@ -320,7 +317,7 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 	}
 	// add the cookie crumbs inside the slider
 	if addLocations {
-		if cc := builder.cookieCrumbs(serviceName, locations); cc != nil {
+		if cc := builder.cookieCrumbs(homeName, locations); cc != nil {
 			sliderPanel.AppendChild(cc)
 		}
 	}
@@ -330,7 +327,7 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 		DataAtom: atom.H2,
 		Data:     "h2",
 		Attr: []html.Attribute{
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, homeName)},
 		},
 	}
 	textNode := &html.Node{
@@ -347,7 +344,7 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 		Data:     "div",
 		Attr: []html.Attribute{
 			{Key: "id", Val: innerPanelID},
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, homeName)},
 		},
 	}
 	sliderPanel.AppendChild(innerPanel)
@@ -359,13 +356,13 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 		Data:     "div",
 		Attr: []html.Attribute{
 			{Key: "id", Val: buttonPadID},
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderButtonPad, classPadColorLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderButtonPad, classPadColorLevelPrefix, homeName)},
 		},
 	}
 	innerPanel.AppendChild(buttonPad)
 	// add the buttons inside the button pad
 	for _, b := range panel.Buttons {
-		button := b.toButtonHTML(panel.HTMLID, panel.HTMLID, serviceName)
+		button := b.toButtonHTML(panel.HTMLID, panel.HTMLID, homeName)
 		buttonPad.AppendChild(button)
 	}
 	// close button pad
@@ -374,13 +371,13 @@ func (builder *Builder) toSliderButtonPadPanelHTML(serviceName string, panel *Pa
 	return
 }
 
-func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel, button *Button, locations []string, seen bool, addLocations bool) (sliderMarkupPanel *html.Node, innerPanelID string) {
+func (builder *Builder) toSliderMarkupPanelHTML(homeName string, panel *Panel, button *Button, locations []string, seen bool, addLocations bool) (sliderMarkupPanel *html.Node, innerPanelID string) {
 	colorLevelUint := uint(len(locations))
 	var backLevel string
 	if colorLevelUint == 1 {
 		backLevel = "0"
 	} else {
-		backLevel = serviceName
+		backLevel = homeName
 	}
 	// keep track how far the color levels go for css.
 	if builder.Colors.LastColorLevel < colorLevelUint {
@@ -405,7 +402,7 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 	}
 	// add the cookie crumbs inside the slider markup panel.
 	if addLocations {
-		if cc := builder.cookieCrumbs(serviceName, locations); cc != nil {
+		if cc := builder.cookieCrumbs(homeName, locations); cc != nil {
 			sliderMarkupPanel.AppendChild(cc)
 		}
 	}
@@ -415,7 +412,7 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.H2,
 		Data:     "h2",
 		Attr: []html.Attribute{
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, homeName)},
 		},
 	}
 	textNode := &html.Node{
@@ -432,7 +429,7 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 		Data:     "div",
 		Attr: []html.Attribute{
 			{Key: "id", Val: innerPanelID},
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, homeName)},
 		},
 	}
 	sliderMarkupPanel.AppendChild(innerPanel)
@@ -487,13 +484,13 @@ func (builder *Builder) toSliderMarkupPanelHTML(serviceName string, panel *Panel
 	return
 }
 
-func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) (sliderPanel *html.Node) {
+func (builder *Builder) toSliderTabBarPanelHTML(homeName string, panel *Panel, locations []string, heading string, seen bool, addLocations bool) (sliderPanel *html.Node) {
 	colorLevelUint := uint(len(locations))
 	var backLevel string
 	if colorLevelUint == 1 {
 		backLevel = "0"
 	} else {
-		backLevel = serviceName
+		backLevel = homeName
 	}
 	// this panel is a slider panel
 	var visibility string
@@ -515,7 +512,7 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 	}
 	// add the cookie crumbs inside the slider panel
 	if addLocations && len(locations) > 0 {
-		if cc := builder.cookieCrumbs(serviceName, locations); cc != nil {
+		if cc := builder.cookieCrumbs(homeName, locations); cc != nil {
 			sliderPanel.AppendChild(cc)
 		}
 	}
@@ -525,7 +522,7 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 		DataAtom: atom.H2,
 		Data:     "h2",
 		Attr: []html.Attribute{
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classPanelHeading, classPanelHeadingLevelPrefix, homeName)},
 		},
 	}
 	textNode := &html.Node{
@@ -542,7 +539,7 @@ func (builder *Builder) toSliderTabBarPanelHTML(serviceName string, panel *Panel
 		Data:     "div",
 		Attr: []html.Attribute{
 			{Key: "id", Val: innerPanelID},
-			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, serviceName)},
+			{Key: "class", Val: fmt.Sprintf("%s %s%s", classSliderPanelPad, classPadColorLevelPrefix, homeName)},
 		},
 	}
 	sliderPanel.AppendChild(innerPanel)
@@ -624,7 +621,7 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 	return
 }
 
-func (builder *Builder) cookieCrumbs(serviceName string, locations []string) (cc *html.Node) {
+func (builder *Builder) cookieCrumbs(homeName string, locations []string) (cc *html.Node) {
 	if len(locations) < 1 {
 		return nil
 	}
@@ -643,7 +640,7 @@ func (builder *Builder) cookieCrumbs(serviceName string, locations []string) (cc
 			DataAtom: atom.H2,
 			Data:     "h2",
 			Attr: []html.Attribute{
-				{Key: "class", Val: fmt.Sprintf("%s %s%s", classCookieCrumb, classCookieCrumbLevelPrefix, serviceName)},
+				{Key: "class", Val: fmt.Sprintf("%s %s%s", classCookieCrumb, classCookieCrumbLevelPrefix, homeName)},
 			},
 		}
 		textNode := &html.Node{

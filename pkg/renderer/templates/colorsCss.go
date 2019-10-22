@@ -135,92 +135,92 @@ div.{{.ClassPadColorLevelPrefix}}0
   background-color: black;
 }
 
-{{range $i, $serviceName := .ServiceNames}}{{$mod5 := call $Dot.Mod5 $i}}
+{{range $i, $homeName := .HomeNames}}{{$mod5 := call $Dot.Mod5 $i}}
 {{if eq $mod5 0}}
-/* color level {{$serviceName}} */
+/* color level {{$homeName}} */
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$homeName}}
 {
   background-color:hsl(50, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$homeName}}
 {
   color: hsl(50, 23%, 27%);
 }
 
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}
 {
   background-color:hsl(50, 23%, 27%);
   color:hsl(40, 37%, 57%);
   border-color:white;
 }
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}:hover
 {
   color:white;
   border-color:hsl(40, 37%, 57%);
 }
 
-div.{{$Dot.ClassPadColorLevelPrefix}}{{$serviceName}}
+div.{{$Dot.ClassPadColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(50, 23%, 27%);
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(40, 37%, 57%);
   color:black;
   border-color:black;
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}:hover
 {
   background-color: hsl(40, 37%, 37%);
   color:white;
   border-color:white;
 }
 {{else if eq $mod5 1}}
-/* color level {{$serviceName}} */
+/* color level {{$homeName}} */
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$homeName}}
 {
   color: hsl(70, 23%, 27%);
 }
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(70, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}
 {
   background-color:hsl(70, 23%, 27%);
   color:hsl(60, 37%, 57%);
   border-color:white;
 }
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}:hover
 {
   color:white;
   border-color:hsl(60, 37%, 57%);
 }
 
-div.{{$Dot.ClassPadColorLevelPrefix}}{{$serviceName}}
+div.{{$Dot.ClassPadColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(70, 23%, 27%);
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(60, 37%, 57%);
   color:black;
   border-color:black;
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}:hover
 {
   background-color: hsl(60, 37%, 37%);
   color:white;
@@ -228,45 +228,45 @@ button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
 }
 
 {{else if eq $mod5 2}}
-/* color level {{$serviceName}} */
+/* color level {{$homeName}} */
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$homeName}}
 {
   color: hsl(150, 23%, 27%);
 }
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(150, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}
 {
   background-color:hsl(150, 23%, 27%);
   color:hsl(140, 37%, 57%);
   border-color:white;
 }
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}:hover
 {
   color:white;
   border-color:hsl(140, 37%, 57%);
 }
 
-div.{{$Dot.ClassPadColorLevelPrefix}}{{$serviceName}}
+div.{{$Dot.ClassPadColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(150, 23%, 27%);
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(140, 37%, 57%);
   color:black;
   border-color:black;
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}:hover
 {
   background-color: hsl(140, 37%, 37%);
   color:white;
@@ -274,45 +274,45 @@ button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
 }
 
 {{else if eq $mod5 3}}
-/* color level {{$serviceName}} */
+/* color level {{$homeName}} */
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$homeName}}
 {
   color: hsl(200, 23%, 27%);
 }
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(200, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}
 {
   background-color:hsl(200, 23%, 27%);
   color:hsl(190, 37%, 57%);
   border-color:white;
 }
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}:hover
 {
   color:white;
   border-color:hsl(190, 37%, 57%);
 }
 
-div.{{$Dot.ClassPadColorLevelPrefix}}{{$serviceName}}
+div.{{$Dot.ClassPadColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(200, 23%, 27%);
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(190, 37%, 57%);
   color:black;
   border-color:black;
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}:hover
 {
   background-color: hsl(190, 37%, 37%);
   color:white;
@@ -320,45 +320,45 @@ button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
 }
 
 {{else if eq $mod5 4}}
-/* color level {{$serviceName}} */
+/* color level {{$homeName}} */
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$homeName}}
 {
   color: hsl(250, 23%, 27%);
 }
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(250, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}
 {
   background-color:hsl(250, 23%, 27%);
   color:hsl(240, 37%, 67%);
   border-color:white;
 }
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}:hover
 {
   color:white;
   border-color: hsl(240, 37%, 67%);
 }
 
-div.{{$Dot.ClassPadColorLevelPrefix}}{{$serviceName}}
+div.{{$Dot.ClassPadColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(250, 23%, 27%);
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(240, 37%, 67%);
   color:black;
   border-color:black;
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}:hover
 {
   background-color: hsl(240, 37%, 37%);
   color:white;
@@ -366,45 +366,45 @@ button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
 }
 
 {{else if eq $mod5 5}}
-/* color level {{$serviceName}} */
+/* color level {{$homeName}} */
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > h2.{{$Dot.ClassPanelHeadingLevelPrefix}}{{$homeName}}
 {
   color: hsl(350, 23%, 27%);
 }
 
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$serviceName}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(350, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}
 {
   background-color:hsl(350, 23%, 27%);
   color:hsl(10, 37%, 57%);
   border-color:white;
 }
-button.{{$Dot.ClassBackColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassBackColorLevelPrefix}}{{$homeName}}:hover
 {
   color:white;
   border-color:hsl(10, 37%, 57%);
 }
 
-div.{{$Dot.ClassPadColorLevelPrefix}}{{$serviceName}}
+div.{{$Dot.ClassPadColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(350, 23%, 27%);
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}
 {
   background-color: hsl(10, 37%, 57%);
   color:black;
   border-color:black;
 }
 
-button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$serviceName}}:hover
+button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}:hover
 {
   background-color: hsl(10, 37%, 37%);
   color:white;

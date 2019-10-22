@@ -20,7 +20,6 @@ func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) er
 		ImportDomainLPCMessage  string
 	}{
 		ApplicationGitPath:      builder.ImportPath,
-		Stores:                  builder.Stores,
 		ImportRendererPaneling:  folderpaths.ImportRendererPaneling,
 		ImportRendererNotJS:     folderpaths.ImportRendererNotJS,
 		ImportRendererViewTools: folderpaths.ImportRendererViewTools,

@@ -1,0 +1,89 @@
+
+title : Hello World
+
+importPath : github.com/josephbudd/hello
+
+homes :
+  - name : Home1
+    button :
+      name : Home1Button
+      label : Button 1
+      heading : Heading 1.
+      panels :
+        - name : Home1Button1Panel
+          buttons :
+            - name : Home1ButtonPanel1Button
+              label : 1 Button
+              panels :
+                - name : Home1ButtonPanel1ButtonPanel
+                  note : Home1Button 1Panel 1Button 1ButtonPanel
+                  markup : <p>Panel 1.</p>
+            - name : Home1ButtonPanel2Button
+              label : 2 Button
+              panels :
+                - name : Home1ButtonPanel2ButtonPanel
+                  note : Home1Button 1Panel 2Button 2ButtonPanel
+                  markup : <p>Panel 2.</p>
+  - name : Home2
+    button :
+      name : Home2Button
+      label : Button 2
+      heading : Heading 2.
+      panels :
+        - name : Home2Button1Panel
+          buttons :
+            - name : Home2Button1Panel1Button
+              label : 1 Button
+              panels :
+                - name : Home2Button1Panel1ButtonPanel
+                  note : Home2Button 1Panel 1Button Panel
+                  markup : <p>Panel 1.</p>
+            - name : Home2Button1Panel2Button
+              label : 2 Button
+              panels :
+                - name : Home2Button1Panel2ButtonPanel
+                  note : Home2Button 1Panel 2Button Panel
+                  markup : <p>Panel 2.</p>
+  - name : Home3
+    button :
+      name : Home3Button
+      label : Button 3
+      heading : Heading 3.
+      panels :
+        - name : Home3Button1Panel
+          tabs :
+            - name : Home3Button1Panel1Tab
+              label : Tab 1
+              panels :
+                - name : Home3Button1Panel1Tab1Panel
+                  note : Home3Button 1Panel 1Tab 1Panel
+                  markup : <p>Panel 1.</p>
+            - name : Home3Button1Panel2Tab
+              label : Tab 2
+              panels :
+                - name : Home3Button1Panel2Tab1Panel
+                  note : Home3Button 1Panel 2Tab 1Panel
+                  markup : <p>Panel 2.</p>
+  - name : Home4
+    button :
+      name : Home4Button
+      label : Button 4
+      heading : Heading 4.
+      panels :
+        - name : Home4Button1Panel
+          tabs :
+            - name : Home4Button1Panel1Tab
+              label : Tab 1
+              panels :
+                - name : Home4Button1Panel1Tab1Panel
+                  HVScroll : true
+                  note : Home4Button 1Panel 1Tab 1Panel
+                  markup : <p>Panel 1.</p>
+            - name : Home4Button1Panel2Tab
+              label : Tab 2
+              panels :
+                - name : Home4Button1Panel2Tab1Panel
+                  HVScroll : true
+                  note : Home4Button 1Panel 2Tab 1Panel
+                  markup : <p>Panel 2.</p>
+

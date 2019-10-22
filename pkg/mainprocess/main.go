@@ -14,19 +14,19 @@ func createMain(appPaths paths.ApplicationPathsI, data *templateData) (err error
 	fileNames := paths.GetFileNames()
 
 	fname := fileNames.MainDotGo
-	oPath := filepath.Join(folderpaths.Output, fname)
+	oPath := filepath.Join(folderpaths.OutputMainProcess, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.MainGo, data, appPaths); err != nil {
 		return
 	}
 
 	fname = fileNames.PanelMapDotGo
-	oPath = filepath.Join(folderpaths.Output, fname)
+	oPath = filepath.Join(folderpaths.OutputMainProcess, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.PanelMapGo, data, appPaths); err != nil {
 		return
 	}
 
 	fname = fileNames.ServeDotGo
-	oPath = filepath.Join(folderpaths.Output, fname)
+	oPath = filepath.Join(folderpaths.OutputMainProcess, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.ServeGo, data, appPaths); err != nil {
 		return
 	}
@@ -62,7 +62,7 @@ func RebuildStoresGo(appPaths paths.ApplicationPathsI, importPath string, boltSt
 		TrimSpace:                 strings.TrimSpace,
 	}
 	fname := fileNames.StoresDotGo
-	oPath := filepath.Join(folderpaths.Output, fname)
+	oPath := filepath.Join(folderpaths.OutputMainProcess, fname)
 	var temp string
 	if len(boltStoreNames) == 0 && len(remoteDBNames) == 0 {
 		temp = templates.NoStoresGo

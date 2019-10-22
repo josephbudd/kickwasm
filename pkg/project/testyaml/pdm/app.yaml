@@ -7,33 +7,33 @@ stores :
   - PriceDrop
   - PurchaseOrder
 
-services :
+homes :
   - name : PriceList
     button :
       name : PriceListsButton
       label : Price Lists
       heading : Manage Your Price Lists.
       panelFiles :
-        - services/price_lists/button_pad.yaml
+        - homes/price_lists/button_pad.yaml
   - name : Customer
     button :
       name : CustomersButton
       label : Customers
       heading : Manage Your Customers.
       panelFiles :
-        - services/customers/button_pad.yaml
+        - homes/customers/button_pad.yaml
   - name : PriceDrop
     button :
       name : PriceDropsButton
       label : Price Drops
       heading : Manage Your Price Drops.
       panelFiles :
-        - services/price_drops/button_pad.yaml
+        - homes/price_drops/button_pad.yaml
   - name : PurchaseOrder
     button :
       name : PurchaseOrdersButton
       label : Purchase Orders
       heading : Manage Your Purchase Orders.
       panelFiles :
-        - services/purchase_orders/button_pad.yaml
+        - homes/purchase_orders/button_pad.yaml
 

@@ -30,7 +30,7 @@ import (
 type Stores struct {
 {{ if gt (len .BoltStores) 0 }}	// Local bolt stores.
 {{ range (call .SameWidth .BoltStores) }}	{{.}} *storing.{{ (call $Dot.TrimSpace .) }}LocalBoltStore
-{{ end }}{{ end }} {{- if gt (len .RemoteDBs) 0 }}	// Remote databases.
+{{ end }}{{ end }} {{- if gt (len .RemoteDBs) 0 }}	// Remote APIs.
 {{ range (call .SameWidth .RemoteDBs) }}	{{.}} *storing.{{ (call $Dot.TrimSpace .) }}RemoteAPI
 {{ end }}{{ end }}}
 

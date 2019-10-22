@@ -17,15 +17,15 @@ func (sl *Slurper) slurpApplication(fpath string) (appInfo *ApplicationInfo, err
 	if appInfo, err = sl.checkApplicationInfo(bb, fpath); err != nil {
 		return
 	}
-	for _, service := range appInfo.Services {
-		if err = sl.slurpServiceButtonPanels(fpath, service.Button); err != nil {
+	for _, homeButton := range appInfo.Homes {
+		if err = sl.slurpHomeButtonPanels(fpath, homeButton); err != nil {
 			return
 		}
 	}
 	return
 }
 
-func (sl *Slurper) slurpServiceButtonPanels(parentFilePath string, button *ButtonInfo) (err error) {
+func (sl *Slurper) slurpHomeButtonPanels(parentFilePath string, button *ButtonInfo) (err error) {
 	if button.Panels == nil {
 		button.Panels = make([]*PanelInfo, 0, 5)
 	}

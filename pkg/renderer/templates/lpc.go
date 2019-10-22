@@ -1,7 +1,9 @@
 package templates
 
 // ChannelsGo is renderer/lpc/channels.go.
-const ChannelsGo = `{{ $Dot := . }}package lpc
+const ChannelsGo = `{{ $Dot := . }}// +build js, wasm
+
+package lpc
 
 import (
 	"encoding/json"
@@ -106,7 +108,13 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 		if err = json.Unmarshal(payload.Cargo, msg); err != nil {
 			return
 		}
-		cargo = msg{{ range $index, $name := .LPCNames }}
+		cargo = msg
+	case 1:
+			msg := &message.InitMainProcessToRenderer{}
+			if err = json.Unmarshal(payload.Cargo, msg); err != nil {
+				return
+			}
+			cargo = msg{{ range $index, $name := .LPCNames }}
 	case {{ call $Dot.Inc2 $index }}:
 		msg := &message.{{ $name }}MainProcessToRenderer{}
 		if err = json.Unmarshal(payload.Cargo, msg); err != nil {
@@ -122,7 +130,9 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 `
 
 // ClientGo is renderer/lpc/client.go
-const ClientGo = `package lpc
+const ClientGo = `// +build js, wasm
+
+package lpc
 
 import (
 	"fmt"
@@ -279,7 +289,7 @@ func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interfac
 					client.connection.Call("send", string(payload))
 				}
 			case <-client.QuitCh:
-				// each markup panel has a caller listener.
+				// each markup panel has a messenger with a message dispatcher go routine.
 				countWaiting := client.tools.CountMarkupPanels()
 				// func main
 				countWaiting++

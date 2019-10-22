@@ -1,7 +1,9 @@
 package templates
 
 // PanelPresenter is the genereric renderer panel presenter template.
-const PanelPresenter = `package {{call .PackageNameCase .PanelName}}
+const PanelPresenter = `// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import ({{ if .IsTabSiblingPanel }}
 	"strings"
@@ -21,11 +23,11 @@ import ({{ if .IsTabSiblingPanel }}
 type panelPresenter struct {
 	{{ if .IsTabSiblingPanel }}group          *panelGroup
 	controller     *panelController
-	caller         *panelCaller
+	messenger      *panelMessenger
 	tabPanelHeader js.Value
 	tabButton      js.Value{{else}}group      *panelGroup
 	controller *panelController
-	caller     *panelCaller{{ end }}
+	messenger  *panelMessenger{{ end }}
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 

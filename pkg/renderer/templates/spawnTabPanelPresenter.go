@@ -1,7 +1,9 @@
 package templates
 
 // SpawnPanelPresenter is the genereric renderer panel presenter template.
-const SpawnPanelPresenter = `package {{call .PackageNameCase .PanelName}}
+const SpawnPanelPresenter = `// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"syscall/js"
@@ -20,7 +22,7 @@ type panelPresenter struct {
 	uniqueID       uint64
 	group          *panelGroup
 	controller     *panelController
-	caller         *panelCaller
+	messenger      *panelMessenger
 	tabButton      js.Value
 	tabPanelHeader js.Value
 

@@ -169,10 +169,10 @@ type spawnTabData struct {
 
 func buildPanelNamePathMap(builder *project.Builder) (panelNamePathMap map[string][]string) {
 	panelNamePathMap = make(map[string][]string, 100)
-	serviceNames := builder.GenerateServiceNames()
-	servicePanelNamePathMap := builder.GenerateServiceSpawnTabEmptyInsidePanelNamePathMap()
-	for _, serviceName := range serviceNames {
-		pnpMap := servicePanelNamePathMap[serviceName]
+	homeNames := builder.GenerateHomeButtonNames()
+	homePanelNamePathMap := builder.GenerateHomeSpawnTabEmptyInsidePanelNamePathMap()
+	for _, homeName := range homeNames {
+		pnpMap := homePanelNamePathMap[homeName]
 		for panelName, panelPath := range pnpMap {
 			panelNamePathMap[panelName] = panelPath
 		}

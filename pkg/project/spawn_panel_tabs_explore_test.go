@@ -135,28 +135,28 @@ func TestSpawn(t *testing.T) {
 	builder := NewBuilder()
 	builder.Name = "name"
 	builder.Title = "title"
-	var service *Service
+	var home *Button
 	var err error
-	if service, err = getService("testyaml/spawn/service.yaml"); err != nil {
+	if home, err = getHome("testyaml/spawn/home.yaml"); err != nil {
 		t.Fatal(err)
 	}
-	spawnServices := []*Service{service}
-	if err = builder.BuildFromServices(spawnServices); err != nil {
+	spawnHomes := []*Button{home}
+	if err = builder.BuildFromHomes(spawnHomes); err != nil {
 		t.Fatal(err)
 	}
 	var bb []byte
-	if bb, err = yaml.Marshal(*builder.Services[0]); err != nil {
+	if bb, err = yaml.Marshal(*builder.Homes[0]); err != nil {
 		t.Fatal(err)
 	}
 	if string(bb) != spawnYamlString {
 		t.Fatal(string(bb) != spawnYamlString)
 	}
 
-	testGenerateServiceSpawnTabEmptyInsidePanelNamePathMap(t, builder)
-	testGenerateServiceSpawnTabButtonPanelGroups(t, builder)
+	testGenerateHomeSpawnTabEmptyInsidePanelNamePathMap(t, builder)
+	testGenerateHomeSpawnTabButtonPanelGroups(t, builder)
 }
 
-func testGenerateServiceSpawnTabEmptyInsidePanelNamePathMap(t *testing.T, builder *Builder) {
+func testGenerateHomeSpawnTabEmptyInsidePanelNamePathMap(t *testing.T, builder *Builder) {
 	wants := map[string]map[string][]string{
 		"Tabs": map[string][]string{
 			"HelloWorldTemplatePanel":      []string{"TabsButton", "TabsButtonTabBarPanel", "SecondTab", "HelloWorldTemplatePanel"},
@@ -166,23 +166,23 @@ func testGenerateServiceSpawnTabEmptyInsidePanelNamePathMap(t *testing.T, builde
 		},
 	}
 	var results map[string]map[string][]string
-	results = builder.GenerateServiceSpawnTabEmptyInsidePanelNamePathMap()
+	results = builder.GenerateHomeSpawnTabEmptyInsidePanelNamePathMap()
 	var found bool
-	var rService map[string][]string
-	if rService, found = results["Tabs"]; !found {
+	var rHome map[string][]string
+	if rHome, found = results["Tabs"]; !found {
 		t.Fatalf("results is %#v", results)
 	}
-	var wService map[string][]string
-	wService = wants["Tabs"]
-	if len(rService) != len(wService) {
-		t.Logf("len(rService) is %d, len(wService) is %d", len(rService), len(wService))
+	var wHome map[string][]string
+	wHome = wants["Tabs"]
+	if len(rHome) != len(wHome) {
+		t.Logf("len(rHome) is %d, len(wHome) is %d", len(rHome), len(wHome))
 		t.Fatalf("results is %#v", results)
 	}
 	var pName string
 	var wFolders []string
 	var rFolders []string
-	for pName, wFolders = range wService {
-		if rFolders, found = rService[pName]; !found {
+	for pName, wFolders = range wHome {
+		if rFolders, found = rHome[pName]; !found {
 			t.Logf("panel name %q not found in result.", pName)
 			t.Fatalf("results is %#v", results)
 		}
@@ -195,7 +195,7 @@ func testGenerateServiceSpawnTabEmptyInsidePanelNamePathMap(t *testing.T, builde
 	}
 }
 
-func testGenerateServiceSpawnTabButtonPanelGroups(t *testing.T, builder *Builder) {
+func testGenerateHomeSpawnTabButtonPanelGroups(t *testing.T, builder *Builder) {
 	tests := []struct {
 		name string
 		want map[string][]*TabPanelGroup
@@ -252,15 +252,15 @@ func testGenerateServiceSpawnTabButtonPanelGroups(t *testing.T, builder *Builder
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := builder.GenerateServiceSpawnTabButtonPanelGroups()
-			if err := checkGenerateServiceSpawnTabButtonPanelGroups(tt.want, got); err != nil {
+			got := builder.GenerateHomeSpawnTabButtonPanelGroups()
+			if err := checkGenerateHomeSpawnTabButtonPanelGroups(tt.want, got); err != nil {
 				t.Error("check error is " + err.Error())
 			}
 		})
 	}
 }
 
-func checkGenerateServiceSpawnTabButtonPanelGroups(want, got map[string][]*TabPanelGroup) (err error) {
+func checkGenerateHomeSpawnTabButtonPanelGroups(want, got map[string][]*TabPanelGroup) (err error) {
 	var found bool
 	var wantTabName string
 	var gotTabPanelGroups []*TabPanelGroup

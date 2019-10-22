@@ -26,7 +26,7 @@ func (b *Button) GetHTMLID() string {
 }
 
 // toButtonHTML returns the button's button html
-func (b *Button) toButtonHTML(idPrefix string, backid string, colorLevel string) *html.Node {
+func (b *Button) toButtonHTML(idPrefix, backid, colorLevel string) *html.Node {
 	b.HTMLID = fmt.Sprintf("%s-%s", idPrefix, b.ID)
 	button := &html.Node{
 		Type:     html.ElementNode,
@@ -46,7 +46,7 @@ func (b *Button) toButtonHTML(idPrefix string, backid string, colorLevel string)
 	return button
 }
 
-func (builder *Builder) toButtonSliderPanelsHTML(serviceName string, b *Button, locations []string, backid string, seen bool, addLocations bool) []*html.Node {
+func (builder *Builder) toButtonSliderPanelsHTML(homeName string, b *Button, locations []string, backid string, seen bool, addLocations bool) []*html.Node {
 	//markupLocations := locations[:]
 	locations = append(locations, b.Location)
 	// notes
@@ -72,22 +72,22 @@ func (builder *Builder) toButtonSliderPanelsHTML(serviceName string, b *Button, 
 		// panel group the first in each group must be tobeseen
 		if len(p.Buttons) > 0 {
 			// this panel is a button pad.
-			buttonPadPanel := builder.toSliderButtonPadPanelHTML(serviceName, p, locations, b.Heading, (seen && (i == 0)), addLocations)
+			buttonPadPanel := builder.toSliderButtonPadPanelHTML(homeName, p, locations, b.Heading, (seen && (i == 0)), addLocations)
 			panels = append(panels, buttonPadPanel)
 			seen = false
 			for _, b2 := range p.Buttons {
-				buttonPanels := builder.toButtonSliderPanelsHTML(serviceName, b2, locations, p.HTMLID, true, addLocations)
+				buttonPanels := builder.toButtonSliderPanelsHTML(homeName, b2, locations, p.HTMLID, true, addLocations)
 				panels = append(panels, buttonPanels...)
 			}
 		} else if len(p.Tabs) > 0 {
 			// this panel is a tab bar
-			tabBarPanel := builder.toSliderTabBarPanelHTML(serviceName, p, locations, b.Heading, seen, addLocations)
+			tabBarPanel := builder.toSliderTabBarPanelHTML(homeName, p, locations, b.Heading, seen, addLocations)
 			panels = append(panels, tabBarPanel)
 			seen = false
 		} else {
 			// this panel is a markup panel.
 			builder.MarkupPanelCount++
-			markupPanel, innerid := builder.toSliderMarkupPanelHTML(serviceName, p, b, locations, (seen && (i == 0)), addLocations)
+			markupPanel, innerid := builder.toSliderMarkupPanelHTML(homeName, p, b, locations, (seen && (i == 0)), addLocations)
 			b.PanelInnerHTMLID = innerid
 			panels = append(panels, markupPanel)
 			seen = false

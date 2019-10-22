@@ -1,7 +1,9 @@
 package templates
 
 // SpawnTabPanelController is the genereric renderer panel controller template.
-const SpawnTabPanelController = `package {{call .PackageNameCase .PanelName}}
+const SpawnTabPanelController = `// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"
@@ -21,7 +23,7 @@ type panelController struct {
 	panel     *spawnedPanel
 	group     *panelGroup
 	presenter *panelPresenter
-	caller    *panelCaller
+	messenger *panelMessenger
 	eventCh   chan viewtools.Event
 	unspawn   func() error
 
@@ -107,12 +109,11 @@ func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn in
 	r := &record.CustomerRecord{
 		Name: name,
 	}
-	controller.caller.AddCustomer(r)
+	controller.messenger.AddCustomer(r)
 	return
 }
 
 */
-
 
 func (controller *panelController) UnSpawning() {
 

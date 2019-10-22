@@ -1,0 +1,14 @@
+name : Home2
+
+button :
+  id : b2
+  name : TwoButton
+  label : Two
+  heading : Button 2 Heading.
+  panels :
+    - name : ThreePanel
+      note : p3 note
+      markup : <p>Panel 3-1</p>
+    - name : FourPanel
+      note : p4 note
+      markup : <p>Panel 4-1</p>

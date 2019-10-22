@@ -1,7 +1,9 @@
 package templates
 
 // NotJSStyleGo is the file renderer/notjs/style.go
-var NotJSStyleGo = `package notjs
+var NotJSStyleGo = `// +build js, wasm
+
+package notjs
 
 import (
 	"fmt"

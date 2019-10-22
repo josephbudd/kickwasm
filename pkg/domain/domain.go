@@ -14,14 +14,13 @@ import (
 type templateData struct {
 	BackTick string
 
-	ApplicationName                    string
-	ApplicationGitPath                 string
-	Stores                             []string
-	ServiceNames                       []string
-	LowerCamelCase                     func(string) string
-	CamelCase                          func(string) string
-	ServiceTemplatePanelNames          string
-	ServiceEmptyInsidePanelNamePathMap string
+	ApplicationName                 string
+	ApplicationGitPath              string
+	Stores                          []string
+	LowerCamelCase                  func(string) string
+	CamelCase                       func(string) string
+	HomeTemplatePanelNames          string
+	HomeEmptyInsidePanelNamePathMap string
 
 	ImportDomainDataFilepaths string
 
@@ -51,14 +50,12 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 	data := &templateData{
 		BackTick: "`",
 
-		ApplicationName:                    appname,
-		ApplicationGitPath:                 builder.ImportPath,
-		Stores:                             builder.Stores,
-		ServiceNames:                       builder.GenerateServiceNames(),
-		LowerCamelCase:                     cases.LowerCamelCase,
-		CamelCase:                          cases.CamelCase,
-		ServiceEmptyInsidePanelNamePathMap: strings.Replace(fmt.Sprintf("%#v", builder.GenerateServiceEmptyInsidePanelNamePathMap()), ":", ": ", -1),
-		ServiceTemplatePanelNames:          fmt.Sprintf("%#v", builder.GenerateServiceTemplatePanelName()),
+		ApplicationName:                 appname,
+		ApplicationGitPath:              builder.ImportPath,
+		LowerCamelCase:                  cases.LowerCamelCase,
+		CamelCase:                       cases.CamelCase,
+		HomeEmptyInsidePanelNamePathMap: strings.Replace(fmt.Sprintf("%#v", builder.GenerateHomeEmptyInsidePanelNamePathMap()), ":", ": ", -1),
+		HomeTemplatePanelNames:          fmt.Sprintf("%#v", builder.GenerateHomeTemplatePanelName()),
 
 		// domain
 

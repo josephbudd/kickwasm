@@ -5,31 +5,33 @@ type SpawnFolders struct {
 	Position int
 	Spawn    bool
 	Folders  []string
+	HVScroll bool
 }
 
-// GenerateServiceEmptyInsidePanelNameSpawnedPathMap returns a map of
-//   each service name mapped to
+// GenerateHomeEmptyInsidePanelNameSpawnedPathMap returns a map of
+//   each home name mapped to
 //   a map of each markup panel's name mapped to if spawned and a slice of that panel's relevant path
-func (builder *Builder) GenerateServiceEmptyInsidePanelNameSpawnedPathMap() map[string]map[string]*SpawnFolders {
-	serviceEmptyInsidePanelNamePathMap := make(map[string]map[string]*SpawnFolders)
-	for si, s := range builder.Services {
+func (builder *Builder) GenerateHomeEmptyInsidePanelNameSpawnedPathMap() map[string]map[string]*SpawnFolders {
+	homeEmptyInsidePanelNamePathMap := make(map[string]map[string]*SpawnFolders)
+	for i, homeButton := range builder.Homes {
 		panelNameSpawnPath := make(map[string]*SpawnFolders)
-		for pi, p := range s.Button.Panels {
+		for j, p := range homeButton.Panels {
 			folderList := make([]string, 1, 10)
-			folderList[0] = s.Button.ID
+			folderList[0] = homeButton.ID
 			spawnPath := &SpawnFolders{
-				Position: si + pi,
+				Position: i + j,
 				Spawn:    false,
 				Folders:  folderList,
 			}
-			generateServiceEmptyInsidePanelNameSpawnedPathMap(p, spawnPath, panelNameSpawnPath)
+			generateHomeEmptyInsidePanelNameSpawnedPathMap(p, spawnPath, panelNameSpawnPath)
 		}
-		serviceEmptyInsidePanelNamePathMap[s.Name] = panelNameSpawnPath
+		homeEmptyInsidePanelNamePathMap[homeButton.ID] = panelNameSpawnPath
 	}
-	return serviceEmptyInsidePanelNamePathMap
+	return homeEmptyInsidePanelNamePathMap
 }
-func generateServiceEmptyInsidePanelNameSpawnedPathMap(panel *Panel, spawnPath *SpawnFolders, panelNameSpawnPath map[string]*SpawnFolders) {
+func generateHomeEmptyInsidePanelNameSpawnedPathMap(panel *Panel, spawnPath *SpawnFolders, panelNameSpawnPath map[string]*SpawnFolders) {
 	if len(panel.Template) > 0 {
+		spawnPath.HVScroll = panel.HVScroll
 		panelNameSpawnPath[panel.Name] = spawnPath
 		return
 	}
@@ -45,7 +47,7 @@ func generateServiceEmptyInsidePanelNameSpawnedPathMap(panel *Panel, spawnPath *
 			Folders:  newFolderList,
 		}
 		for _, p := range b.Panels {
-			generateServiceEmptyInsidePanelNameSpawnedPathMap(p, newSpawnPath, panelNameSpawnPath)
+			generateHomeEmptyInsidePanelNameSpawnedPathMap(p, newSpawnPath, panelNameSpawnPath)
 
 		}
 	}
@@ -59,7 +61,7 @@ func generateServiceEmptyInsidePanelNameSpawnedPathMap(panel *Panel, spawnPath *
 			Folders:  newFolderList,
 		}
 		for _, p := range t.Panels {
-			generateServiceEmptyInsidePanelNameSpawnedPathMap(p, newSpawnPath, panelNameSpawnPath)
+			generateHomeEmptyInsidePanelNameSpawnedPathMap(p, newSpawnPath, panelNameSpawnPath)
 		}
 	}
 }

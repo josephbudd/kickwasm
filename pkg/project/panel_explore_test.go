@@ -13,48 +13,46 @@ func TestExplore(t *testing.T) {
 	builder.Name = "name"
 	builder.Title = "title"
 	var err error
-	var okServices []*Service
-	okServices, err = buildShortOkServices()
+	var okHomes []*Button
+	okHomes, err = buildShortOkHomes()
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = builder.BuildFromServices(okServices)
+	err = builder.BuildFromHomes(okHomes)
 	if err != nil {
 		t.Fatal(err)
 	}
-	// ok service names
-	testGenerateServiceNames(t, builder)
 	// generate the html
 	_, err = builder.ToHTML("masterid", false)
 	if err != nil {
 		t.Fatal(err)
 	}
-	testGenerateServiceEmptyPanelIDsMap(t, builder)
+	testGenerateHomeEmptyPanelIDsMap(t, builder)
 	testGenerateTabBarIDStartPanelIDMap(t, builder)
-	testGenerateServiceButtonPanelGroups(t, builder)
-	testgenerateServicePanelNameTemplateMap(t, builder)
-	testGenerateServiceTemplatePanelName(t, builder)
+	testGenerateHomeButtonPanelGroups(t, builder)
+	testgenerateHomePanelNameTemplateMap(t, builder)
+	testGenerateHomeTemplatePanelName(t, builder)
 	// deep
-	var deepServices []*Service
-	if deepServices, err = buildDeepServices(); err != nil {
+	var deepHomes []*Button
+	if deepHomes, err = buildDeepHomes(); err != nil {
 		t.Fatal(err)
 	}
 	builder2 := NewBuilder()
-	if err = builder2.BuildFromServices(deepServices); err != nil {
+	if err = builder2.BuildFromHomes(deepHomes); err != nil {
 		t.Fatal(err)
 	}
 	if _, err = builder2.ToHTML("masterid", false); err != nil {
 		t.Fatal(err)
 	}
-	testBuilderGenerateServiceEmptyInsidePanelNamePathMap(t, builder2)
-	testBuilderGenerateServicePanelNamePanelMap(t, builder2)
+	testBuilderGenerateHomeEmptyInsidePanelNamePathMap(t, builder2)
+	testBuilderGenerateHomePanelNamePanelMap(t, builder2)
 
-	var longOkServices []*Service
-	if longOkServices, err = buildLongOkServices(); err != nil {
+	var longOkHomes []*Button
+	if longOkHomes, err = buildLongOkHomes(); err != nil {
 		t.Fatal(err)
 	}
 	builder3 := NewBuilder()
-	if err = builder3.BuildFromServices(longOkServices); err != nil {
+	if err = builder3.BuildFromHomes(longOkHomes); err != nil {
 		t.Fatal(err)
 	}
 	if _, err = builder3.ToHTML("masterid", false); err != nil {
@@ -64,9 +62,9 @@ func TestExplore(t *testing.T) {
 	testGenerateTabIDsPanelIDs(t, builder3)
 }
 
-func testGenerateServiceButtonPanelGroups(t *testing.T, builder *Builder) {
+func testGenerateHomeButtonPanelGroups(t *testing.T, builder *Builder) {
 	wantStr := `
-Service1:
+Home1:
   - buttonname: OneButton
     buttonid: masterid-home-pad-OneButton
     panelnamesidmap:
@@ -86,7 +84,7 @@ Service1:
         HTMLID: masterid-home-pad-OneButton-TwoPanel
         TabBarHTMLID: ""
         UnderTabBarHTMLID: ""
-Service2:
+Home2:
   - buttonname: TwoButton
     buttonid: masterid-home-pad-TwoButton
     panelnamesidmap:
@@ -110,13 +108,13 @@ Service2:
 	if err := yaml.Unmarshal([]byte(wantStr), &wants); err != nil {
 		t.Fatal(err)
 	}
-	results := builder.GenerateServiceButtonPanelGroups()
+	results := builder.GenerateHomeButtonPanelGroups()
 	//bb, _ := yaml.Marshal(results)
 	//t.Fatal(string(bb))
-	for service, wbpg := range wants {
-		rbpg, ok := results[service]
+	for home, wbpg := range wants {
+		rbpg, ok := results[home]
 		if !ok {
-			t.Errorf(`GenerateServiceButtonPanelGroups service %s is missing`, service)
+			t.Errorf(`GenerateHomeButtonPanelGroups home %s is missing`, home)
 		} else {
 			for i, wbp := range wbpg {
 				rbp := rbpg[i]
@@ -144,38 +142,25 @@ func testGenerateTabBarIDStartPanelIDMap(t *testing.T, builder *Builder) {
 	}
 }
 
-func testGenerateServiceEmptyPanelIDsMap(t *testing.T, builder *Builder) {
+func testGenerateHomeEmptyPanelIDsMap(t *testing.T, builder *Builder) {
 	wants := map[string][]string{
-		"Service1": {
+		"Home1": {
 			"masterid-home-pad-OneButton-OnePanel",
 			"masterid-home-pad-OneButton-TwoPanel",
 		},
-		"Service2": {
+		"Home2": {
 			"masterid-home-pad-TwoButton-ThreePanel",
 			"masterid-home-pad-TwoButton-FourPanel",
 		},
 	}
 
-	results := builder.GenerateServiceEmptyPanelIDsMap()
+	results := builder.GenerateHomeEmptyPanelIDsMap()
 	if ok := reflect.DeepEqual(results, wants); !ok {
-		t.Fatalf("builder.GenerateServiceEmptyPanelIDsMap() generated %#v\n\nwant: %#v", results, wants)
+		t.Fatalf("builder.GenerateHomeEmptyPanelIDsMap() generated %#v\n\nwant: %#v", results, wants)
 	}
 }
 
-func testGenerateServiceNames(t *testing.T, builder *Builder) {
-	correctNamesAnswer := []string{"Service1", "Service2"}
-	serviceNames := builder.GenerateServiceNames()
-	if len(serviceNames) != len(correctNamesAnswer) {
-		t.Fatalf(`builder.GenerateServiceNames() len is %d not %d`, len(serviceNames), len(correctNamesAnswer))
-	}
-	for i, name := range serviceNames {
-		if correctNamesAnswer[i] != name {
-			t.Errorf(`builder.GenerateServiceNames() [%d] != %q its %q`, i, correctNamesAnswer[i], name)
-		}
-	}
-}
-
-func testgenerateServicePanelNameTemplateMap(t *testing.T, builder *Builder) {
+func testgenerateHomePanelNameTemplateMap(t *testing.T, builder *Builder) {
 	tests := []struct {
 		name string
 		want map[string]map[string]string
@@ -184,11 +169,11 @@ func testgenerateServicePanelNameTemplateMap(t *testing.T, builder *Builder) {
 		{
 			name: "a",
 			want: map[string]map[string]string{
-				"Service1": {
+				"Home1": {
 					"OnePanel": "\n<!--\n\nPanel name: \"OnePanel\"\n\nPanel note: p1 note\n\nThis is one of a group of 2 panels displayed when the \"One\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-OneButton-TwoPanel-inner-user-content\n  * Name: TwoPanel\n  * Note: p2 note\n\n-->\n\n<p>Panel 1-1</p>\n",
 					"TwoPanel": "\n<!--\n\nPanel name: \"TwoPanel\"\n\nPanel note: p2 note\n\nThis is one of a group of 2 panels displayed when the \"One\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-OneButton-OnePanel-inner-user-content\n  * Name: OnePanel\n  * Note: p1 note\n\n-->\n\n<p>Panel 2-1</p>\n",
 				},
-				"Service2": {
+				"Home2": {
 					"ThreePanel": "\n<!--\n\nPanel name: \"ThreePanel\"\n\nPanel note: p3 note\n\nThis is one of a group of 2 panels displayed when the \"Two\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-TwoButton-FourPanel-inner-user-content\n  * Name: FourPanel\n  * Note: p4 note\n\n-->\n\n<p>Panel 3-1</p>\n",
 					"FourPanel":  "\n<!--\n\nPanel name: \"FourPanel\"\n\nPanel note: p4 note\n\nThis is one of a group of 2 panels displayed when the \"Two\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-TwoButton-ThreePanel-inner-user-content\n  * Name: ThreePanel\n  * Note: p3 note\n\n-->\n\n<p>Panel 4-1</p>\n",
 				},
@@ -197,14 +182,14 @@ func testgenerateServicePanelNameTemplateMap(t *testing.T, builder *Builder) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := builder.GenerateServicePanelNameTemplateMap(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Builder.GenerateServicePanelNameTemplateMap() = %#v, want %v", got, tt.want)
+			if got := builder.GenerateHomePanelNameTemplateMap(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Builder.GenerateHomePanelNameTemplateMap() = %#v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func testGenerateServiceTemplatePanelName(t *testing.T, builder *Builder) {
+func testGenerateHomeTemplatePanelName(t *testing.T, builder *Builder) {
 	tests := []struct {
 		name string
 		want map[string][]string
@@ -213,11 +198,11 @@ func testGenerateServiceTemplatePanelName(t *testing.T, builder *Builder) {
 		{
 			name: "wtf",
 			want: map[string][]string{
-				"Service2": {
+				"Home2": {
 					"ThreePanel",
 					"FourPanel",
 				},
-				"Service1": {
+				"Home1": {
 					"OnePanel",
 					"TwoPanel",
 				},
@@ -226,14 +211,14 @@ func testGenerateServiceTemplatePanelName(t *testing.T, builder *Builder) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := builder.GenerateServiceTemplatePanelName(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Builder.GenerateServiceTemplatePanelName() = %#v, want %v", got, tt.want)
+			if got := builder.GenerateHomeTemplatePanelName(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Builder.GenerateHomeTemplatePanelName() = %#v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func testBuilderGenerateServiceEmptyInsidePanelNamePathMap(t *testing.T, builder *Builder) {
+func testBuilderGenerateHomeEmptyInsidePanelNamePathMap(t *testing.T, builder *Builder) {
 	tests := []struct {
 		name string
 		want map[string]map[string][]string
@@ -242,7 +227,7 @@ func testBuilderGenerateServiceEmptyInsidePanelNamePathMap(t *testing.T, builder
 		{
 			name: "test",
 			want: map[string]map[string][]string{
-				"Service1": {
+				"Home1": {
 					"OneOnePanel": {"OneButton", "OnePanel", "OneOneButton"},
 					"TwoOnePanel": {"OneButton", "TwoPanel", "TwoOneButton"},
 				},
@@ -251,16 +236,16 @@ func testBuilderGenerateServiceEmptyInsidePanelNamePathMap(t *testing.T, builder
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := builder.GenerateServiceEmptyInsidePanelNamePathMap(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Builder.GenerateServiceEmptyInsidePanelNamePathMap() = %#v, want %v", got, tt.want)
+			if got := builder.GenerateHomeEmptyInsidePanelNamePathMap(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Builder.GenerateHomeEmptyInsidePanelNamePathMap() = %#v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func testBuilderGenerateServicePanelNamePanelMap(t *testing.T, builder *Builder) {
+func testBuilderGenerateHomePanelNamePanelMap(t *testing.T, builder *Builder) {
 	wantStr := `
-Service1:
+Home1:
   OneOnePanel:
     id: OneOnePanel
     name: OneOnePanel
@@ -321,11 +306,11 @@ Service1:
 	if err := yaml.Unmarshal([]byte(wantStr), &want); err != nil {
 		t.Fatal(err)
 	}
-	got := builder.GenerateServicePanelNamePanelMap()
-	for wService, wPanelNamePanelMap := range want {
-		gPanelNamePanelMap, ok := got[wService]
+	got := builder.GenerateHomePanelNamePanelMap()
+	for wHome, wPanelNamePanelMap := range want {
+		gPanelNamePanelMap, ok := got[wHome]
 		if !ok {
-			t.Errorf("service %q not found in result.", wService)
+			t.Errorf("home %q not found in result.", wHome)
 			return
 		}
 		for wName, wPanel := range wPanelNamePanelMap {

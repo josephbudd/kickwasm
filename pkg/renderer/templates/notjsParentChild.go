@@ -1,7 +1,9 @@
 package templates
 
 // NotJSParentChildGo is the file renderer/notjs/parentChild.go
-var NotJSParentChildGo = `package notjs
+var NotJSParentChildGo = `// +build js, wasm
+
+package notjs
 
 import (
 	"syscall/js"

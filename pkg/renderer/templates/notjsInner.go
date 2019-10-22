@@ -1,7 +1,9 @@
 package templates
 
 // NotJSInnerGo is the file renderer/notjs/inner.go
-var NotJSInnerGo = `package notjs
+var NotJSInnerGo = `// +build js, wasm
+
+package notjs
 
 import "syscall/js"
 

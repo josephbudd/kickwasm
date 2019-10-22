@@ -16,12 +16,12 @@ import (
 func createTabSpawnPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()
 	fileNames := paths.GetFileNames()
-	servicePanelNamePathMap := builder.GenerateServiceSpawnTabEmptyInsidePanelNamePathMap()
-	serviceTabPanelGroups := builder.GenerateServiceSpawnTabButtonPanelGroups()
-	serviceNames := builder.GenerateServiceNames()
-	for _, serviceName := range serviceNames {
-		panelNamePathMap := servicePanelNamePathMap[serviceName]
-		tabPanelGroups := serviceTabPanelGroups[serviceName]
+	homePanelNamePathMap := builder.GenerateHomeSpawnTabEmptyInsidePanelNamePathMap()
+	homeTabPanelGroups := builder.GenerateHomeSpawnTabButtonPanelGroups()
+	homeNames := builder.GenerateHomeButtonNames()
+	for _, homeName := range homeNames {
+		panelNamePathMap := homePanelNamePathMap[homeName]
+		tabPanelGroups := homeTabPanelGroups[homeName]
 		for _, tabPanelGroup := range tabPanelGroups {
 			// make this tab's group
 			panelGroup := make([]*project.Panel, 0, 5)
@@ -99,9 +99,9 @@ func createTabSpawnPanels(appPaths paths.ApplicationPathsI, builder *project.Bui
 				if err = templates.ProcessTemplate(fname, oPath, templates.SpawnTabPanelAPI, data, appPaths); err != nil {
 					return
 				}
-				fname = fileNames.CallerDotGo
+				fname = fileNames.MessengerDotGo
 				oPath = filepath.Join(folderpath, fname)
-				if err = templates.ProcessTemplate(fname, oPath, templates.SpawnTabPanelCaller, data, appPaths); err != nil {
+				if err = templates.ProcessTemplate(fname, oPath, templates.SpawnTabPanelMessenger, data, appPaths); err != nil {
 					return
 				}
 				fname = fileNames.ControllerDotGo

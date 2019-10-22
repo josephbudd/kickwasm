@@ -1,7 +1,9 @@
 package templates
 
 // PanelController is the genereric renderer panel controller template.
-const PanelController = `package {{call .PackageNameCase .PanelName}}
+const PanelController = `// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"
@@ -19,7 +21,7 @@ import (
 type panelController struct {
 	group     *panelGroup
 	presenter *panelPresenter
-	caller    *panelCaller
+	messenger *panelMessenger
 	eventCh   chan viewtools.Event
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
@@ -97,7 +99,7 @@ func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn in
 	r := &record.Customer{
 		Name: name,
 	}
-	controller.caller.AddCustomer(r)
+	controller.messenger.AddCustomer(r)
 	return
 }
 

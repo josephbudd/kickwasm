@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsGroups is the renderer/viewtools/groups.go template.
-const ViewToolsGroups = `package viewtools
+const ViewToolsGroups = `// +build js, wasm
+
+package viewtools
 
 import (
 	"syscall/js"
@@ -195,8 +197,8 @@ func (tools *Tools) hideInGroup(target js.Value, showClass, hideClass string) (i
 func (tools *Tools) initializeGroups() {
 	// build the buttonPanelsMap
 	var buttonid string
-	var panel js.Value{{range $service, $buttonPanelGroups := .ServiceButtonPanelGroups}}{{range $buttonPanelGroup := $buttonPanelGroups}}
-	// {{$service}} {{$buttonPanelGroup.ButtonName}} button.
+	var panel js.Value{{range $home, $buttonPanelGroups := .HomeButtonPanelGroups}}{{range $buttonPanelGroup := $buttonPanelGroups}}
+	// {{$home}} {{$buttonPanelGroup.ButtonName}} button.
 	buttonid = "{{$buttonPanelGroup.ButtonID}}"
 	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5){{range $name, $panel := $buttonPanelGroup.PanelNamesIDMap}}
 	panel = tools.NotJS.GetElementByID("{{$panel.HTMLID}}")

@@ -1,7 +1,9 @@
 package templates
 
 // Panel is the genereric renderer panel template.
-const Panel = `{{$Dot := .}}package {{call .PackageNameCase .PanelName}}
+const Panel = `{{$Dot := .}}// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"github.com/pkg/errors"
@@ -18,12 +20,12 @@ import (
 
 */
 
-// Panel has a controller, presenter and caller.
+// Panel has a controller, presenter and messenger.
 // It also has show panel funcs for each panel in this panel group.
 type Panel struct {
 	controller *panelController
 	presenter  *panelPresenter
-	caller     *panelCaller
+	messenger  *panelMessenger
 }
 
 // NewPanel constructs a new panel.
@@ -52,27 +54,27 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 		tabPanelHeader: notJS.GetElementByID("{{.PanelH3ID}}"),
 		tabButton: notJS.GetElementByID("{{.TabButtonID}}"),{{ else }}		group: group,{{ end }}
 	}
-	caller := &panelCaller{
+	messenger := &panelMessenger{
 		group: group,
 	}
 
 	/* NOTE TO DEVELOPER. Step 1 of 1.
 
-	// Set any controller, presenter or caller members that you added.
+	// Set any controller, presenter or messenger members that you added.
 	// Use your custom help funcs if needed.
 
 	// example:
 
-	caller.state = help.GetStateAdd()
+	messenger.state = help.GetStateAdd()
 
 	*/
 
 	controller.presenter = presenter
-	controller.caller = caller
+	controller.messenger = messenger
 	presenter.controller = controller
-	presenter.caller = caller
-	caller.controller = controller
-	caller.presenter = presenter
+	presenter.messenger = messenger
+	messenger.controller = controller
+	messenger.presenter = presenter
 
 	// completions
 	if err = group.defineMembers(); err != nil {
@@ -89,19 +91,19 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	panel = &Panel{
 		controller: controller,
 		presenter:  presenter,
-		caller:     caller,
+		messenger:  messenger,
 	}
 	return
 }
 
 // StartDispatchers starts the event and message dispatchers.
 func (panel *Panel) StartDispatchers() {
-	panel.caller.dispatchMessages()
+	panel.messenger.dispatchMessages()
 }
 
-// InitialCalls runs the first code that the panel needs to run.
-func (panel *Panel) InitialCalls() {
+// InitialJobs runs the first code that the panel needs to run.
+func (panel *Panel) InitialJobs() {
 	panel.controller.initialCalls()
-	panel.caller.initialCalls()
+	panel.messenger.initialSends()
 }
 `

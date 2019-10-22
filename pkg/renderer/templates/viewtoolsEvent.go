@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsEventGo is the renderer/viewtools/event.go template.
-const ViewToolsEventGo = `package viewtools
+const ViewToolsEventGo = `// +build js, wasm
+
+package viewtools
 
 import "syscall/js"
 

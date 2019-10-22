@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": ".",
+		},
+		{
+			"path": "../domain"
+		},
+	],
+	"settings": {
+		"go":{
+			"toolsEnvVars":{
+				"GOARCH":"",
+				"GOOS":"",
+			},
+			"testEnvVars": {
+				"GOARCH":"",
+				"GOOS":"",
+			},
+		},
+	},
+}

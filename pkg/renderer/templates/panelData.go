@@ -1,7 +1,9 @@
 package templates
 
 // PanelData is the genereric renderer panel template.
-const PanelData = `{{$Dot := .}}package {{call .PackageNameCase .PanelName}}
+const PanelData = `{{$Dot := .}}// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"syscall/js"

@@ -1,7 +1,9 @@
 package templates
 
 // MainGo is the renderer/main.go template.
-const MainGo = `package main
+const MainGo = `// +build js, wasm
+
+package main
 
 import (
 	"log"
@@ -46,7 +48,7 @@ func main() {
 	host, port := notJS.HostPort()
 	client := lpc.NewClient(host, port, tools, quitChan, eojChan, receiveChan, sendChan)
 
-	// finish initializing the caller client.
+	// finish initializing the messenger client.
 	err := client.Connect(func() {
 		if er := doPanels(quitChan, eojChan, receiveChan, sendChan, tools, notJS, help); er != nil {
 			errmsg := er.Error()

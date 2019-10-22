@@ -4,7 +4,7 @@ importPath : github.com/josephbudd/kickwasm/examples/xxx
 stores :
   - XXX
 
-services :
+homes :
   - name : XXX
     button :
       label : Click here for the next color level.

@@ -1,7 +1,9 @@
 package templates
 
 // NotJSEventsGo is the file renderer/notjs/events.go
-var NotJSEventsGo = `package notjs
+var NotJSEventsGo = `// +build js, wasm
+
+package notjs
 
 import "syscall/js"
 

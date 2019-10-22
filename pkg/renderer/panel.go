@@ -16,13 +16,13 @@ import (
 func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()
 	fileNames := paths.GetFileNames()
-	servicePanelNamePathMap := builder.GenerateServiceEmptyInsidePanelNamePathMap()
-	serviceButtonPanelGroups := builder.GenerateServiceButtonPanelGroups()
-	serviceNames := builder.GenerateServiceNames()
-	for _, serviceName := range serviceNames {
-		panelNamePathMap := servicePanelNamePathMap[serviceName]
-		serviceButtonPanelGroup := serviceButtonPanelGroups[serviceName]
-		for _, buttonPanelGroups := range serviceButtonPanelGroup {
+	homePanelNamePathMap := builder.GenerateHomeEmptyInsidePanelNamePathMap()
+	homeButtonPanelGroups := builder.GenerateHomeButtonPanelGroups()
+	homeNames := builder.GenerateHomeButtonNames()
+	for _, homeName := range homeNames {
+		panelNamePathMap := homePanelNamePathMap[homeName]
+		homeButtonPanelGroup := homeButtonPanelGroups[homeName]
+		for _, buttonPanelGroups := range homeButtonPanelGroup {
 			// make this panel's group
 			panelGroup := make([]*project.Panel, 0, 5)
 			for _, panel := range buttonPanelGroups.PanelNamesIDMap {
@@ -119,9 +119,9 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 				if err = templates.ProcessTemplate(fname, oPath, templates.PanelPresenter, data, appPaths); err != nil {
 					return
 				}
-				fname = fileNames.CallerDotGo
+				fname = fileNames.MessengerDotGo
 				oPath = filepath.Join(folderpath, fname)
-				if err = templates.ProcessTemplate(fname, oPath, templates.PanelCaller, data, appPaths); err != nil {
+				if err = templates.ProcessTemplate(fname, oPath, templates.PanelMessenger, data, appPaths); err != nil {
 					return
 				}
 			}

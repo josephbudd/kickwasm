@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsTabBar is the renderer/viewtools/tabbar.go template.
-const ViewToolsTabBar = `package viewtools
+const ViewToolsTabBar = `// +build js, wasm
+
+package viewtools
 
 import (
 	"strings"

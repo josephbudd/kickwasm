@@ -1,7 +1,9 @@
 package templates
 
 // ViewTools is the renderer/viewtools/viewtools.go template.
-const ViewTools = `package viewtools
+const ViewTools = `// +build js, wasm
+
+package viewtools
 
 import (
 	"syscall/js"

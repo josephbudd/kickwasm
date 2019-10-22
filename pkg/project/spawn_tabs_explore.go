@@ -5,23 +5,23 @@ import (
 	"strings"
 )
 
-// GenerateServiceSpawnTabEmptyInsidePanelNamePathMap returns a map of
-//   each service name mapped to
+// GenerateHomeSpawnTabEmptyInsidePanelNamePathMap returns a map of
+//   each home name mapped to
 //   a map of each markup panel's name mapped to a slice of that panel's full relevant path
-func (builder *Builder) GenerateServiceSpawnTabEmptyInsidePanelNamePathMap() map[string]map[string][]string {
-	serviceEmptyInsidePanelNamePathMap := make(map[string]map[string][]string)
-	for _, s := range builder.Services {
+func (builder *Builder) GenerateHomeSpawnTabEmptyInsidePanelNamePathMap() map[string]map[string][]string {
+	homeEmptyInsidePanelNamePathMap := make(map[string]map[string][]string)
+	for _, homeButton := range builder.Homes {
 		panelNamePathMap := make(map[string][]string)
-		for _, p := range s.Button.Panels {
+		for _, p := range homeButton.Panels {
 			folderList := make([]string, 1, 10)
-			folderList[0] = s.Button.ID
-			generateServiceSpawnTabEmptyInsidePanelNamePathMap(p, folderList, panelNamePathMap)
+			folderList[0] = homeButton.ID
+			generateHomeSpawnTabEmptyInsidePanelNamePathMap(p, folderList, panelNamePathMap)
 		}
-		serviceEmptyInsidePanelNamePathMap[s.Name] = panelNamePathMap
+		homeEmptyInsidePanelNamePathMap[homeButton.ID] = panelNamePathMap
 	}
-	return serviceEmptyInsidePanelNamePathMap
+	return homeEmptyInsidePanelNamePathMap
 }
-func generateServiceSpawnTabEmptyInsidePanelNamePathMap(panel *Panel, folderList []string, panelNamePathMap map[string][]string) {
+func generateHomeSpawnTabEmptyInsidePanelNamePathMap(panel *Panel, folderList []string, panelNamePathMap map[string][]string) {
 	folderList = append(folderList, panel.Name)
 	l := len(folderList)
 	m := l + 1
@@ -31,7 +31,7 @@ func generateServiceSpawnTabEmptyInsidePanelNamePathMap(panel *Panel, folderList
 			copy(newFolderList, folderList)
 			newFolderList[l] = b.ID
 			for _, p := range b.Panels {
-				generateServiceSpawnTabEmptyInsidePanelNamePathMap(p, newFolderList, panelNamePathMap)
+				generateHomeSpawnTabEmptyInsidePanelNamePathMap(p, newFolderList, panelNamePathMap)
 
 			}
 		}
@@ -72,8 +72,8 @@ func NewTabPanelGroup() *TabPanelGroup {
 	}
 }
 
-// GenerateServiceSpawnTabButtonPanelGroups returns
-//   each service name mapped to
+// GenerateHomeSpawnTabButtonPanelGroups returns
+//   each home name mapped to
 //   []*TabPanelGroup
 //      A tab panel panel group struct represents
 //        a single one of the tab-bar's spawn tabs.
@@ -83,25 +83,22 @@ func NewTabPanelGroup() *TabPanelGroup {
 //        .TabLabel : the tab's label.
 //        .PanelNamesIDMap : a map of the spawn tab's group of panels
 //           where each panel name is mapped to it's Panel struct.
-func (builder *Builder) GenerateServiceSpawnTabButtonPanelGroups() map[string][]*TabPanelGroup {
-	serviceButtonPanelGroupMap := make(map[string][]*TabPanelGroup)
-	for _, s := range builder.Services {
-		// service
-		serviceName := s.Name
+func (builder *Builder) GenerateHomeSpawnTabButtonPanelGroups() (homeSpawnTabButtonPanelGroups map[string][]*TabPanelGroup) {
+	homeSpawnTabButtonPanelGroups = make(map[string][]*TabPanelGroup)
+	for _, homeButton := range builder.Homes {
 		tpgList := make([]*TabPanelGroup, 0, 5)
 		// button panel groups
-		b := s.Button
-		for _, p := range b.Panels {
-			p.generateServiceSpawnTabButtonPanelGroups(&tpgList)
+		for _, p := range homeButton.Panels {
+			p.generateHomeSpawnTabButtonPanelGroups(&tpgList)
 		}
-		serviceButtonPanelGroupMap[serviceName] = tpgList
+		homeSpawnTabButtonPanelGroups[homeButton.ID] = tpgList
 	}
-	return serviceButtonPanelGroupMap
+	return
 }
-func (panel *Panel) generateServiceSpawnTabButtonPanelGroups(tpgList *[]*TabPanelGroup) {
+func (panel *Panel) generateHomeSpawnTabButtonPanelGroups(tpgList *[]*TabPanelGroup) {
 	for _, b := range panel.Buttons {
 		for _, p := range b.Panels {
-			p.generateServiceSpawnTabButtonPanelGroups(tpgList)
+			p.generateHomeSpawnTabButtonPanelGroups(tpgList)
 		}
 	}
 	for _, t := range panel.Tabs {
@@ -128,10 +125,10 @@ func (panel *Panel) generateServiceSpawnTabButtonPanelGroups(tpgList *[]*TabPane
 //   a slice of that tab's panel's full relevant paths
 func (builder *Builder) GenerateSpawnTabPanelPathsMap() (tabPanelPaths map[string][]string) {
 	tabPanelPaths = make(map[string][]string, 100)
-	for _, s := range builder.Services {
-		for _, p := range s.Button.Panels {
+	for _, homeButton := range builder.Homes {
+		for _, p := range homeButton.Panels {
 			folderList := make([]string, 1, 10)
-			folderList[0] = s.Button.ID
+			folderList[0] = homeButton.ID
 			generateSpawnTabPanelPathsMap(p, folderList, tabPanelPaths)
 		}
 	}
@@ -169,10 +166,10 @@ func generateSpawnTabPanelPathsMap(panel *Panel, folderList []string, tabPanelPa
 //   each spawn tab panels's markup mapped to it's path.
 func (builder *Builder) GenerateSpawnTabMarkupPanelPathMap() (markupPath map[string]string) {
 	markupPath = make(map[string]string, 100)
-	for _, s := range builder.Services {
-		for _, p := range s.Button.Panels {
+	for _, homeButton := range builder.Homes {
+		for _, p := range homeButton.Panels {
 			folderList := make([]string, 1, 10)
-			folderList[0] = s.Button.ID
+			folderList[0] = homeButton.ID
 			generateSpawnTabMarkupPanelPathsMap(p, folderList, markupPath)
 		}
 	}
@@ -209,10 +206,10 @@ func generateSpawnTabMarkupPanelPathsMap(panel *Panel, folderList []string, mark
 //   a slice of that tab bar panel's full relevant path
 func (builder *Builder) GenerateSpawnTabBarPanelPathsMap() (tabBarPanelPaths map[string][]string) {
 	tabBarPanelPaths = make(map[string][]string, 100)
-	for _, s := range builder.Services {
-		for _, p := range s.Button.Panels {
+	for _, homeButton := range builder.Homes {
+		for _, p := range homeButton.Panels {
 			folderList := make([]string, 1, 10)
-			folderList[0] = s.Button.ID
+			folderList[0] = homeButton.ID
 			generateSpawnTabBarPanelPathsMap(p, folderList, tabBarPanelPaths)
 		}
 	}
@@ -252,10 +249,10 @@ func generateSpawnTabBarPanelPathsMap(panel *Panel, folderList []string, tabBarP
 //   a slice of that tab bar's tabs' full relevant paths
 func (builder *Builder) GenerateSpawnTabBarTabPanelPathsMap() (tabBarPanelTabPaths map[string][][]string) {
 	tabBarPanelTabPaths = make(map[string][][]string, 100)
-	for _, s := range builder.Services {
-		for _, p := range s.Button.Panels {
+	for _, homeButton := range builder.Homes {
+		for _, p := range homeButton.Panels {
 			folderList := make([]string, 1, 10)
-			folderList[0] = s.Button.ID
+			folderList[0] = homeButton.ID
 			generateSpawnTabBarTabPanelPathsMap(p, folderList, tabBarPanelTabPaths)
 		}
 	}
@@ -292,31 +289,31 @@ func generateSpawnTabBarTabPanelPathsMap(panel *Panel, folderList []string, tabB
 	}
 }
 
-// GenerateServiceSpawnPanelNamePanelMap returns a map of
-//   each service name mapped to
+// GenerateHomeSpawnPanelNamePanelMap returns a map of
+//   each home name mapped to
 //   a map of each panel name mapped to it's panel.
-func (builder *Builder) GenerateServiceSpawnPanelNamePanelMap() map[string]map[string]*Panel {
-	servicePanelNamePanelMap := make(map[string]map[string]*Panel)
-	for _, s := range builder.Services {
+func (builder *Builder) GenerateHomeSpawnPanelNamePanelMap() map[string]map[string]*Panel {
+	homePanelNamePanelMap := make(map[string]map[string]*Panel)
+	for _, homeButton := range builder.Homes {
 		panelNamePanelMap := make(map[string]*Panel)
-		for _, p := range s.Button.Panels {
-			generateServiceSpawnPanelNamePanelMap(p, panelNamePanelMap)
+		for _, p := range homeButton.Panels {
+			generateHomeSpawnPanelNamePanelMap(p, panelNamePanelMap)
 		}
-		servicePanelNamePanelMap[s.Name] = panelNamePanelMap
+		homePanelNamePanelMap[homeButton.ID] = panelNamePanelMap
 	}
-	return servicePanelNamePanelMap
+	return homePanelNamePanelMap
 }
-func generateServiceSpawnPanelNamePanelMap(panel *Panel, panelNamePanelMap map[string]*Panel) {
+func generateHomeSpawnPanelNamePanelMap(panel *Panel, panelNamePanelMap map[string]*Panel) {
 	for _, b := range panel.Buttons {
 		for _, p := range b.Panels {
-			generateServiceSpawnPanelNamePanelMap(p, panelNamePanelMap)
+			generateHomeSpawnPanelNamePanelMap(p, panelNamePanelMap)
 		}
 	}
 	for _, t := range panel.Tabs {
 		if t.Spawn {
 			for _, p := range t.Panels {
 				panelNamePanelMap[p.Name] = p
-				generateServiceSpawnPanelNamePanelMap(p, panelNamePanelMap)
+				generateHomeSpawnPanelNamePanelMap(p, panelNamePanelMap)
 			}
 		}
 	}

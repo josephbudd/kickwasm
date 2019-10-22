@@ -1,0 +1,10 @@
+name : Home2
+
+button :
+  id : b2
+  label : Button 2
+  heading : Button 2 Heading.
+  panelFiles :
+    - panel3.yaml
+    - panel4.yaml
+

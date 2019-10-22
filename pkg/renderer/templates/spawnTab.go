@@ -1,7 +1,9 @@
 package templates
 
 // SpawnTabPrepare is the tab's prepare.go template.
-const SpawnTabPrepare = `{{$Dot := .}}package {{call .PackageNameCase .TabName}}
+const SpawnTabPrepare = `{{$Dot := .}}// +build js, wasm
+
+package {{call .PackageNameCase .TabName}}
 
 import ({{ range .PrepareImports }}
 	{{.}}{{end}}
@@ -24,7 +26,9 @@ func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCha
 `
 
 // SpawnTabSpawn is the tab's spawn.go template.
-const SpawnTabSpawn = `{{$Dot := .}}package {{call .PackageNameCase .TabName}}
+const SpawnTabSpawn = `{{$Dot := .}}// +build js, wasm
+
+package {{call .PackageNameCase .TabName}}
 
 import (
 	"fmt"
@@ -58,7 +62,7 @@ var (
 type Tab struct {
 	uniqueID      uint64
 	hTMLButton    js.Value
-	stopListeners []func()
+	prepareToUnSpawns []func()
 }
 
 // Spawn creates the DOM elements and go code for a tab.
@@ -88,7 +92,7 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 	tab := &Tab{
 		hTMLButton:    tabButton,
 		uniqueID:      uniqueID,
-		stopListeners: make([]func(), 0, 20),
+		prepareToUnSpawns: make([]func(), 0, 20),
 	}
 	unspawn = tab.unSpawn
 	// Build the go code.
@@ -97,8 +101,8 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 	if f, err = {{ call $Dot.PackageNameCase . }}.BuildPanel(uniqueID, tabButton, tabPanelHeader, panelNameID, panelData, unspawn); err != nil {
 		return
 	}
-	tab.stopListeners = append(tab.stopListeners, f){{end}}
-	tools.IncSpawnedPanels(len(tab.stopListeners))
+	tab.prepareToUnSpawns = append(tab.prepareToUnSpawns, f){{end}}
+	tools.IncSpawnedPanels(len(tab.prepareToUnSpawns))
 	return
 }
 
@@ -113,7 +117,7 @@ func (tab *Tab) unSpawn() (err error) {
 		}
 	}()
 
-	tools.DecSpawnedPanels(len(tab.stopListeners))
+	tools.DecSpawnedPanels(len(tab.prepareToUnSpawns))
 
 	messages := make([]string, 0, 2)
 	// Remove the tab and panels from the DOM.
@@ -124,9 +128,9 @@ func (tab *Tab) unSpawn() (err error) {
 	if err = tools.UnRegisterCallBacks(tab.uniqueID); err != nil {
 		messages = append(messages, err.Error())
 	}
-	// Stop each panel's caller's message listener.
-	for _, stopListener := range tab.stopListeners {
-		stopListener()
+	// Stop each panel messenger's message dispatcher.
+	for _, prepareToUnSpawn := range tab.prepareToUnSpawns {
+		prepareToUnSpawn()
 	}
 
 	// construct a new error from the accumulated errors.

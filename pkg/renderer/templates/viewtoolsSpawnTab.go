@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsSpawnTabGo is the viewtools/spawn.go file template.
-const ViewToolsSpawnTabGo = `package viewtools
+const ViewToolsSpawnTabGo = `// +build js, wasm
+
+package viewtools
 
 import (
 	"fmt"

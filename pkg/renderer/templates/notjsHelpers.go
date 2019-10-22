@@ -1,7 +1,9 @@
 package templates
 
 // NotJSHelpersGo is the file renderer/notjs/helpers.go
-var NotJSHelpersGo = `package notjs
+var NotJSHelpersGo = `// +build js, wasm
+
+package notjs
 
 // ConsoleLog logs to the console.
 func (notjs *NotJS) ConsoleLog(message string) {

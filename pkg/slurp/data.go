@@ -28,17 +28,10 @@ func NewSlurper() *Slurper {
 
 // ApplicationInfo is info defining an application.
 type ApplicationInfo struct {
-	SourcePath string         `yaml:"sourcePath"`
-	Title      string         `yaml:"title"`
-	ImportPath string         `yaml:"importPath"`
-	Services   []*ServiceInfo `yaml:"services"`
-}
-
-// ServiceInfo is info defining a service.
-type ServiceInfo struct {
-	SourcePath string      `yaml:"sourcePath"`
-	Name       string      `yaml:"name"`
-	Button     *ButtonInfo `yaml:"button"`
+	SourcePath string        `yaml:"sourcePath"`
+	Title      string        `yaml:"title"`
+	ImportPath string        `yaml:"importPath"`
+	Homes      []*ButtonInfo `yaml:"buttons"`
 }
 
 // ButtonInfo is info defining a button.
@@ -69,9 +62,10 @@ type PanelInfo struct {
 	Level      int    `yaml:"level"`
 	ID         string `yaml:"id"`
 	Name       string `yaml:"name"`
-	Note       string `yaml:"note"`
 
-	Buttons []*ButtonInfo `yaml:"buttons"`
-	Tabs    []*TabInfo    `yaml:"tabs"`
-	Markup  string        `yaml:"markup,omitempty"`
+	Buttons  []*ButtonInfo `yaml:"buttons"`
+	Tabs     []*TabInfo    `yaml:"tabs"`
+	Markup   string        `yaml:"markup,omitempty"`
+	Note     string        `yaml:"note"`
+	HVScroll bool          `yaml:"hvscroll"`
 }

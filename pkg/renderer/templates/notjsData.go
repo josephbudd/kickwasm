@@ -1,9 +1,11 @@
 package templates
 
 // NotJSDataGo is the file renderer/notjs/data.go
-var NotJSDataGo = `package notjs
+var NotJSDataGo = `// +build js, wasm
 
-const (
+package notjs
+
+var (
 	idAttributeName        = "id"
 	checkedAttributeName   = "checked"
 	childrenAttributeName  = "children"

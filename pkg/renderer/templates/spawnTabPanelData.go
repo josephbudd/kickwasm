@@ -1,7 +1,9 @@
 package templates
 
 // SpawnTabPanelData is the genereric renderer spawn data.go template.
-const SpawnTabPanelData = `{{$Dot := .}}package {{call .PackageNameCase .PanelName}}
+const SpawnTabPanelData = `{{$Dot := .}}// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"syscall/js"
@@ -22,7 +24,7 @@ var (
 	// quitCh will close the application
 	quitCh chan struct{}
 
-	// eojCh will close each caller's go routine.
+	// eojCh will close each panel messenger's message dispatcher go routine.
 	eojCh chan struct{}
 
 	// receiveCh receives messages from the main process.

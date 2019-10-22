@@ -26,7 +26,7 @@ const (
 
 	// main process
 
-	importMainProcessServices = "/mainprocess/services"
+	importMainProcessHomes = "/mainprocess/homes"
 
 	// main process lpc
 
@@ -35,21 +35,21 @@ const (
 
 	// renderer
 
-	importRenderer         = "/renderer"
-	importRendererPanels   = "/renderer/panels"
-	importRendererPaneling = "/renderer/paneling"
+	importRenderer         = "/rendererprocess"
+	importRendererPanels   = "/rendererprocess/panels"
+	importRendererPaneling = "/rendererprocess/paneling"
 
 	// renderer site
 
-	importRendererViewTools = "/renderer/viewtools"
-	importRendererNotJS     = "/renderer/notjs"
+	importRendererViewTools = "/rendererprocess/viewtools"
+	importRendererNotJS     = "/rendererprocess/notjs"
 
-	importRendererSpawnPanels = "/renderer/spawnPanels"
-	importRendererSpawnPack   = "/renderer/spawnpack"
+	importRendererSpawnPanels = "/rendererprocess/spawnPanels"
+	importRendererSpawnPack   = "/rendererprocess/spawnpack"
 
 	// renderer lpc
 
-	importRendererLPC = "/renderer/lpc"
+	importRendererLPC = "/rendererprocess/lpc"
 
 	// stores
 
@@ -78,7 +78,7 @@ type Imports struct {
 
 	// main process
 
-	ImportMainProcessServices string
+	ImportMainProcessHomes string
 
 	// renderer
 
@@ -119,7 +119,7 @@ func GetImports() *Imports {
 
 		// main process
 
-		ImportMainProcessServices: importMainProcessServices,
+		ImportMainProcessHomes: importMainProcessHomes,
 
 		// renderer
 
@@ -194,7 +194,7 @@ func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 	ap.paths.ImportMainProcessLPC = importMainProcessLPC
 	ap.paths.ImportMainProcessLPCDispatch = importMainProcessLPCDispatch
 
-	ap.paths.ImportMainProcessServices = importMainProcessServices
+	ap.paths.ImportMainProcessHomes = importMainProcessHomes
 	ap.paths.ImportMainProcessLPCDispatch = importMainProcessLPCDispatch
 
 	ap.paths.ImportRenderer = importRenderer
@@ -313,7 +313,7 @@ type Paths struct {
 
 	// import main process
 
-	ImportMainProcessServices string
+	ImportMainProcessHomes string
 
 	// import main process lpc
 

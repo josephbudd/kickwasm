@@ -146,7 +146,7 @@ func BuildUserSubFoldersPath(sfpath string) (string, error) {
 
 // BuildRendererPath returns renderer path to src.
 // Param src comes from main.html
-// ex: <script type="text/javascript" src="js/messenger.js" />
+// ex: <script type="text/javascript" src="js/mycode.js" />
 func BuildRendererPath(src string) string {
 	if !initialized {
 		initialize()
@@ -168,8 +168,5 @@ func buildUserHomeDataPath() {
 		userHomeDataPath = filepath.Join(home, "colors_kwfw_tests")
 	} else {
 		userHomeDataPath = filepath.Join(home, ".colors_kwfw")
-	}
-	if err := os.MkdirAll(userHomeDataPath, dmode); err != nil {
-		initerr = fmt.Errorf("os.MkdirAll(userHomeDataPath, dmode) error is %s", initerr.Error())
 	}
 }

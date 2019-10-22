@@ -1,7 +1,9 @@
 package templates
 
 // NotJSClassGo is the file renderer/notjs/class.go
-var NotJSClassGo = `package notjs
+var NotJSClassGo = `// +build js, wasm
+
+package notjs
 
 import "syscall/js"
 

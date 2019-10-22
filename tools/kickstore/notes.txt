@@ -1,0 +1,25 @@
+kickstore -add Contact
+kickstore -delete-forever Contact
+    Local bolt database implied.
+
+kickstore -add-remote-api <name> <username> <password> <url>
+kickstore -add-remote-api mysql joebudd mypassword https://mysite/mysqldb/
+    /domain/store/storer/          type MysqlStorer interface
+    /domain/store/storing/mysql.go type MysqlDB struct{name, username...}
+
+kickstore -add-remote-record <name>
+kickstore -add-remote-record Stuff
+    /domain/store/record/stuff.go  type Stuff struct ( only a record ID)
+
+kickstore -delete-forever-remote-api <name>
+kickstore -delete-forever-remote-record <name>
+
+.kickwasm/yaml/stores.yaml
+
+defaultRecords:
+ - Contacts
+remoteDBs:
+ - Mysql
+remoteRecords:
+ - Products
+ - PriceList

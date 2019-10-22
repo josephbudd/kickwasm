@@ -309,8 +309,8 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
 }
 
 /* cookie crumbs */
-{{range $i, $serviceName := .ServiceNames}}
-#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$serviceName}}{{if lt $i $Dot.LastServiceIndex}},{{end}}{{end}}
+{{range $i, $homeName := .HomeNames}}
+#{{$Dot.IDSliderCollection}} > .{{$Dot.SliderPanel}} > div.{{$Dot.PanelHeading}} > h2.{{$Dot.ClassCookieCrumbLevelPrefix}}{{$homeName}}{{if lt $i $Dot.LastHomeIndex}},{{end}}{{end}}
 {
   font-size:24px;
   display:inline;

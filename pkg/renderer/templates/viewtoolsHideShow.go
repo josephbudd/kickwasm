@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsHideShow is the renderer/viewtools/hideshow.go file.
-const ViewToolsHideShow = `package viewtools
+const ViewToolsHideShow = `// +build js, wasm
+
+package viewtools
 
 import (
 	"syscall/js"

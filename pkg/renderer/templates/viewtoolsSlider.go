@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsSlider is the renderer/viewtools/slider.go file.
-const ViewToolsSlider = `package viewtools
+const ViewToolsSlider = `// +build js, wasm
+
+package viewtools
 
 import (
 	"fmt"

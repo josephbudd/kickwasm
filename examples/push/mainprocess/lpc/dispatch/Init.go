@@ -1,8 +1,6 @@
 package dispatch
 
 import (
-	"log"
-
 	"github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
 	"github.com/josephbudd/kickwasm/examples/push/domain/store"
 	"github.com/josephbudd/kickwasm/examples/push/mainprocess/lpc"
@@ -33,6 +31,6 @@ import (
 //     2. Before your go routine returns, release that channel with eojing.Release().
 // Param stores is a struct the contains each of your stores.
 func handleInit(rxmessage *message.InitRendererToMainProcess, sending lpc.Sending, eojing lpc.EOJer, stores *store.Stores) {
-	log.Println("dispatch.handleInit")
 	timing.Do(sending, eojing, stores)
+	return
 }

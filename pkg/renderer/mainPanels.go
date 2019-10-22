@@ -19,14 +19,14 @@ type namePath struct {
 // createMainDoPanelsGo writes panels.go in package main.
 func createMainDoPanelsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
-	servicePanelNamePathMap := builder.GenerateServiceEmptyInsidePanelNamePathMap()
+	homePanelNamePathMap := builder.GenerateHomeEmptyInsidePanelNamePathMap()
 	imports := make([]string, 4, 100)
 	panelNamePath := make(map[string]string)
 	imports[0] = builder.ImportPath + folderpaths.ImportRendererPaneling
 	imports[1] = builder.ImportPath + folderpaths.ImportRendererViewTools
 	imports[2] = builder.ImportPath + folderpaths.ImportRendererNotJS
 	imports[3] = builder.ImportPath + folderpaths.ImportRendererLPC
-	for _, panelNameFolders := range servicePanelNamePathMap {
+	for _, panelNameFolders := range homePanelNamePathMap {
 		for name, folders := range panelNameFolders {
 			path := filepath.Join(filepath.Join(folders...), name)
 			importPath := filepath.Join(builder.ImportPath+folderpaths.ImportRendererPanels, path)

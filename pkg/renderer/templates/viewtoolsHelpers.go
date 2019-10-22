@@ -1,7 +1,9 @@
 package templates
 
 // ViewtoolsHelpers is the renderer/viewtools/helpers.go file.
-const ViewtoolsHelpers = `package viewtools
+const ViewtoolsHelpers = `// +build js, wasm
+
+package viewtools
 
 // ConsoleLog logs to the console.
 func (tools *Tools) ConsoleLog(message string) {

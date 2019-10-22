@@ -134,45 +134,45 @@ div.pad-color-level-0
 
 
 
-/* color level Tabs */
+/* color level TabsButton */
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Tabs
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-TabsButton
 {
   background-color:hsl(50, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Tabs
+#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-TabsButton
 {
   color: hsl(50, 23%, 27%);
 }
 
-button.back-color-level-Tabs
+button.back-color-level-TabsButton
 {
   background-color:hsl(50, 23%, 27%);
   color:hsl(40, 37%, 57%);
   border-color:white;
 }
-button.back-color-level-Tabs:hover
+button.back-color-level-TabsButton:hover
 {
   color:white;
   border-color:hsl(40, 37%, 57%);
 }
 
-div.pad-color-level-Tabs
+div.pad-color-level-TabsButton
 {
   background-color: hsl(50, 23%, 27%);
 }
 
-button.pad-button-color-level-Tabs
+button.pad-button-color-level-TabsButton
 {
   background-color: hsl(40, 37%, 57%);
   color:black;
   border-color:black;
 }
 
-button.pad-button-color-level-Tabs:hover
+button.pad-button-color-level-TabsButton:hover
 {
   background-color: hsl(40, 37%, 37%);
   color:white;

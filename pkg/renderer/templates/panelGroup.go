@@ -1,7 +1,9 @@
 package templates
 
 // PanelGroup is the genereric renderer group template.
-const PanelGroup = `{{$Dot := .}}{{$lpg := len .PanelGroup}}package {{call .PackageNameCase .PanelName}}
+const PanelGroup = `{{$Dot := .}}{{$lpg := len .PanelGroup}}// +build js, wasm
+
+package {{call .PackageNameCase .PanelName}}
 
 import (
 	"syscall/js"
@@ -42,7 +44,7 @@ func (group *panelGroup) defineMembers() (err error) {
 /*
 	Show panel funcs.
 
-	Call these from the controller, presenter and caller.
+	Call these from the controller, presenter and messenger.
 */{{if .IsTabSiblingPanel}}{{range $panel := .PanelGroup}}
 
 // show{{$panel.Name}} shows the panel you named {{$panel.Name}} while hiding any other panels in this panel group.

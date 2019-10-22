@@ -120,8 +120,8 @@ const (
 	headTemplate = "{{.FileNames.HeadDotTMPL}}"
 )
 
-// serviceEmptyInsidePanelNamePathMap maps each markup panel template name to it's file path.
-var serviceEmptyInsidePanelNamePathMap = {{.ServiceEmptyInsidePanelNamePathMap}}
+// homeEmptyInsidePanelNamePathMap maps each markup panel template name to it's file path.
+var homeEmptyInsidePanelNamePathMap = {{.HomeEmptyInsidePanelNamePathMap}}
 
 // serveMainHTML only serves up main.tmpl with all of the templates for your markup panels.
 func serveMainHTML(w http.ResponseWriter) {
@@ -165,7 +165,7 @@ func serveMainHTML(w http.ResponseWriter) {
 		http.Error(w, err.Error(), 300)
 	}
 	// panel template files
-	for _, namePathMap := range serviceEmptyInsidePanelNamePathMap {
+	for _, namePathMap := range homeEmptyInsidePanelNamePathMap {
 		for name, folders := range namePathMap {
 			fname = name + ".tmpl"
 			folderPath := strings.Join(folders, string(os.PathSeparator))

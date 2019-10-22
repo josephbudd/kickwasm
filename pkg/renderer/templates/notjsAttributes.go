@@ -1,7 +1,9 @@
 package templates
 
 // NotJSAttributesGo is the file renderer/notjs/attributes.go
-var NotJSAttributesGo = `package notjs
+var NotJSAttributesGo = `// +build js, wasm
+
+package notjs
 
 import (
 	"fmt"

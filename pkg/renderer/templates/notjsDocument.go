@@ -1,7 +1,9 @@
 package templates
 
 // NotJSDocumentGo is the file renderer/notjs/document.go
-var NotJSDocumentGo = `package notjs
+var NotJSDocumentGo = `// +build js, wasm
+
+package notjs
 
 import (
 	"strconv"

@@ -38,27 +38,29 @@ STEP 1: Edit the file Helping.go here in renderer/paneling/
 
 	
 STEP 2: In renderer/panels/ and renderer/spawnPanels/
-		Add any members new members to your controllers, presenters, and callers.
+		Add any members new members to your controllers, presenters, and messengers.
 		Set those new members in the panel constructor using help *paneling.Help
 
-	Example: Some of my panel callers send the same message to the main process
+	Example: Some of my panel messengers send the same message to the main process
 			   but the message has a state which represents what the panel's unique purpose.
 			   
-	2.1: So I add the state member to some of my panel callers.
+	2.1: So I add the state member to some of my panel messengers.
 
 		state uint64
 
 	2.2: Then in a panel's func NewPanel(..., help *paneling.Help)
-	     I set the caller's state member to the correct state for that panel.
+	     I set the messenger's state member to the correct state for that panel.
 
-		caller := &panelCaller{
+		messenger := &panelMessenger{
 			group: group,
 			state: help.StatePunctuation(),
 		}
 `
 
 // PanelHelperImplementation is the template for the file renderer/implementations/starting/noHelp.go
-const PanelHelperImplementation = `package paneling
+const PanelHelperImplementation = `// +build js, wasm
+
+package paneling
 
 // Help helps initialize panels.
 type Help struct{}

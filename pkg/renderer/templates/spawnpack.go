@@ -1,7 +1,9 @@
 package templates
 
 // SpawnPack is the renderer/spawnpack/spawnpack.go file.
-const SpawnPack = `package {{.PackageName}}
+const SpawnPack = `// +build js, wasm
+
+package {{.PackageName}}
 
 /*
 	Note Well:

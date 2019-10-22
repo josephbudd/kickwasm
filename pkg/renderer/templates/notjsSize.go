@@ -1,7 +1,9 @@
 package templates
 
 // NotJSSizeGo is the file renderer/notjs/size.go
-var NotJSSizeGo = `package notjs
+var NotJSSizeGo = `// +build js, wasm
+
+package notjs
 
 import (
 	"strconv"

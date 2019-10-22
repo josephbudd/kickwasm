@@ -53,8 +53,8 @@ type cssTemplateData struct {
 	ClassPanelHeadingLevelPrefix   string
 
 	ColorLevels      []colorLevel
-	ServiceNames     []string
-	LastServiceIndex int
+	HomeNames     []string
+	LastHomeIndex int
 	Mod5             func(int) int
 }
 
@@ -76,7 +76,7 @@ func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 			Five:  5 + (i * 5),
 		}
 	}
-	serviceNames := builder.GenerateServiceNames()
+	homeNames := builder.GenerateHomeButtonNames()
 	data := &cssTemplateData{
 		Seen:              builder.Classes.Seen,
 		UnSeen:            builder.Classes.UnSeen,
@@ -112,8 +112,8 @@ func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 		ClassPanelHeadingLevelPrefix:   builder.Classes.PanelHeadingLevelPrefix,
 
 		ColorLevels:      colorLevels,
-		ServiceNames:     serviceNames,
-		LastServiceIndex: len(serviceNames) - 1,
+		HomeNames:     homeNames,
+		LastHomeIndex: len(homeNames) - 1,
 		Mod5: func(i int) int {
 			return i % 5
 		},

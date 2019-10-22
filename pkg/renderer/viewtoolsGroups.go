@@ -10,9 +10,9 @@ import (
 
 func createViewToolsGroupsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	data := &struct {
-		ServiceButtonPanelGroups map[string][]*project.ButtonPanelGroup
+		HomeButtonPanelGroups map[string][]*project.ButtonPanelGroup
 	}{
-		ServiceButtonPanelGroups: builder.GenerateServiceButtonPanelGroups(),
+		HomeButtonPanelGroups: builder.GenerateHomeButtonPanelGroups(),
 	}
 	// execute the template
 	folderpaths := appPaths.GetPaths()

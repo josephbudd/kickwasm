@@ -134,45 +134,45 @@ div.pad-color-level-0
 
 
 
-/* color level PushTime */
+/* color level PushButton */
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-PushTime
+#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-PushButton
 {
   background-color:hsl(50, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-PushTime
+#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-PushButton
 {
   color: hsl(50, 23%, 27%);
 }
 
-button.back-color-level-PushTime
+button.back-color-level-PushButton
 {
   background-color:hsl(50, 23%, 27%);
   color:hsl(40, 37%, 57%);
   border-color:white;
 }
-button.back-color-level-PushTime:hover
+button.back-color-level-PushButton:hover
 {
   color:white;
   border-color:hsl(40, 37%, 57%);
 }
 
-div.pad-color-level-PushTime
+div.pad-color-level-PushButton
 {
   background-color: hsl(50, 23%, 27%);
 }
 
-button.pad-button-color-level-PushTime
+button.pad-button-color-level-PushButton
 {
   background-color: hsl(40, 37%, 57%);
   color:black;
   border-color:black;
 }
 
-button.pad-button-color-level-PushTime:hover
+button.pad-button-color-level-PushButton:hover
 {
   background-color: hsl(40, 37%, 37%);
   color:white;

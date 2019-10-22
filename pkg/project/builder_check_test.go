@@ -9,90 +9,90 @@ import (
 
 func TestBuilder(t *testing.T) {
 	builder := NewBuilder()
-	okServices, err := buildLongOkServices()
+	okHomes, err := buildLongOkHomes()
 	if err != nil {
 		t.Error(err)
 	}
-	// ok services
-	testBuildFromServices(t, builder, "ok", okServices, false)
+	// ok homes
+	testBuildFromHomes(t, builder, "ok", okHomes, false)
 }
 
-func testBuildFromServices(t *testing.T, builder *Builder, name string, services []*Service, wantErr bool) {
+func testBuildFromHomes(t *testing.T, builder *Builder, name string, homes []*Button, wantErr bool) {
 	t.Run(name, func(t *testing.T) {
-		err := builder.BuildFromServices(services)
+		err := builder.BuildFromHomes(homes)
 		if !wantErr && err != nil {
-			t.Errorf("Builder.BuildFromServices() error = %v", err)
+			t.Errorf("Builder.BuildFromHomes() error = %v", err)
 		}
 		if wantErr && err == nil {
-			t.Error("Builder.BuildFromServices() wanted an error but didn't get one.")
+			t.Error("Builder.BuildFromHomes() wanted an error but didn't get one.")
 		}
 	})
 }
 
-func buildShortOkServices() ([]*Service, error) {
-	okServices := make([]*Service, 0, 5)
-	service, err := getService("testyaml/ok/service1.yaml")
+func buildShortOkHomes() ([]*Button, error) {
+	okHomes := make([]*Button, 0, 5)
+	home, err := getHome("testyaml/ok/home1.yaml")
 	if err != nil {
 		return nil, err
 	}
-	okServices = append(okServices, service)
-	service, err = getService("testyaml/ok/service2.yaml")
+	okHomes = append(okHomes, home)
+	home, err = getHome("testyaml/ok/home2.yaml")
 	if err != nil {
 		return nil, err
 	}
-	okServices = append(okServices, service)
-	return okServices, nil
+	okHomes = append(okHomes, home)
+	return okHomes, nil
 }
 
-func buildDeepServices() ([]*Service, error) {
-	deepServices := make([]*Service, 0, 5)
-	service, err := getService("testyaml/ok/service5.yaml")
+func buildDeepHomes() ([]*Button, error) {
+	deepHomes := make([]*Button, 0, 5)
+	home, err := getHome("testyaml/ok/home5.yaml")
 	if err != nil {
 		return nil, err
 	}
-	deepServices = append(deepServices, service)
-	return deepServices, nil
+	deepHomes = append(deepHomes, home)
+	return deepHomes, nil
 }
 
-func buildLongOkServices() ([]*Service, error) {
-	okServices := make([]*Service, 0, 5)
-	service, err := getService("testyaml/ok/service1.yaml")
+func buildLongOkHomes() ([]*Button, error) {
+	okHomes := make([]*Button, 0, 5)
+	home, err := getHome("testyaml/ok/home1.yaml")
 	if err != nil {
 		return nil, err
 	}
-	okServices = append(okServices, service)
-	service, err = getService("testyaml/ok/service2.yaml")
+	okHomes = append(okHomes, home)
+	home, err = getHome("testyaml/ok/home2.yaml")
 	if err != nil {
 		return nil, err
 	}
-	okServices = append(okServices, service)
-	service, err = getService("testyaml/ok/service3.yaml")
+	okHomes = append(okHomes, home)
+	home, err = getHome("testyaml/ok/home3.yaml")
 	if err != nil {
 		return nil, err
 	}
-	okServices = append(okServices, service)
-	service, err = getService("testyaml/ok/service4.yaml")
+	okHomes = append(okHomes, home)
+	home, err = getHome("testyaml/ok/home4.yaml")
 	if err != nil {
 		return nil, err
 	}
-	okServices = append(okServices, service)
-	return okServices, nil
+	okHomes = append(okHomes, home)
+	return okHomes, nil
 }
 
-func getService(path string) (*Service, error) {
+func getHome(path string) (*Button, error) {
 	bb, err := getFileBB(path)
 	if err != nil {
 		return nil, err
 	}
-	return getServiceFromBB(bb)
+	return getHomeFromBB(bb)
 }
 
-func getServiceFromBB(bb []byte) (*Service, error) {
-	service := &Service{}
-	if err := yaml.Unmarshal(bb, service); err != nil {
+func getHomeFromBB(bb []byte) (*Button, error) {
+	home := &Button{}
+	if err := yaml.Unmarshal(bb, home); err != nil {
 		return nil, err
 	}
-	return service, nil
+	return home, nil
 }
 
 func getFileBB(fpath string) ([]byte, error) {
@@ -116,44 +116,6 @@ func getFileBB(fpath string) ([]byte, error) {
 		return nil, err
 	}
 	return ifilebb, nil
-}
-
-func Test_isValidServiceName(t *testing.T) {
-	type args struct {
-		name string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		{
-			name:    "missing service name",
-			args:    args{""},
-			wantErr: true,
-		},
-		{
-			name:    "numeric service name",
-			args:    args{"1 Service"},
-			wantErr: true,
-		},
-		{
-			name:    "not cc service name",
-			args:    args{"One Service"},
-			wantErr: true,
-		},
-		{
-			name: "cc service name",
-			args: args{"OneService"},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := isValidServiceName(tt.args.name); (err != nil) != tt.wantErr {
-				t.Errorf("isValidServiceName() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
 }
 
 func Test_isValidButtonID(t *testing.T) {

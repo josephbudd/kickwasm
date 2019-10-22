@@ -10,14 +10,13 @@ import (
 )
 
 type templateData struct {
-	ApplicationName                    string
-	ApplicationGitPath                 string
-	Stores                             []string
-	ServiceNames                       []string
-	LowerCamelCase                     func(string) string
-	CamelCase                          func(string) string
-	ServiceTemplatePanelNames          string
-	ServiceEmptyInsidePanelNamePathMap string
+	ApplicationName                 string
+	ApplicationGitPath              string
+	Stores                          []string
+	LowerCamelCase                  func(string) string
+	CamelCase                       func(string) string
+	HomeTemplatePanelNames          string
+	HomeEmptyInsidePanelNamePathMap string
 
 	ImportDomainDataFilepaths string
 	ImportDomainDataLogLevels string
@@ -48,14 +47,12 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 	parts := strings.Split(builder.ImportPath, "/")
 	appname := parts[len(parts)-1]
 	data := &templateData{
-		ApplicationName:                    appname,
-		ApplicationGitPath:                 builder.ImportPath,
-		Stores:                             builder.Stores,
-		ServiceNames:                       builder.GenerateServiceNames(),
-		LowerCamelCase:                     cases.LowerCamelCase,
-		CamelCase:                          cases.CamelCase,
-		ServiceEmptyInsidePanelNamePathMap: strings.ReplaceAll(fmt.Sprintf("%#v", builder.GenerateServiceEmptyInsidePanelNamePathMap()), ":", ": "),
-		ServiceTemplatePanelNames:          fmt.Sprintf("%#v", builder.GenerateServiceTemplatePanelName()),
+		ApplicationName:                 appname,
+		ApplicationGitPath:              builder.ImportPath,
+		LowerCamelCase:                  cases.LowerCamelCase,
+		CamelCase:                       cases.CamelCase,
+		HomeEmptyInsidePanelNamePathMap: strings.ReplaceAll(fmt.Sprintf("%#v", builder.GenerateHomeEmptyInsidePanelNamePathMap()), ":", ": "),
+		HomeTemplatePanelNames:          fmt.Sprintf("%#v", builder.GenerateHomeTemplatePanelName()),
 
 		ImportDomainDataFilepaths: folderpaths.ImportDomainDataFilepaths,
 		ImportDomainDataLogLevels: folderpaths.ImportDomainDataLogLevels,
@@ -89,6 +86,9 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 		return
 	}
 	if err = createKickstore(appPaths, data); err != nil {
+		return
+	}
+	if err = createVSCode(appPaths, appname); err != nil {
 		return
 	}
 	return

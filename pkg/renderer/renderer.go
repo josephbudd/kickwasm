@@ -30,9 +30,8 @@ func GetInitialIndent() uint {
 
 // Create creates all of the renderer files.
 func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocations bool) (err error) {
-	if err = createBuildSH(appPaths); err != nil {
-		return
-	}
+	parts := strings.Split(builder.ImportPath, "/")
+	appname := parts[len(parts)-1]
 	if err = createHTMLTemplates(appPaths, builder, addLocations); err != nil {
 		return
 	}
@@ -80,6 +79,10 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 	if err = createLPC(appPaths, builder); err != nil {
 		return
 	}
+	// VSCode
+	if err = createVSCode(appPaths, appname); err != nil {
+		return
+	}
 
 	return
 }
@@ -108,10 +111,10 @@ func createHTMLTemplates(appPaths paths.ApplicationPathsI, builder *project.Buil
 	if err = ofile.Close(); err != nil {
 		return
 	}
-	servicePanelNamePathMap := builder.GenerateServiceEmptyInsidePanelNamePathMap()
-	servicePanelMap := builder.GenerateServicePanelNameTemplateMap()
-	for service, nameMarkup := range servicePanelMap {
-		panelNamePathMap := servicePanelNamePathMap[service]
+	homePanelNamePathMap := builder.GenerateHomeEmptyInsidePanelNamePathMap()
+	homePanelMap := builder.GenerateHomePanelNameTemplateMap()
+	for home, nameMarkup := range homePanelMap {
+		panelNamePathMap := homePanelNamePathMap[home]
 		for name, markup := range nameMarkup {
 			folders := strings.Join(panelNamePathMap[name], string(os.PathSeparator))
 			folderPath := filepath.Join(folderpaths.OutputRendererTemplates, folders)

@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsMarkupGo is the renderer/viewtools/markup.go template.
-const ViewToolsMarkupGo = `package viewtools
+const ViewToolsMarkupGo = `// +build js, wasm
+
+package viewtools
 
 // CountMarkupPanels returns the number of markup panels.
 func (tools *Tools) CountMarkupPanels() (count int) {

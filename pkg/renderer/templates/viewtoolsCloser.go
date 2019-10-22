@@ -1,7 +1,9 @@
 package templates
 
 // ViewToolsCloser is the renderer/viewtools/closer.go file.
-const ViewToolsCloser = `package viewtools
+const ViewToolsCloser = `// +build js, wasm
+
+package viewtools
 
 // Initialize inititializes the closer.
 func (tools *Tools) initializeCloser() {
