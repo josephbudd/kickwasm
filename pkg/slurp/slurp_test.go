@@ -253,7 +253,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/bad_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the XXX home panel button name "Next" should end with the suffix "Button"`,
+			wantErrMessage: `the Next home panel button name "Next" should end with the suffix "Button"`,
 		},
 		{
 			name: "fail bad tab name",
@@ -261,7 +261,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/bad_tab_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the XXX home panel: the panel named "PNamePanel" tab name "One" should end with the suffix "Tab"`,
+			wantErrMessage: `the NextButton home panel: the panel named "PNamePanel" tab name "One" should end with the suffix "Tab"`,
 		},
 
 		{
@@ -302,7 +302,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/missing_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `in the home named "XXX", a button is missing a name in testyaml/fails/missing_button_name.yaml`,
+			wantErrMessage: `a home button is missing a name`,
 		},
 		{
 			name: "panels",
@@ -332,7 +332,7 @@ func TestDo(t *testing.T) {
 				ImportPath: "github.com/josephbudd/kickwasm/examples/test1",
 				Homes: []*ButtonInfo{
 					{
-						ID:         "1Button",
+						ID:         "OneButton",
 						Label:      "Button 1",
 						Heading:    "Button 1",
 						CC:         "",
@@ -340,7 +340,7 @@ func TestDo(t *testing.T) {
 						Panels:     []*PanelInfo{},
 					},
 					{
-						ID:         "2Button",
+						ID:         "TwoButton",
 						Label:      "Button 2",
 						Heading:    "Button 2 Heading.",
 						CC:         "",
@@ -403,176 +403,168 @@ func Test_slurpApplication(t *testing.T) {
 			args: args{
 				fpath: "testyaml/simple_test/app.yaml",
 			},
-			want: `
-sourcePath: testyaml/simple_test/app.yaml
+			want: `sourcePath: testyaml/simple_test/app.yaml
 title: Test 1
 importPath: github.com/josephbudd/kickwasm/examples/test1
-homes:
+buttons:
 - sourcePath: testyaml/simple_test/app.yaml
-  name: Home1
-  button:
-    sourcePath: testyaml/simple_test/app.yaml
-    name: OneButton
-    label: Button 1
-    heading: Button 1 Heading.
-    cc: Button 1
-    panelFiles:
-    - home1/panel1.yaml
-    - home1/panel2.yaml
-    panels:
-    - sourcePath: testyaml/simple_test/home1/panel1.yaml
-      level: 1
-      id: ""
-      name: OnePanel
-      buttons: []
-      tabs: []
-      markup: <p>Panel 1-1</p>
-      note: p1 note
-      HVScroll: false
-    - sourcePath: testyaml/simple_test/home1/panel2.yaml
-      level: 1
-      id: ""
-      name: TwoPanel
-      buttons: []
-      tabs: []
-      markup: <p>Panel 2-1</p>
-      note: p2 note
-      HVScroll: false
+  name: OneButton
+  label: Button 1
+  heading: Button 1 Heading.
+  cc: Button 1
+  panelFiles:
+  - home1/panel1.yaml
+  - home1/panel2.yaml
+  panels:
+  - sourcePath: testyaml/simple_test/home1/panel1.yaml
+    level: 1
+    id: ""
+    name: OnePanel
+    buttons: []
+    tabs: []
+    markup: <p>Panel 1-1</p>
+    note: p1 note
+    hvscroll: false
+  - sourcePath: testyaml/simple_test/home1/panel2.yaml
+    level: 1
+    id: ""
+    name: TwoPanel
+    buttons: []
+    tabs: []
+    markup: <p>Panel 2-1</p>
+    note: p2 note
+    hvscroll: false
 - sourcePath: testyaml/simple_test/app.yaml
-  name: Home2
-  button:
-    sourcePath: testyaml/simple_test/app.yaml
-    name: TwoButton
-    label: Button 2
-    heading: Button 2 Heading.
-    cc: Button 2
-    panelFiles:
-    - home2/panel3.yaml
-    - home2/panel5.yaml
-    panels:
+  name: TwoButton
+  label: Button 2
+  heading: Button 2 Heading.
+  cc: Button 2
+  panelFiles:
+  - home2/panel3.yaml
+  - home2/panel5.yaml
+  panels:
+  - sourcePath: testyaml/simple_test/home2/panel3.yaml
+    level: 1
+    id: ""
+    name: ThreePanel
+    buttons:
     - sourcePath: testyaml/simple_test/home2/panel3.yaml
-      level: 1
-      id: ""
-      name: ThreePanel
-      buttons:
-      - sourcePath: testyaml/simple_test/home2/panel3.yaml
-        name: Panel31Button
-        label: Panel 3 Button 1
-        heading: Panel 3 Button 1 Heading.
-        cc: Panel 3 Button 1
-        panelFiles:
-        - panel3-button1-panels/panel1.yaml
-        - panel3-button1-panels/panel2.yaml
-        panels:
-        - sourcePath: testyaml/simple_test/home2/panel3-button1-panels/panel1.yaml
-          level: 2
-          id: ""
-          name: Panel3Button1OnePanel
-          buttons: []
-          tabs: []
-          markup: Panel3Button1Panel1 Markup
-          note: Panel3Button1Panel1 Note
-          HVScroll: false
-        - sourcePath: testyaml/simple_test/home2/panel3-button1-panels/panel2.yaml
-          level: 2
-          id: ""
-          name: Panel3Button1TwoPanel
-          buttons: []
-          tabs: []
-          markup: Panel3Button1Panel2 Markup
-          note: Panel3Button1Panel2 Note
-          HVScroll: false
-      - sourcePath: testyaml/simple_test/home2/panel3.yaml
-        name: Panel32Button
-        label: Panel 3 Button 2
-        heading: Panel 3 Button 2 Heading.
-        cc: Panel 3 Button 2
-        panelFiles:
-        - panel3-button2-panels/panel1.yaml
-        - panel3-button2-panels/panel2.yaml
-        panels:
-        - sourcePath: testyaml/simple_test/home2/panel3-button2-panels/panel1.yaml
-          level: 2
-          id: ""
-          name: Panel3Button2OnePanel
-          buttons: []
-          tabs: []
-          markup: Panel3Button2Panel1 Markup
-          note: Panel3Button2Panel1 Note
-          HVScroll: false
-        - sourcePath: testyaml/simple_test/home2/panel3-button2-panels/panel2.yaml
-          level: 2
-          id: ""
-          name: Panel3Button2TwoPanel
-          buttons: []
-          tabs: []
-          markup: Panel3Button2Panel2 Markup
-          note: Panel3Button2Panel2 Note
-          HVScroll: false
-      tabs: []
-      note: p3 note
-      HVScroll: false
+      name: Panel31Button
+      label: Panel 3 Button 1
+      heading: Panel 3 Button 1 Heading.
+      cc: Panel 3 Button 1
+      panelFiles:
+      - panel3-button1-panels/panel1.yaml
+      - panel3-button1-panels/panel2.yaml
+      panels:
+      - sourcePath: testyaml/simple_test/home2/panel3-button1-panels/panel1.yaml
+        level: 2
+        id: ""
+        name: Panel3Button1OnePanel
+        buttons: []
+        tabs: []
+        markup: Panel3Button1Panel1 Markup
+        note: Panel3Button1Panel1 Note
+        hvscroll: false
+      - sourcePath: testyaml/simple_test/home2/panel3-button1-panels/panel2.yaml
+        level: 2
+        id: ""
+        name: Panel3Button1TwoPanel
+        buttons: []
+        tabs: []
+        markup: Panel3Button1Panel2 Markup
+        note: Panel3Button1Panel2 Note
+        hvscroll: false
+    - sourcePath: testyaml/simple_test/home2/panel3.yaml
+      name: Panel32Button
+      label: Panel 3 Button 2
+      heading: Panel 3 Button 2 Heading.
+      cc: Panel 3 Button 2
+      panelFiles:
+      - panel3-button2-panels/panel1.yaml
+      - panel3-button2-panels/panel2.yaml
+      panels:
+      - sourcePath: testyaml/simple_test/home2/panel3-button2-panels/panel1.yaml
+        level: 2
+        id: ""
+        name: Panel3Button2OnePanel
+        buttons: []
+        tabs: []
+        markup: Panel3Button2Panel1 Markup
+        note: Panel3Button2Panel1 Note
+        hvscroll: false
+      - sourcePath: testyaml/simple_test/home2/panel3-button2-panels/panel2.yaml
+        level: 2
+        id: ""
+        name: Panel3Button2TwoPanel
+        buttons: []
+        tabs: []
+        markup: Panel3Button2Panel2 Markup
+        note: Panel3Button2Panel2 Note
+        hvscroll: false
+    tabs: []
+    note: p3 note
+    hvscroll: false
+  - sourcePath: testyaml/simple_test/home2/panel5.yaml
+    level: 1
+    id: ""
+    name: FivePanel
+    buttons: []
+    tabs:
     - sourcePath: testyaml/simple_test/home2/panel5.yaml
-      level: 1
-      id: ""
-      name: FivePanel
-      buttons: []
-      tabs:
-      - sourcePath: testyaml/simple_test/home2/panel5.yaml
-        name: P51Tab
-        label: P5T1 Label
-        heading: P5T1 Label
-        panelFiles:
-        - panel5-tab1-panels/panel1.yaml
-        - panel5-tab1-panels/panel2.yaml
-        panels:
-        - sourcePath: testyaml/simple_test/home2/panel5-tab1-panels/panel1.yaml
-          level: 2
-          id: ""
-          name: Panel5Tab1OnePanel
-          buttons: []
-          tabs: []
-          markup: Panel5Tab1Panel1 Markup
-          note: Panel5Tab1Panel1 Note
-          HVScroll: false
-        - sourcePath: testyaml/simple_test/home2/panel5-tab1-panels/panel2.yaml
-          level: 2
-          id: ""
-          name: Panel5Tab1TwoPanel
-          buttons: []
-          tabs: []
-          markup: Panel5Tab1Panel2 Markup
-          note: Panel5Tab1Panel2 Note
-          HVScroll: false
-      - sourcePath: testyaml/simple_test/home2/panel5.yaml
-        name: P52Tab
-        label: P5T2 Label
-        heading: P5T2 Label
-        panelFiles:
-        - panel5-tab2-panels/panel1.yaml
-        - panel5-tab2-panels/panel2.yaml
-        panels:
-        - sourcePath: testyaml/simple_test/home2/panel5-tab2-panels/panel1.yaml
-          level: 2
-          id: ""
-          name: Panel5Tab2OnePanel
-          buttons: []
-          tabs: []
-          markup: Panel5Tab2Panel1 Markup
-          note: Panel5Tab2Panel1 Note
-          HVScroll: false
-        - sourcePath: testyaml/simple_test/home2/panel5-tab2-panels/panel2.yaml
-          level: 2
-          id: ""
-          name: Panel5Tab2TwoPanel
-          buttons: []
-          tabs: []
-          markup: Panel5Tab2Panel2 Markup
-          note: Panel5Tab2Panel2 Note
-          HVScroll: false
-      note: p5 note
-      HVScroll: false
-`,
+      name: P51Tab
+      label: P5T1 Label
+      heading: P5T1 Label
+      panelFiles:
+      - panel5-tab1-panels/panel1.yaml
+      - panel5-tab1-panels/panel2.yaml
+      panels:
+      - sourcePath: testyaml/simple_test/home2/panel5-tab1-panels/panel1.yaml
+        level: 2
+        id: ""
+        name: Panel5Tab1OnePanel
+        buttons: []
+        tabs: []
+        markup: Panel5Tab1Panel1 Markup
+        note: Panel5Tab1Panel1 Note
+        hvscroll: false
+      - sourcePath: testyaml/simple_test/home2/panel5-tab1-panels/panel2.yaml
+        level: 2
+        id: ""
+        name: Panel5Tab1TwoPanel
+        buttons: []
+        tabs: []
+        markup: Panel5Tab1Panel2 Markup
+        note: Panel5Tab1Panel2 Note
+        hvscroll: false
+    - sourcePath: testyaml/simple_test/home2/panel5.yaml
+      name: P52Tab
+      label: P5T2 Label
+      heading: P5T2 Label
+      panelFiles:
+      - panel5-tab2-panels/panel1.yaml
+      - panel5-tab2-panels/panel2.yaml
+      panels:
+      - sourcePath: testyaml/simple_test/home2/panel5-tab2-panels/panel1.yaml
+        level: 2
+        id: ""
+        name: Panel5Tab2OnePanel
+        buttons: []
+        tabs: []
+        markup: Panel5Tab2Panel1 Markup
+        note: Panel5Tab2Panel1 Note
+        hvscroll: false
+      - sourcePath: testyaml/simple_test/home2/panel5-tab2-panels/panel2.yaml
+        level: 2
+        id: ""
+        name: Panel5Tab2TwoPanel
+        buttons: []
+        tabs: []
+        markup: Panel5Tab2Panel2 Markup
+        note: Panel5Tab2Panel2 Note
+        hvscroll: false
+    note: p5 note
+    hvscroll: false`,
 			wantErr: false,
 		},
 	}

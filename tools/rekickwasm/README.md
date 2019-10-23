@@ -1,8 +1,8 @@
 # rekickwasm
 
-## Oct 7, 2019
+## October 22, 2019
 
-Refactored for kickwasm version 10.1.0.
+Refactored for kickwasm version 11.0.0.
 
 Now rekickwasm will refactor if you change a markup panel's **hvscroll** in the kickwams.yaml file.
 
@@ -42,7 +42,7 @@ In a terminal, download, install and view **how-to** information with
 
 * Tested with kickwasm version 5.0.0 by building the [CRUD application](https://github.com/josephbudd/crud).
 * Then performed the following tests.
-  1. Add Home with Buttons and Markup Panels.
+  1. Add Home Buttons and Markup Panels.
   1. Swap Normal tab and Swap tab in same tab bar.
   1. Add Tab bar with spawn tab.
   1. Move a tab and spawn tab from one tab bar panel to another.
@@ -50,7 +50,7 @@ In a terminal, download, install and view **how-to** information with
   1. Move around tabs and spawn tabs in the same tab bar.
   1. Undo
   1. Swap spawn tabs so that normal tabs spawn spawns tabs in another tab bar.
-  1. Move Homes.
+  1. Move Homes Buttons.
   1. Swap Home Buttons.
   1. Swap Home Button Panels.
   1. Add a panel to a group.
@@ -76,10 +76,9 @@ START BY INITIALIZING REKICK WITH "rekickwasm -i"
   * Puts a copy of your yaml files in ./rekickwasm/edit/ that you must edit for the refactoring.
 
 EDIT THE YAML FILES IN ./rekickwasm/edit/yaml/ TO MAKE YOUR CHANGES
-  * Remove homes, buttons, tabs and panels.
-  * Add completely new homes, buttons, tabs and panels.
-  * Rename a home.
-  * Move the homes around.
+  * Remove buttons, tabs and panels.
+  * Add completely new buttons, tabs and panels.
+  * Move the home buttons around.
   * Edit a button name, label, heading, cc.
   * Edit a tab name or label.
   * Resort the panels or panelFiles in a button or tab.
@@ -128,7 +127,6 @@ In ./rekickwasm/edit/yaml/kickwasm.yaml
   * If you rename a panel rekickwasm will remove it and you will lose it. For example if you rename "MyOldPanel" to "MyNewPanel", rekickwasm will remove the "MyOldPanel" template file and go package files. Then rekickwasm will add a new template file and new go package files for "MyNewPanel"
 
   AND REMEMBER:
-    * Home names must be unique.
     * Panel names must be unique.
     * Button names must be unique.
     * Tab names must be unique.

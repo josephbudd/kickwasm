@@ -1,55 +1,47 @@
 title : Dup button Name
 importPath : github.com/josephbudd/kickwasm/examples/xxx
-
-stores :
-  - XXX
-
-homes :
-  - name : XXX
-    button :
-      name : NextButton
-      label : Click here for the next color level.
-      heading : The button pad below is styled with the level 1 colors.
-      cc : Level 1 Colors
-      panels :
-        - label : Buttons
-          name : PNamePanel
-          buttons :
-            - name : OneButton
-              label : One
-              panels :
-                - label : Markup
-                  name : Markup1Panel
-                  note : note
-                  markup : markup
-            - name : OneButton
-              label : One
-              panels :
-                - label : Markup
-                  name : Markup2Panel
-                  note : note
-                  markup : markup
-  - name : YYY
-    button :
-      name : NextButton
-      label : Click here for the next color level.
-      heading : The button pad below is styled with the level 1 colors.
-      cc : Level 1 Colors
-      panels :
-        - label : Buttons
-          name : YYYPNamePanel
-          buttons :
-            - name : OneButton
-              label : One
-              panels :
-                - label : Markup
-                  name : YYYMarkup1Panel
-                  note : note
-                  markup : markup
-            - name : OneButton
-              label : One
-              panels :
-                - label : Markup
-                  name : YYYMarkup2Panel
-                  note : note
-                  markup : markup
+buttons :
+  - name : NextButton
+    label : Click here for the next color level.
+    heading : The button pad below is styled with the level 1 colors.
+    cc : Level 1 Colors
+    panels :
+      - label : Buttons
+        name : PNamePanel
+        buttons :
+          - name : OneButton
+            label : One
+            panels :
+              - label : Markup
+                name : Markup1Panel
+                note : note
+                markup : markup
+          - name : OneButton
+            label : One
+            panels :
+              - label : Markup
+                name : Markup2Panel
+                note : note
+                markup : markup
+  - name : NextButton
+    label : Click here for the next color level.
+    heading : The button pad below is styled with the level 1 colors.
+    cc : Level 1 Colors
+    panels :
+      - label : Buttons
+        name : YYYPNamePanel
+        buttons :
+          - name : OneButton
+            label : One
+            panels :
+              - label : Markup
+                name : YYYMarkup1Panel
+                note : note
+                markup : markup
+          - name : OneButton
+            label : One
+            panels :
+              - label : Markup
+                name : YYYMarkup2Panel
+                note : note
+                markup : markup

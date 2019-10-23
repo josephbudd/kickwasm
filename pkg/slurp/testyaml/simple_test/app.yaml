@@ -1,22 +1,16 @@
 title : Test 1
 importPath : github.com/josephbudd/kickwasm/examples/test1
-stores :
-  - Test1
-homes :
-  - name : Home1
-    button :
-      label : Button 1
-      name : OneButton
-      heading : Button 1 Heading.
-      panelFiles :
-        - home1/panel1.yaml
-        - home1/panel2.yaml
-  - name : Home2
-    button :
-      label : Button 2
-      name : TwoButton
-      heading : Button 2 Heading.
-      panelFiles :
-        - home2/panel3.yaml
-        - home2/panel5.yaml
+buttons :
+  - name : OneButton
+    label : Button 1
+    heading : Button 1 Heading.
+    panelFiles :
+      - home1/panel1.yaml
+      - home1/panel2.yaml
+  - name : TwoButton
+    label : Button 2
+    heading : Button 2 Heading.
+    panelFiles :
+      - home2/panel3.yaml
+      - home2/panel5.yaml
 

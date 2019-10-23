@@ -1,8 +1,14 @@
 # kickwasm version 11.0.0
 
+An application framework generator written in go for applictions written in go.
+
 ## Still experimental because syscall/js is still experimental
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
+
+## October 23, 2019
+
+Rebuilt all of the tests. In the past few weeks I've reengineered kickwasm and it's tools 3 times. Apparently I neglected to rebuild the kickwasm tests after the last round of changes. Now the tests are rebuilt.
 
 ## October 22, 2019
 
@@ -16,7 +22,7 @@ Version 11.0.0
 
 ## Kickwasm Summary
 
-kickwasm is an application framework that quickly builds a customized application framework leaving you little code to write.
+kickwasm is an application framework that quickly builds a customized application framework leaving me little code to write. 
 
 ## Step by step creating a CRUD with kickwasm
 

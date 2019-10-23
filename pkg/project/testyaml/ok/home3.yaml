@@ -1,26 +1,22 @@
-name : Home3
-
-button :
-  id : b3
-  name : ThreeButton
-  label : Three
-  heading : Button 3 Heading.
-  panels :
-    - name : TabPanel
-      tabs :
-        - label: Tab 0
-          name: ZeroTab
-          spawn: true
-          panels :
-            - name : ZeroTabFirstPanel
-              note : my note 1
-              markup : <p>Markup 1</p>
-            - name : ZeroTabSecondPanel
-              note : my note 2
-              markup : <p>Markup 2</p>
-        - label: Tab 1
-          name : OneTab
-          panels :
-            - name : OnlyPanel
-              note : my note
-              markup : <p>Markup</p>
+name : ThreeButton
+label : Three
+heading : Button 3 Heading.
+panels :
+  - name : TabPanel
+    tabs :
+      - label: Tab 0
+        name: ZeroTab
+        spawn: true
+        panels :
+          - name : ZeroTabFirstPanel
+            note : my note 1
+            markup : <p>Markup 1</p>
+          - name : ZeroTabSecondPanel
+            note : my note 2
+            markup : <p>Markup 2</p>
+      - label: Tab 1
+        name : OneTab
+        panels :
+          - name : OnlyPanel
+            note : my note
+            markup : <p>Markup</p>

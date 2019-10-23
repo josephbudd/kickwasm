@@ -1,25 +1,16 @@
 title : DeepTest
 importPath : github.com/josephbudd/kickwasm/examples/deepTest
-stores :
-  - DeepRepo
-homeFiles :
-  - home1/home1.yaml
-  - home2/home2.yaml
-homes :
-  - name : Home1
-    button :
-      id : b1
-      label : Button 1
-      heading : Button 1 Heading.
-      panelFiles :
-        - home1/panel1.yaml
-        - home1/panel2.yaml
-  - name : Home2
-    button :
-      id : b2
-      label : Button 2
-      heading : Button 2 Heading.
-      panelFiles :
-        - home2/panel3.yaml
-        - home2/panel4.yaml
+buttons :
+  - name : b1
+    label : Button 1
+    heading : Button 1 Heading.
+    panelFiles :
+      - home1/panel1.yaml
+      - home1/panel2.yaml
+  - name : b2
+    label : Button 2
+    heading : Button 2 Heading.
+    panelFiles :
+      - home2/panel3.yaml
+      - home2/panel4.yaml
 

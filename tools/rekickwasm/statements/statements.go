@@ -24,10 +24,10 @@ START BY INITIALIZING REKICK WITH "rekickwasm -i"
   * Puts a copy of your yaml files in ./rekickwasm/edit/ that you must edit for the refactoring.
 
 EDIT THE YAML FILES IN ./rekickwasm/edit/yaml/ TO MAKE YOUR CHANGES
-  * Remove homes, buttons, tabs and panels.
-  * Add completely new homes, buttons, tabs and panels.
+  * Remove buttons, tabs and panels.
+  * Add completely new buttons, tabs and panels.
   * Rename a home.
-  * Move the homes around.
+  * Move the buttons around.
   * Edit a button name, label, heading, cc.
   * Edit a tab name or label.
   * Resort the panels or panelFiles in a button or tab.

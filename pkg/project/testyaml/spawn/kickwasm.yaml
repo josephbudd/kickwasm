@@ -1,68 +1,64 @@
 title: Spawn Tabs
 importPath: github.com/josephbudd/spawn
-stores:
-  - Tabs
-homes:
-  - name: Tabs
-    button:
-      name: TabsButton
-      label: Tabs
-      panels:
-        - name: TabsButtonTabBarPanel
-          tabs:
-            - name: FirstTab
-              label: First Tab
-              panels:
-                - name: CreatePanel
-                  note: Button to create a new hello world.
-                  markup: |
-                    <p>
-                      <button id="newHelloWorldButton">New Hello World</button>
-                    </p>
-            - name: SecondTab
-              spawn: true
-              label: Second Tab
-              panels:
-                - name: NotReadyTemplatePanel
-                  note: Click the ready button to switch to the hello world panel.
-                  markup: |
-                    <p>Are you ready? {{.SpawnID}}!</p>
-                    <p>
-                        <button id="readySpawnButton{{.SpawnID}}">Ready</button>
-                    </p>
-                - name: HelloWorldTemplatePanel
-                  note: Yet another "hello world".
-                  markup: |
-                    <p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
-                    <p>
-                        <button id="closeSpawnButton{{.SpawnID}}">Close</button>
-                    </p>
-            - name: FirstOtherTab
-              label: First OtherTab
-              panels:
-                - name: CreateOtherPanel
-                  note: Button to create a new hello world.
-                  markup: |
-                    <p>
-                      <button id="newHelloWorldButton">New Hello World</button>
-                    </p>
-            - name: SecondOtherTab
-              spawn: true
-              label: Second OtherTab
-              panels:
-                - name: NotReadyTemplateOtherPanel
-                  note: Click the ready button to switch to the hello world panel.
-                  markup: |
-                    <p>Are you ready? {{.SpawnID}}!</p>
-                    <p>
-                        <button id="readySpawnButton{{.SpawnID}}">Ready</button>
-                    </p>
-                - name: HelloWorldTemplateOtherPanel
-                  note: Yet another "hello world".
-                  markup: |
-                    <p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
-                    <p>
-                        <button id="closeSpawnButton{{.SpawnID}}">Close</button>
-                    </p>
+buttons:
+  - name: TabsButton
+    label: Tabs
+    panels:
+      - name: TabsButtonTabBarPanel
+        tabs:
+          - name: FirstTab
+            label: First Tab
+            panels:
+              - name: CreatePanel
+                note: Button to create a new hello world.
+                markup: |
+                  <p>
+                    <button id="newHelloWorldButton">New Hello World</button>
+                  </p>
+          - name: SecondTab
+            spawn: true
+            label: Second Tab
+            panels:
+              - name: NotReadyTemplatePanel
+                note: Click the ready button to switch to the hello world panel.
+                markup: |
+                  <p>Are you ready? {{.SpawnID}}!</p>
+                  <p>
+                      <button id="readySpawnButton{{.SpawnID}}">Ready</button>
+                  </p>
+              - name: HelloWorldTemplatePanel
+                note: Yet another "hello world".
+                markup: |
+                  <p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
+                  <p>
+                      <button id="closeSpawnButton{{.SpawnID}}">Close</button>
+                  </p>
+          - name: FirstOtherTab
+            label: First OtherTab
+            panels:
+              - name: CreateOtherPanel
+                note: Button to create a new hello world.
+                markup: |
+                  <p>
+                    <button id="newHelloWorldButton">New Hello World</button>
+                  </p>
+          - name: SecondOtherTab
+            spawn: true
+            label: Second OtherTab
+            panels:
+              - name: NotReadyTemplateOtherPanel
+                note: Click the ready button to switch to the hello world panel.
+                markup: |
+                  <p>Are you ready? {{.SpawnID}}!</p>
+                  <p>
+                      <button id="readySpawnButton{{.SpawnID}}">Ready</button>
+                  </p>
+              - name: HelloWorldTemplateOtherPanel
+                note: Yet another "hello world".
+                markup: |
+                  <p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
+                  <p>
+                      <button id="closeSpawnButton{{.SpawnID}}">Close</button>
+                  </p>
 
 

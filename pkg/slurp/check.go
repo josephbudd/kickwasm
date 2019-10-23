@@ -73,11 +73,11 @@ func (sl *Slurper) checkApplicationInfo(yamlbb []byte, fpath string) (appInfo *A
 		// home name
 		homeButton.SourcePath = fpath
 		if len(homeButton.ID) == 0 {
-			err = errors.New("a home is missing a name")
+			err = errors.New("a home button is missing a name")
 			return
 		}
 		if _, found := homeButtonMap[homeButton.ID]; found {
-			errMessage = fmt.Sprintf(`the home name %q is used more than once`, homeButton.ID)
+			errMessage = fmt.Sprintf(`the home button name %q is used more than once`, homeButton.ID)
 			err = errors.New(errMessage)
 			return
 		}
@@ -90,7 +90,7 @@ func (sl *Slurper) checkApplicationInfo(yamlbb []byte, fpath string) (appInfo *A
 		}
 		homeButtonMap[homeButton.ID] = homeButton.ID
 		if err = sl.checkButtonInfo(homeButton); err != nil {
-			errMessage = fmt.Sprintf(`in the home named %q, %s`, homeButton.ID, err.Error())
+			errMessage = fmt.Sprintf(`in the home button named %q, %s`, homeButton.ID, err.Error())
 			err = errors.New(errMessage)
 			return
 		}

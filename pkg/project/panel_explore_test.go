@@ -63,47 +63,61 @@ func TestExplore(t *testing.T) {
 }
 
 func testGenerateHomeButtonPanelGroups(t *testing.T, builder *Builder) {
-	wantStr := `
-Home1:
-  - buttonname: OneButton
-    buttonid: masterid-home-pad-OneButton
-    panelnamesidmap:
-      OnePanel:
-        id: OnePanel
-        name: OnePanel
-        note: p1 note
-        markup: <p>Panel 1-1</p>
-        HTMLID: masterid-home-pad-OneButton-OnePanel
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-      TwoPanel:
-        id: TwoPanel
-        name: TwoPanel
-        note: p2 note
-        markup: <p>Panel 2-1</p>
-        HTMLID: masterid-home-pad-OneButton-TwoPanel
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-Home2:
-  - buttonname: TwoButton
-    buttonid: masterid-home-pad-TwoButton
-    panelnamesidmap:
-      FourPanel:
-        id: fourPanel
-        name: FourPanel
-        note: p4 note
-        markup: <p>Panel 4-1</p>
-        HTMLID: masterid-home-pad-TwoButton-fourPanel
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-      ThreePanel:
-        id: threePanel
-        name: ThreePanel
-        note: p3 note
-        markup: <p>Panel 3-1</p>
-        HTMLID: masterid-home-pad-TwoButton-threePanel
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""`
+	wantStr := `OneButton:
+- istabbutton: false
+  buttonname: OneButton
+  buttonid: masterid-home-pad-OneButton
+  panelnamesidmap:
+  OnePanel:
+    id: OnePanel
+    name: OnePanel
+    HasRealTabs: false
+    note: p1 note
+    markup: <p>Panel 1-1</p>
+    HVScroll: false
+    HTMLID: masterid-home-pad-OneButton-OnePanel
+    TabBarHTMLID: ""
+    UnderTabBarHTMLID: ""
+    H3ID: ""
+  TwoPanel:
+    id: TwoPanel
+    name: TwoPanel
+    HasRealTabs: false
+    note: p2 note
+    markup: <p>Panel 2-1</p>
+    HVScroll: false
+    HTMLID: masterid-home-pad-OneButton-TwoPanel
+    TabBarHTMLID: ""
+    UnderTabBarHTMLID: ""
+    H3ID: ""
+TwoButton:
+- istabbutton: false
+  buttonname: TwoButton
+  buttonid: masterid-home-pad-TwoButton
+  panelnamesidmap:
+  FourPanel:
+    id: FourPanel
+    name: FourPanel
+    HasRealTabs: false
+    note: p4 note
+    markup: <p>Panel 4-1</p>
+    HVScroll: false
+    HTMLID: masterid-home-pad-TwoButton-FourPanel
+    TabBarHTMLID: ""
+    UnderTabBarHTMLID: ""
+    H3ID: ""
+  ThreePanel:
+    id: ThreePanel
+    name: ThreePanel
+    HasRealTabs: false
+    note: p3 note
+    markup: <p>Panel 3-1</p>
+    HVScroll: false
+    HTMLID: masterid-home-pad-TwoButton-ThreePanel
+    TabBarHTMLID: ""
+    UnderTabBarHTMLID: ""
+    H3ID: ""
+`
 	var wants map[string][]*ButtonPanelGroup
 	if err := yaml.Unmarshal([]byte(wantStr), &wants); err != nil {
 		t.Fatal(err)
@@ -143,16 +157,7 @@ func testGenerateTabBarIDStartPanelIDMap(t *testing.T, builder *Builder) {
 }
 
 func testGenerateHomeEmptyPanelIDsMap(t *testing.T, builder *Builder) {
-	wants := map[string][]string{
-		"Home1": {
-			"masterid-home-pad-OneButton-OnePanel",
-			"masterid-home-pad-OneButton-TwoPanel",
-		},
-		"Home2": {
-			"masterid-home-pad-TwoButton-ThreePanel",
-			"masterid-home-pad-TwoButton-FourPanel",
-		},
-	}
+	wants := map[string][]string{"OneButton": []string{"masterid-home-pad-OneButton-OnePanel", "masterid-home-pad-OneButton-TwoPanel"}, "TwoButton": []string{"masterid-home-pad-TwoButton-ThreePanel", "masterid-home-pad-TwoButton-FourPanel"}}
 
 	results := builder.GenerateHomeEmptyPanelIDsMap()
 	if ok := reflect.DeepEqual(results, wants); !ok {
@@ -168,16 +173,7 @@ func testgenerateHomePanelNameTemplateMap(t *testing.T, builder *Builder) {
 		// TODO: Add test cases.
 		{
 			name: "a",
-			want: map[string]map[string]string{
-				"Home1": {
-					"OnePanel": "\n<!--\n\nPanel name: \"OnePanel\"\n\nPanel note: p1 note\n\nThis is one of a group of 2 panels displayed when the \"One\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-OneButton-TwoPanel-inner-user-content\n  * Name: TwoPanel\n  * Note: p2 note\n\n-->\n\n<p>Panel 1-1</p>\n",
-					"TwoPanel": "\n<!--\n\nPanel name: \"TwoPanel\"\n\nPanel note: p2 note\n\nThis is one of a group of 2 panels displayed when the \"One\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-OneButton-OnePanel-inner-user-content\n  * Name: OnePanel\n  * Note: p1 note\n\n-->\n\n<p>Panel 2-1</p>\n",
-				},
-				"Home2": {
-					"ThreePanel": "\n<!--\n\nPanel name: \"ThreePanel\"\n\nPanel note: p3 note\n\nThis is one of a group of 2 panels displayed when the \"Two\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-TwoButton-FourPanel-inner-user-content\n  * Name: FourPanel\n  * Note: p4 note\n\n-->\n\n<p>Panel 3-1</p>\n",
-					"FourPanel":  "\n<!--\n\nPanel name: \"FourPanel\"\n\nPanel note: p4 note\n\nThis is one of a group of 2 panels displayed when the \"Two\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-TwoButton-ThreePanel-inner-user-content\n  * Name: ThreePanel\n  * Note: p3 note\n\n-->\n\n<p>Panel 4-1</p>\n",
-				},
-			},
+			want: map[string]map[string]string{"OneButton": map[string]string{"OnePanel": "\n<!--\n\nPanel name: \"OnePanel\"\n\nPanel note: p1 note\n\nThis is one of a group of 2 panels displayed when the \"One\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-OneButton-TwoPanel-inner-user-content\n  * Name: TwoPanel\n  * Note: p2 note\n\n-->\n\n<p>Panel 1-1</p>\n", "TwoPanel": "\n<!--\n\nPanel name: \"TwoPanel\"\n\nPanel note: p2 note\n\nThis is one of a group of 2 panels displayed when the \"One\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-OneButton-OnePanel-inner-user-content\n  * Name: OnePanel\n  * Note: p1 note\n\n-->\n\n<p>Panel 2-1</p>\n"}, "TwoButton": map[string]string{"FourPanel": "\n<!--\n\nPanel name: \"FourPanel\"\n\nPanel note: p4 note\n\nThis is one of a group of 2 panels displayed when the \"Two\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-TwoButton-ThreePanel-inner-user-content\n  * Name: ThreePanel\n  * Note: p3 note\n\n-->\n\n<p>Panel 4-1</p>\n", "ThreePanel": "\n<!--\n\nPanel name: \"ThreePanel\"\n\nPanel note: p3 note\n\nThis is one of a group of 2 panels displayed when the \"Two\" button is clicked.\n\nThis panel is just 1 in a group of 2 panels.\nYour other panel in this group is\n\n  * The content panel <div #masterid-home-pad-TwoButton-FourPanel-inner-user-content\n  * Name: FourPanel\n  * Note: p4 note\n\n-->\n\n<p>Panel 3-1</p>\n"}},
 		},
 	}
 	for _, tt := range tests {
@@ -197,16 +193,7 @@ func testGenerateHomeTemplatePanelName(t *testing.T, builder *Builder) {
 		// TODO: Add test cases.
 		{
 			name: "wtf",
-			want: map[string][]string{
-				"Home2": {
-					"ThreePanel",
-					"FourPanel",
-				},
-				"Home1": {
-					"OnePanel",
-					"TwoPanel",
-				},
-			},
+			want: map[string][]string{"OneButton": []string{"OnePanel", "TwoPanel"}, "TwoButton": []string{"ThreePanel", "FourPanel"}},
 		},
 	}
 	for _, tt := range tests {
@@ -226,12 +213,7 @@ func testBuilderGenerateHomeEmptyInsidePanelNamePathMap(t *testing.T, builder *B
 		// TODO: Add test cases.
 		{
 			name: "test",
-			want: map[string]map[string][]string{
-				"Home1": {
-					"OneOnePanel": {"OneButton", "OnePanel", "OneOneButton"},
-					"TwoOnePanel": {"OneButton", "TwoPanel", "TwoOneButton"},
-				},
-			},
+			want: map[string]map[string][]string{"OneButton": map[string][]string{"OneOnePanel": []string{"OneButton", "OnePanel", "OneOneButton"}, "TwoOnePanel": []string{"OneButton", "TwoPanel", "TwoOneButton"}}},
 		},
 	}
 	for _, tt := range tests {
@@ -245,7 +227,7 @@ func testBuilderGenerateHomeEmptyInsidePanelNamePathMap(t *testing.T, builder *B
 
 func testBuilderGenerateHomePanelNamePanelMap(t *testing.T, builder *Builder) {
 	wantStr := `
-Home1:
+OneButton:
   OneOnePanel:
     id: OneOnePanel
     name: OneOnePanel
@@ -307,6 +289,7 @@ Home1:
 		t.Fatal(err)
 	}
 	got := builder.GenerateHomePanelNamePanelMap()
+	// t.Fatalf("%#v", got)
 	for wHome, wPanelNamePanelMap := range want {
 		gPanelNamePanelMap, ok := got[wHome]
 		if !ok {

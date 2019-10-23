@@ -1,24 +1,20 @@
-name : Home1
-
-button :
-  id : b1
-  name : OneButton
-  label : One
-  heading : Button 1 Heading.
-  panels :
-    - name : OnePanel
-      note : p1 note
-      buttons :
-        - label : One One
-          name : OneOneButton
-          panels :
-            - name : OneOnePanel
-              markup : <p>One One Panel</p>
-    - name : TwoPanel
-      note : p2 note
-      buttons :
-        - label : Two One
-          name : TwoOneButton
-          panels :
-            - name : TwoOnePanel
-              markup : <p>Two One Panel</p>
+name : OneButton
+label : One
+heading : Button 1 Heading.
+panels :
+  - name : OnePanel
+    note : p1 note
+    buttons :
+      - label : One One
+        name : OneOneButton
+        panels :
+          - name : OneOnePanel
+            markup : <p>One One Panel</p>
+  - name : TwoPanel
+    note : p2 note
+    buttons :
+      - label : Two One
+        name : TwoOneButton
+        panels :
+          - name : TwoOnePanel
+            markup : <p>Two One Panel</p>

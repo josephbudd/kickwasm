@@ -12,7 +12,7 @@ import (
 
 func TestOutsideExplore(t *testing.T) {
 	var want = map[string]map[string]map[string][]string{
-		"Customer": map[string]map[string][]string{
+		"CustomersButton": map[string]map[string][]string{
 			"": map[string][]string{
 				"CustomersButton": []string{"CustomersButton"},
 			},
@@ -21,24 +21,27 @@ func TestOutsideExplore(t *testing.T) {
 				"CustomerEditButton": []string{"CustomersButton", "CustomerPanel", "CustomerEditButton"},
 			},
 		},
-		"PriceDrop": map[string]map[string][]string{
-			"": map[string][]string{"PriceDropsButton": []string{"PriceDropsButton"}},
+		"PriceDropsButton": map[string]map[string][]string{
+			"": map[string][]string{
+				"PriceDropsButton": []string{"PriceDropsButton"},
+			},
 			"PriceDropPanel": map[string][]string{
 				"PriceDropAddButton":        []string{"PriceDropsButton", "PriceDropPanel", "PriceDropAddButton"},
 				"PriceDropViewButton":       []string{"PriceDropsButton", "PriceDropPanel", "PriceDropViewButton"},
 				"PriceDropVoidUnvoidButton": []string{"PriceDropsButton", "PriceDropPanel", "PriceDropVoidUnvoidButton"},
 			},
 		},
-		"PriceList": map[string]map[string][]string{
+		"PriceListsButton": map[string]map[string][]string{
 			"": map[string][]string{
 				"PriceListsButton": []string{"PriceListsButton"},
 			},
-			"PriceListPanel": map[string][]string{"PriceListEditButton": []string{"PriceListsButton", "PriceListPanel", "PriceListEditButton"},
+			"PriceListPanel": map[string][]string{
+				"PriceListEditButton":   []string{"PriceListsButton", "PriceListPanel", "PriceListEditButton"},
 				"PriceListImportButton": []string{"PriceListsButton", "PriceListPanel", "PriceListImportButton"},
 				"PriceListViewButton":   []string{"PriceListsButton", "PriceListPanel", "PriceListViewButton"},
 			},
 		},
-		"PurchaseOrder": map[string]map[string][]string{
+		"PurchaseOrdersButton": map[string]map[string][]string{
 			"": map[string][]string{
 				"PurchaseOrdersButton": []string{"PurchaseOrdersButton"},
 			},
@@ -48,6 +51,7 @@ func TestOutsideExplore(t *testing.T) {
 			},
 		},
 	}
+
 	// pdm tests
 	pwd, _ := os.Getwd()
 	pdmPath := filepath.Join(pwd, "testyaml", "pdm", "app.yaml")

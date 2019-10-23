@@ -10,125 +10,124 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const spawnYamlString = `name: Tabs
-button:
-  name: TabsButton
-  label: Tabs
-  heading: Tabs
-  cc: Tabs
-  panels:
-  - id: TabsButtonTabBarPanel
-    name: TabsButtonTabBarPanel
-    tabs:
-    - name: FirstTab
-      label: First Tab
-      heading: ""
-      panels:
-      - id: CreatePanel
-        name: CreatePanel
-        HasRealTabs: false
-        note: Button to create a new hello world.
-        markup: |
-          <p>
-            <button id="newHelloWorldButton">New Hello World</button>
-          </p>
-        HVScroll: false
-        HTMLID: ""
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-        H3ID: ""
-      spawn: false
-    - name: SecondTab
-      label: Second Tab
-      heading: ""
-      panels:
-      - id: NotReadyTemplatePanel
-        name: NotReadyTemplatePanel
-        HasRealTabs: false
-        note: Click the ready button to switch to the hello world panel.
-        markup: |
-          <p>Are you ready? {{.SpawnID}}!</p>
-          <p>
-              <button id="readySpawnButton{{.SpawnID}}">Ready</button>
-          </p>
-        HVScroll: false
-        HTMLID: ""
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-        H3ID: ""
-      - id: HelloWorldTemplatePanel
-        name: HelloWorldTemplatePanel
-        HasRealTabs: false
-        note: Yet another "hello world".
-        markup: |
-          <p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
-          <p>
-              <button id="closeSpawnButton{{.SpawnID}}">Close</button>
-          </p>
-        HVScroll: false
-        HTMLID: ""
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-        H3ID: ""
-      spawn: true
-    - name: FirstOtherTab
-      label: First OtherTab
-      heading: ""
-      panels:
-      - id: CreateOtherPanel
-        name: CreateOtherPanel
-        HasRealTabs: false
-        note: Button to create a new hello world.
-        markup: |
-          <p>
-            <button id="newHelloWorldButton">New Hello World</button>
-          </p>
-        HVScroll: false
-        HTMLID: ""
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-        H3ID: ""
-      spawn: false
-    - name: SecondOtherTab
-      label: Second OtherTab
-      heading: ""
-      panels:
-      - id: NotReadyTemplateOtherPanel
-        name: NotReadyTemplateOtherPanel
-        HasRealTabs: false
-        note: Click the ready button to switch to the hello world panel.
-        markup: |
-          <p>Are you ready? {{.SpawnID}}!</p>
-          <p>
-              <button id="readySpawnButton{{.SpawnID}}">Ready</button>
-          </p>
-        HVScroll: false
-        HTMLID: ""
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-        H3ID: ""
-      - id: HelloWorldTemplateOtherPanel
-        name: HelloWorldTemplateOtherPanel
-        HasRealTabs: false
-        note: Yet another "hello world".
-        markup: |
-          <p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
-          <p>
-              <button id="closeSpawnButton{{.SpawnID}}">Close</button>
-          </p>
-        HVScroll: false
-        HTMLID: ""
-        TabBarHTMLID: ""
-        UnderTabBarHTMLID: ""
-        H3ID: ""
-      spawn: true
-    HasRealTabs: false
-    note: ""
-    HVScroll: false
-    HTMLID: ""
-    TabBarHTMLID: ""
-    UnderTabBarHTMLID: ""
-    H3ID: ""
+const spawnYamlString = `
+name: TabsButton
+label: Tabs
+heading: Tabs
+cc: Tabs
+panels:
+- id: TabsButtonTabBarPanel
+  name: TabsButtonTabBarPanel
+  tabs:
+  - name: FirstTab
+	label: First Tab
+	heading: ""
+	panels:
+	- id: CreatePanel
+	  name: CreatePanel
+	  HasRealTabs: false
+	  note: Button to create a new hello world.
+	  markup: |
+		<p>
+		  <button id="newHelloWorldButton">New Hello World</button>
+		</p>
+	  HVScroll: false
+	  HTMLID: ""
+	  TabBarHTMLID: ""
+	  UnderTabBarHTMLID: ""
+	  H3ID: ""
+	spawn: false
+  - name: SecondTab
+	label: Second Tab
+	heading: ""
+	panels:
+	- id: NotReadyTemplatePanel
+	  name: NotReadyTemplatePanel
+	  HasRealTabs: false
+	  note: Click the ready button to switch to the hello world panel.
+	  markup: |
+		<p>Are you ready? {{.SpawnID}}!</p>
+		<p>
+			<button id="readySpawnButton{{.SpawnID}}">Ready</button>
+		</p>
+	  HVScroll: false
+	  HTMLID: ""
+	  TabBarHTMLID: ""
+	  UnderTabBarHTMLID: ""
+	  H3ID: ""
+	- id: HelloWorldTemplatePanel
+	  name: HelloWorldTemplatePanel
+	  HasRealTabs: false
+	  note: Yet another "hello world".
+	  markup: |
+		<p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
+		<p>
+			<button id="closeSpawnButton{{.SpawnID}}">Close</button>
+		</p>
+	  HVScroll: false
+	  HTMLID: ""
+	  TabBarHTMLID: ""
+	  UnderTabBarHTMLID: ""
+	  H3ID: ""
+	spawn: true
+  - name: FirstOtherTab
+	label: First OtherTab
+	heading: ""
+	panels:
+	- id: CreateOtherPanel
+	  name: CreateOtherPanel
+	  HasRealTabs: false
+	  note: Button to create a new hello world.
+	  markup: |
+		<p>
+		  <button id="newHelloWorldButton">New Hello World</button>
+		</p>
+	  HVScroll: false
+	  HTMLID: ""
+	  TabBarHTMLID: ""
+	  UnderTabBarHTMLID: ""
+	  H3ID: ""
+	spawn: false
+  - name: SecondOtherTab
+	label: Second OtherTab
+	heading: ""
+	panels:
+	- id: NotReadyTemplateOtherPanel
+	  name: NotReadyTemplateOtherPanel
+	  HasRealTabs: false
+	  note: Click the ready button to switch to the hello world panel.
+	  markup: |
+		<p>Are you ready? {{.SpawnID}}!</p>
+		<p>
+			<button id="readySpawnButton{{.SpawnID}}">Ready</button>
+		</p>
+	  HVScroll: false
+	  HTMLID: ""
+	  TabBarHTMLID: ""
+	  UnderTabBarHTMLID: ""
+	  H3ID: ""
+	- id: HelloWorldTemplateOtherPanel
+	  name: HelloWorldTemplateOtherPanel
+	  HasRealTabs: false
+	  note: Yet another "hello world".
+	  markup: |
+		<p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
+		<p>
+			<button id="closeSpawnButton{{.SpawnID}}">Close</button>
+		</p>
+	  HVScroll: false
+	  HTMLID: ""
+	  TabBarHTMLID: ""
+	  UnderTabBarHTMLID: ""
+	  H3ID: ""
+	spawn: true
+  HasRealTabs: false
+  note: ""
+  HVScroll: false
+  HTMLID: ""
+  TabBarHTMLID: ""
+  UnderTabBarHTMLID: ""
+  H3ID: ""
 `
 
 func TestSpawn(t *testing.T) {
@@ -148,17 +147,26 @@ func TestSpawn(t *testing.T) {
 	if bb, err = yaml.Marshal(*builder.Homes[0]); err != nil {
 		t.Fatal(err)
 	}
-	if string(bb) != spawnYamlString {
-		t.Fatal(string(bb) != spawnYamlString)
+	bbstr := string(bb)
+	if bbstr != spawnYamlString {
+		lbb := len(bbstr)
+		lw := len(spawnYamlString)
+		if lbb < lw {
+			for i := 0; i < lbb; i++ {
+				j := i + 1
+				if bbstr[i:j] != spawnYamlString[i:j] {
+					t.Fatalf("bbstr[%d:%d] %q != spawnYamlString[%d:%d] %q", i, j, bbstr[i:j], i, j, spawnYamlString[i:j])
+				}
+			}
+		}
 	}
-
 	testGenerateHomeSpawnTabEmptyInsidePanelNamePathMap(t, builder)
 	testGenerateHomeSpawnTabButtonPanelGroups(t, builder)
 }
 
 func testGenerateHomeSpawnTabEmptyInsidePanelNamePathMap(t *testing.T, builder *Builder) {
 	wants := map[string]map[string][]string{
-		"Tabs": map[string][]string{
+		"TabsButton": map[string][]string{
 			"HelloWorldTemplatePanel":      []string{"TabsButton", "TabsButtonTabBarPanel", "SecondTab", "HelloWorldTemplatePanel"},
 			"NotReadyTemplatePanel":        []string{"TabsButton", "TabsButtonTabBarPanel", "SecondTab", "NotReadyTemplatePanel"},
 			"HelloWorldTemplateOtherPanel": []string{"TabsButton", "TabsButtonTabBarPanel", "SecondOtherTab", "HelloWorldTemplateOtherPanel"},
@@ -169,11 +177,11 @@ func testGenerateHomeSpawnTabEmptyInsidePanelNamePathMap(t *testing.T, builder *
 	results = builder.GenerateHomeSpawnTabEmptyInsidePanelNamePathMap()
 	var found bool
 	var rHome map[string][]string
-	if rHome, found = results["Tabs"]; !found {
+	if rHome, found = results["TabsButton"]; !found {
 		t.Fatalf("results is %#v", results)
 	}
 	var wHome map[string][]string
-	wHome = wants["Tabs"]
+	wHome = wants["TabsButton"]
 	if len(rHome) != len(wHome) {
 		t.Logf("len(rHome) is %d, len(wHome) is %d", len(rHome), len(wHome))
 		t.Fatalf("results is %#v", results)
@@ -203,7 +211,7 @@ func testGenerateHomeSpawnTabButtonPanelGroups(t *testing.T, builder *Builder) {
 		{
 			name: "first test",
 			want: map[string][]*TabPanelGroup{
-				"Tabs": []*TabPanelGroup{
+				"TabsButton": []*TabPanelGroup{
 					&TabPanelGroup{
 						TabBarID:     "",
 						TabBarName:   "TabsButtonTabBarPanel",
