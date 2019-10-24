@@ -8,7 +8,8 @@ An application framework generator written in go for applictions written in go.
 
 ## October 23, 2019
 
-Rebuilt all of the tests. In the past few weeks I've reengineered kickwasm and it's tools 3 times. Apparently I neglected to rebuild the kickwasm tests after the last round of changes. Now the tests are rebuilt.
+* Tiny source code formatting fixes.
+* Rebuilt all of the tests. In the past few weeks I've reengineered kickwasm and it's tools 3 times. Apparently I neglected to rebuild the kickwasm tests after the last round of changes. Now the tests are rebuilt.
 
 ## October 22, 2019
 

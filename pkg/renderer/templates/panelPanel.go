@@ -52,7 +52,7 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	presenter := &panelPresenter{
 {{ if .IsTabSiblingPanel }}		group:          group,
 		tabPanelHeader: notJS.GetElementByID("{{.PanelH3ID}}"),
-		tabButton: notJS.GetElementByID("{{.TabButtonID}}"),{{ else }}		group: group,{{ end }}
+		tabButton:      notJS.GetElementByID("{{.TabButtonID}}"),{{ else }}		group: group,{{ end }}
 	}
 	messenger := &panelMessenger{
 		group: group,
