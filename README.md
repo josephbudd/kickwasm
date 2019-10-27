@@ -6,9 +6,12 @@ An application framework generator written in go for applictions written in go.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
+## November 1, 2019
+
+* A barely significant, single, tiny, framework source code file, formatting fix to get a better score in go report card. I noticed it while rebuilding my linux morse code trainer [CWT](https://github.com/josephbudd/cwt).
+
 ## October 23, 2019
 
-* Tiny source code formatting fixes.
 * Rebuilt all of the tests. In the past few weeks I've reengineered kickwasm and it's tools 3 times. Apparently I neglected to rebuild the kickwasm tests after the last round of changes. Now the tests are rebuilt.
 
 ## October 22, 2019
@@ -23,9 +26,17 @@ Version 11.0.0
 
 ## Kickwasm Summary
 
-kickwasm is an application framework that quickly builds a customized application framework leaving me little code to write. 
+You write a kickwasm.yaml file defining the application's GUI. Kickwams generates the framework which is the source code for a go desktop applicaiton with the GUI built as defined in the kickwasm.yaml file.
 
-## Step by step creating a CRUD with kickwasm
+The source code builds an application that runs as 2 separate processes. The main process ( business logic ) is an http server running on the client. The renderer process ( renderer logic) runs in the client's browser. The 2 processes communicate through channels.
+
+The main process will probably need to store and retrieve data or communicate with a remote service. That is managed with the tool kickstore.
+
+The main process and renderer process will need to communicate with messages through channels. That is managed with the tool kicklpc.
+
+The renderer process may need to be refactored. That is handled with the tool rekickwasm.
+
+## My step by step creation a CRUD with kickwasm
 
 The [CRUD application](https://github.com/josephbudd/crud) was built with kickwasm. The CRUD WIKI is very important it is where I detail the steps I took when I built the CRUD.
 
@@ -70,7 +81,8 @@ The examples/ folder contains 3 examples. The new example is **spawnwidgets**. I
 
 The 2 videos below make very clear how the framework functions.
 
-1. A framework always begins with a button pad where the user gets a general idea of what the application does.
+1. The framework GUI has it's own look and behavior so you won't have to create one.
+1. The application always begins with a button pad where the user gets a general idea of what the application does.
 1. From there, the GUI behaves according how the framework was designed.
 
 ### Colors example
