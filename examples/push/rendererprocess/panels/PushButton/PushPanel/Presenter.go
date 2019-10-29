@@ -24,6 +24,10 @@ type panelPresenter struct {
 
 	// Declare your panelPresenter members here.
 
+	// example:
+
+	editCustomerName js.Value
+
 	*/
 
 	timeSpan js.Value
@@ -43,6 +47,14 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	// Define your panelPresenter members.
 
+	// example:
+
+	// Define the edit form's customer name input field.
+	if presenter.editCustomerName = notJS.GetElementByID("editCustomerName"); presenter.editCustomerName == null {
+		err = errors.New("unable to find #editCustomerName")
+		return
+	}
+
 	*/
 
 	// Define timeSpan output field.
@@ -57,6 +69,13 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 /* NOTE TO DEVELOPER. Step 3 of 3.
 
 // Define your panelPresenter functions.
+
+// example:
+
+// displayCustomer displays the customer in the edit customer form panel.
+func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
+	notJS.SetValue(presenter.editCustomerName, record.Name)
+}
 
 */
 

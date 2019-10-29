@@ -227,37 +227,42 @@ func (rp *RePaths) RestoreYAML() (err error) {
 // copyFolder copies the folder src to dst.
 func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths) (err error) {
 	/*
-		./panelMap.go
+		./mainprocess/panelMap.go
+
 		./rendererprocess/css/
 		./rendererprocess/panels.go
 		./rendererprocess/panels/
-		./site/templates/
+		./rendererprocess/spawnPanels/
 		./rendererprocess/viewtools/
+
+		./site/templates/
+		./site/spawnTemplates/
+
 		./.kickwasm/
 	*/
+
 	fileNames := paths.GetFileNames()
 	srcPaths := srcApplicationPaths.GetPaths()
 	dstPaths := dstApplicationPaths.GetPaths()
 	var src, dst string
 	// Files to be copied.
-	// ./panelMap.go
+
+	// File in the ./mainprocess/ folder.
+	// ./mainprocess/panelMap.go
 	src = filepath.Join(srcPaths.OutputMainProcess, fileNames.PanelMapDotGo)
 	dst = filepath.Join(dstPaths.OutputMainProcess, fileNames.PanelMapDotGo)
 	if err = ftools.CopyFile(src, dst); err != nil {
 		return
 	}
+
+	// Files and folders in the ./rendererprocess/ folder.
 	// ./rendererprocess/panels.go
 	src = filepath.Join(srcPaths.OutputRenderer, fileNames.PanelsDotGo)
 	dst = filepath.Join(dstPaths.OutputRenderer, fileNames.PanelsDotGo)
 	if err = ftools.CopyFile(src, dst); err != nil {
 		return
 	}
-	// Folders to be copied.
-	// ./rendererprocess/css/
-	if err = _copyFolder(srcPaths.OutputRendererCSS, dstPaths.OutputRendererCSS); err != nil {
-		return
-	}
-	// Copy renderer/lpc/client.go
+	// ./renderer/lpc/client.go
 	src = filepath.Join(srcPaths.OutputRendererLPC, fileNames.ClientDotGo)
 	dst = filepath.Join(dstPaths.OutputRendererLPC, fileNames.ClientDotGo)
 	if err = ftools.CopyFile(src, dst); err != nil {
@@ -272,6 +277,16 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	if err = _copyFolder(srcPaths.OutputRendererSpawns, dstPaths.OutputRendererSpawns); err != nil {
 		return
 	}
+	// ./rendererprocess/viewtools/
+	if err = _copyFolder(srcPaths.OutputRendererViewTools, dstPaths.OutputRendererViewTools); err != nil {
+		return
+	}
+
+	// Files and folders in the .site/ folder.
+	// ./site/css/
+	if err = _copyFolder(srcPaths.OutputRendererCSS, dstPaths.OutputRendererCSS); err != nil {
+		return
+	}
 	// ./site/templates/
 	if err = _copyFolder(srcPaths.OutputRendererTemplates, dstPaths.OutputRendererTemplates); err != nil {
 		return
@@ -281,11 +296,8 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	if err = _copyFolder(srcPaths.OutputRendererSpawnTemplates, dstPaths.OutputRendererSpawnTemplates); err != nil {
 		return
 	}
-	// ./rendererprocess/viewtools/
-	if err = _copyFolder(srcPaths.OutputRendererViewTools, dstPaths.OutputRendererViewTools); err != nil {
-		return
-	}
-	// yaml
+
+	// The ./.kickwasm/ folder.
 	// ./.kickwasm
 	if err = _copyFolder(srcPaths.OutputDotKickwasm, dstPaths.OutputDotKickwasm); err != nil {
 		return

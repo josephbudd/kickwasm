@@ -5,21 +5,21 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/josephbudd/kickwasm/pkg"
 	"github.com/josephbudd/kickwasm/pkg/kickwasm"
-	"github.com/josephbudd/kickwasm/pkg/paths"
+	"github.com/josephbudd/kickwasm/tools/common"
 )
 
 const (
-	outputFolder = "output"
+	// outputFolder = "output"
+	outputFolder = ""
+	yamlFilePath = "kickwasm.yaml"
 
-	versionBreaking = 11 // Each new version breaks backwards compatibility.
+	versionBreaking = 12 // Each new version breaks backwards compatibility.
 	versionFeature  = 0  // Each new version adds features. Retains backwards compatibility.
 	versionPatch    = 0  // Each new version only fixes bugs. No added features. Retains backwards compatibility.
-
 )
 
 var (
@@ -35,6 +35,11 @@ var (
 		fmt.Sprintf("  Version: %d.%d.%d", versionBreaking, versionFeature, versionPatch),
 		fmt.Sprint("  ", strings.Join(versionDescription, "\n  ")),
 	}
+	usage = `Step 1: Create a folder in your go path.
+Step 2: cd to that folder.
+Step 3: Create a "kickwasm.yaml" file.
+Step 4: Build the framework with "kickwasm [-cc]"
+`
 	nlSrcBB = []byte("\n")
 	nlRepBB = []byte("\\n")
 	qtSrcBB = []byte("\"")
@@ -48,9 +53,6 @@ var (
 // 	Homes      []*slurp.ButtonInfo `yaml:"buttons"`
 // }
 
-//YAMLFileFlag is the file.
-var YAMLFileFlag string
-
 // VersionFlag means show the version.
 var VersionFlag bool
 
@@ -58,26 +60,24 @@ var VersionFlag bool
 var LocationsFlag bool
 
 func init() {
-	flag.StringVar(&YAMLFileFlag, "f", "", "The path to the kickwasm.yaml or kickwasm.yml file.")
-	flag.BoolVar(&LocationsFlag, "cc", false, "Add cookie crumbs. Use with -f.")
+	flag.BoolVar(&LocationsFlag, "cc", false, "Add cookie crumbs.")
 	flag.BoolVar(&VersionFlag, "v", false, "Version information.")
 }
 
+func usageFunc() {
+	out := flag.CommandLine.Output()
+	fmt.Fprintf(out, "Usage of %s:\n", os.Args[0])
+	fmt.Fprintln(out, usage)
+	flag.PrintDefaults()
+}
+
 func main() {
-	fileNames := paths.GetFileNames()
+	flag.Usage = usageFunc
 	flag.Parse()
 	if VersionFlag {
 		for _, v := range version {
 			fmt.Println(v)
 		}
-		return
-	}
-	if len(YAMLFileFlag) == 0 {
-		flag.PrintDefaults()
-		return
-	}
-	if filename := filepath.Base(YAMLFileFlag); filename != fileNames.KickwasmDotYAML && filename != fileNames.KickwasmDotYML {
-		log.Printf("Kickwasm needs a YAML file named %s or %s to build the framework not a file named %q", fileNames.KickwasmDotYAML, fileNames.KickwasmDotYML, filename)
 		return
 	}
 	// initialize paths
@@ -86,7 +86,14 @@ func main() {
 		log.Println("Tried to get the working directory but couldn't, ", err)
 		return
 	}
-	if _, err = kickwasm.Do(pwd, outputFolder, YAMLFileFlag, LocationsFlag, versionBreaking, versionFeature, versionPatch, pkg.LocalHost, pkg.LocalPort); err != nil {
+	if !common.PathFound(yamlFilePath) {
+		flag.Usage()
+		return
+	}
+	// var appPaths *paths.ApplicationPaths
+	// var importPath string
+	// if appPaths, importPath, err = kickwasm.Do(pwd, outputFolder, yamlFilePath, LocationsFlag, versionBreaking, versionFeature, versionPatch, pkg.LocalHost, pkg.LocalPort); err != nil {
+	if _, _, err = kickwasm.Do(pwd, outputFolder, yamlFilePath, LocationsFlag, versionBreaking, versionFeature, versionPatch, pkg.LocalHost, pkg.LocalPort); err != nil {
 		log.Println(err.Error())
 		return
 	}

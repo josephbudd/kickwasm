@@ -345,14 +345,19 @@ type Paths struct {
 
 // initializeOutput defines the output paths
 func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) {
+	buildingInCurrentFolder := (len(outputFolder) == 0 && filepath.Base(pwd) == appname)
 	fileNames := GetFileNames()
 	folderNames := ap.GetFolderNames()
 
 	// set and create the output folder and sub folders.
 	// fix the output folder.
-	ap.paths.OutputSitePack = filepath.Join(pwd, outputFolder, folderNames.SitePack)
-	ap.paths.Output = filepath.Join(pwd, outputFolder, appname)
-
+	if buildingInCurrentFolder {
+		ap.paths.Output = pwd
+		ap.paths.OutputSitePack = filepath.Join(filepath.Dir(pwd), folderNames.SitePack)
+	} else {
+		ap.paths.Output = filepath.Join(pwd, outputFolder, appname)
+		ap.paths.OutputSitePack = filepath.Join(pwd, outputFolder, folderNames.SitePack)
+	}
 	// output .kickwasm folder and sub folders
 	ap.paths.OutputDotKickwasm = filepath.Join(ap.paths.Output, folderNames.DotKickwasm)
 	ap.paths.OutputDotKickwasmYAML = filepath.Join(ap.paths.OutputDotKickwasm, folderNames.YAML)

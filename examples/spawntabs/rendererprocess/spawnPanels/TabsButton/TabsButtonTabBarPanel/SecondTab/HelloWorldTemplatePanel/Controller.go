@@ -30,6 +30,17 @@ type panelController struct {
 
 	// Declare your panelController members.
 
+	// example:
+
+	// my spawn template has a name input field and a submit button.
+	// <label for="addCustomerName{{.SpawnID}}">Name</label><input type="text" id="addCustomerName{{.SpawnID}}">
+	// <button id="addCustomerSubmit{{.SpawnID}}">Close</button>
+
+	import "syscall/js"
+
+	addCustomerName   js.Value
+	addCustomerSubmit js.Value
+
 	*/
 
 	//closeSpawnButton{{.SpawnID}}
@@ -54,6 +65,26 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	// Define each controller in the GUI by it's html element.
 	// Handle each controller's events.
+
+	// example:
+
+	var id string
+
+	// Define the customer name input field.
+	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerName = notJS.GetElementByID(id); controller.addCustomerName == null {
+		err = errors.New("unable to find #" + id)
+		return
+	}
+
+	// Define the submit button.
+	id = tools.FixSpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerSubmit = notJS.GetElementByID(id); controller.addCustomerSubmit == null {
+		err = errors.New("unable to find #" + id)
+		return
+	}
+	// Handle the submit button's onclick event.
+	tools.AddSpawnEventHandler(controller.handleSubmit, controller.addCustomerSubmit, "click", false, controller.uniqueID)
 
 	*/
 
@@ -91,6 +122,30 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 // Handlers and other functions.
 
+// example:
+
+// import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/store/record"
+
+func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn interface{}) {
+	// See renderer/viewtools/event.go.
+	// The viewtools.Event funcs.
+	//   e.PreventDefaultBehavior()
+	//   e.StopCurrentPhasePropagation()
+	//   e.StopAllPhasePropagation()
+	//   target := e.Target
+	//   event := e.Event
+	name := strings.TrimSpace(notJS.GetValue(controller.addCustomerName))
+	if len(name) == 0 {
+		tools.Error("Customer Name is required.")
+		return
+	}
+	r := &record.CustomerRecord{
+		Name: name,
+	}
+	controller.messenger.AddCustomer(r)
+	return
+}
+
 */
 
 func (controller *panelController) handleClick(event viewtools.Event) (nilReturn interface{}) {
@@ -121,6 +176,10 @@ func (controller *panelController) UnSpawning() {
 	//   because maybe it has a go routine running that needs to be stopped
 	//   then do it here.
 
+	// example:
+
+	controller.myWidget.UnSpawn()
+
 	*/
 }
 
@@ -131,6 +190,10 @@ func (controller *panelController) initialCalls() {
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
+
+	// example:
+
+	controller.customerSelectWidget.start()
 
 	*/
 }

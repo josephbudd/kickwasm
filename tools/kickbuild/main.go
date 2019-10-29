@@ -38,10 +38,10 @@ var (
 
 const (
 	applicationName        = "kickbuild"
-	versionBreaking        = 11 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 12 // Kicwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
-	minumunKickwasmVersion = 11 // Minumum kickwasm version.
+	minumunKickwasmVersion = 12 // Minumum kickwasm version.
 	here                   = "."
 )
 

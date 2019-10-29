@@ -6,12 +6,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/josephbudd/kickwasm/tools/kickbuild/script"
+	"github.com/josephbudd/kickwasm/tools/common"
+	"github.com/josephbudd/kickwasm/tools/script"
 )
 
 // RemoveOldSpawnPackPackage removes a spawn package.
 func RemoveOldSpawnPackPackage(packageName, packagePath string) (err error) {
-	if !PathFound(packagePath) {
+	if !common.PathFound(packagePath) {
 		return
 	}
 	printNextStep("REMOVE THE OLD " + packageName + ".")
@@ -58,7 +59,7 @@ func BuildWASM(rootFolderPath, rendererPath string) (err error) {
 
 // RemoveOldSitePackPackage removes a spawn package.
 func RemoveOldSitePackPackage(packageName, packagePath string) (err error) {
-	if !PathFound(packagePath) {
+	if !common.PathFound(packagePath) {
 		return
 	}
 	printNextStep("REMOVE THE OLD " + packageName + " PACKAGE.")

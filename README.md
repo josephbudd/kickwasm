@@ -1,4 +1,4 @@
-# kickwasm version 11.0.0
+# kickwasm version 12.0.0
 
 An application framework generator written in go for applictions written in go.
 
@@ -6,15 +6,18 @@ An application framework generator written in go for applictions written in go.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## November 1, 2019
+## October 29, 2019
 
-* A barely significant, single, tiny, framework source code file, formatting fix to get a better score in go report card. I noticed it while rebuilding my linux morse code trainer [CWT](https://github.com/josephbudd/cwt).
+More simplification.
 
-## October 23, 2019
+* kickwasm is simpler. See **Hello world example** below.
+* Install is simpler. See **Install** below.
+
+### October 23, 2019
 
 * Rebuilt all of the tests. In the past few weeks I've reengineered kickwasm and it's tools 3 times. Apparently I neglected to rebuild the kickwasm tests after the last round of changes. Now the tests are rebuilt.
 
-## October 22, 2019
+### October 22, 2019
 
 Version 11.0.0
 
@@ -58,24 +61,64 @@ I repeately use the kickwasm tools to add another missing part to the applicatio
 
 ## Installation
 
-### Installing kickwasm and it's tools
+### Installing kickwasm
+
+The make file will install and build kickwasm and the tool chain. It will also get the go packages that are required by the framework.
 
 ``` shell
-
 $ go get -u github.com/josephbudd/kickwasm
 $ cd ~/go/src/github.com/josephbudd/kickwasm
 $ make install
 $ make test
-
+$ make dependencies
 ```
 
-### Installing the framework dependencies
+## Hello world example
 
-* [the boltdb package.](https://github.com/boltdb/bolt)
-* [the yaml package.](https://gopkg.in/yaml.v2)
-* [the gorilla websocket package.](https://github.com/gorilla/websocket)
+### Hello world example STEP 1
 
-## The examples
+Create a folder in your go path.
+Cd into the folder and create a kickwasm.yaml file.
+
+```shell
+~/go/src/github.com/josephbudd$ mkdir helloworld
+~/go/src/github.com/josephbudd$ cd helloworld
+~/go/src/github.com/josephbudd/helloworld$ gedit kickwasm.yaml
+```
+
+Below is the kickwasm.yaml file contents.
+
+```yaml
+title: Hello World
+importPath: github.com/josephbudd/helloworld
+buttons:
+- name: HelloButton
+  label: Hello
+  heading: Hey There.
+  panels:
+  - name: HelloPanel
+    note: A panel to display "hello world".
+    markup: |
+      <p>Hello world.</p>
+```
+
+### Hello world example STEP 2
+
+Create the framework, the application source code with kickwasm.
+
+```shell
+~/go/src/github.com/josephbudd/helloworld$ kickwasm
+```
+
+### Hello world example STEP 3
+
+Build and run the application.
+
+```shell
+kickbuild -rp -mp -run
+```
+
+## The source code examples in the examples/ folder
 
 The examples/ folder contains 3 examples. The new example is **spawnwidgets**. It demonstrates how to create and use widgets with spawned tab panels.
 

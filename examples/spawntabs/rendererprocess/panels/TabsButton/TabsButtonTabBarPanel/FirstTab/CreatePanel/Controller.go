@@ -29,6 +29,13 @@ type panelController struct {
 
 	// Declare your panelController fields.
 
+	// example:
+
+	import "syscall/js"
+
+	addCustomerName   js.Value
+	addCustomerSubmit js.Value
+
 	*/
 
 	newHelloWorldButton js.Value
@@ -49,6 +56,22 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 	// Define each controller in the GUI by it's html element.
 	// Handle each controller's events.
 
+	// example:
+
+	// Define the customer name text input GUI controller.
+	if controller.addCustomerName = notJS.GetElementByID("addCustomerName"); controller.addCustomerName == null {
+		err = errors.New("unable to find #addCustomerName")
+		return
+	}
+
+	// Define the submit button GUI controller.
+	if controller.addCustomerSubmit = notJS.GetElementByID("addCustomerSubmit"); controller.addCustomerSubmit == null {
+		err = errors.New("unable to find #addCustomerSubmit")
+		return
+	}
+	// Handle the submit button's onclick event.
+	tools.AddEventHandler(controller.handleSubmit, controller.addCustomerSubmit, "click", false)
+
 	*/
 
 	// Define the submit button and set it's handler.
@@ -65,6 +88,31 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 /* NOTE TO DEVELOPER. Step 3 of 4.
 
 // Handlers and other functions.
+
+// example:
+
+// import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/store/record"
+
+func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn interface{}) {
+	// See renderer/viewtools/event.go.
+	// The viewtools.Event funcs.
+	//   e.PreventDefaultBehavior()
+	//   e.StopCurrentPhasePropagation()
+	//   e.StopAllPhasePropagation()
+	//   target := e.Target
+	//   event := e.Event
+
+	name := strings.TrimSpace(notJS.GetValue(controller.addCustomerName))
+	if len(name) == 0 {
+		tools.Error("Customer Name is required.")
+		return
+	}
+	r := &record.Customer{
+		Name: name,
+	}
+	controller.messenger.AddCustomer(r)
+	return
+}
 
 */
 
@@ -86,6 +134,10 @@ func (controller *panelController) initialCalls() {
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.
+
+	// example:
+
+	controller.customerSelectWidget.start()
 
 	*/
 }

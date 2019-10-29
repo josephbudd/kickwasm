@@ -58,12 +58,3 @@ func fixPrintDump(rootFolderPath string, dump []byte, err error) {
 		}
 	}
 }
-
-// PathFound returns if a path exists.
-func PathFound(path string) (found bool) {
-	if _, err := os.Stat(path); err != nil {
-		return
-	}
-	found = true
-	return
-}

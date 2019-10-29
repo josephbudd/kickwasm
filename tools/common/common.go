@@ -10,13 +10,15 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/flagdata"
 	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/pkg/slurp"
-	"github.com/josephbudd/kickwasm/tools/kickbuild/jobs"
 )
 
 // Private and public data.
 const (
 	rekickwasmErrorFormat = `Oops! %s will not run because there is a rekickwasm/ folder open.
 When you are finished using rekickwasm make sure to **rekickwasm -x** to remove the rekickwasm/ folder.
+
+`
+	goModErrorFormat = `Oops! %s will not run because there already is a go.mod file.
 
 `
 
@@ -32,6 +34,11 @@ This application framework was built with kickwasm version %d but %s only works 
 // PrintRekickwasmError prints the rekickwasm error message.
 func PrintRekickwasmError(applicationName string) {
 	fmt.Printf(rekickwasmErrorFormat, applicationName)
+}
+
+// PrintGoModFileError prints the go.mod file error message.
+func PrintGoModFileError(applicationName string) {
+	fmt.Printf(goModErrorFormat, applicationName)
 }
 
 // IsRootFolder returns if the current path is the application root folder.
@@ -110,19 +117,19 @@ func AppKickwasmVersion() (version int) {
 }
 
 func isRoot(path string) (is bool) {
-	if is = jobs.PathFound(filepath.Join(path, ".kickwasm")); !is {
+	if is = PathFound(filepath.Join(path, ".kickwasm")); !is {
 		return
 	}
-	if is = jobs.PathFound(filepath.Join(path, ".kickstore")); !is {
+	if is = PathFound(filepath.Join(path, ".kickstore")); !is {
 		return
 	}
-	if is = jobs.PathFound(filepath.Join(path, "site")); !is {
+	if is = PathFound(filepath.Join(path, "site")); !is {
 		return
 	}
-	if is = jobs.PathFound(filepath.Join(path, "rendererprocess")); !is {
+	if is = PathFound(filepath.Join(path, "rendererprocess")); !is {
 		return
 	}
-	if is = jobs.PathFound(filepath.Join(path, "mainprocess")); !is {
+	if is = PathFound(filepath.Join(path, "mainprocess")); !is {
 		return
 	}
 	return
@@ -130,6 +137,21 @@ func isRoot(path string) (is bool) {
 
 // HaveRekickwasmFolder returns if this folder has a rekickwasm/ folder.
 func HaveRekickwasmFolder(root string) (have bool) {
-	have = jobs.PathFound(filepath.Join(root, "rekickwasm"))
+	have = PathFound(filepath.Join(root, "rekickwasm"))
+	return
+}
+
+// HaveGoModFile returns if ./go.mod file exists.
+func HaveGoModFile(root string) (have bool) {
+	have = PathFound(filepath.Join(root, "go.mod"))
+	return
+}
+
+// PathFound returns if a path exists.
+func PathFound(path string) (found bool) {
+	if _, err := os.Stat(path); err != nil {
+		return
+	}
+	found = true
 	return
 }

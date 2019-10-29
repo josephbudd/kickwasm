@@ -19,19 +19,25 @@ import (
 
 // Do builds the source code and .kickwasm/ into the output folder.
 // Returns the paths.ApplicationPathsI and the error.
-func Do(pwd, outputFolder, yamlpath string, addLocations bool, vBreaking, vFeature, vPatch int, host string, port uint) (appPaths *paths.ApplicationPaths, err error) {
+func Do(pwd, outputFolder, yamlpath string, addLocations bool, vBreaking, vFeature, vPatch int, host string, port uint) (appPaths *paths.ApplicationPaths, importPath string, err error) {
+	var buildingInCurrentFolder bool
 	sl := slurp.NewSlurper()
 	builder, err := sl.Gulp(yamlpath)
 	if err != nil {
 		err = fmt.Errorf("Tried to slurp the YAML file(s) but counldn't, %s", err.Error())
 		return
 	}
-	parts := strings.Split(builder.ImportPath, "/")
+	importPath = builder.ImportPath
+	parts := strings.Split(importPath, "/")
 	appName := parts[len(parts)-1]
-	// Delete output folder.
-	path := filepath.Join(pwd, outputFolder, appName)
-	if err = os.RemoveAll(path); err != nil {
-		return
+	buildingInCurrentFolder = (appName == filepath.Base(pwd))
+	if !buildingInCurrentFolder {
+		// Not building in the current folder.
+		// Delete the output folder where the source code will be built.
+		path := filepath.Join(pwd, outputFolder, appName)
+		if err = os.RemoveAll(path); err != nil {
+			return
+		}
 	}
 	// Build appPaths.
 	appPaths = &paths.ApplicationPaths{}
@@ -57,6 +63,11 @@ func Do(pwd, outputFolder, yamlpath string, addLocations bool, vBreaking, vFeatu
 		panelFilePaths[i] = filepath.Join(pwd, p)
 	}
 	foldercp.CopyYAML(appPaths, appYAMLFilePath, panelFilePaths)
+	if buildingInCurrentFolder {
+		// The source code is being built in the current folder
+		//  so remove ./kickwasm.yaml file.
+		err = os.Remove(yamlpath)
+	}
 	return
 }
 

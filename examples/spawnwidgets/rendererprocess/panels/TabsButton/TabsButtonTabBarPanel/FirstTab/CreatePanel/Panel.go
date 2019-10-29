@@ -49,7 +49,7 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	presenter := &panelPresenter{
 		group:          group,
 		tabPanelHeader: notJS.GetElementByID("tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-H3"),
-		tabButton: notJS.GetElementByID("tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTab"),
+		tabButton:      notJS.GetElementByID("tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTab"),
 	}
 	messenger := &panelMessenger{
 		group: group,
