@@ -3,11 +3,9 @@
 package secondtab
 
 import (
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/notjs"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/paneling"
 	helloworldtemplatepanel "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/viewtools"
 )
 
 /*
@@ -19,8 +17,7 @@ import (
 */
 
 // Prepare initializes this package in preparation for spawning.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, help *paneling.Help) {
-	tools = vtools
+func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
 
-	helloworldtemplatepanel.Prepare(quitChan, eojChan, receiveChan, sendChan, vtools, njs, help)
+	helloworldtemplatepanel.Prepare(quitChan, eojChan, receiveChan, sendChan, help)
 }

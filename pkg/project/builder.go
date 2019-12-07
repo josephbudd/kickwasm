@@ -49,7 +49,6 @@ type Classes struct {
 	TabPanelGroup           string
 	UserContent             string
 	ModalUserContent        string
-	CloserUserContent       string
 	ResizeMeWidth           string
 	VScroll                 string
 	HVScroll                string
@@ -112,7 +111,6 @@ func NewBuilder() *Builder {
 			TabPanelGroup:           classTabPanelGroup,
 			UserContent:             classUserContent,
 			ModalUserContent:        classModalUserContent,
-			CloserUserContent:       classCloserUserContent,
 			ResizeMeWidth:           classResizeMeWidthClassName,
 			VScroll:                 classVScroll,
 			HVScroll:                classHVScroll,
@@ -591,6 +589,8 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 			position++
 			tabBarPanel.AppendChild(button)
 		} else {
+			// Spawned tab so don't create a tab.
+			// Only set t.HTMLID.
 			_ = t.toButtonHTML(panel.TabBarHTMLID, false)
 		}
 	}
@@ -614,6 +614,8 @@ func (builder *Builder) toTabBarHTML(panel *Panel, seen bool) (tabBarPanel, unde
 				underTabBarPanel.AppendChild(p)
 				position++
 			} else {
+				// Spawned tab so don't create a tab.
+				// Only set t.HTMLID.
 				_ = builder.toTabPanelHTML(t, false)
 			}
 		}

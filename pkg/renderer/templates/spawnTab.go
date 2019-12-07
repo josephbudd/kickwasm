@@ -18,10 +18,9 @@ import ({{ range .PrepareImports }}
 */
 
 // Prepare initializes this package in preparation for spawning.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, help *paneling.Help) {
-	tools = vtools
+func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
 {{ range .PanelNames }}
-	{{ call $Dot.PackageNameCase . }}.Prepare(quitChan, eojChan, receiveChan, sendChan, vtools, njs, help){{end}}
+	{{ call $Dot.PackageNameCase . }}.Prepare(quitChan, eojChan, receiveChan, sendChan, help){{end}}
 }
 `
 
@@ -55,7 +54,6 @@ const (
 
 var (
 	markupTemplatePaths = {{.MarkupTemplatePaths}}
-	tools  *viewtools.Tools
 )
 
 // Tab represents a tab that will spawn and unspawn an html tab bar tab.
@@ -81,16 +79,18 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 	}()
 
 	// Spawn the DOM elements.
-	var tabButton js.Value
-	var tabPanelHeader js.Value
+	var jsTabButton js.Value
+	var jsTabPanelHeader js.Value
 	var uniqueID uint64
 	var panelNameID map[string]string
-	if tabButton, tabPanelHeader, uniqueID, panelNameID, err = tools.SpawnTab(tabBarID, tabName, tabLabel, panelHeading, markupTemplatePaths); err != nil {
+	if jsTabButton, jsTabPanelHeader, uniqueID, panelNameID, err = viewtools.SpawnTab(tabBarID, tabName, tabLabel, panelHeading, markupTemplatePaths); err != nil {
 		return
 	}
+	tabButton := markup.NewElement(jsTabButton, uniqueID)
+	tabPanelHeader := markup.NewElement(jsTabPanelHeader, uniqueID)
 	// Define the tab.
 	tab := &Tab{
-		hTMLButton:    tabButton,
+		hTMLButton:    jsTabButton,
 		uniqueID:      uniqueID,
 		prepareToUnSpawns: make([]func(), 0, 20),
 	}
@@ -102,7 +102,7 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 		return
 	}
 	tab.prepareToUnSpawns = append(tab.prepareToUnSpawns, f){{end}}
-	tools.IncSpawnedPanels(len(tab.prepareToUnSpawns))
+	viewtools.IncSpawnedPanels(len(tab.prepareToUnSpawns))
 	return
 }
 
@@ -117,15 +117,15 @@ func (tab *Tab) unSpawn() (err error) {
 		}
 	}()
 
-	tools.DecSpawnedPanels(len(tab.prepareToUnSpawns))
+	viewtools.DecSpawnedPanels(len(tab.prepareToUnSpawns))
 
 	messages := make([]string, 0, 2)
 	// Remove the tab and panels from the DOM.
-	if err = tools.UnSpawnTab(tab.hTMLButton); err != nil {
+	if err = viewtools.UnSpawnTab(tab.hTMLButton); err != nil {
 		messages = append(messages, err.Error())
 	}
 	// Unregister each panel controller's javascript call backs.
-	if err = tools.UnRegisterCallBacks(tab.uniqueID); err != nil {
+	if err = callback.UnRegisterCallBacks(tab.uniqueID); err != nil {
 		messages = append(messages, err.Error())
 	}
 	// Stop each panel messenger's message dispatcher.

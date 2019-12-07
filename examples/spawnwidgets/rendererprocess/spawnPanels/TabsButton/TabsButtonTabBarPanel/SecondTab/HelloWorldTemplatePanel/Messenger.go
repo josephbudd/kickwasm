@@ -35,8 +35,9 @@ type panelMessenger struct {
 
 // example:
 
-// import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc/message"
-// import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc/message"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
 
 // Add Customer.
 
@@ -51,11 +52,11 @@ func (messenger *panelMessenger) addCustomer(r *record.Customer) {
 func (messenger *panelMessenger) addCustomerRX(msg *message.AddCustomerMainProcessToRenderer) {
 	if msg.UniqueID == messenger.uniqueID {
 		if msg.Error {
-			tools.Error(msg.ErrorMessage)
+			display.Error(msg.ErrorMessage)
 			return
 		}
 		// no errors
-		tools.Success("Customer Added.")
+		display.Success("Customer Added.")
 	}
 }
 
@@ -85,7 +86,7 @@ func (messenger *panelMessenger) dispatchMessages() {
 
 				// example:
 
-				// import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc/message"
+				import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc/message"
 
 				case *message.AddCustomerMainProcessToRenderer:
 					messenger.addCustomerRX(msg)
@@ -111,8 +112,8 @@ func (messenger *panelMessenger) initialSends() {
 
 	// example:
 
-	// import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/data/loglevels"
-	// import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc/message"
+	import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/data/loglevels"
+	import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc/message"
 
 	msg := &message.LogRendererToMainProcess{
 		Level:   loglevels.LogLevelInfo,

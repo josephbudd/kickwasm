@@ -1,7 +1,11 @@
 package dispatch
 
 import (
+	"context"
+	"fmt"
 	"log"
+
+	"github.com/pkg/errors"
 
 	"github.com/josephbudd/kickwasm/examples/colors/domain/data/loglevels"
 	"github.com/josephbudd/kickwasm/examples/colors/domain/lpc/message"
@@ -17,33 +21,43 @@ import (
 */
 
 // handleLog logs a renderer message to the application log.
+// Param ctx is the context. if <-ctx.Done() then the main process is shutting down.
 // Param rxMessage *message.LogRendererToMainProcess is the params received from the renderer.
 // Param sending is the channel to use to send a *message.LogMainProcessToRenderer to the renderer.
-func handleLog(rxMessage *message.LogRendererToMainProcess, sending lpc.Sending) {
+// Builds an error for loglevels.LogLevelError and loglevels.LogLevelFatal.
+// Param errChan is the channel to send the handler's error through since the handler does not return it's error.
+func handleLog(ctx context.Context, rxMessage *message.LogRendererToMainProcess, sending lpc.Sending, errChan chan error) {
+
+	var err error
+	defer func() {
+		if err != nil {
+			errChan <- err
+		}
+	}()
+	
 	var msg string
-	var errorMsg = ""
-	var isErr bool
 	switch rxMessage.Level {
 	case loglevels.LogLevelInfo:
-		msg = "Renderer Log: Info: " + rxMessage.Message
+		msg = "colors: Info: " + rxMessage.Message
 	case loglevels.LogLevelWarning:
-		msg = "Renderer Log: Warning: " + rxMessage.Message
+		msg = "colors: Warning: " + rxMessage.Message
 	case loglevels.LogLevelError:
-		msg = "Renderer Log: Error: " + rxMessage.Message
+		msg = "colors: Error: " + rxMessage.Message
+		err = errors.New(msg)
 	case loglevels.LogLevelFatal:
-		msg = "Renderer Log: Fatal: " + rxMessage.Message
+		msg = "colors: Fatal: " + rxMessage.Message
+		err = errors.New(msg)
 	default:
-		errorMsg = "Unknown Level"
-		isErr = true
-		msg = "Renderer Log: ???: " + rxMessage.Message
+		msg = fmt.Sprintf("colors: %d: %s", rxMessage.Level, rxMessage.Message)
 	}
 	// Log the message from the renderer.
 	log.Println(msg)
 	// Send an update back to the renderer.
+	// In this case no errors.
 	txMessage := &message.LogMainProcessToRenderer{
-		Message:      msg,
-		ErrorMessage: errorMsg,
-		Error:        isErr,
+		Level:   rxMessage.Level,
+		Message: rxMessage.Message,
+		Fatal:   rxMessage.Level == loglevels.LogLevelFatal,
 	}
 	sending <- txMessage
 	return

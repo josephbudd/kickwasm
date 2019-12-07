@@ -8,6 +8,7 @@ package lpc
 import (
 	"encoding/json"
 	"fmt"
+	"syscall/js"
 
 	"github.com/pkg/errors"
 
@@ -34,12 +35,17 @@ var (
 	send    Sending
 	receive Receiving
 	eoj     chan struct{}
+	global  js.Value
+	alert   js.Value
 )
 
 func init() {
 	send = make(chan interface{}, 1024)
 	receive = make(chan interface{}, 1024)
 	eoj = make(chan struct{}, 1024)
+	g := js.Global()
+	global = g
+	alert = g.Get("alert")
 }
 
 // Channels returns the renderer connection channels.
@@ -110,11 +116,11 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 		}
 		cargo = msg
 	case 1:
-			msg := &message.InitMainProcessToRenderer{}
-			if err = json.Unmarshal(payload.Cargo, msg); err != nil {
-				return
-			}
-			cargo = msg{{ range $index, $name := .LPCNames }}
+		msg := &message.InitMainProcessToRenderer{}
+		if err = json.Unmarshal(payload.Cargo, msg); err != nil {
+			return
+		}
+		cargo = msg{{ range $index, $name := .LPCNames }}
 	case {{ call $Dot.Inc2 $index }}:
 		msg := &message.{{ $name }}MainProcessToRenderer{}
 		if err = json.Unmarshal(payload.Cargo, msg); err != nil {
@@ -136,10 +142,13 @@ package lpc
 
 import (
 	"fmt"
+	"log"
 	"syscall/js"
 
 	"github.com/pkg/errors"
 
+	"{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
@@ -157,7 +166,6 @@ type Client struct {
 	host           string
 	port           uint64
 	location       string
-	tools          *viewtools.Tools
 	connection     js.Value
 	connected      bool
 	dispatching    bool
@@ -178,12 +186,11 @@ type Client struct {
 }
 
 // NewClient costructs a new Client.
-func NewClient(host string, port uint64, tools *viewtools.Tools, quitCh chan struct{}, eojCh chan struct{}, receiving Receiving, sending Sending) *Client {
+func NewClient(host string, port uint64, quitCh chan struct{}, eojCh chan struct{}, receiving Receiving, sending Sending) *Client {
 	v := &Client{
 		host:     host,
 		port:     port,
 		location: fmt.Sprintf("ws://%s:%d/ws", host, port),
-		tools:    tools,
 		queue:    make([][]byte, 0, 10),
 
 		SendChan:    sending,
@@ -204,7 +211,7 @@ func NewClient(host string, port uint64, tools *viewtools.Tools, quitCh chan str
 // SetOnConnectionBreak set the handler for the connection break.
 func (client *Client) SetOnConnectionBreak(fn func(this js.Value, args []js.Value) interface{}) {
 	client.OnConnectionBreak = fn
-	client.OnConnectionBreakJS = client.tools.RegisterCallBack(fn)
+	client.OnConnectionBreakJS = callback.RegisterCallBack(fn)
 }
 
 // Connect connects to the server.
@@ -218,10 +225,10 @@ func (client *Client) Connect(callBack func()) (err error) {
 
 	client.OnOpenCallBack = callBack
 	if client.connected {
-		client.tools.ConsoleLog("client is connected")
+		log.Println("client is connected")
 	}
 	// setup the web socket
-	ws := client.tools.Global.Get("WebSocket")
+	ws := global.Get("WebSocket")
 	client.connection = ws.New(client.location)
 	if client.connection == js.Undefined() {
 		err = errors.New("connection is undefined")
@@ -232,9 +239,9 @@ func (client *Client) Connect(callBack func()) (err error) {
 		err = errors.New("readystate is undefined")
 		return
 	}
-	client.connection.Set("onopen", client.tools.RegisterCallBack(client.onOpen))
-	client.connection.Set("onclose", client.tools.RegisterCallBack(client.onClose))
-	client.connection.Set("onmessage", client.tools.RegisterCallBack(client.onMessage))
+	client.connection.Set("onopen", callback.RegisterCallBack(client.onOpen))
+	client.connection.Set("onclose", callback.RegisterCallBack(client.onClose))
+	client.connection.Set("onmessage", callback.RegisterCallBack(client.onMessage))
 	return
 }
 
@@ -249,10 +256,29 @@ func (client *Client) dispatch() {
 		var cargo interface{}
 		var err error
 		if cargo, err = client.ReceiveChan.Cargo(payload); err != nil {
-			client.tools.Alert(err.Error())
+			alert.Invoke(err.Error())
 			return
 		}
-		panelsCount := client.tools.CountMarkupPanels()
+		// Trap fatals from the main process and stop.
+		switch msg := cargo.(type) {
+		case *message.LogMainProcessToRenderer:
+			if msg.Fatal {
+				viewtools.GoModal(msg.ErrorMessage, "Fatal Error", client.onFatal)
+				return
+			}
+		case *message.InitMainProcessToRenderer:
+			if msg.Fatal {
+				viewtools.GoModal(msg.ErrorMessage, "Fatal Error", client.onFatal)
+				return
+			}{{ range $index, $name := .LPCNames }}
+		case *message.{{ $name }}MainProcessToRenderer:
+			if msg.Fatal {
+				viewtools.GoModal(msg.ErrorMessage, "Fatal Error", client.onFatal)
+				return
+			}{{ end }}
+		}
+		// No fatals so go on.
+		panelsCount := viewtools.CountMarkupPanels()
 		for i := 0; i < panelsCount; i++ {
 			client.ReceiveChan <- cargo
 		}
@@ -262,6 +288,10 @@ func (client *Client) dispatch() {
 
 // Handlers.
 
+func (client *Client) onFatal() {
+    client.QuitCh <- struct{}{}
+}
+
 func (client *Client) onBreak(this js.Value, args []js.Value) (nilReturn interface{}) {
 	client.QuitCh <- struct{}{}
 	return
@@ -269,32 +299,32 @@ func (client *Client) onBreak(this js.Value, args []js.Value) (nilReturn interfa
 
 func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interface{}) {
 	client.connected = true
-	client.tools.ConsoleLog("LPC has connected.")
+	log.Println("LPC has connected.")
 	if client.lpcing {
 		return
 	}
 	client.lpcing = true
-	client.tools.ConsoleLog("starting LPC go routine.")
+	log.Println("starting LPC go routine.")
 	go func() {
 		for {
 			select {
 			case cargo := <-client.SendChan:
-				client.tools.ConsoleLog("will send lpc cargo to main process")
+				log.Println("will send lpc cargo to main process")
 				var payload []byte
 				var err error
 				if payload, err = client.SendChan.Payload(cargo); err != nil {
-					client.tools.ConsoleLog(fmt.Sprintf("sending.Payload(cargo) error is %s", err.Error()))
+					log.Printf("sending.Payload(cargo) error is %s", err.Error())
 				} else {
-					client.tools.ConsoleLog("payload is " + string(payload))
+					log.Println("payload is " + string(payload))
 					client.connection.Call("send", string(payload))
 				}
 			case <-client.QuitCh:
 				// each markup panel has a messenger with a message dispatcher go routine.
-				countWaiting := client.tools.CountMarkupPanels()
+				countWaiting := viewtools.CountMarkupPanels()
 				// func main
 				countWaiting++
 				// widgets
-				countWaiting += client.tools.CountWidgetsWaiting()
+				countWaiting += viewtools.CountWidgetsWaiting()
 				eoj := struct{}{}
 				for i := 0; i < countWaiting; i++ {
 					client.EOJChan <- eoj
@@ -310,7 +340,7 @@ func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interfac
 
 func (client *Client) onClose(this js.Value, args []js.Value) (nilReturn interface{}) {
 	client.connected = false
-	client.tools.ConsoleLog("LPC has disconnected.")
+	log.Println("LPC has disconnected.")
 	client.OnConnectionBreak(js.Undefined(), nil)
 	return
 }

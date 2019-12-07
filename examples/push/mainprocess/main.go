@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"github.com/josephbudd/kickwasm/examples/push/domain/data/settings"
 	"github.com/josephbudd/kickwasm/examples/push/domain/store"
@@ -26,9 +28,15 @@ import (
 	 * /domain/store/record is the record definitions.
 
 */
-
 func main() {
+
 	var err error
+	defer func() {
+		if err != nil {
+			os.Exit(1)
+		}
+	}()
+
 	// Build the application's data store APIs.
 	var stores *store.Stores
 	if stores, err = buildStores(); err != nil {
@@ -60,30 +68,41 @@ func main() {
 		return
 	}
 	// get the channels
-	sendChan, receiveChan, eojChan := lpc.Channels()
-	quitChan := make(chan struct{}, 1)
+	sendChan, receiveChan := lpc.Channels()
+	serverStoppedChan := make(chan struct{}, 1)
+	exitChan := make(chan struct{}, 1)
+	ctx, cancel := context.WithCancel(context.Background())
 	// process incoming lpcs.
 	go func() {
-
-		defer func() {
-			log.Println("eoj for processing incoming lpcs.")
-		}()
-
-		// wait for the server to end and then stop lpc go funcs
-		log.Println("listening for receiveChan")
+		handlerErrorChan := make(chan error, 10)
+		var er error
+		// Wait for the lpc message server to stop.
 		for {
 			select {
 			case cargo := <-receiveChan:
-				log.Println("main: got cargo := <-receiveChan")
-				dispatch.Do(cargo, sendChan, eojChan, stores)
-			case <-quitChan:
-				log.Println("main: got <-quitChan")
-				eojChan.Signal()
+				// dispatch.Do returns the error through handlerErrorChan.
+				go dispatch.Do(ctx, cargo, sendChan, stores, handlerErrorChan)
+			case er = <-handlerErrorChan:
+				// handle the error sent from a message handler and keep going.
+				if er != nil {
+					err = er
+					log.Println(err)
+				}
+			case <-serverStoppedChan:
+				// signal to exit.
+				exitChan <- struct{}{}
 				return
 			}
 		}
 	}()
-	// make the call server.
-	server := lpc.NewServer(listener, quitChan, receiveChan, sendChan)
+
+	// make the lpc message server.
+	server := lpc.NewServer(listener, serverStoppedChan, receiveChan, sendChan)
 	server.Run(serve)
+	select {
+	case <-exitChan:
+		// stop all lpc message handlers.
+		cancel()
+		break
+	}
 }

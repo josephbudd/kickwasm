@@ -83,7 +83,6 @@ const (
 
 	classUserContent            = "user-content"
 	classModalUserContent       = "modal-user-content"
-	classCloserUserContent      = "closer-user-content"
 	classResizeMeWidthClassName = "resize-me-width"
 
 	classVScroll    = "vscroll"

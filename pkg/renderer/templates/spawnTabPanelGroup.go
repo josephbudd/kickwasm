@@ -9,6 +9,10 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -19,16 +23,11 @@ import (
 
 */
 
-const (
-	tabBarID        = "{{.TabBarID}}"
-	tabName         = "{{.TabName}}"
-	tabPanelHeading = "{{.PanelHeading}}"
-)
-
 // panelGroup is a group of {{$lpg}} panel{{if gt $lpg 1}}s{{end}}.
 // It also has {{if eq $lpg 1}}a {{end}}show panel func{{if gt $lpg 1}}s{{end}} for each panel in this panel group.
 type panelGroup struct {
 	uniqueID    uint64
+	document  *dom.DOM
 	panelNameID map[string]string
 {{range $panel := .PanelGroup}}
 	{{call $Dot.LowerCamelCase $panel.Name}} js.Value{{end}}
@@ -43,11 +42,13 @@ func (group *panelGroup) defineMembers() (err error) {
 	}()
 
 	var id string
-{{range $panel := .PanelGroup}}	id = tools.BuildSpawnTabButtonMarkupPanelID(tabBarID, tabName, "{{$panel.Name}}", group.uniqueID)
-	if group.{{call $Dot.LowerCamelCase $panel.Name}} = notJS.GetElementByID(id); group.{{call $Dot.LowerCamelCase $panel.Name}} == null {
+    var panel *markup.Element
+{{range $panel := .PanelGroup}}	id = viewtools.BuildSpawnTabButtonMarkupPanelID("{{$Dot.TabBarID}}", "{{$Dot.TabName}}", "{{$panel.Name}}", group.uniqueID)
+    if panel = group.document.ElementByID(id); panel == nil {
 		err = errors.New("unable to find #" + id)
 		return
-	}
+    }
+    group.{{call $Dot.LowerCamelCase $panel.Name}} = panel.JSValue()
 {{end}}
 	return
 }
@@ -64,6 +65,6 @@ func (group *panelGroup) defineMembers() (err error) {
 {{$panel.Note}}
 */
 func (group *panelGroup) show{{$panel.Name}}() {
-	tools.ShowPanelInTabGroup(group.{{call $Dot.LowerCamelCase $panel.Name}})
+	viewtools.ShowPanelInTabGroup(group.{{call $Dot.LowerCamelCase $panel.Name}})
 }{{end}}
 `

@@ -9,8 +9,10 @@ import (
 
 	"github.com/pkg/errors"
 
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/framework/callback"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/framework/viewtools"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/markup"
 	helloworldtemplatepanel "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/viewtools"
 )
 
 /*
@@ -22,13 +24,12 @@ import (
 */
 
 const (
-	tabBarID = "tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar"
+	tabBarID = "mainMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar"
 	tabName  = "SecondTab"
 )
 
 var (
 	markupTemplatePaths = []string{"spawnTemplates/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel.tmpl"}
-	tools  *viewtools.Tools
 )
 
 // Tab represents a tab that will spawn and unspawn an html tab bar tab.
@@ -54,16 +55,18 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 	}()
 
 	// Spawn the DOM elements.
-	var tabButton js.Value
-	var tabPanelHeader js.Value
+	var jsTabButton js.Value
+	var jsTabPanelHeader js.Value
 	var uniqueID uint64
 	var panelNameID map[string]string
-	if tabButton, tabPanelHeader, uniqueID, panelNameID, err = tools.SpawnTab(tabBarID, tabName, tabLabel, panelHeading, markupTemplatePaths); err != nil {
+	if jsTabButton, jsTabPanelHeader, uniqueID, panelNameID, err = viewtools.SpawnTab(tabBarID, tabName, tabLabel, panelHeading, markupTemplatePaths); err != nil {
 		return
 	}
+	tabButton := markup.NewElement(jsTabButton, uniqueID)
+	tabPanelHeader := markup.NewElement(jsTabPanelHeader, uniqueID)
 	// Define the tab.
 	tab := &Tab{
-		hTMLButton:    tabButton,
+		hTMLButton:    jsTabButton,
 		uniqueID:      uniqueID,
 		prepareToUnSpawns: make([]func(), 0, 20),
 	}
@@ -75,7 +78,7 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 		return
 	}
 	tab.prepareToUnSpawns = append(tab.prepareToUnSpawns, f)
-	tools.IncSpawnedPanels(len(tab.prepareToUnSpawns))
+	viewtools.IncSpawnedPanels(len(tab.prepareToUnSpawns))
 	return
 }
 
@@ -90,15 +93,15 @@ func (tab *Tab) unSpawn() (err error) {
 		}
 	}()
 
-	tools.DecSpawnedPanels(len(tab.prepareToUnSpawns))
+	viewtools.DecSpawnedPanels(len(tab.prepareToUnSpawns))
 
 	messages := make([]string, 0, 2)
 	// Remove the tab and panels from the DOM.
-	if err = tools.UnSpawnTab(tab.hTMLButton); err != nil {
+	if err = viewtools.UnSpawnTab(tab.hTMLButton); err != nil {
 		messages = append(messages, err.Error())
 	}
 	// Unregister each panel controller's javascript call backs.
-	if err = tools.UnRegisterCallBacks(tab.uniqueID); err != nil {
+	if err = callback.UnRegisterCallBacks(tab.uniqueID); err != nil {
 		messages = append(messages, err.Error())
 	}
 	// Stop each panel messenger's message dispatcher.

@@ -7,6 +7,9 @@ package viewtools
 
 import (
 	"fmt"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
+
 )
 
 /*
@@ -23,8 +26,8 @@ type modalViewData struct {
 }
 
 // GoModal adds a title and message and call back to the modalQueue.
-func (tools *Tools) GoModal(message, title string, callback func()) {
-	tools.queueModal(
+func GoModal(message, title string, callback func()) {
+	queueModal(
 		&modalViewData{
 			title:   title,
 			message: fmt.Sprintf("<p>%s</p>", message),
@@ -36,8 +39,8 @@ func (tools *Tools) GoModal(message, title string, callback func()) {
 // GoModalHTML adds a title and html message and call back to the modalQueue.
 // Param message is html.
 // Param title is plain text.
-func (tools *Tools) GoModalHTML(htmlMessage, title string, callback func()) {
-	tools.queueModal(
+func GoModalHTML(htmlMessage, title string, callback func()) {
+	queueModal(
 		&modalViewData{
 			title:   title,
 			message: htmlMessage,
@@ -46,61 +49,61 @@ func (tools *Tools) GoModalHTML(htmlMessage, title string, callback func()) {
 	)
 }
 
-func (tools *Tools) beModal() {
-	wasModal := tools.beingModal
-	m := tools.unQueueModal()
-	if tools.beingModal = m != nil; !tools.beingModal {
+func beModal() {
+	wasModal := beingModal
+	m := unQueueModal()
+	if beingModal = m != nil; !beingModal {
 		return
 	}
-	notJS := tools.NotJS
-	notJS.SetInnerText(tools.modalMasterViewH1, m.title)
-	notJS.SetInnerHTML(tools.modalMasterViewMessage, m.message)
-	tools.modalCallBack = m.cb
-	tools.ElementShow(tools.modalMasterView)
+	modalMasterViewH1.Set("innerText", m.title)
+	modalMasterViewMessage.Set("innerHTML", m.message)
+	modalCallBack = m.cb
+	ElementShow(modalMasterView)
 	if !wasModal {
-		tools.SizeApp()
+		SizeApp()
 	}
 }
 
-func (tools *Tools) beNotModal() {
-	if tools.modalQueueLastIndex >= 0 {
-		tools.beModal()
+func beNotModal() {
+	if modalQueueLastIndex >= 0 {
+		beModal()
 		return
 	}
-	tools.ElementHide(tools.modalMasterView)
-	tools.SizeApp()
-	tools.beingModal = false
+	ElementHide(modalMasterView)
+	SizeApp()
+	beingModal = false
 }
 
-func (tools *Tools) queueModal(m *modalViewData) {
-	if tools.modalQueueLastIndex < 4 {
-		tools.modalQueueLastIndex++
-		tools.modalQueue[tools.modalQueueLastIndex] = m
+func queueModal(m *modalViewData) {
+	if modalQueueLastIndex < 4 {
+		modalQueueLastIndex++
+		modalQueue[modalQueueLastIndex] = m
 	}
-	if !tools.beingModal {
-		tools.beModal()
+	if !beingModal {
+		beModal()
 	}
 }
 
-func (tools *Tools) unQueueModal() *modalViewData {
-	if tools.modalQueueLastIndex < 0 {
+func unQueueModal() *modalViewData {
+	if modalQueueLastIndex < 0 {
 		return nil
 	}
-	m := tools.modalQueue[0]
-	for i := 0; i < tools.modalQueueLastIndex; i++ {
-		tools.modalQueue[i] = tools.modalQueue[i+1]
+	m := modalQueue[0]
+	for i := 0; i < modalQueueLastIndex; i++ {
+		modalQueue[i] = modalQueue[i+1]
 	}
-	tools.modalQueue[tools.modalQueueLastIndex] = nil
-	tools.modalQueueLastIndex--
+	modalQueue[modalQueueLastIndex] = nil
+	modalQueueLastIndex--
 	return m
 }
 
-func (tools *Tools) handleModalMasterViewClose(e Event) (nilReturn interface{}) {
-	if tools.modalCallBack != nil {
-		tools.modalCallBack()
-		tools.modalCallBack = nil
+func handleModalMasterViewClose(e event.Event) (nilReturn interface{}) {
+	beNotModal()
+	if modalCallBack != nil {
+		cb := modalCallBack
+		modalCallBack = nil
+		cb()
 	}
-	tools.beNotModal()
 	return
 }
 `

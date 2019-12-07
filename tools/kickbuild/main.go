@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 	"path/filepath"
 	"runtime"
 
@@ -22,27 +23,18 @@ var (
 	appFolderName  string
 	authorwd       string
 
-	relativeSitePath string
-	fullSitePath     string
-	rendererPath     string
-	fullRendererPath string
-
-	sitepackPackageName string
 	sitepackPackagePath string
 
-	spawnpackPackageName string
-	spawnpackPackagePath string
-
-	spawnTemplatesFolder string
+	folderPaths *paths.Paths
+	folderNames *paths.FolderNames
 )
 
 const (
 	applicationName        = "kickbuild"
-	versionBreaking        = 12 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 13 // Kicwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
-	minumunKickwasmVersion = 12 // Minumum kickwasm version.
-	here                   = "."
+	minumunKickwasmVersion = 13 // Minumum kickwasm version.
 )
 
 // VersionFlag means show the version.
@@ -68,6 +60,13 @@ var RunFlag bool
 
 func main() {
 
+	var err error
+	defer func() {
+		if err != nil {
+			os.Exit(1)
+		}
+	}()
+
 	// flags
 	flag.BoolVar(&VersionFlag, "v", false, "display the version")
 	flag.BoolVar(&RendererFlag, "rp", false, "quick build the renderer process")
@@ -84,7 +83,6 @@ func main() {
 		return
 	}
 	// The user must be running this from inside the framework source code.
-	var err error
 	if rootFolderPath, err = common.FindRoot(); err != nil {
 		help()
 		return
@@ -94,26 +92,28 @@ func main() {
 	if common.HaveRekickwasmFolder(rootFolderPath) {
 		common.PrintRekickwasmError(applicationName)
 		help()
+		err = common.ErrRekickwasmExists
 		return
 	}
 
 	// This framework must have been built with a recent version of kickwasm.
 	if kwversion := common.AppKickwasmVersion(); kwversion < minumunKickwasmVersion {
 		common.PrintWrongVersion(applicationName, kwversion, minumunKickwasmVersion)
+		err = common.ErrWrongVersion
 		return
 	}
-	folderNames := paths.GetFolderNames()
+	appPaths := &paths.ApplicationPaths{}
+	appPaths.Initialize(rootFolderPath, "", filepath.Base(rootFolderPath))
+
+	// folderNames := paths.GetFolderNames()
+	folderNames = appPaths.GetFolderNames()
+	folderPaths = appPaths.GetPaths()
 	appFolderName = filepath.Base(rootFolderPath)
 	authorwd = filepath.Dir(rootFolderPath)
-	relativeSitePath = folderNames.RendererSite
-	fullSitePath = filepath.Join(rootFolderPath, folderNames.RendererSite)
-	rendererPath = folderNames.Renderer
-	fullRendererPath = filepath.Join(rootFolderPath, folderNames.Renderer)
-	sitepackPackageName = appFolderName + folderNames.SitePack
-	sitepackPackagePath = filepath.Join(authorwd, sitepackPackageName)
-	spawnpackPackageName = folderNames.SpawnPack
-	spawnpackPackagePath = filepath.Join(fullRendererPath, spawnpackPackageName)
-	spawnTemplatesFolder = folderNames.SpawnTemplates
+	// fullSitePath = filepath.Join(rootFolderPath, folderNames.RendererSite)
+	// fullRendererPath = filepath.Join(rootFolderPath, folderNames.Renderer)
+	sitepackPackagePath = filepath.Join(authorwd, folderNames.SitePack)
+	// spawnpackPackagePath = filepath.Join(fullRendererPath, spawnpackPackageName)
 
 	// Process the remaining flags.
 	if PackFlag {
@@ -170,33 +170,33 @@ func buildRendererProcess() (err error) {
 	jobs.PrintLine("BUILD THE RENDERER PROCESS.")
 	jobs.PrintLine("")
 	// Remove the old spawn package if it's there.
-	if err = jobs.RemoveOldSpawnPackPackage(spawnpackPackageName, spawnpackPackagePath); err != nil {
+	if err = jobs.RemoveOldSpawnPackPackage(folderPaths.OutputRendererSpawnPack); err != nil {
 		return
 	}
 	// Write the new spawn package.
-	if err = jobs.WriteNewSpawnPackage(spawnpackPackageName, spawnpackPackagePath, spawnTemplatesFolder, fullSitePath); err != nil {
+	if err = jobs.WriteNewSpawnPackage(folderPaths.OutputRendererSpawnPack, folderNames.SpawnTemplates, folderPaths.OutputRendererSite); err != nil {
 		return
 	}
 	// Build the wasm.
-	if err = jobs.BuildWASM(rootFolderPath, rendererPath); err != nil {
+	if err = jobs.BuildWASM(rootFolderPath, folderPaths.OutputRendererSite, folderPaths.OutputRendererFramework, folderPaths.OutputRenderer); err != nil {
 		return
 	}
 	// Remove the old site pack package.
-	if err = jobs.RemoveOldSitePackPackage(sitepackPackageName, sitepackPackagePath); err != nil {
+	if err = jobs.RemoveOldSitePackPackage(sitepackPackagePath); err != nil {
 		return
 	}
 	// Write the new site pack package.
 	if PackFlag {
-		if err = jobs.WriteSitePackPackagePack(rootFolderPath, sitepackPackageName, sitepackPackagePath); err != nil {
+		if err = jobs.WriteSitePackPackagePack(rootFolderPath, sitepackPackagePath); err != nil {
 			return
 		}
 	} else {
-		if err = jobs.WriteSitePackPackageDontPack(rootFolderPath, sitepackPackageName, sitepackPackagePath); err != nil {
+		if err = jobs.WriteSitePackPackageDontPack(rootFolderPath, sitepackPackagePath); err != nil {
 			return
 		}
 	}
 
-	if err = jobs.BuildSitePackPackage(sitepackPackageName, sitepackPackagePath); err != nil {
+	if err = jobs.BuildSitePackPackage(sitepackPackagePath); err != nil {
 		return
 	}
 	return

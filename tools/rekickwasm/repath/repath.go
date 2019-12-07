@@ -230,10 +230,13 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 		./mainprocess/panelMap.go
 
 		./rendererprocess/css/
-		./rendererprocess/panels.go
+		./rendererprocess/framework/panels.go
+		./rendererprocess/framework/lpc/client.go
 		./rendererprocess/panels/
 		./rendererprocess/spawnPanels/
-		./rendererprocess/viewtools/
+		./rendererprocess/framework/viewtools/
+		./rendererprocess/framework/proofs/
+		./rendererprocess/application/Application.go
 
 		./site/templates/
 		./site/spawnTemplates/
@@ -256,13 +259,13 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	}
 
 	// Files and folders in the ./rendererprocess/ folder.
-	// ./rendererprocess/panels.go
-	src = filepath.Join(srcPaths.OutputRenderer, fileNames.PanelsDotGo)
-	dst = filepath.Join(dstPaths.OutputRenderer, fileNames.PanelsDotGo)
+	// ./rendererprocess/framework/panels.go
+	src = filepath.Join(srcPaths.OutputRendererFramework, fileNames.PanelsDotGo)
+	dst = filepath.Join(dstPaths.OutputRendererFramework, fileNames.PanelsDotGo)
 	if err = ftools.CopyFile(src, dst); err != nil {
 		return
 	}
-	// ./renderer/lpc/client.go
+	// ./rendererprocess/framework/lpc/client.go
 	src = filepath.Join(srcPaths.OutputRendererLPC, fileNames.ClientDotGo)
 	dst = filepath.Join(dstPaths.OutputRendererLPC, fileNames.ClientDotGo)
 	if err = ftools.CopyFile(src, dst); err != nil {
@@ -277,8 +280,18 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	if err = _copyFolder(srcPaths.OutputRendererSpawns, dstPaths.OutputRendererSpawns); err != nil {
 		return
 	}
-	// ./rendererprocess/viewtools/
+	// ./rendererprocess/framework/viewtools/
 	if err = _copyFolder(srcPaths.OutputRendererViewTools, dstPaths.OutputRendererViewTools); err != nil {
+		return
+	}
+	// ./rendererprocess/framework/proofs/
+	if err = _copyFolder(srcPaths.OutputRendererProofs, dstPaths.OutputRendererProofs); err != nil {
+		return
+	}
+	// ./rendererprocess/application/Application.go
+	src = filepath.Join(srcPaths.OutputRendererApplication, fileNames.ApplicationDotGo)
+	dst = filepath.Join(dstPaths.OutputRendererApplication, fileNames.ApplicationDotGo)
+	if err = ftools.CopyFile(src, dst); err != nil {
 		return
 	}
 

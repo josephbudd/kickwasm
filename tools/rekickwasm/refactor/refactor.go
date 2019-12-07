@@ -36,7 +36,7 @@ func NewRefactorer(rp *repath.RePaths) *Refactorer {
 	return &Refactorer{rp}
 }
 
-// Refactor returns changed, error
+// Refactor returns error
 // 0.  Prep.
 // 1.  Make the refactor builder.
 // 2.  Build the changes source code in the changes folder.
@@ -45,7 +45,7 @@ func NewRefactorer(rp *repath.RePaths) *Refactorer {
 // 2.c Build the changes renderer source.
 // 3   If errors then return.
 // 4.  If no differcences then return.
-// 5.  Refactor.
+// 5.  Merge Changes source code into Refactor source code (original source code).
 // 6.  Cleanup
 func (r *Refactorer) Refactor() (err error) {
 
@@ -145,19 +145,22 @@ func (r *Refactorer) Refactor() (err error) {
 		err = errors.New(msg)
 		return
 	}
-	// Step 5.a Refactor into the refactor folder.
+	// Step 5: merge changes folder into refactor ( original ) folder.
+	//         panels/, spawnPanels/, templates/ and spawnTemplates/,
+	//         proofs/, viewtools/.
+	// Step 5.a panels/ and spawnPanels/ templates/ spawnTemplates/.
 	if err = r.refactorPanels(changesBuilder, mergeBuilder, removals, additions, moves); err != nil {
 		return
 	}
 	// Step 5.b Copy uneditable files.
-	if err = r.refactorUneditables(changesBuilder, mergeBuilder, removals, additions, moves); err != nil {
+	if err = r.refactorPanelGroupFiles(changesBuilder, mergeBuilder, removals, additions, moves); err != nil {
 		return
 	}
-	if err = r.refactorSpawnUneditables(changesBuilder, mergeBuilder, removals, additions, moves); err != nil {
+	if err = r.refactorSpawnPanelUneditableFiles(changesBuilder, mergeBuilder, removals, additions, moves); err != nil {
 		return
 	}
-	// Step 5.c Remove unused panel folders.
-	if err = r.refactorFolders(); err != nil {
+	// Step 5.c Remove unused panel and template folders.
+	if err = r.removeUnusedPanelTemplateFolders(); err != nil {
 		return
 	}
 
@@ -259,9 +262,18 @@ func (r *Refactorer) refactorPanels(changesBuilder, mergeBuilder *project.Builde
 	changesPaths := r.rp.Changes.GetPaths()
 	fileNames := paths.GetFileNames()
 	var dc *ftools.DCopy
-	// Step 4: ./rendererprocess/viewtools/
+	// Step 4.a: ./rendererprocess/viewtools/
 	if dc, err = ftools.NewDCopy(
 		changesPaths.OutputRendererViewTools, mergePaths.OutputRendererViewTools,
+		true, false, nil); err != nil {
+		return
+	}
+	if err = dc.Copy(); err != nil {
+		return
+	}
+	// Step 4.b: ./rendererprocess/proofs/
+	if dc, err = ftools.NewDCopy(
+		changesPaths.OutputRendererProofs, mergePaths.OutputRendererProofs,
 		true, false, nil); err != nil {
 		return
 	}
@@ -275,9 +287,9 @@ func (r *Refactorer) refactorPanels(changesBuilder, mergeBuilder *project.Builde
 	if err = ftools.CopyFile(src, dst); err != nil {
 		return
 	}
-	// Step 6: ./rendererprocess/panels.go
-	src = filepath.Join(changesPaths.OutputRenderer, fileNames.PanelsDotGo)
-	dst = filepath.Join(mergePaths.OutputRenderer, fileNames.PanelsDotGo)
+	// Step 6: ./rendererprocess/framework/panels.go
+	src = filepath.Join(changesPaths.OutputRendererFramework, fileNames.PanelsDotGo)
+	dst = filepath.Join(mergePaths.OutputRendererFramework, fileNames.PanelsDotGo)
 	if err = ftools.CopyFile(src, dst); err != nil {
 		return
 	}
@@ -434,12 +446,12 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 	return
 }
 
-// refactorUneditables copies group files.
-func (r *Refactorer) refactorUneditables(changesBuilder, mergeBuilder *project.Builder, removals, additions map[string]SpawnPath, moves map[string]MoveSpawnPath) (err error) {
+// refactorPanelGroupFiles copies group files.
+func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *project.Builder, removals, additions map[string]SpawnPath, moves map[string]MoveSpawnPath) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "refactorUneditables")
+			err = errors.WithMessage(err, "refactorPanelGroupFiles")
 		}
 	}()
 
@@ -553,21 +565,14 @@ func (r *Refactorer) refactorUneditables(changesBuilder, mergeBuilder *project.B
 		}
 	}
 
-	// renderer/viewtools/viewtools.go
-	// It contains the number of markup panels.
-	src = filepath.Join(changesPaths.OutputRendererViewTools, fileNames.ViewToolsDotGo)
-	dst = filepath.Join(mergePaths.OutputRendererViewTools, fileNames.ViewToolsDotGo)
-	if err = ftools.CopyFile(src, dst); err != nil {
-		return
-	}
 	return
 }
 
-func (r *Refactorer) refactorSpawnUneditables(changesBuilder, mergeBuilder *project.Builder, removals, additions map[string]SpawnPath, moves map[string]MoveSpawnPath) (err error) {
+func (r *Refactorer) refactorSpawnPanelUneditableFiles(changesBuilder, mergeBuilder *project.Builder, removals, additions map[string]SpawnPath, moves map[string]MoveSpawnPath) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "refactorSpawnUneditables")
+			err = errors.WithMessage(err, "refactorSpawnPanelUneditableFiles")
 		}
 	}()
 
@@ -634,11 +639,11 @@ func (r *Refactorer) refactorSpawnUneditables(changesBuilder, mergeBuilder *proj
 	return
 }
 
-func (r *Refactorer) refactorFolders() (err error) {
+func (r *Refactorer) removeUnusedPanelTemplateFolders() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "Refactorer.refactorFolders()")
+			err = errors.WithMessage(err, "Refactorer.removeUnusedPanelTemplateFolders()")
 		}
 	}()
 

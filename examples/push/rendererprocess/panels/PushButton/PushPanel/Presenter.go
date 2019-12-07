@@ -3,8 +3,7 @@
 package pushpanel
 
 import (
-	"syscall/js"
-
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/markup"
 	"github.com/pkg/errors"
 )
 
@@ -26,11 +25,11 @@ type panelPresenter struct {
 
 	// example:
 
-	editCustomerName js.Value
+	editCustomerName *markup.Element
 
 	*/
 
-	timeSpan js.Value
+	timeSpan *markup.Element
 }
 
 // defineMembers defines the panelPresenter members by their html elements.
@@ -50,7 +49,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 	// example:
 
 	// Define the edit form's customer name input field.
-	if presenter.editCustomerName = notJS.GetElementByID("editCustomerName"); presenter.editCustomerName == null {
+	if presenter.editCustomerName = document.ElementByID("editCustomerName"); presenter.editCustomerName == nil {
 		err = errors.New("unable to find #editCustomerName")
 		return
 	}
@@ -58,7 +57,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 	*/
 
 	// Define timeSpan output field.
-	if presenter.timeSpan = notJS.GetElementByID("timeSpan"); presenter.timeSpan == null {
+	if presenter.timeSpan = document.ElementByID("timeSpan"); presenter.timeSpan == nil {
 		err = errors.New("unable to find #timeSpan")
 		return
 	}
@@ -74,12 +73,12 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 // displayCustomer displays the customer in the edit customer form panel.
 func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
-	notJS.SetValue(presenter.editCustomerName, record.Name)
+	presenter.editCustomerName.SetValue(record.Name)
 }
 
 */
 
-// displayCustomer displays the customer in the edit customer form panel.
+// displayTimeSpan displays time.
 func (presenter *panelPresenter) displayTimeSpan(s string) {
-	notJS.SetInnerText(presenter.timeSpan, s)
+	presenter.timeSpan.SetInnerText(s)
 }

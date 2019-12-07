@@ -10,27 +10,27 @@ import (
 )
 
 // ShowPanelInButtonGroup shows a panel in a button pad button group and hides the other panels in the group.
-func (tools *Tools) ShowPanelInButtonGroup(panel js.Value, force bool) {
-	if force && tools.hereIsVisible() {
+func ShowPanelInButtonGroup(panel js.Value, force bool) {
+	if force && hereIsVisible() {
 		// show this panel.
 		// the app is resized by HideShow.
-		tools.HideShow(tools.here, panel)
+		HideShow(here, panel)
 	} else {
 		// not forcing so just set the panel to be visible when the user makes it visible.
-		_, isVisible := tools.ShowInGroup(panel, ToBeSeenClassName, ToBeUnSeenClassName)
+		_, isVisible := ShowInGroup(panel, ToBeSeenClassName, ToBeUnSeenClassName)
 		if isVisible {
 			// this panel is visible anyway so resize the app.
-			tools.SizeApp()
+			SizeApp()
 		}
 	}
 }
 
 // ShowPanelInTabGroup shows a panel in a tab button group and hides the other panels in the group.
-func (tools *Tools) ShowPanelInTabGroup(panel js.Value) {
-	_, isVisible := tools.ShowInGroup(panel, SeenClassName, UnSeenClassName)
+func ShowPanelInTabGroup(panel js.Value) {
+	_, isVisible := ShowInGroup(panel, SeenClassName, UnSeenClassName)
 	if isVisible {
 		// this tab panel is visible anyway so resize the app.
-		tools.SizeApp()
+		SizeApp()
 	}
 }
 
@@ -43,11 +43,12 @@ func (tools *Tools) ShowPanelInTabGroup(panel js.Value) {
 // Returns 2 params
 // 1. if param target has an ancestor which is the slider collections. ( panels shown with the back button on the left side. )
 // 2. if the param target becomes visible.
-func (tools *Tools) ShowInGroup(target js.Value, showClass, hideClass string) (isSliderSub, isVisible bool) {
-	notJS := tools.NotJS
-	isSliderSub = notJS.ParentNode(target) == tools.tabsMasterviewHomeSliderCollection
+func ShowInGroup(target js.Value, showClass, hideClass string) (isSliderSub, isVisible bool) {
+	targetParent := target.Get("parentNode")
+	isSliderSub = targetParent == tabsMasterviewHomeSliderCollection
 	// tab sibling panels are in sliders but they are special.
-	isTabSibling := notJS.ClassListContains(target, SliderPanelInnerSiblingClassName)
+	classList := target.Get("classList")
+	isTabSibling := classList.Call("contains", SliderPanelInnerSiblingClassName).Bool()
 	if !(isSliderSub || isTabSibling) {
 		// not in the slider collection
 		isSliderSub = (isSliderSub || isTabSibling)
@@ -55,7 +56,7 @@ func (tools *Tools) ShowInGroup(target js.Value, showClass, hideClass string) (i
 	}
 	targetInGroup := false
 	var divs []js.Value
-	for _, divs = range tools.buttonPanelsMap {
+	for _, divs = range buttonPanelsMap {
 		for _, div := range divs {
 			if target == div {
 				// target is in this group
@@ -74,40 +75,42 @@ func (tools *Tools) ShowInGroup(target js.Value, showClass, hideClass string) (i
 		return
 	}
 	// yes target is a slider div
-	tools.setInGroup(divs, target, showClass, hideClass)
+	setInGroup(divs, target, showClass, hideClass)
 	// check for visibility
 	for _, div := range divs {
-		if notJS.ClassListContains(div, SeenClassName) {
-			isVisible = true
+		classList := div.Get("classList")
+		if isVisible = !classList.Call("contains", UnSeenClassName).Bool(); isVisible {
+			// only really visible if slider is visible
+			classList = tabsMasterviewHomeSlider.Get("classList")
+			isVisible = !classList.Call("contains", UnSeenClassName).Bool()
 			break
 		}
 	}
-	// only really visible if slider is visible
-	isVisible = notJS.ClassListContains(tools.tabsMasterviewHomeSlider, SeenClassName) && isVisible
 	if isVisible {
-		// set tools.here
+		// set here
 		if isTabSibling {
-			// tools.here is never a tab panel sibling.
-			// tools.here must be a slider panel.
+			// here is never a tab panel sibling.
+			// here must be a slider panel.
 			// Find the correct ancestor.
-			sliderPanel := notJS.ParentNode(target)
+			sliderPanel := targetParent
 			for {
-				if notJS.ClassListContains(sliderPanel, SliderPanelClassName) {
+				classList = sliderPanel.Get("classList")
+				if classList.Call("contains", SliderPanelClassName).Bool() {
 					break
 				}
-				sliderPanel = notJS.ParentNode(sliderPanel)
+				sliderPanel = sliderPanel.Get("parentNode")
 			}
-			tools.here = sliderPanel
+			here = sliderPanel
 		} else {
 			// target is the new here.
-			tools.here = target
+			here = target
 		}
 		// here is now this slider sub panel.
 		// here is never a tab panel sibling.
 		if showClass == ToBeSeenClassName {
 			// set target for class seen
 			// set non targets for class unseen
-			tools.setInGroup(divs, target, SeenClassName, UnSeenClassName)
+			setInGroup(divs, target, SeenClassName, UnSeenClassName)
 		}
 	}
 	isSliderSub = isSliderSub || isTabSibling
@@ -116,21 +119,21 @@ func (tools *Tools) ShowInGroup(target js.Value, showClass, hideClass string) (i
 
 //HideShow hides one panel and shows another panel.
 // both panels must have the parentNode == SliderPresenter.sliderCollection.
-func (tools *Tools) HideShow(hideDiv, showDiv js.Value) {
+func HideShow(hideDiv, showDiv js.Value) {
 	// hide the hide div
-	notJS := tools.NotJS
-	isSliderH := tools.hideInGroup(hideDiv, SeenClassName, UnSeenClassName)
+	isSliderH := hideInGroup(hideDiv, SeenClassName, UnSeenClassName)
 	// show the show div
-	isSliderS, isVisibleS := tools.ShowInGroup(showDiv, SeenClassName, UnSeenClassName)
+	isSliderS, isVisibleS := ShowInGroup(showDiv, SeenClassName, UnSeenClassName)
 	if isSliderS {
 		// reset the back button's color class.
 		backColorLevel := showDiv.Call("getAttribute", "backColorLevel").String()
-		firstClass := notJS.ClassListGetClassAt(tools.tabsMasterviewHomeSliderBack, 0)
-		notJS.ClassListReplaceClass(tools.tabsMasterviewHomeSliderBack, firstClass, backColorLevel)
+		classList := tabsMasterviewHomeSliderBack.Get("classList")
+		firstClass := classList.Call("item", 0).String()
+		classList.Call("replace", firstClass, backColorLevel)
 	}
 	if isSliderH && isSliderS {
 		// the slider was visible for the hideDiv and so it still is for the showDiv
-		tools.SizeApp()
+		SizeApp()
 		return
 	}
 	// hideDiv and showDiv are not both sliders
@@ -138,75 +141,68 @@ func (tools *Tools) HideShow(hideDiv, showDiv js.Value) {
 		// showDiv, the div to show is not visible
 		if isSliderH {
 			// hideDiv is in the slider collection
-			tools.hideSlider()
+			hideSlider()
 		} else {
 			// hideDiv is not in the slider collection, its a master div or home or some little thing in a panel
-			tools.ElementHide(hideDiv)
+			ElementHide(hideDiv)
 		}
 		if isSliderS {
 			// showDiv is in the slider collection
-			tools.showSlider()
+			showSlider()
 		} else {
 			// showDiv is not in the slider collection
-			tools.ElementShow(showDiv)
+			ElementShow(showDiv)
 		}
 	}
-	tools.SizeApp()
+	SizeApp()
 }
 
-// toBeShownInGroup returns if the class is set to become visible when it's panel group is made visible.
-// Returns 2 params
-// 1. if param target has an ancestor which is the slider collections. ( panels shown with the back button on the left side. )
-// 2. if the param target becomes visible.
-func (tools *Tools) toBeShownInGroup(target js.Value) (bool, bool) {
-	return tools.ShowInGroup(target, ToBeSeenClassName, ToBeUnSeenClassName)
-}
-
-// Returns is the target is a slider sub panel, a child of the slider collection div.
-func (tools *Tools) toBeHiddenInGroup(target js.Value) bool {
-	return tools.hideInGroup(target, ToBeSeenClassName, ToBeUnSeenClassName)
-}
-
-// setInGroup works with a group of panels from tools.buttonPanelsMap.
+// setInGroup works with a group of panels from buttonPanelsMap.
 // It sets target's to setClass and removes unSetClass.
 // It sets the other panel's to unSetClass and removes setClass.
-func (tools *Tools) setInGroup(group []js.Value, target js.Value, setClass, unSetClass string) {
-	notJS := tools.NotJS
+func setInGroup(group []js.Value, target js.Value, setClass, unSetClass string) {
+	var classList js.Value
 	for _, panel := range group {
 		if panel != target {
-			notJS.ClassListReplaceClass(panel, setClass, unSetClass)
+			classList = panel.Get("classList")
+			if !classList.Call("replace", setClass, unSetClass).Bool() {
+				classList.Call("add", unSetClass)
+			}
 		}
 	}
-	notJS.ClassListReplaceClass(target, unSetClass, setClass)
+	classList = target.Get("classList")
+	if !classList.Call("replace", unSetClass, setClass).Bool() {
+		classList.Call("add", setClass)
+	}
 }
 
 // hideInGroup hides target in a group.
 // Returns is the target is a slider sub panel, a child of the slider collection div.
-func (tools *Tools) hideInGroup(target js.Value, showClass, hideClass string) (isSliderSub bool) {
-	notJS := tools.NotJS
-	parentNode := notJS.ParentNode(target)
-	isSliderSub = parentNode == tools.tabsMasterviewHomeSliderCollection
+func hideInGroup(target js.Value, showClass, hideClass string) (isSliderSub bool) {
+	parentNode := target.Get("parentNode")
+	isSliderSub = parentNode == tabsMasterviewHomeSliderCollection
 	if !isSliderSub {
 		// not in the slider collection.
 		return
 	}
-	notJS.ClassListReplaceClass(target, showClass, hideClass)
+	classList := target.Get("classList")
+	classList.Call("replace", showClass, hideClass)
 	return
 }
 
-func (tools *Tools) initializeGroups() {
+func initializeGroups() {
 	// build the buttonPanelsMap
 	var buttonid string
 	var panel js.Value{{range $home, $buttonPanelGroups := .HomeButtonPanelGroups}}{{range $buttonPanelGroup := $buttonPanelGroups}}
 	// {{$home}} {{$buttonPanelGroup.ButtonName}} button.
 	buttonid = "{{$buttonPanelGroup.ButtonID}}"
-	tools.buttonPanelsMap[buttonid] = make([]js.Value, 0, 5){{range $name, $panel := $buttonPanelGroup.PanelNamesIDMap}}
-	panel = tools.NotJS.GetElementByID("{{$panel.HTMLID}}")
+	buttonPanelsMap[buttonid] = make([]js.Value, 0, 5){{range $name, $panel := $buttonPanelGroup.PanelNamesIDMap}}
+	panel = getElementByID(document, "{{$panel.HTMLID}}")
 	if panel == js.Undefined() {
 		message := "viewtools.initializeGroups: Cant find #{{$panel.HTMLID}}"
-		tools.alert.Invoke(message)
+		alert.Invoke(message)
 		return
 	}
-	tools.buttonPanelsMap[buttonid] = append(tools.buttonPanelsMap[buttonid], panel){{end}}{{end}}{{end}}
+	buttonPanelsMap[buttonid] = append(buttonPanelsMap[buttonid], panel){{end}}{{end}}{{end}}
 }
 `

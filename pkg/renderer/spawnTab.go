@@ -13,6 +13,32 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
 )
 
+type spawnTabData struct {
+	TabName    string
+	TabBarID   string
+	PanelNames []string
+
+	MarkupTemplatePaths string
+
+	TabLabel     string
+	PanelHeading string
+
+	PrepareImports []string
+	SpawnImports   []string
+
+	ApplicationGitPath      string
+	ImportRendererViewTools string
+	ImportDomainStoreRecord string
+
+	CamelCase       func(string) string
+	LowerCamelCase  func(string) string
+	LowerCase       func(string) string
+	SplitTabJoin    func(string) string
+	PackageNameCase func(string) string
+
+	SpawnID string
+}
+
 // createSpawnTabFiles creates the spawn tab specific files.
 // The files are prepare.go and api.go,
 func createSpawnTabFiles(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
@@ -29,21 +55,23 @@ func createSpawnTabFiles(appPaths paths.ApplicationPathsI, builder *project.Buil
 	tabPanelPaths := builder.GenerateSpawnTabPanelPathsMap()
 	// Build the core imports for each api.go.
 	// Let each tab bar add the rest of the imports.
-	prepareCoreImports := make([]string, 4)
+	prepareCoreImports := make([]string, 2)
 	prepareCoreImports[0] = builder.ImportPath + folderpaths.ImportRendererLPC
-	prepareCoreImports[1] = builder.ImportPath + folderpaths.ImportRendererViewTools
-	prepareCoreImports[2] = builder.ImportPath + folderpaths.ImportRendererNotJS
-	prepareCoreImports[3] = builder.ImportPath + folderpaths.ImportRendererPaneling
+	prepareCoreImports[1] = builder.ImportPath + folderpaths.ImportRendererPaneling
 
-	spawnCoreImports := make([]string, 1)
+	spawnCoreImports := make([]string, 3)
 	spawnCoreImports[0] = builder.ImportPath + folderpaths.ImportRendererViewTools
+	spawnCoreImports[1] = builder.ImportPath + folderpaths.ImportRendererMarkup
+	spawnCoreImports[2] = builder.ImportPath + folderpaths.ImportRendererCallBack
 	// Build the tab bar template data.
 	// Let each tab bar set the rest of the spawnTabData members.
 	data := &spawnTabData{
-		ApplicationGitPath: builder.ImportPath,
-		CamelCase:          cases.CamelCase,
-		LowerCamelCase:     cases.LowerCamelCase,
-		LowerCase:          strings.ToLower,
+		ApplicationGitPath:      builder.ImportPath,
+		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
+		ImportDomainStoreRecord: folderpaths.ImportDomainStoreRecord,
+		CamelCase:               cases.CamelCase,
+		LowerCamelCase:          cases.LowerCamelCase,
+		LowerCase:               strings.ToLower,
 		SplitTabJoin: func(s string) string {
 			ss := strings.Split(s, "\n")
 			return "\t" + strings.Join(ss, "\n\t")
@@ -141,30 +169,6 @@ func createSpawnTabFiles(appPaths paths.ApplicationPathsI, builder *project.Buil
 		}
 	}
 	return
-}
-
-type spawnTabData struct {
-	TabName    string
-	TabBarID   string
-	PanelNames []string
-
-	MarkupTemplatePaths string
-
-	TabLabel     string
-	PanelHeading string
-
-	PrepareImports []string
-	SpawnImports   []string
-
-	ApplicationGitPath string
-
-	CamelCase       func(string) string
-	LowerCamelCase  func(string) string
-	LowerCase       func(string) string
-	SplitTabJoin    func(string) string
-	PackageNameCase func(string) string
-
-	SpawnID string
 }
 
 func buildPanelNamePathMap(builder *project.Builder) (panelNamePathMap map[string][]string) {

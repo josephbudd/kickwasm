@@ -26,11 +26,9 @@ func createSpawnTabBarFiles(appPaths paths.ApplicationPathsI, builder *project.B
 	fileNames := paths.GetFileNames()
 	// Build the core imports for each api.go.
 	// Let each tab bar add the rest of the imports.
-	coreImports := make([]string, 4)
+	coreImports := make([]string, 2)
 	coreImports[0] = folderpaths.ImportRendererLPC
 	coreImports[1] = folderpaths.ImportRendererPaneling
-	coreImports[2] = folderpaths.ImportRendererNotJS
-	coreImports[3] = folderpaths.ImportRendererViewTools
 	// Build the tab bar template data.
 	data := &spawnTabBarData{
 		ApplicationGitPath: builder.ImportPath,

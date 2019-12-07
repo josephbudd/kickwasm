@@ -4,8 +4,8 @@ package createpanel
 
 import (
 	"strings"
-	"syscall/js"
 
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/markup"
 
 	"github.com/pkg/errors"
 )
@@ -21,8 +21,8 @@ type panelPresenter struct {
 	group          *panelGroup
 	controller     *panelController
 	messenger      *panelMessenger
-	tabPanelHeader js.Value
-	tabButton      js.Value
+	tabPanelHeader *markup.Element
+	tabButton      *markup.Element
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
@@ -30,7 +30,7 @@ type panelPresenter struct {
 
 	// example:
 
-	editCustomerName js.Value
+	editCustomerName *markup.Element
 
 	*/
 }
@@ -52,7 +52,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 	// example:
 
 	// Define the edit form's customer name input field.
-	if presenter.editCustomerName = notJS.GetElementByID("editCustomerName"); presenter.editCustomerName == null {
+	if presenter.editCustomerName = document.ElementByID("editCustomerName"); presenter.editCustomerName == nil {
 		err = errors.New("unable to find #editCustomerName")
 		return
 	}
@@ -64,29 +64,29 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 // Tab button label.
 
 func (presenter *panelPresenter) getTabLabel() (label string) {
-	label = notJS.GetInnerText(presenter.tabButton)
+	label = presenter.tabButton.InnerText()
 	return
 }
 
 func (presenter *panelPresenter) setTabLabel(label string) {
-	notJS.SetInnerText(presenter.tabButton, label)
+	presenter.tabButton.SetInnerText(label)
 }
 
 // Tab panel heading.
 
 func (presenter *panelPresenter) getTabPanelHeading() (heading string) {
-	heading = notJS.GetInnerText(presenter.tabPanelHeader)
+	heading = presenter.tabPanelHeader.InnerText()
 	return
 }
 
 func (presenter *panelPresenter) setTabPanelHeading(heading string) {
 	heading = strings.TrimSpace(heading)
 	if len(heading) == 0 {
-		tools.ElementHide(presenter.tabPanelHeader)
+		presenter.tabPanelHeader.Hide()
 	} else {
-		tools.ElementShow(presenter.tabPanelHeader)
+		presenter.tabPanelHeader.Show()
 	}
-	notJS.SetInnerText(presenter.tabPanelHeader, heading)
+	presenter.tabPanelHeader.SetInnerText(heading)
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 3.
@@ -97,7 +97,7 @@ func (presenter *panelPresenter) setTabPanelHeading(heading string) {
 
 // displayCustomer displays the customer in the edit customer form panel.
 func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
-	notJS.SetValue(presenter.editCustomerName, record.Name)
+	presenter.editCustomerName.SetValue(record.Name)
 }
 
 */

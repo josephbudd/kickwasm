@@ -1,34 +1,30 @@
 package timing
 
 import (
+	"context"
 	"log"
 	"time"
 
 	"github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
-	"github.com/josephbudd/kickwasm/examples/push/domain/store"
 	"github.com/josephbudd/kickwasm/examples/push/mainprocess/lpc"
 )
 
 // Do starts a go routine that periodically sends time to the renderer.
+// Param ctx is the context. if <-ctx.Done() then the main process is shutting down.
 // Param sending is the send channel to the renderer process.
-// Param eojing lpc.EOJer is the interface implementation which will give me the eoj channel to stop the go routine.
-// Param stores *store.Stores contains the storage interface implementations.
-func Do(sending lpc.Sending, eojing lpc.EOJer, stores *store.Stores) {
-	log.Println("Do")
-	go func(sending lpc.Sending, eojing lpc.EOJer, stores *store.Stores) {
-		eojCh := eojing.NewEOJ()
+func Do(ctx context.Context, sending lpc.Sending) {
+	go func(ctx context.Context, sending lpc.Sending) {
 		timer := time.NewTimer(time.Second)
 		for {
 			select {
-			case <-eojCh:
-				log.Println("timing.Do go returning.")
-				if !timer.Stop() {
-					<-timer.C
-				}
+			case <-ctx.Done():
+				// The application has ended.
+				// Stop everything and return.
+				timer.Stop()
 				return
 			case t := <-timer.C:
 				f := t.Format(time.UnixDate)
-				log.Println("timing.Do sending ", f)
+				log.Printf("timing.Do's go func is sending %q", f)
 				msg := &message.TimeMainProcessToRenderer{
 					Time: f,
 				}
@@ -36,8 +32,5 @@ func Do(sending lpc.Sending, eojing lpc.EOJer, stores *store.Stores) {
 				timer.Reset(time.Second)
 			}
 		}
-	}(sending, eojing, stores)
-	/*
-		rxmessage is ignored because it only sinals that the renderer has been loaded.
-	*/
+	}(ctx, sending)
 }

@@ -38,8 +38,9 @@ type panelMessenger struct {
 
 // example:
 
-// import "{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
-// import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
+import "{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
+import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
+import "{{.ApplicationGitPath}}{{.ImportRendererDisplay}}"
 
 // Add Customer.
 
@@ -54,11 +55,11 @@ func (messenger *panelMessenger) addCustomer(r *record.Customer) {
 func (messenger *panelMessenger) addCustomerRX(msg *message.AddCustomerMainProcessToRenderer) {
 	if msg.UniqueID == messenger.uniqueID {
 		if msg.Error {
-			tools.Error(msg.ErrorMessage)
+			display.Error(msg.ErrorMessage)
 			return
 		}
 		// no errors
-		tools.Success("Customer Added.")
+		display.Success("Customer Added.")
 	}
 }
 
@@ -88,7 +89,7 @@ func (messenger *panelMessenger) dispatchMessages() {
 
 				// example:
 
-				// import "{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
+				import "{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
 
 				case *message.AddCustomerMainProcessToRenderer:
 					messenger.addCustomerRX(msg)
@@ -114,8 +115,8 @@ func (messenger *panelMessenger) initialSends() {
 
 	// example:
 
-	// import "{{.ApplicationGitPath}}{{.ImportDomainDataLogLevels}}"
-	// import "{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
+	import "{{.ApplicationGitPath}}{{.ImportDomainDataLogLevels}}"
+	import "{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
 
 	msg := &message.LogRendererToMainProcess{
 		Level:   loglevels.LogLevelInfo,

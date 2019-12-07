@@ -9,9 +9,8 @@ import (
 	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -29,7 +28,7 @@ type Panel struct {
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, help *paneling.Help) (panel *Panel, err error) {
+func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) (panel *Panel, err error) {
 
 	defer func() {
 		if err != nil {
@@ -41,18 +40,16 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	eojCh = eojChan
 	receiveCh = receiveChan
 	sendCh = sendChan
-	tools = vtools
-	notJS = njs
+	document = dom.NewDOM(0)
 
 	group := &panelGroup{}
 	controller := &panelController{
-		group:   group,
-		eventCh: make(chan viewtools.Event, 1024),
+		group: group,
 	}
 	presenter := &panelPresenter{
 {{ if .IsTabSiblingPanel }}		group:          group,
-		tabPanelHeader: notJS.GetElementByID("{{.PanelH3ID}}"),
-		tabButton:      notJS.GetElementByID("{{.TabButtonID}}"),{{ else }}		group: group,{{ end }}
+		tabPanelHeader: document.ElementByID("{{.PanelH3ID}}"),
+		tabButton:      document.ElementByID("{{.TabButtonID}}"),{{ else }}		group: group,{{ end }}
 	}
 	messenger := &panelMessenger{
 		group: group,

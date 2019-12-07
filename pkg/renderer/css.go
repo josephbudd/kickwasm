@@ -28,13 +28,12 @@ type cssTemplateData struct {
 	PanelWithHeading string
 	PanelWithTabBar  string
 
-	SliderPanel       string
-	SliderPanelPad    string
-	SliderButtonPad   string
-	UserContent       string
-	ModalUserContent  string
-	CloserUserContent string
-	UserMarkup        string
+	SliderPanel      string
+	SliderPanelPad   string
+	SliderButtonPad  string
+	UserContent      string
+	ModalUserContent string
+	UserMarkup       string
 
 	VScroll  string
 	HVScroll string
@@ -52,10 +51,10 @@ type cssTemplateData struct {
 	ClassCookieCrumbLevelPrefix    string
 	ClassPanelHeadingLevelPrefix   string
 
-	ColorLevels      []colorLevel
+	ColorLevels   []colorLevel
 	HomeNames     []string
 	LastHomeIndex int
-	Mod5             func(int) int
+	Mod5          func(int) int
 }
 
 func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
@@ -78,25 +77,24 @@ func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 	}
 	homeNames := builder.GenerateHomeButtonNames()
 	data := &cssTemplateData{
-		Seen:              builder.Classes.Seen,
-		UnSeen:            builder.Classes.UnSeen,
-		UnderTabBar:       builder.Classes.UnderTabBar,
-		Selected:          builder.Classes.SelectedTab,
-		TabBar:            builder.Classes.TabBar,
-		PanelHeading:      builder.Classes.PanelHeading,
-		TabPanel:          builder.Classes.TabPanel,
-		TabPanelGroup:     builder.Classes.TabPanelGroup,
-		PanelWithHeading:  builder.Classes.PanelWithHeading,
-		PanelWithTabBar:   builder.Classes.PanelWithTabBar,
-		SliderPanel:       builder.Classes.SliderPanel,
-		SliderPanelPad:    builder.Classes.SliderPanelPad,
-		SliderButtonPad:   builder.Classes.SliderButtonPad,
-		UserContent:       builder.Classes.UserContent,
-		ModalUserContent:  builder.Classes.ModalUserContent,
-		CloserUserContent: builder.Classes.CloserUserContent,
-		VScroll:           builder.Classes.VScroll,
-		HVScroll:          builder.Classes.HVScroll,
-		UserMarkup:        builder.Classes.UserMarkup,
+		Seen:             builder.Classes.Seen,
+		UnSeen:           builder.Classes.UnSeen,
+		UnderTabBar:      builder.Classes.UnderTabBar,
+		Selected:         builder.Classes.SelectedTab,
+		TabBar:           builder.Classes.TabBar,
+		PanelHeading:     builder.Classes.PanelHeading,
+		TabPanel:         builder.Classes.TabPanel,
+		TabPanelGroup:    builder.Classes.TabPanelGroup,
+		PanelWithHeading: builder.Classes.PanelWithHeading,
+		PanelWithTabBar:  builder.Classes.PanelWithTabBar,
+		SliderPanel:      builder.Classes.SliderPanel,
+		SliderPanelPad:   builder.Classes.SliderPanelPad,
+		SliderButtonPad:  builder.Classes.SliderButtonPad,
+		UserContent:      builder.Classes.UserContent,
+		ModalUserContent: builder.Classes.ModalUserContent,
+		VScroll:          builder.Classes.VScroll,
+		HVScroll:         builder.Classes.HVScroll,
+		UserMarkup:       builder.Classes.UserMarkup,
 
 		IDMaster:           builder.IDs.Master,
 		IDHome:             builder.IDs.Home,
@@ -111,7 +109,7 @@ func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 		ClassCookieCrumbLevelPrefix:    builder.Classes.CookieCrumbLevelPrefix,
 		ClassPanelHeadingLevelPrefix:   builder.Classes.PanelHeadingLevelPrefix,
 
-		ColorLevels:      colorLevels,
+		ColorLevels:   colorLevels,
 		HomeNames:     homeNames,
 		LastHomeIndex: len(homeNames) - 1,
 		Mod5: func(i int) int {

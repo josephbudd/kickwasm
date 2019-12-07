@@ -13,10 +13,7 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsGo(appPaths, builder); err != nil {
 		return
 	}
-	if err = createViewToolsCallBackGo(appPaths); err != nil {
-		return
-	}
-	if err = createViewToolsCloserGo(appPaths); err != nil {
+	if err = createViewToolsCloserGo(appPaths, builder); err != nil {
 		return
 	}
 	if err = createViewToolsGroupsGo(appPaths, builder); err != nil {
@@ -25,16 +22,16 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsHelpersGo(appPaths); err != nil {
 		return
 	}
-	if err = createViewToolsHideShowGo(appPaths); err != nil {
+	if err = createViewToolsHideShowGo(appPaths, builder); err != nil {
 		return
 	}
-	if err = createViewToolsModalGo(appPaths); err != nil {
+	if err = createViewToolsModalGo(appPaths, builder); err != nil {
 		return
 	}
 	if err = createResizeGo(appPaths, builder); err != nil {
 		return
 	}
-	if err = createViewToolsSliderGo(appPaths); err != nil {
+	if err = createViewToolsSliderGo(appPaths, builder); err != nil {
 		return
 	}
 	if err = createViewToolsTabBarGo(appPaths, builder); err != nil {
@@ -46,15 +43,16 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsSpawnTabGo(appPaths, builder); err != nil {
 		return
 	}
-	if err = createViewToolsEvent(appPaths); err != nil {
-		return
-	}
 	if err = createViewToolsMarkupGo(appPaths); err != nil {
 		return
 	}
-	if err = createViewToolsWidgetsGo(appPaths); err != nil {
+	if err = createViewToolsWidgetsGo(appPaths, builder); err != nil {
 		return
 	}
+	if err = createViewToolsPrintGo(appPaths, builder); err != nil {
+		return
+	}
+
 	return
 }
 
@@ -75,23 +73,27 @@ func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builde
 		}
 	}
 	data := &struct {
-		IDs                   *project.IDs
-		Classes               *project.Classes
-		Attributes            *project.Attributes
-		ApplicationGitPath    string
-		ImportRendererNotJS   string
-		SpawnIDReplacePattern string
-		PanelNameHVScroll     string
-		NumberOfMarkupPanels  uint64
+		IDs                    *project.IDs
+		Classes                *project.Classes
+		Attributes             *project.Attributes
+		ImportRendererCallBack string
+		ImportRendererDOM      string
+		ApplicationGitPath     string
+		ImportRendererMarkup   string
+		SpawnIDReplacePattern  string
+		PanelNameHVScroll      string
+		NumberOfMarkupPanels   uint64
 	}{
-		IDs:                   builder.IDs,
-		Classes:               builder.Classes,
-		Attributes:            builder.Attributes,
-		ApplicationGitPath:    builder.ImportPath,
-		ImportRendererNotJS:   folderpaths.ImportRendererNotJS,
-		SpawnIDReplacePattern: project.SpawnIDReplacePattern,
-		PanelNameHVScroll:     fmt.Sprintf("%#v", panelNameHVScroll),
-		NumberOfMarkupPanels:  builder.MarkupPanelCount,
+		IDs:                    builder.IDs,
+		Classes:                builder.Classes,
+		Attributes:             builder.Attributes,
+		ImportRendererCallBack: folderpaths.ImportRendererCallBack,
+		ApplicationGitPath:     builder.ImportPath,
+		ImportRendererDOM:      folderpaths.ImportRendererDOM,
+		ImportRendererMarkup:   folderpaths.ImportRendererMarkup,
+		SpawnIDReplacePattern:  project.SpawnIDReplacePattern,
+		PanelNameHVScroll:      fmt.Sprintf("%#v", panelNameHVScroll),
+		NumberOfMarkupPanels:   builder.MarkupPanelCount,
 	}
 	// execute the template
 	fileNames := paths.GetFileNames()

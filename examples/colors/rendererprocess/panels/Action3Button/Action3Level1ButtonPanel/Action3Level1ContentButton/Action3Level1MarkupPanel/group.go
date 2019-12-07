@@ -6,6 +6,9 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/viewtools"
 )
 
 /*
@@ -30,10 +33,12 @@ func (group *panelGroup) defineMembers() (err error) {
 		}
 	}()
 
-	if group.action3Level1MarkupPanel = notJS.GetElementByID("tabsMasterView-home-pad-Action3Button-Action3Level1ButtonPanel-Action3Level1ContentButton-Action3Level1MarkupPanel"); group.action3Level1MarkupPanel == null {
-		err = errors.New("unable to find #tabsMasterView-home-pad-Action3Button-Action3Level1ButtonPanel-Action3Level1ContentButton-Action3Level1MarkupPanel")
+    var panel *markup.Element
+ if panel = document.ElementByID("mainMasterView-home-pad-Action3Button-Action3Level1ButtonPanel-Action3Level1ContentButton-Action3Level1MarkupPanel"); panel == nil {
+		err = errors.New("unable to find #mainMasterView-home-pad-Action3Button-Action3Level1ButtonPanel-Action3Level1ContentButton-Action3Level1MarkupPanel")
 		return
-	}
+    }
+    group.action3Level1MarkupPanel = panel.JSValue()
 
 	return
 }
@@ -45,7 +50,7 @@ func (group *panelGroup) defineMembers() (err error) {
 */
 
 // showAction3Level1MarkupPanel shows the panel you named Action3Level1MarkupPanel while hiding any other panels in this panel group.
-// This panel's id is tabsMasterView-home-pad-Action3Button-Action3Level1ButtonPanel-Action3Level1ContentButton-Action3Level1MarkupPanel.
+// This panel's id is mainMasterView-home-pad-Action3Button-Action3Level1ButtonPanel-Action3Level1ContentButton-Action3Level1MarkupPanel.
 // This panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
 // Param force boolean effects when this panel becomes visible.
 //  * if force is true then
@@ -58,5 +63,5 @@ Brought to you in the first service color.
 
 */
 func (group *panelGroup) showAction3Level1MarkupPanel(force bool) {
-	tools.ShowPanelInButtonGroup(group.action3Level1MarkupPanel, force)
+	viewtools.ShowPanelInButtonGroup(group.action3Level1MarkupPanel, force)
 }

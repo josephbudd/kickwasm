@@ -3,11 +3,8 @@
 package action1level4markuppanel
 
 import (
-	"syscall/js"
-
-	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/lpc"
-	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/notjs"
-	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/dom"
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/lpc"
 )
 
 /*
@@ -29,12 +26,6 @@ var (
 	// sendCh sends messages to the main process.
 	sendCh lpc.Sending
 
-	// The framework's renderer API.
-	tools *viewtools.Tools
-
-	// Some javascipt like dom functions written in go.
-	notJS *notjs.NotJS
-
-	// The javascript null value
-	null = js.Null()
+	// The document object module.
+	document *dom.DOM
 )

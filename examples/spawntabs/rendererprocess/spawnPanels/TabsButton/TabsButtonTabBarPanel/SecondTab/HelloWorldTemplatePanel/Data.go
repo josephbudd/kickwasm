@@ -3,12 +3,8 @@
 package helloworldtemplatepanel
 
 import (
-	"syscall/js"
-
-	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/notjs"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/paneling"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/viewtools"
 )
 
 /*
@@ -30,15 +26,6 @@ var (
 	// sendCh sends messages to the main process.
 	sendCh lpc.Sending
 
-	// The framework's renderer API.
-	tools *viewtools.Tools
-
-	// Some javascipt like dom functions written in go.
-	notJS *notjs.NotJS
-
 	// Your customized paneling.Help for initializing your panels.
 	help *paneling.Help
-
-	// The javascript null value.
-	null = js.Null()
 )

@@ -1,7 +1,7 @@
 package lpc
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 	"os/exec"
@@ -13,6 +13,7 @@ import (
 
 var (
 	myServer *http.Server
+	WorryMessage string
 )
 
 // Run runs the application until the main process terminates.
@@ -27,16 +28,16 @@ var (
 //        You will want your handlerFunc to do things like load your javascript, css and any other files.
 func (server *Server) Run(handlerFunc http.HandlerFunc) error {
 	appurl := "http://" + server.listener.Addr().String()
-	log.Println("listen and serve: ", appurl)
+	// log.Println("listen and serve: ", appurl)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		server.serve(w, r, handlerFunc)
 	})
 	// start the server
 	go func() {
 		if waitServer(appurl) && startBrowser(appurl) {
-			log.Printf("A browser window should open. If not, please visit %s", appurl)
+			WorryMessage = fmt.Sprintf("A browser window should open. If not, please visit %s", appurl)
 		} else {
-			log.Printf("Please open your web browser and visit %s", appurl)
+			WorryMessage = fmt.Sprintf("Please open your web browser and visit %s", appurl)
 		}
 	}()
 	// start the still connected loop.
@@ -71,7 +72,6 @@ func startBrowser(url string) bool {
 		args = []string{"xdg-open"}
 	}
 	args2 := append(args[1:], url)
-	log.Println(args[0], strings.Join(args2, ", "))
 	cmd := exec.Command(args[0], args2...)
 	return cmd.Start() == nil
 }
@@ -138,14 +138,14 @@ func (server *Server) stillConnectedLoop(stopRunLoopCh chan os.Signal) {
 			if server.GetConnectionCount() == 0 {
 				if now.Sub(server.GetLastDisconnect()) > server.DisconnectMax {
 					myServer.Close()
-					log.Println("Ending server. Renderer disconnected.")
+					// log.Println("Ending server. Renderer disconnected.")
 					server.QuitChan <- struct{}{}
 					return
 				}
 			}
 		case <-stopRunLoopCh:
 			myServer.Close()
-			log.Println("Ending server. Main process canceled.")
+			// log.Println("Ending server. Main process canceled.")
 			server.QuitChan <- struct{}{}
 			return
 		}

@@ -50,8 +50,11 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					IsTabSiblingPanel         bool
 					TabButtonID               string
 					ApplicationGitPath        string
+					ImportRendererDOM         string
+					ImportRendererDisplay     string
+					ImportRendererEvent       string
 					ImportRendererLPC         string
-					ImportRendererNotJS       string
+					ImportRendererMarkup      string
 					ImportRendererViewTools   string
 					ImportRendererPaneling    string
 					ImportDomainDataLogLevels string
@@ -73,8 +76,11 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					IsTabSiblingPanel:         buttonPanelGroups.IsTabButton,
 					TabButtonID:               tabButtonID,
 					ApplicationGitPath:        builder.ImportPath,
+					ImportRendererDisplay:     folderpaths.ImportRendererDisplay,
+					ImportRendererDOM:         folderpaths.ImportRendererDOM,
+					ImportRendererEvent:       folderpaths.ImportRendererEvent,
 					ImportRendererLPC:         folderpaths.ImportRendererLPC,
-					ImportRendererNotJS:       folderpaths.ImportRendererNotJS,
+					ImportRendererMarkup:      folderpaths.ImportRendererMarkup,
 					ImportRendererViewTools:   folderpaths.ImportRendererViewTools,
 					ImportRendererPaneling:    folderpaths.ImportRendererPaneling,
 					ImportDomainDataLogLevels: folderpaths.ImportDomainDataLogLevels,

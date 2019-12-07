@@ -31,18 +31,6 @@ body {
   border-color:rgb(88, 65, 1);
 }
 
-#closerMasterView
-{
-  background: hsla(44, 100%, 19%, 0.8);
-  border-color:black;
-}
-
-#closerMasterView-center
-{
-  background-color:hsla(44, 100%, 40%, 0.8);
-  border-color:rgb(88, 65, 1);
-}
-
 /******************************************************************************
 
     panels
@@ -86,7 +74,7 @@ div.tab-bar > button.selected-tab
 
 ******************************************************************************/
 
-#tabsMasterView-home-pad
+#mainMasterView-home-pad
 {
   border-color:black;
 }
@@ -97,7 +85,7 @@ div.tab-bar > button.selected-tab
 
 ******************************************************************************/
 
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad
+#mainMasterView-home-slider-collection > .slider-panel > .slider-panel-pad
 {
   color:white;
 }
@@ -110,7 +98,7 @@ div.tab-bar > button.selected-tab
 
 /* color level 0 if for the home button pad */
 
-#tabsMasterView > h1.heading-of-panel
+#mainMasterView > h1.heading-of-panel
 {
   color: black;
 }
@@ -136,14 +124,14 @@ div.pad-color-level-0
 
 /* color level PushButton */
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-PushButton
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-PushButton
 {
   background-color:hsl(50, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-PushButton
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-PushButton
 {
   color: hsl(50, 23%, 27%);
 }
@@ -235,36 +223,6 @@ button.pad-button-color-level-PushButton:hover
 .modal-user-content,
 .modal-user-content th,
 .modal-user-content td
-{
-  background: white;
-  color:black;
-}
-
-/******************************************************************************
-
-  closer user content
-
-******************************************************************************/
-
-.closer-user-content a {color:black;}
-.closer-user-content a:hover{color:black;}
-.closer-user-content a:visited{color:black;}
-
-.closer-user-content button
-{
-  border-color:black;
-  color:black;
-  background: white;
-}
-.closer-user-content button:hover
-{
-  background: white;
-  color:black;
-}
-
-.closer-user-content,
-.closer-user-content th,
-.closer-user-content td
 {
   background: white;
   color:black;

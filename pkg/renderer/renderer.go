@@ -13,14 +13,14 @@ import (
 )
 
 const (
-	tabsMasterViewID = "tabsMasterView"
+	mainMasterViewID = "mainMasterView"
 	initialIndent    = uint(2)
 	favicon          = "favicon.ico"
 )
 
 // GetTabsMasterViewID returns the tabs master view id needed for most ids.
 func GetTabsMasterViewID() string {
-	return tabsMasterViewID
+	return mainMasterViewID
 }
 
 // GetInitialIndent returns the initial indentaion for the main html template.
@@ -47,16 +47,13 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 	if err = createMainGo(appPaths, builder); err != nil {
 		return
 	}
-	if err = createMainDoPanelsGo(appPaths, builder); err != nil {
+	if err = createFrameworkDoPanelsGo(appPaths, builder); err != nil {
 		return
 	}
 	if err = createWASMExecJS(appPaths); err != nil {
 		return
 	}
 	if err = createPaneling(appPaths); err != nil {
-		return
-	}
-	if err = createNotJS(appPaths); err != nil {
 		return
 	}
 	// Spawn Tabs.
@@ -81,6 +78,34 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 	}
 	// VSCode
 	if err = createVSCode(appPaths, appname); err != nil {
+		return
+	}
+	if err = createCallBack(appPaths, builder); err != nil {
+		return
+	}
+	if err = createDOM(appPaths, builder); err != nil {
+		return
+	}
+	// v 13
+	if err = createLocation(appPaths, builder); err != nil {
+		return
+	}
+	if err = createMarkup(appPaths, builder); err != nil {
+		return
+	}
+	if err = createWindow(appPaths); err != nil {
+		return
+	}
+	if err = creatEvent(appPaths); err != nil {
+		return
+	}
+	if err = createDisplay(appPaths, builder); err != nil {
+		return
+	}
+	if err = createProof(appPaths, builder); err != nil {
+		return
+	}
+	if err = createApplication(appPaths, builder); err != nil {
 		return
 	}
 

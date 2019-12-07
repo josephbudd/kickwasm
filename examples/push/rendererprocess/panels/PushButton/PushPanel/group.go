@@ -6,6 +6,9 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/viewtools"
 )
 
 /*
@@ -30,10 +33,12 @@ func (group *panelGroup) defineMembers() (err error) {
 		}
 	}()
 
-	if group.pushPanel = notJS.GetElementByID("tabsMasterView-home-pad-PushButton-PushPanel"); group.pushPanel == null {
-		err = errors.New("unable to find #tabsMasterView-home-pad-PushButton-PushPanel")
+    var panel *markup.Element
+ if panel = document.ElementByID("mainMasterView-home-pad-PushButton-PushPanel"); panel == nil {
+		err = errors.New("unable to find #mainMasterView-home-pad-PushButton-PushPanel")
 		return
-	}
+    }
+    group.pushPanel = panel.JSValue()
 
 	return
 }
@@ -45,7 +50,7 @@ func (group *panelGroup) defineMembers() (err error) {
 */
 
 // showPushPanel shows the panel you named PushPanel while hiding any other panels in this panel group.
-// This panel's id is tabsMasterView-home-pad-PushButton-PushPanel.
+// This panel's id is mainMasterView-home-pad-PushButton-PushPanel.
 // This panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
 // Param force boolean effects when this panel becomes visible.
 //  * if force is true then
@@ -56,5 +61,5 @@ func (group *panelGroup) defineMembers() (err error) {
 Display time pushed from the main process.
 */
 func (group *panelGroup) showPushPanel(force bool) {
-	tools.ShowPanelInButtonGroup(group.pushPanel, force)
+	viewtools.ShowPanelInButtonGroup(group.pushPanel, force)
 }

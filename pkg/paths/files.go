@@ -3,15 +3,12 @@ package paths
 // FileNames is the names of files.
 type FileNames struct {
 	AppDotWASM         string
-	AttributesDotGo    string
 	BuildDotSH         string
 	BuildPackDotSH     string
-	CallBackDotGo      string
 	ClassDotGo         string
 	ColorsDotCSS       string
 	CreateGetDotGo     string
 	DocumentDotGo      string
-	EventDotGo         string
 	ExampleDotTXT      string
 	ExampleGoDotTXT    string
 	EventsDotGo        string
@@ -19,6 +16,7 @@ type FileNames struct {
 	FilePathsDotGo     string
 	FlagDotYAML        string
 	FormsDotGo         string
+	GroupsDotGo        string
 	HeadDotTMPL        string
 	HelpersDotGo       string
 	HelpingDotGo       string
@@ -37,12 +35,12 @@ type FileNames struct {
 	MarkupDotGo        string
 	ModalDotGo         string
 	UserContentDotCSS  string
-	NotJSDotGo         string
 	PanelsDotGo        string
 	PanelMapDotGo      string
-	ParentChildDotGo   string
+	ChildParentDotGo   string
 	RecordsDotGo       string
-	ScrollDotGo        string
+	ResizeDotGo        string
+	ResizeSliderDotGo  string
 	ServeDotGo         string
 	SettingsDotGo      string
 	SizeDotGo          string
@@ -83,21 +81,43 @@ type FileNames struct {
 	// vscode
 	VSCodeMPWorkSpaceJSON string
 	VSCodeRPWorkSpaceJSON string
+
+	// v 13
+
+	AttributesDotGo string
+	CallBackDotGo   string
+	CheckedDotGo    string
+	DOMDotGo        string
+	ElementDotGo    string
+	EventDotGo      string
+	FocusBlurDotGo  string
+	HostPortDotGo   string
+	// LCDataDotGo
+	// MarkupDotGo
+	MiscDotGo        string
+	ScrollDotGo      string
+	TextHTMLDotGo    string
+	ValueDotGo       string
+	WindowDotGo      string
+	CloserDotGo      string
+	HideShowDotGo    string
+	IDDotGo          string
+	DisplayGo        string
+	PrintDotGo       string
+	ProofsDotGo      string
+	ApplicationDotGo string
 }
 
 // GetFileNames returns the file names.
 func GetFileNames() *FileNames {
 	return &FileNames{
 		AppDotWASM:         "app.wasm",
-		AttributesDotGo:    "attributes.go",
 		BuildDotSH:         "build.sh",
 		BuildPackDotSH:     "buildPack.sh",
-		CallBackDotGo:      "callback.go",
 		ClassDotGo:         "class.go",
 		ColorsDotCSS:       "colors.css",
 		CreateGetDotGo:     "createGet.go",
 		DocumentDotGo:      "document.go",
-		EventDotGo:         "event.go",
 		ExampleDotTXT:      "example.txt",
 		ExampleGoDotTXT:    "exampleGo.txt",
 		EventsDotGo:        "events.go",
@@ -105,6 +125,7 @@ func GetFileNames() *FileNames {
 		FilePathsDotGo:     "filepaths.go",
 		FlagDotYAML:        "flags.yaml",
 		FormsDotGo:         "forms.go",
+		GroupsDotGo:        "groups.go",
 		HeadDotTMPL:        "Head.tmpl",
 		HelpersDotGo:       "helpers.go",
 		HelpingDotGo:       "Helping.go",
@@ -123,12 +144,11 @@ func GetFileNames() *FileNames {
 		MarkupDotGo:        "markup.go",
 		ModalDotGo:         "modal.go",
 		UserContentDotCSS:  "Usercontent.css",
-		NotJSDotGo:         "notJS.go",
 		PanelsDotGo:        "panels.go",
 		PanelMapDotGo:      "panelMap.go",
-		ParentChildDotGo:   "parentChild.go",
 		RecordsDotGo:       "Records.go",
-		ScrollDotGo:        "scroll.go",
+		ResizeDotGo:        "resize.go",
+		ResizeSliderDotGo:  "resizeSlider.go",
 		ServeDotGo:         "Serve.go",
 		SettingsDotGo:      "settings.go",
 		SizeDotGo:          "size.go",
@@ -169,5 +189,30 @@ func GetFileNames() *FileNames {
 		// vscode
 		VSCodeMPWorkSpaceJSON: "mainprocess.code-workspace",
 		VSCodeRPWorkSpaceJSON: "rendererprocess.code-workspace",
+
+		// v 13
+		AttributesDotGo:  "attributes.go",
+		CallBackDotGo:    "callback.go",
+		CheckedDotGo:     "checked.go",
+		ChildParentDotGo: "childParent.go",
+		DOMDotGo:         "dom.go",
+		ElementDotGo:     "element.go",
+		EventDotGo:       "event.go",
+		FocusBlurDotGo:   "focusblur.go",
+		HostPortDotGo:    "hostport.go",
+		// LCDataDotGo:
+		// MarkupDotGo:
+		MiscDotGo:        "misc.go",
+		ScrollDotGo:      "scroll.go",
+		TextHTMLDotGo:    "texthtml.go",
+		ValueDotGo:       "value.go",
+		WindowDotGo:      "window.go",
+		CloserDotGo:      "closer.go",
+		HideShowDotGo:    "hideshow.go",
+		IDDotGo:          "id.go",
+		DisplayGo:        "display.go",
+		PrintDotGo:       "print.go",
+		ProofsDotGo:      "proofs.go",
+		ApplicationDotGo: "Application.go",
 	}
 }

@@ -6,12 +6,8 @@ const SpawnTabPanelData = `{{$Dot := .}}// +build js, wasm
 package {{call .PackageNameCase .PanelName}}
 
 import (
-	"syscall/js"
-
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -33,16 +29,7 @@ var (
 	// sendCh sends messages to the main process.
 	sendCh lpc.Sending
 
-	// The framework's renderer API.
-	tools *viewtools.Tools
-
-	// Some javascipt like dom functions written in go.
-	notJS *notjs.NotJS
-
 	// Your customized paneling.Help for initializing your panels.
 	help *paneling.Help
-
-	// The javascript null value.
-	null = js.Null()
 )
 `

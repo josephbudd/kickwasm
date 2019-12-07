@@ -6,9 +6,8 @@ const SpawnTabPanelPanel = `{{$Dot := .}}// +build js, wasm
 package {{call .PackageNameCase .PanelName}}
 
 import (
-	"syscall/js"
-
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
 )
 
 /*
@@ -20,7 +19,7 @@ import (
 // spawnedPanel has a controller, presenter and messenger.
 type spawnedPanel struct {
 	uniqueID    uint64
-	tabButton   js.Value
+	tabButton   *markup.Element
 	panelNameID map[string]string
 	controller  *panelController
 	presenter   *panelPresenter
@@ -29,21 +28,24 @@ type spawnedPanel struct {
 }
 
 // newPanel constructs a new panel.
-func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, panelNameID map[string]string, spawnData interface{}, unspawn func() error) (panel *spawnedPanel) {
+func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelNameID map[string]string, spawnData interface{}, unspawn func() error) (panel *spawnedPanel) {
 
+	document := dom.NewDOM(uniqueID)
 	group := &panelGroup{
 		uniqueID:    uniqueID,
+		document:    document,
 		panelNameID: panelNameID,
 	}
 	controller := &panelController{
 		group:    group,
 		uniqueID: uniqueID,
+		document: document,
 		unspawn:  unspawn,
-		eventCh:  make(chan viewtools.Event, 1024),
 	}
 	presenter := &panelPresenter{
 		group:          group,
 		uniqueID:       uniqueID,
+		document:       document,
 		tabButton:      tabButton,
 		tabPanelHeader: tabPanelHeader,
 	}
@@ -83,7 +85,7 @@ func newPanel(uniqueID uint64, tabButton js.Value, tabPanelHeader js.Value, pane
 	// * Below is how I could use the *spawndata.JoinedChatRoomSpawnData here
 	//     in this constructor as I build this panel package.
 	
-	// import "{{.ApplicationGitPath}}{{.ImportRenderer}}/spawndata"
+	import "{{.ApplicationGitPath}}{{.ImportRenderer}}/spawndata"
 
 	switch spawnData := spawnData.(type) {
 	case *spawndata.JoinedChatRoomSpawnData:

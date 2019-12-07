@@ -37,24 +37,14 @@ EDIT ./rekickwasm/edit/flags.yaml TO MAKE ANOTHER CHANGE
   * Edit flagcc if you want to toggle your previous cookie crumbs flag to "true" or "false".
 
 REFACTOR: "rekickwasm -R"
-  * Builds new refactored code in ./rekickwasm/.refactored/
+  * Refactors your source code.
   * Allows you to continue editing the yaml files in ./rekickwasm/edit/ and then make those changes with "rekickwasm -R".
-
-IMPORT THE CHANGES INTO YOUR APPLICATIONS SOURCE CODE: "rekickwasm -I"
-  * Imports the new refactored source code.
-  * Allows you to continue editing the yaml files in ./rekickwasm/edit/ and then make those changes with "rekickwasm -R".
-
-( "rekickwasm -RI" will refactor and import )
 
 REBUILD THE RENDERER AND RUN YOUR APPLICATION:
 
 ============================================================
 
-  cd ./renderer
-  ./build.sh
-  cd ..
-  go build
-  ./myapp
+  $ kickbuild -rp -mp -run
 
 ============================================================
 
@@ -167,12 +157,6 @@ You should "rekickwasm -u" to restore your source code.
 
 	// SuccessRefactor is a message that states that the edited yaml file was successfully built and merged with a copy of the original source code.
 	SuccessRefactor = `Refactor: Success!`
-	// 	SuccessRefactor = `Refactor: Success!
-
-	// The new refactored copy of your source code is at ./rekickwasm/.refactored/.
-	// No changes have been made to your application.
-
-	// `
 
 	// ErrorRefactorFormat is a message format that states the error while refactoring.
 	ErrorRefactorFormat = `Refactor: Oops!

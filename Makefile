@@ -12,6 +12,10 @@ test:
 	go test ./tools/kickpack/
 	go test ./tools/rekickwasm/refactor/
 
+prove:
+	go build -o ./proofs/proofs ./proofs/main.go
+	go run ./proofs/main.go
+
 dependencies:
 	go get github.com/boltdb/bolt/...
 	go get gopkg.in/yaml.v2

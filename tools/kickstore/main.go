@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/pkg/slurp"
@@ -13,10 +14,10 @@ import (
 
 const (
 	applicationName        = "kickstore"
-	versionBreaking        = 12 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 13 // Kicwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
-	minumunKickwasmVersion = 12 // Minumum kickwasm version.
+	minumunKickwasmVersion = 13 // Minumum kickwasm version.
 )
 
 // VersionFlag means show the version.
@@ -44,6 +45,14 @@ var AddRemoteRecordFlag string
 var DelRemoteRecordFlag string
 
 func main() {
+
+	var err error
+	defer func() {
+		if err != nil {
+			os.Exit(1)
+		}
+	}()
+
 	// initialize the flags
 	flag.BoolVar(&ListFlag, "l", false, "Lists the current stores")
 	flag.StringVar(&AddFlag, "add", "", `names the local bolt store to add`)
@@ -66,7 +75,6 @@ func main() {
 		return
 	}
 	// The user must be running this from inside the framework source code.
-	var err error
 	var rootFolderPath string
 	if rootFolderPath, err = common.FindRoot(); err != nil {
 		help()
@@ -77,11 +85,13 @@ func main() {
 	if common.HaveRekickwasmFolder(rootFolderPath) {
 		common.PrintRekickwasmError(applicationName)
 		help()
+		err = common.ErrRekickwasmExists
 		return
 	}
 	// This framework must have been built with a recent version of kickwasm.
 	if kwversion := common.AppKickwasmVersion(); kwversion < minumunKickwasmVersion {
 		common.PrintWrongVersion(applicationName, kwversion, minumunKickwasmVersion)
+		err = common.ErrWrongVersion
 		return
 	}
 	var appInfo *slurp.ApplicationInfo

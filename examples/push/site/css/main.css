@@ -33,7 +33,7 @@ body {
 
 ******************************************************************************/
 
-#tabsMasterView
+#mainMasterView
 {
   height:inherit;
   overflow:hidden;
@@ -73,33 +73,14 @@ body {
   overflow-y: auto;
 }
 
-#closerMasterView
+#blackMasterView
 {
   position: relative;
   z-index:2;
   top:0px;
   left:0px;
   position:absolute;
-  border-width:1px;
-  border-style:solid;
-  border-radius: 20px;
-  padding:50px;
-}
-
-#closerMasterView-center
-{
-  position:relative;
-  border-width:1px;
-  border-style:solid;
-  border-radius: 20px;
-  padding:10px;
-}
-
-#closerMasterView-center > h2
-{
-  margin-top:0;
-  margin-bottom:5px;
-  font-size:36px;
+  background-color: black;
 }
 
 /******************************************************************************
@@ -130,7 +111,7 @@ div.panel-bound-to-tab
 
 div.inner-panel
 {
-  overflow-y:auto;
+  /* overflow-y:auto; */
   padding-left:20px;
 }
 
@@ -182,7 +163,7 @@ div.under-tab-bar .heading-of-panel
 
 ******************************************************************************/
 
-#tabsMasterView > h1.heading-of-panel
+#mainMasterView > h1.heading-of-panel
 {
   margin-top:0;
   margin-bottom:5px;
@@ -195,7 +176,7 @@ div.under-tab-bar .heading-of-panel
 
 ******************************************************************************/
 
-#tabsMasterView-home-pad
+#mainMasterView-home-pad
 {
   overflow-y:auto;
   border-radius: 20px;
@@ -203,7 +184,7 @@ div.under-tab-bar .heading-of-panel
   border-style:solid;
 }
 
-#tabsMasterView-home-pad > button
+#mainMasterView-home-pad > button
 {
   height:200px;
   width:300px;
@@ -216,7 +197,7 @@ div.under-tab-bar .heading-of-panel
   border-style:solid;
   cursor:pointer;
 }
-#tabsMasterView-home-pad > button:focus { outline: none; }
+#mainMasterView-home-pad > button:focus { outline: none; }
 
 /******************************************************************************
 
@@ -224,12 +205,12 @@ div.under-tab-bar .heading-of-panel
 
 ******************************************************************************/
 
-#tabsMasterView-home-slider
+#mainMasterView-home-slider
 {
   float:left;
 }
 
-#tabsMasterView-home-slider-back
+#mainMasterView-home-slider-back
 {
   width:50px;
   float: left;
@@ -241,25 +222,25 @@ div.under-tab-bar .heading-of-panel
   font-weight:bold;
   cursor:pointer;
 }
-#tabsMasterView-home-slider-back:focus { outline: none; }
+#mainMasterView-home-slider-back:focus { outline: none; }
 
-#tabsMasterView-home-slider
+#mainMasterView-home-slider
 {
   float: left;
 }
 
-#tabsMasterView-home-slider-collection
+#mainMasterView-home-slider-collection
 {
   float:right;
 }
 
 /*
-#tabsMasterView-home-slider-collection > .slider-panel
+#mainMasterView-home-slider-collection > .slider-panel
 {
 }
 */
 
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad
+#mainMasterView-home-slider-collection > .slider-panel > .slider-panel-pad
 {
   overflow:hidden;
   /* top and bottom padding for scroll bars */
@@ -270,7 +251,7 @@ div.under-tab-bar .heading-of-panel
   border-radius: 20px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad
+#mainMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad
 {
   overflow-x:hidden;
   overflow-y:auto;
@@ -279,7 +260,7 @@ div.under-tab-bar .heading-of-panel
   word-spacing: 4px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad > button
+#mainMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad > button
 {
   height:150px;
   width:225px;
@@ -291,23 +272,23 @@ div.under-tab-bar .heading-of-panel
   border-style:solid;
   border-radius: 15px;
 }
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad > button:focus { outline: none; }
+#mainMasterView-home-slider-collection > .slider-panel > .slider-panel-pad > .slider-button-pad > button:focus { outline: none; }
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel
 {
   margin-top:0;
   margin-bottom:0px;
   font-size:34px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel
 {
   margin-bottom:10px;
 }
 
 /* cookie crumbs */
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-PushButton
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-PushButton
 {
   font-size:24px;
   display:inline;

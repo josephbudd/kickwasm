@@ -8,91 +8,104 @@ package viewtools
 import (
 	"fmt"
 	"syscall/js"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
 )
 
 // Back simulates a click on the tall back button at the left of slider panels.
-func (tools *Tools) Back() {
-	if !tools.HandleButtonClick() {
+// TODO: fix this because wrong use of slice.
+func Back() {
+	if !HandleButtonClick() {
 		return
 	}
-	l := len(tools.backStack) - 1
-	backdiv := tools.backStack[l]
-	tools.backStack = tools.backStack[:l]
-	tools.HideShow(tools.here, backdiv)
+	l := len(backStack) - 1
+	backdiv := backStack[l]
+	backStack = backStack[:l]
+	HideShow(here, backdiv)
 }
 
-func (tools *Tools) showSlider() {
-	tools.ElementShow(tools.tabsMasterviewHomeSlider)
+func showSlider() {
+	ElementShow(tabsMasterviewHomeSlider)
 }
 
-func (tools *Tools) hideSlider() {
-	tools.ElementHide(tools.tabsMasterviewHomeSlider)
+func hideSlider() {
+	ElementHide(tabsMasterviewHomeSlider)
 }
 
-func (tools *Tools) initializeSlider() {
-	notJS := tools.NotJS
-	divs := notJS.GetElementsByTagName("DIV")
-	for _, div := range divs {
-		if notJS.ClassListContains(div, SliderButtonPadClassName) {
-			children := notJS.ChildrenSlice(div)
-			for _, ch := range children {
-				if notJS.TagName(ch) == "BUTTON" {
-					tools.AddEventHandler(tools.handlePadButtonOnClick, ch, "click", false)
+func initializeSlider() {
+	divs := document.Call("getElementsByTagName", "DIV")
+	ldivs := divs.Length()
+	for i := 0; i < ldivs; i++ {
+		div := divs.Index(i)
+		classList := div.Get("classList")
+		if classList.Call("contains", SliderButtonPadClassName).Bool() {
+			children := div.Get("children")
+			lch := children.Length()
+			for j := 0; j < lch; j++ {
+				ch := children.Index(j)
+				tagname := ch.Get("tagName").String()
+				if tagname == "BUTTON" {
+					callback.AddEventHandler(handlePadButtonOnClick, ch, "click", false, 0)
 				}
 			}
-		} else if div == tools.tabsMasterviewHomeButtonPad {
-			children := notJS.ChildrenSlice(div)
-			for _, ch := range children {
-				if notJS.TagName(ch) == "BUTTON" {
-					tools.AddEventHandler(tools.handlePadButtonOnClick, ch, "click", false)
+		} else if div == tabsMasterviewHomeButtonPad {
+			children := div.Get("children")
+			lch := children.Length()
+			for j := 0; j < lch; j++ {
+				ch := children.Index(j)
+				tagname := ch.Get("tagName").String()
+				if tagname == "BUTTON" {
+					callback.AddEventHandler(handlePadButtonOnClick, ch, "click", false, 0)
 				}
 			}
 		}
 	}
-	f := func(e Event) (nilReturn interface{}) {
-		tools.handleBack(e.Target)
+	f := func(e event.Event) (nilReturn interface{}) {
+		handleBack(e.JSTarget)
 		return
 	}
-	tools.AddEventHandler(f, tools.tabsMasterviewHomeSliderBack, "click", false)
+	callback.AddEventHandler(f, tabsMasterviewHomeSliderBack, "click", false, 0)
 }
 
-func (tools *Tools) handlePadButtonOnClick(e Event) interface{} {
+func handlePadButtonOnClick(e event.Event) (nilReturn interface{}) {
 	// get back div
-	notJS := tools.NotJS
-	target := e.Target
+	target := e.JSTarget
 	backid := target.Call("getAttribute", BackIDAttribute).String()
-	backdiv := notJS.GetElementByID(backid)
+	backdiv := getElementByID(document, backid)
 	// get forward div
-	targetid := notJS.ID(target)
-	divs, found := tools.buttonPanelsMap[targetid]
+	targetid := target.Get("id").String()
+	divs, found := buttonPanelsMap[targetid]
 	if !found {
-		notJS.Alert(fmt.Sprintf("slider.controller.handlePadButtonOnClick: id %q not found in tools.buttonPanelsMap", targetid))
-		return nil
+		alert.Invoke(fmt.Sprintf("slider.controller.handlePadButtonOnClick: id %q not found in buttonPanelsMap", targetid))
+		return
 	}
 	for _, div := range divs {
-		if notJS.ClassListContains(div, ToBeSeenClassName) {
-			tools.here = div
-			tools.backStack = append(tools.backStack, backdiv)
-			tools.HideShow(backdiv, div)
-			return nil
+		classList := div.Get("classList")
+		if classList.Call("contains", ToBeSeenClassName).Bool() {
+			here = div
+			backStack = append(backStack, backdiv)
+			HideShow(backdiv, div)
+			return
 		}
 	}
-	notJS.Alert(fmt.Sprintf("slider.controller.handlePadButtonOnClick: tobe-seen not found with button %q", target.Get("innerText")))
-	return nil
+	alert.Invoke(fmt.Sprintf("slider.controller.handlePadButtonOnClick: tobe-seen not found with button %q", target.Get("innerText")))
+	return
 }
 
 // handleBack provides the behavior for the tall back button at the left of slider panels.
-func (tools *Tools) handleBack(event js.Value) interface{} {
-	tools.Back()
-	return nil
+func handleBack(event js.Value) (nilReturn interface{}) {
+	Back()
+	return
 }
 
 // hereIsVisible returns if the current slider panel is actually seen by the user.
-func (tools *Tools) hereIsVisible() bool {
-	if tools.here == js.Undefined() {
-		return false
+func hereIsVisible() (isVisible bool) {
+	if here == js.Undefined() {
+		return
 	}
-	p := tools.NotJS.ParentNode(tools.here)
-	return p == tools.tabsMasterviewHomeSliderCollection
+	p := here.Get("parentNode")
+	isVisible = (p == tabsMasterviewHomeSliderCollection)
+	return
 }
 `

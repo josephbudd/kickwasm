@@ -7,46 +7,63 @@ package viewtools
 
 import (
 	"fmt"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererWindow}}"
 )
 
-func (tools *Tools) initializeResize() {
-	f := func(e Event) (nilReturn interface{}) {
-		tools.SizeApp()
+func initializeResize() {
+	f := func(e event.Event) (nilReturn interface{}) {
+		SizeApp()
 		return
 	}
-	tools.AddEventHandler(f, tools.Global, "resize", false)
+	callback.AddEventHandler(f, global, "resize", false, 0)
 }
 
 // SizeApp resizes the app
-func (tools *Tools) SizeApp() {
+func SizeApp() {
+	extraHeight = 0.0
 	// begin with the height of the inside of the browser where the window is.
-	notJS := tools.NotJS
-	windowWidth := notJS.WindowInnerWidth()
-	windowHeight := notJS.WindowInnerHeight()
+	windowWidth := window.WindowInnerWidth()
+	windowHeight := window.WindowInnerHeight()
 	// and subtract body measurments
-	bodies := notJS.GetElementsByTagName("body")
-	body := bodies[0]
-	xh := notJS.HeightExtras(body)
-	xw := notJS.WidthExtras(body)
-	windowHeight -= xh
-	windowWidth -= xw
+	xh := window.HeightExtras(body)
+	xw := window.WidthExtras(body)
+	appWidth := windowWidth - xw
+	appHeight := windowHeight - xh
 	// size each master view
-	tools.sizeTabsMasterView(windowWidth, windowHeight)
-	tools.sizeModalMasterView(windowWidth, windowHeight)
-	tools.sizeCloserMasterView(windowWidth, windowHeight)
+	sizeTabsMasterView(appWidth, appHeight)
+	sizeModalMasterView(appWidth, appHeight)
+	sizeBlackMasterView(windowWidth, windowHeight)
 }
 
-func (tools *Tools) sizeTabsMasterView(w, h float64) {
+// overSizeApp resizes the app
+func overSizeApp() {
+	// begin with the height of the inside of the browser where the window is.
+	windowWidth := window.WindowInnerWidth()
+	windowHeight := window.WindowInnerHeight() + extraHeight
+	// and subtract body measurments
+	xw := window.WidthExtras(body)
+	xh := window.HeightExtras(body)
+	appWidth := windowWidth - xw
+	appHeight := windowHeight - xh
+	// size each master view
+	sizeTabsMasterView(appWidth, appHeight)
+	sizeModalMasterView(appWidth, appHeight)
+	sizeBlackMasterView(windowWidth, windowHeight)
+}
+
+func sizeTabsMasterView(w, h float64) {
 	// now set the masterview height
-	notJS := tools.NotJS
-	if tools.ElementIsShown(tools.tabsMasterview) {
+	if ElementIsShown(tabsMasterview) {
 		// tabs masterview is visible
 		// subtract extras before setting
-		h -= notJS.HeightExtras(tools.tabsMasterview)
-		w -= notJS.WidthExtras(tools.tabsMasterview)
+		h -= window.HeightExtras(tabsMasterview)
+		w -= window.WidthExtras(tabsMasterview)
 		// set master view height, width
-		notJS.SetStyleHeight(tools.tabsMasterview, h)
-		notJS.SetStyleWidth(tools.tabsMasterview, w)
+		window.SetStyleHeight(tabsMasterview, h)
+		window.SetStyleWidth(tabsMasterview, w)
 		// div #tabsMasterview children
 		// * H1
 		// * div #tabsMasterview-home
@@ -54,12 +71,15 @@ func (tools *Tools) sizeTabsMasterView(w, h float64) {
 		//
 		// Process h1
 		h1Ht := float64(0)
-		children := notJS.ChildrenSlice(tools.tabsMasterview)
-		for _, ch := range children {
-			if notJS.TagName(ch) == "H1" {
-				chwx := notJS.WidthExtras(ch)
-				notJS.SetStyleWidth(ch, w-chwx)
-				h1Ht = notJS.OuterHeight(ch)
+
+		children := tabsMasterview.Get("children")
+		l := children.Length()
+		for i := 0; i < l; i++ {
+			ch := children.Index(i)
+			if ch.Get("tagName").String() == "H1" {
+				chwx := window.WidthExtras(ch)
+				window.SetStyleWidth(ch, w-chwx)
+				h1Ht = window.OuterHeight(ch)
 				break
 			}
 		}
@@ -67,92 +87,105 @@ func (tools *Tools) sizeTabsMasterView(w, h float64) {
 		// home panel or slider is under the h1.
 		h -= h1Ht
 		// Process Home
-		if tools.ElementIsShown(tools.tabsMasterviewHome) {
+		if ElementIsShown(tabsMasterviewHome) {
 			// remove extra measurements
-			h -= notJS.HeightExtras(tools.tabsMasterviewHome)
-			w -= notJS.WidthExtras(tools.tabsMasterviewHome)
+			h -= window.HeightExtras(tabsMasterviewHome)
+			w -= window.WidthExtras(tabsMasterviewHome)
 			// set the inside height and width
-			notJS.SetStyleHeight(tools.tabsMasterviewHome, h)
-			notJS.SetStyleWidth(tools.tabsMasterviewHome, w)
+			window.SetStyleHeight(tabsMasterviewHome, h)
+			window.SetStyleWidth(tabsMasterviewHome, w)
 			// homepad is the button pad in home.
-			h -= notJS.HeightExtras(tools.tabsMasterviewHomeButtonPad)
-			w -= notJS.WidthExtras(tools.tabsMasterviewHomeButtonPad)
+			h -= window.HeightExtras(tabsMasterviewHomeButtonPad)
+			w -= window.WidthExtras(tabsMasterviewHomeButtonPad)
 			//h -= 100
-			notJS.SetStyleHeight(tools.tabsMasterviewHomeButtonPad, h)
-			notJS.SetStyleWidth(tools.tabsMasterviewHomeButtonPad, w)
+			window.SetStyleHeight(tabsMasterviewHomeButtonPad, h)
+			window.SetStyleWidth(tabsMasterviewHomeButtonPad, w)
 			return
 		}
 		// home is not visible check the slider
 		// Process Slider
-		if tools.ElementIsShown(tools.tabsMasterviewHomeSlider) {
+		if ElementIsShown(tabsMasterviewHomeSlider) {
 			// remove extra measurements
-			h -= notJS.HeightExtras(tools.tabsMasterviewHomeSlider)
-			w -= notJS.WidthExtras(tools.tabsMasterviewHomeSlider)
+			h -= window.HeightExtras(tabsMasterviewHomeSlider)
+			w -= window.WidthExtras(tabsMasterviewHomeSlider)
 			// set the inside height and width
-			notJS.SetStyleHeight(tools.tabsMasterviewHomeSlider, h)
-			notJS.SetStyleWidth(tools.tabsMasterviewHomeSlider, w)
+			window.SetStyleHeight(tabsMasterviewHomeSlider, h)
+			window.SetStyleWidth(tabsMasterviewHomeSlider, w)
 			// slider has a back button
-			backOuterWidth := notJS.OuterWidth(tools.tabsMasterviewHomeSliderBack)
+			backOuterWidth := window.OuterWidth(tabsMasterviewHomeSliderBack)
 			w -= backOuterWidth
 			// size slider collection
-			h -= notJS.HeightExtras(tools.tabsMasterviewHomeSliderCollection)
-			w -= notJS.WidthExtras(tools.tabsMasterviewHomeSliderCollection)
-			notJS.SetStyleHeight(tools.tabsMasterviewHomeSliderCollection, h)
-			notJS.SetStyleWidth(tools.tabsMasterviewHomeSliderCollection, w)
+			h -= window.HeightExtras(tabsMasterviewHomeSliderCollection)
+			w -= window.WidthExtras(tabsMasterviewHomeSliderCollection)
+			window.SetStyleHeight(tabsMasterviewHomeSliderCollection, h)
+			window.SetStyleWidth(tabsMasterviewHomeSliderCollection, w)
 			// slider collection children
-			children := notJS.ChildrenSlice(tools.tabsMasterviewHomeSliderCollection)
-			for _, ch := range children {
-				if notJS.TagName(ch) == "DIV" && notJS.ClassListContainsAnd(ch, SliderPanelClassName, SeenClassName) {
-					tools.sizeSliderPanel(ch, w, h)
-					break
+
+			children := tabsMasterviewHomeSliderCollection.Get("children")
+			l := children.Length()
+			for i := 0; i < l; i++ {
+				ch := children.Index(i)
+				if tagName := ch.Get("tagName").String(); tagName == "DIV" {
+					// Is this div a visible slider panel?
+					isvisibleSlider := false
+					classList := ch.Get("classList")
+					if isvisibleSlider = classList.Call("contains", SliderPanelClassName).Bool(); isvisibleSlider {
+						isvisibleSlider = classList.Call("contains", SeenClassName).Bool()
+					}
+					if isvisibleSlider {
+						sizeSliderPanel(ch, w, h)
+						break
+					}
 				}
 			}
 		}
 	}
 }
 
-func (tools *Tools) reSizeSliderBack(height, margintop float64) {
-	style := tools.tabsMasterviewHomeSliderBack.Get("style")
+func reSizeSliderBack(height, margintop float64) {
+	style := tabsMasterviewHomeSliderBack.Get("style")
 	style.Set("height", fmt.Sprintf("%fpx", height))
 	style.Set("margin-top", fmt.Sprintf("%fpx", margintop))
 }
 
-func (tools *Tools) sizeModalMasterView(w, h float64) {
+func sizeModalMasterView(w, h float64) {
 	// modal master view
-	if tools.ElementIsShown(tools.modalMasterView) {
-		notJS := tools.NotJS
+	if ElementIsShown(modalMasterView) {
 		// modal view is visible
-		w -= notJS.WidthExtras(tools.modalMasterView)
-		h -= notJS.HeightExtras(tools.modalMasterView)
-		notJS.SetStyleWidth(tools.modalMasterView, w)
-		notJS.SetStyleHeight(tools.modalMasterView, h)
+		w -= window.WidthExtras(modalMasterView)
+		h -= window.HeightExtras(modalMasterView)
+		window.SetStyleWidth(modalMasterView, w)
+		window.SetStyleHeight(modalMasterView, h)
 		// the center div
-		w -= notJS.WidthExtras(tools.modalMasterViewCenter)
-		h -= notJS.HeightExtras(tools.modalMasterViewCenter)
-		notJS.SetStyleWidth(tools.modalMasterViewCenter, w)
-		notJS.SetStyleHeight(tools.modalMasterViewCenter, h)
+		w -= window.WidthExtras(modalMasterViewCenter)
+		h -= window.HeightExtras(modalMasterViewCenter)
+		window.SetStyleWidth(modalMasterViewCenter, w)
+		window.SetStyleHeight(modalMasterViewCenter, h)
 		// subtract ht of h1 and p > button
-		children := notJS.ChildrenSlice(tools.modalMasterViewCenter)
-		for _, ch := range children {
-			tagName := notJS.TagName(ch)
+		children := modalMasterViewCenter.Get("children")
+		l := children.Length()
+		for i := 0; i < l; i++ {
+			ch := children.Index(i)
+			tagName := ch.Get("tagName").String()
 			if tagName == "H1" || tagName == "P" {
-				chwx := notJS.WidthExtras(ch)
-				notJS.SetStyleWidth(ch, w-chwx)
-				oh := notJS.OuterHeight(ch)
+				chwx := window.WidthExtras(ch)
+				window.SetStyleWidth(ch, w-chwx)
+				oh := window.OuterHeight(ch)
 				h -= oh
 			}
 		}
 		// message
-		w -= notJS.WidthExtras(tools.modalMasterViewMessage)
-		h -= notJS.HeightExtras(tools.modalMasterViewMessage)
-		notJS.SetStyleWidth(tools.modalMasterViewMessage, w)
-		notJS.SetStyleHeight(tools.modalMasterViewMessage, h)
+		w -= window.WidthExtras(modalMasterViewMessage)
+		h -= window.HeightExtras(modalMasterViewMessage)
+		window.SetStyleWidth(modalMasterViewMessage, w)
+		window.SetStyleHeight(modalMasterViewMessage, h)
 	}
 }
 
-func (tools *Tools) sizeCloserMasterView(w, h float64) {
-	if tools.ElementIsShown(tools.closerMasterView) {
-		tools.NotJS.SetStyleHeight(tools.closerMasterView, h)
+func sizeBlackMasterView(w, h float64) {
+	if ElementIsShown(blackMasterView) {
+		window.SetStyleWidth(blackMasterView, w)
+		window.SetStyleHeight(blackMasterView, h)
 	}
 }
 `

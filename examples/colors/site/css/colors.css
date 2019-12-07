@@ -31,18 +31,6 @@ body {
   border-color:rgb(88, 65, 1);
 }
 
-#closerMasterView
-{
-  background: hsla(44, 100%, 19%, 0.8);
-  border-color:black;
-}
-
-#closerMasterView-center
-{
-  background-color:hsla(44, 100%, 40%, 0.8);
-  border-color:rgb(88, 65, 1);
-}
-
 /******************************************************************************
 
     panels
@@ -86,7 +74,7 @@ div.tab-bar > button.selected-tab
 
 ******************************************************************************/
 
-#tabsMasterView-home-pad
+#mainMasterView-home-pad
 {
   border-color:black;
 }
@@ -97,7 +85,7 @@ div.tab-bar > button.selected-tab
 
 ******************************************************************************/
 
-#tabsMasterView-home-slider-collection > .slider-panel > .slider-panel-pad
+#mainMasterView-home-slider-collection > .slider-panel > .slider-panel-pad
 {
   color:white;
 }
@@ -110,7 +98,7 @@ div.tab-bar > button.selected-tab
 
 /* color level 0 if for the home button pad */
 
-#tabsMasterView > h1.heading-of-panel
+#mainMasterView > h1.heading-of-panel
 {
   color: black;
 }
@@ -136,14 +124,14 @@ div.pad-color-level-0
 
 /* color level Action1Button */
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action1Button
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action1Button
 {
   background-color:hsl(50, 23%, 27%);
   color:white;
   padding:5px;
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action1Button
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action1Button
 {
   color: hsl(50, 23%, 27%);
 }
@@ -182,12 +170,12 @@ button.pad-button-color-level-Action1Button:hover
 
 /* color level Action2Button */
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action2Button
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action2Button
 {
   color: hsl(70, 23%, 27%);
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action2Button
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action2Button
 {
   background-color: hsl(70, 23%, 27%);
   color:white;
@@ -229,12 +217,12 @@ button.pad-button-color-level-Action2Button:hover
 
 /* color level Action3Button */
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action3Button
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action3Button
 {
   color: hsl(150, 23%, 27%);
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action3Button
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action3Button
 {
   background-color: hsl(150, 23%, 27%);
   color:white;
@@ -276,12 +264,12 @@ button.pad-button-color-level-Action3Button:hover
 
 /* color level Action4Button */
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action4Button
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action4Button
 {
   color: hsl(200, 23%, 27%);
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action4Button
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action4Button
 {
   background-color: hsl(200, 23%, 27%);
   color:white;
@@ -323,12 +311,12 @@ button.pad-button-color-level-Action4Button:hover
 
 /* color level Action5Button */
 
-#tabsMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action5Button
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-Action5Button
 {
   color: hsl(250, 23%, 27%);
 }
 
-#tabsMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action5Button
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-Action5Button
 {
   background-color: hsl(250, 23%, 27%);
   color:white;
@@ -423,36 +411,6 @@ button.pad-button-color-level-Action5Button:hover
 .modal-user-content,
 .modal-user-content th,
 .modal-user-content td
-{
-  background: white;
-  color:black;
-}
-
-/******************************************************************************
-
-  closer user content
-
-******************************************************************************/
-
-.closer-user-content a {color:black;}
-.closer-user-content a:hover{color:black;}
-.closer-user-content a:visited{color:black;}
-
-.closer-user-content button
-{
-  border-color:black;
-  color:black;
-  background: white;
-}
-.closer-user-content button:hover
-{
-  background: white;
-  color:black;
-}
-
-.closer-user-content,
-.closer-user-content th,
-.closer-user-content td
 {
   background: white;
   color:black;

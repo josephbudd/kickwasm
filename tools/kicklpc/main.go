@@ -13,10 +13,10 @@ import (
 
 const (
 	applicationName        = "kicklpc"
-	versionBreaking        = 12 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 13 // Kicwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
-	minumunKickwasmVersion = 12 // Minumum kickwasm version.
+	minumunKickwasmVersion = 13 // Minumum kickwasm version.
 )
 
 // VersionFlag means show the version.
@@ -58,11 +58,13 @@ func main() {
 	if common.HaveRekickwasmFolder(rootFolderPath) {
 		common.PrintRekickwasmError(applicationName)
 		help()
+		err = common.ErrRekickwasmExists
 		return
 	}
 	// This framework must have been built with a recent version of kickwasm.
 	if kwversion := common.AppKickwasmVersion(); kwversion < minumunKickwasmVersion {
 		common.PrintWrongVersion(applicationName, kwversion, minumunKickwasmVersion)
+		err = common.ErrWrongVersion
 		return
 	}
 	// The user has provided flags for using kicklpc.

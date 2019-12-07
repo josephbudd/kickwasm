@@ -3,7 +3,6 @@ package lpc
 import (
 	"encoding/json"
 	"fmt"
-	"sync"
 
 	"github.com/pkg/errors"
 
@@ -17,46 +16,20 @@ type Sending chan interface{}
 // Receiving is a channel that receives from the renderer.
 type Receiving chan interface{}
 
-// EOJer signals lpc go process to quit.
-type EOJer interface {
-	Signal()
-	NewEOJ() (ch chan struct{})
-	Release()
-}
-
-// EOJing is has a channel with a dynami size.
-// The channel signals go routines to stop.
-// EOJing implements EOJer.
-type EOJing struct {
-	ch    chan struct{}
-	count int
-	signaled    bool
-	countMutex  *sync.Mutex
-	signalMutex *sync.Mutex
-}
-
 var (
 	send    Sending
 	receive Receiving
-	eoj     EOJer
 )
 
 func init() {
 	send = make(chan interface{}, 1024)
 	receive = make(chan interface{})
-	eoj = &EOJing{
-		ch:    make(chan struct{}, 1024),
-		count: 0,
-		countMutex:  &sync.Mutex{},
-		signalMutex: &sync.Mutex{},
-	}
 }
 
 // Channels returns the renderer connection channels.
-func Channels() (sendChan Sending, receiveChan Receiving, eojChan EOJer) {
+func Channels() (sendChan Sending, receiveChan Receiving) {
 	sendChan = send
 	receiveChan = receive
-	eojChan = eoj
 	return
 }
 
@@ -82,7 +55,7 @@ func (sending Sending) Payload(msg interface{}) (payload []byte, err error) {
 			return
 		}
 		id = 1
-case *message.TimeMainProcessToRenderer:
+	case *message.TimeMainProcessToRenderer:
 		if bb, err = json.Marshal(msg); err != nil {
 			return
 		}
@@ -136,36 +109,4 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 		err = errors.New(errMsg)
 	}
 	return
-}
-
-// Signal sends on the eoj channel signaling lpc go funcs to quit.
-func (eoj *EOJing) Signal() {
-	eoj.signalMutex.Lock()
-	if !eoj.signaled {
-		eoj.signaled = true
-		end := struct{}{}
-		for i := 0; i < eoj.count; i++ {
-			eoj.ch <- end
-		}
-	}
-	eoj.signalMutex.Unlock()
-}
-
-// NewEOJ returns a new eoj channel and increments the usage count.
-func (eoj *EOJing) NewEOJ() (ch chan struct{}) {
-	eoj.countMutex.Lock()
-	eoj.count++
-	ch = eoj.ch
-	eoj.countMutex.Unlock()
-	return
-}
-
-// Release decrements the usage count.
-// Call this at the end of your lpc handler func.
-func (eoj *EOJing) Release() {
-	eoj.countMutex.Lock()
-	if eoj.count > 0 {
-		eoj.count--
-	}
-	eoj.countMutex.Unlock()
 }

@@ -8,7 +8,7 @@ package viewtools
 import (
 	"syscall/js"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
 )
 
 /*
@@ -67,8 +67,13 @@ const (
 	BackColorLevelAttribute = "{{.Attributes.BackColorLevel}}"
 )
 
-// Tools are application view tools.
-type Tools struct {
+var (
+	document  js.Value
+	global    js.Value
+	alert     js.Value
+	undefined js.Value
+	null      js.Value
+
 	body                               js.Value
 	tabsMasterview                     js.Value
 	tabsMasterviewHome                 js.Value
@@ -77,29 +82,22 @@ type Tools struct {
 	tabsMasterviewHomeSliderBack       js.Value
 	tabsMasterviewHomeSliderCollection js.Value
 
-	Document js.Value
-	Global   js.Value
-
-	// closer
-	closerMasterView js.Value
-	lastMasterView   js.Value
 	// modal
 	modalMasterView        js.Value
 	modalMasterViewCenter  js.Value
 	modalMasterViewH1      js.Value
 	modalMasterViewMessage js.Value
 	modalMasterViewClose   js.Value
-	modalQueue             []*modalViewData
-	modalQueueLastIndex    int
+	modalQueue = make([]*modalViewData, 5, 5)
+	modalQueueLastIndex    = -1
 	beingModal             bool
 	modalCallBack          func()
-	// misc
-	alert   js.Value
-	console js.Value
+	// black
+	blackMasterView js.Value
 	// groups
-	buttonPanelsMap map[string][]js.Value
+	buttonPanelsMap = make(map[string][]js.Value, 100)
 	// slider
-	here      js.Value
+	here =  js.Undefined()
 	backStack []js.Value
 	// tabber
 	tabberLastPanelID     string
@@ -109,11 +107,6 @@ type Tools struct {
 	buttonsLockedMessageTitle string
 	buttonsLockedMessageText  string
 
-	// call backs
-	jsCallBacks map[uint64][]js.Func
-
-	NotJS *notjs.NotJS
-
 	// spawns
 
 	spawnID               uint64
@@ -121,67 +114,67 @@ type Tools struct {
 
 	// user content
 
-	panelNameHVScroll map[string]bool
+	panelNameHVScroll = {{.PanelNameHVScroll}}
 
 	// markup panels
 
-	countMarkupPanels        int
+	countMarkupPanels = {{.NumberOfMarkupPanels}}
 	countSpawnedMarkupPanels int
 	countWidgetsWaiting      int
 
 	// spawned widgets
 
-	spawnedWidgets map[uint64]spawnedWidgetInfo
+	spawnedWidgets = make(map[uint64]spawnedWidgetInfo, 100)
+
+	// printing
+
+	extraHeight   float64
+	documentTitle string
+	printTitle    string
+)
+
+func getElementByID(document js.Value, id string) (e js.Value) {
+	e = document.Call("getElementById", id)
+	return
 }
 
-// NewTools constructs a new Tools
-func NewTools(notJS *notjs.NotJS) *Tools {
-	g := js.Global()
-	v := &Tools{
-		Document:              g.Get("document"),
-		Global:                g,
-		NotJS:                 notJS,
-		SpawnIDReplacePattern: spawnIDReplacePattern,
+func init() {
+	global = js.Global()
+	document = global.Get("document")
+	alert = global.Get("alert")
+	undefined = js.Undefined()
+	null = js.Null()
 
-		buttonPanelsMap: make(map[string][]js.Value, 100),
-		here:            js.Undefined(),
-		alert:           g.Get("alert"),
-		console:         g.Get("console"),
-		jsCallBacks:     make(map[uint64][]js.Func, 100),
+	documentTitle = document.Get("title").String()
+	printTitle = documentTitle
 
-		panelNameHVScroll: {{.PanelNameHVScroll}},
-
-		countMarkupPanels: {{.NumberOfMarkupPanels}},
-
-		spawnedWidgets: make(map[uint64]spawnedWidgetInfo, 100),
-	}
-	bodies := notJS.GetElementsByTagName("body")
-	v.body = bodies[0]
-	v.tabsMasterview = notJS.GetElementByID(MasterID)
-	v.tabsMasterviewHome = notJS.GetElementByID(HomeID)
-	v.tabsMasterviewHomeButtonPad = notJS.GetElementByID(HomePadID)
-	v.tabsMasterviewHomeSlider = notJS.GetElementByID(SliderID)
-	v.tabsMasterviewHomeSliderBack = notJS.GetElementByID(SliderBackID)
-	v.tabsMasterviewHomeSliderCollection = notJS.GetElementByID(SliderCollectionID)
-	// closer
-	v.closerMasterView = notJS.GetElementByID("closerMasterView")
+	SpawnIDReplacePattern = spawnIDReplacePattern
+	bodies := document.Call("getElementsByTagName", "BODY")
+	body = bodies.Index(0)
+	tabsMasterview = getElementByID(document, MasterID)
+	tabsMasterviewHome = getElementByID(document, HomeID)
+	tabsMasterviewHomeButtonPad = getElementByID(document, HomePadID)
+	tabsMasterviewHomeSlider = getElementByID(document, SliderID)
+	tabsMasterviewHomeSliderBack = getElementByID(document, SliderBackID)
+	tabsMasterviewHomeSliderCollection = getElementByID(document, SliderCollectionID)
 	// modal
-	v.modalMasterView = notJS.GetElementByID("modalInformationMasterView")
-	v.modalMasterViewCenter = notJS.GetElementByID("modalInformationMasterView-center")
-	v.modalMasterViewH1 = notJS.GetElementByID("modalInformationMasterView-h1")
-	v.modalMasterViewMessage = notJS.GetElementByID("modalInformationMasterView-message")
-	v.modalMasterViewClose = notJS.GetElementByID("modalInformationMasterView-close")
-	v.modalQueue = make([]*modalViewData, 5, 5)
-	v.modalQueueLastIndex = -1
-	v.AddEventHandler(v.handleModalMasterViewClose, v.modalMasterViewClose, "click", false)
+	modalMasterView = getElementByID(document, "modalInformationMasterView")
+	modalMasterViewCenter = getElementByID(document, "modalInformationMasterView-center")
+	modalMasterViewH1 = getElementByID(document, "modalInformationMasterView-h1")
+	modalMasterViewMessage = getElementByID(document, "modalInformationMasterView-message")
+	modalMasterViewClose = getElementByID(document, "modalInformationMasterView-close")
+	modalQueue = make([]*modalViewData, 5, 5)
+	modalQueueLastIndex = -1
+	callback.AddEventHandler(handleModalMasterViewClose, modalMasterViewClose, "click", false, 0)
+	// black
+	blackMasterView = getElementByID(document, "blackMasterView")
+	// Setup printing markup panels.
+	callback.AddEventHandler(beforePrint, global, "beforeprint", false, 0)
+	callback.AddEventHandler(afterPrint, global, "afterprint", false, 0)
 
-	// misc
-	v.initializeGroups()
-	v.initializeSlider()
-	v.initializeResize()
-	v.initializeCloser()
-	v.initializeTabBar()
-
-	return v
+	initializeGroups()
+	initializeSlider()
+	initializeResize()
+	initializeTabBar()
 }
 `

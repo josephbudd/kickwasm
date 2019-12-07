@@ -18,12 +18,14 @@ func createLPC(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 		ImportDomainLPC         string
 		ImportDomainLPCMessage  string
 		ImportRendererViewTools string
+		ImportRendererCallBack  string
 		LPCNames                []string
 	}{
 		ApplicationGitPath:      builder.ImportPath,
 		ImportDomainLPC:         folderpaths.ImportDomainLPC,
 		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
 		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
+		ImportRendererCallBack:  folderpaths.ImportRendererCallBack,
 		LPCNames:                make([]string, 0),
 	}
 	fname := fileNames.ChannelsDotGo

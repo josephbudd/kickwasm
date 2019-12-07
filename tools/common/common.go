@@ -31,6 +31,13 @@ This application framework was built with kickwasm version %d but %s only works 
 	UseItInRoot   = `  Use it in your frameworks's root source code folder.`
 )
 
+// errors
+var (
+	ErrNoKickWasm       = errors.New("cant find kickwas.yaml")
+	ErrRekickwasmExists = errors.New("rekickwasm exists")
+	ErrWrongVersion     = errors.New("wrong version")
+)
+
 // PrintRekickwasmError prints the rekickwasm error message.
 func PrintRekickwasmError(applicationName string) {
 	fmt.Printf(rekickwasmErrorFormat, applicationName)

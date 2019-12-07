@@ -11,4 +11,5 @@ type InitRendererToMainProcess struct {
 type InitMainProcessToRenderer struct {
 	Error        bool
 	ErrorMessage string
+	Fatal        bool
 }

@@ -6,6 +6,9 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/viewtools"
 )
 
 /*
@@ -30,10 +33,12 @@ func (group *panelGroup) defineMembers() (err error) {
 		}
 	}()
 
-	if group.createPanel = notJS.GetElementByID("tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-inner-CreatePanel"); group.createPanel == null {
-		err = errors.New("unable to find #tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-inner-CreatePanel")
+    var panel *markup.Element
+ if panel = document.ElementByID("mainMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-inner-CreatePanel"); panel == nil {
+		err = errors.New("unable to find #mainMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-inner-CreatePanel")
 		return
-	}
+    }
+    group.createPanel = panel.JSValue()
 
 	return
 }
@@ -50,6 +55,6 @@ func (group *panelGroup) defineMembers() (err error) {
 Button to create a new hello world.
 */
 func (group *panelGroup) showCreatePanel() {
-	tools.ShowPanelInTabGroup(group.createPanel)
+	viewtools.ShowPanelInTabGroup(group.createPanel)
 }
 

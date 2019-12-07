@@ -13,43 +13,46 @@ import (
 
 	"github.com/pkg/errors"
 
+	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererSpawnPack}}"
 )
 
 // FixSpawnID fixes a spawn html template element id using the spawns unique id.
 // It replaces "{{.SpawnIDReplacePattern}}" with the spawn's unique id.
-func (tools *Tools) FixSpawnID(id string, uniqueID uint64) (fixedID string) {
+func FixSpawnID(id string, uniqueID uint64) (fixedID string) {
 	fixedID = strings.ReplaceAll(id, spawnIDReplacePattern, fmt.Sprint(uniqueID))
 	return
 }
  
 // SpawnTab adds an html tab button and panels to the html document.
 // It returns their uniqueID, the tab button id, panels names mapped to their ids.
-func (tools *Tools) SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userContentPanelPaths []string) (tabButton, tabPanelHeader js.Value, uniqueID uint64, panelNameID map[string]string, err error) {
-	uniqueID = tools.newSpawnID()
-	notJS := tools.NotJS
-	null := js.Null()
+func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userContentPanelPaths []string) (tabButton, tabPanelHeader js.Value, uniqueID uint64, panelNameID map[string]string, err error) {
+	var classList js.Value
+	uniqueID = newSpawnID()
 	// Find the tab bar.
 	var tabBar js.Value
-	if tabBar = notJS.GetElementByID(tabBarID); tabBar == null {
+	if tabBar = getElementByID(document, tabBarID); tabBar == null {
 		err = errors.New("Unable to find tab bar #" + tabBarID)
 		return
 	}
 	// get the number of tabs in this tab bar.
-	_, nTabButtons := notJS.Children(tabBar)
+	nTabButtons := tabBar.Get("children").Length()
 	// Create the button and add it to the tab bar.
-	tabButton = notJS.CreateElementBUTTON()
-	tabButtonID := tools.BuildSpawnTabButtonID(tabBarID, tabName, uniqueID)
-	notJS.SetID(tabButton, tabButtonID)
-	notJS.ClassListAddClass(tabButton, TabClassName)
-	notJS.ClassListAddClass(tabButton, UnSelectedTabClassName)
-	label := notJS.CreateTextNode(tabLabel)
-	notJS.AppendChild(tabButton, label)
-	notJS.AppendChild(tabBar, tabButton)
+	tabButton = document.Call("createElement", "BUTTON")
+	tabButtonID := BuildSpawnTabButtonID(tabBarID, tabName, uniqueID)
+	tabButton.Set("id", tabButtonID)
+	classList = tabButton.Get("classList")
+	classList.Call("add", TabClassName)
+	classList.Call("add", UnSelectedTabClassName)
+
+	label := document.Call("createTextNode", tabLabel)
+	tabButton.Call("appendChild", label)
+	tabBar.Call("appendChild", tabButton)
 	var tabPanelVisiblilityClass string
 	if nTabButtons == 0 {
 		// if this is the first tab then bring it up front.
-		notJS.Focus(tabButton)
+		tabButton.Call("focus")
 		// this will only be visible if it is the first and only tab button.
 		tabPanelVisiblilityClass = SeenClassName
 	} else {
@@ -61,41 +64,42 @@ func (tools *Tools) SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText st
 	// Panels
 	// Find the under tab bar div.
 	// The tab's panel is inside the under tab bar div.
-	underTabBarDivID := tools.buildSpawnUnderTabBarID(tabBarID)
+	underTabBarDivID := buildSpawnUnderTabBarID(tabBarID)
 	var underTabBarDiv js.Value
-	if underTabBarDiv = notJS.GetElementByID(underTabBarDivID); underTabBarDiv == null {
+	if underTabBarDiv = getElementByID(document, underTabBarDivID); underTabBarDiv == null {
 		err = errors.New("Unable to find under tab bar #" + underTabBarDivID)
 		return
 	}
 	// Create the tab panel
-	tabPanel := notJS.CreateElementDIV()
-	tabPanelID := tools.buildSpawnTabButtonPanelID(tabButtonID)
-	notJS.SetID(tabPanel, tabPanelID)
-	notJS.ClassListAddClass(tabPanel, TabPanelClassName)
-	notJS.ClassListAddClass(tabPanel, PanelWithHeadingClassName)
-	notJS.ClassListAddClass(tabPanel, tabPanelVisiblilityClass)
-	tabPanelHeader = notJS.CreateElementH3()
-	tabPanelHeadingID := tools.buildSpawnTabButtonPanelHeadingID(tabButtonID)
-	notJS.SetID(tabPanelHeader, tabPanelHeadingID)
-	notJS.ClassListAddClass(tabPanelHeader, PanelHeadingClassName)
-	heading := notJS.CreateTextNode(tabPanelHeadingText)
-	notJS.AppendChild(tabPanelHeader, heading)
-	notJS.AppendChild(tabPanel, tabPanelHeader)
+	tabPanel := document.Call("createElement", "DIV")
+	tabPanelID := buildSpawnTabButtonPanelID(tabButtonID)
+	tabPanel.Set("id", tabPanelID)
+	classList = tabPanel.Get("classList")
+	classList.Call("add", TabPanelClassName)
+	classList.Call("add", PanelWithHeadingClassName)
+	classList.Call("add", tabPanelVisiblilityClass)
+	tabPanelHeader = document.Call("createElement", "H3")
+	tabPanelHeadingID := buildSpawnTabButtonPanelHeadingID(tabButtonID)
+	tabPanelHeader.Set("id", tabPanelHeadingID)
+	classList = tabPanelHeader.Get("classList")
+	classList.Call("add", PanelHeadingClassName)
+	heading := document.Call("createTextNode", tabPanelHeadingText)
+	tabPanelHeader.Call("appendChild", heading)
+	tabPanel.Call("appendChild", tabPanelHeader)
 	// Inside the tab panel is the inner panel
 	//   which is the wrapper of group of user content (markup) panels.
 	// Create the group
-	group := notJS.CreateElementDIV()
-	innerPanelID := tools.buildSpawnTabButtonInnerPanelID(tabButtonID)
-	notJS.SetID(group, innerPanelID)
-	notJS.ClassListAddClass(group, TabPanelGroupClassName)
-	notJS.ClassListAddClass(group, UserContentClassName)
-	notJS.AppendChild(tabPanel, group)
+	group := document.Call("createElement", "DIV")
+	innerPanelID := buildSpawnTabButtonInnerPanelID(tabButtonID)
+	group.Set("id", innerPanelID)
+	classList = group.Get("classList")
+	classList.Call("add", TabPanelGroupClassName)
+	tabPanel.Call("appendChild", group)
 	// Create each user content & it's markup panel inside the group panel
 	l := len(userContentPanelPaths)
 	panelNameID = make(map[string]string, l)
 	uniqueIDString := fmt.Sprint(uniqueID)
 	userContentPanels := make([]js.Value, len(userContentPanelPaths))
-	var firstMarkupPanelID string
 	for i, path := range userContentPanelPaths {
 		var markupbb []byte
 		var found bool
@@ -108,190 +112,179 @@ func (tools *Tools) SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText st
 		l := len(base) - len(filepath.Ext(base))
 		panelName := base[:l]
 		// user content panel wraps the markup panel
-		userContentPanel := notJS.CreateElementDIV()
-		userContentPanelID := tools.buildSpawnTabButtonInnerMarkupPanelID(tabButtonID, panelName)
+		userContentPanel := document.Call("createElement", "DIV")
+		userContentPanelID := buildSpawnTabButtonInnerMarkupPanelID(tabButtonID, panelName)
 		userContentPanels[i] = userContentPanel
 		panelNameID[panelName] = userContentPanelID
-		notJS.SetID(userContentPanel, userContentPanelID)
-		notJS.ClassListAddClass(userContentPanel, UserContentClassName)
-		notJS.ClassListAddClass(userContentPanel, SliderPanelInnerSiblingClassName)
+		userContentPanel.Set("id", userContentPanelID)
+		classList = userContentPanel.Get("classList")
+		classList.Call("add", UserContentClassName)
+		classList.Call("add", SliderPanelInnerSiblingClassName)
 		if i == 0 {
 			// The first markup panel is the defauilt and is visible.
-			notJS.ClassListAddClass(userContentPanel, SeenClassName)
+			classList = userContentPanel.Get("classList")
+			classList.Call("add", SeenClassName)
 		} else {
 			// The other markup panels are hidden.
-			notJS.ClassListAddClass(userContentPanel, UnSeenClassName)
+			classList = userContentPanel.Get("classList")
+			classList.Call("add", UnSeenClassName)
 		}
 		var hvscroll bool
-		if hvscroll, found = tools.panelNameHVScroll[panelName]; !found {
-			emsg := fmt.Sprintf("Unable to find panel name %q in tools.panelNameHVScroll", panelName)
+		if hvscroll, found = panelNameHVScroll[panelName]; !found {
+			emsg := fmt.Sprintf("Unable to find panel name %q in panelNameHVScroll", panelName)
 			err = errors.New(emsg)
 			return
 		}
 		if hvscroll {
-			notJS.ClassListAddClass(userContentPanel, HVScrollClassName)
+			classList = userContentPanel.Get("classList")
+			classList.Call("add", HVScrollClassName)
 		} else {
-			notJS.ClassListAddClass(userContentPanel, VScrollClassName)
+			classList = userContentPanel.Get("classList")
+			classList.Call("add", VScrollClassName)
 		}
-		notJS.AppendChild(group, userContentPanel)
+		group.Call("appendChild", userContentPanel)
+
 		// markup panel inside the user content panel.
-		markupPanel := notJS.CreateElementDIV()
-		notJS.ClassListAddClass(markupPanel, SeenClassName)
-		// if i == 0 {
-		// 	// The first markup panel is the defauilt and is visible.
-		// 	notJS.ClassListAddClass(markupPanel, SeenClassName)
-		// } else {
-		// 	// The other markup panels are hidden.
-		// 	notJS.ClassListAddClass(markupPanel, UnSeenClassName)
-		// }
+		markupPanel := document.Call("createElement", "DIV")
+		classList = markupPanel.Get("classList")
+		classList.Call("add", SeenClassName)
 		markup := strings.ReplaceAll(string(markupbb), spawnIDReplacePattern, uniqueIDString)
-		notJS.SetInnerHTML(markupPanel, markup)
-		notJS.AppendChild(userContentPanel, markupPanel)
+		markupPanel.Set("innerHTML", markup)
+		userContentPanel.Call("appendChild", markupPanel)
 	}
 	// now that the tab panel is fully constructed
 	//   add it to the under tab bar div.
-	notJS.AppendChild(underTabBarDiv, tabPanel)
+	underTabBarDiv.Call("appendChild", tabPanel)
+
 	// add the tab bar button panel group
-	tools.buttonPanelsMap[tabButtonID] = userContentPanels
-	// If this is the first button added to the tab bar
-	//   then it is the default panel.
-	// Set it as the last panel.
-	if _, length := notJS.Children(tabBar); length == 1 {
-		tools.addNewSpawnTabBarToLastPanelLevels(tabBarID, firstMarkupPanelID)
-	}
+	buttonPanelsMap[tabButtonID] = userContentPanels
 	// tab button onclick handler
-	tools.setTabBarSpawnButtonOnClick(tabButton, uniqueID)
+	setTabBarSpawnButtonOnClick(tabButton, uniqueID)
 	return
 }
 
 // UnSpawnTab removes a tab button and panels from the html document.
 // Returns the error.
-func (tools *Tools) UnSpawnTab(tabButton js.Value) (err error ) {
+func UnSpawnTab(tabButton js.Value) (err error ) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "tools.UnSpawnTab")
+			err = errors.WithMessage(err, "UnSpawnTab")
 		}
 	}()
 
-	notJS := tools.NotJS
-	tabButtonID := notJS.ID(tabButton)
+	tabButtonID := tabButton.Get("id").String()
 
 	// Step 1:
 	// If there is a tab to the left if there is one
 	//   then force click that tab bringing it up front with it's panel.
-	tabBar := notJS.ParentNode(tabButton)
-	siblings := notJS.ChildrenSlice(tabBar)
-	var sibling js.Value
+	tabBar := tabButton.Get("parentNode")
+	siblings := tabBar.Get("children")
+	l := siblings.Length()
 	var i int
-	for i, sibling = range siblings {
+	for i = 0; i < l; i++ {
+		sibling := siblings.Index(i)
 		if sibling == tabButton {
 			break
 		}
 	}
 	if i > 0 {
-		tools.ForceTabButtonClick(siblings[i-1])
+		ForceTabButtonClick(siblings.Index(i-1))
 	}
 
 	// Step 2: The tab button.
 	// Remove this tab from the tab bar in the DOM.
 	// cleanup data.
-	tabBarID := notJS.ID(tabBar)
-	tools.removeSpawnTabBarButtonFromLastPanelLevels(tabBarID, tabButtonID)
+	tabBarID := tabBar.Get("id").String()
+	removeSpawnTabBarButtonFromLastPanelLevels(tabBarID, tabButtonID)
 	// remove the button the DOM.
-	notJS.RemoveChild(tabBar, tabButton)
+	tabBar.Call("removeChild", tabButton)
 
 	// Step 3: The tab panels.
 	// Remove the tab panels from the DOM.
-	panels := tools.buttonPanelsMap[tabButtonID]
-	underTabBarDiv := notJS.ParentNode(panels[0])
+	panels := buttonPanelsMap[tabButtonID]
+	underTabBarDiv := panels[0].Get("parentNode")
 	for _, p := range panels {
-		notJS.RemoveChild(underTabBarDiv, p)
+		underTabBarDiv.Call("removeChild", p)
 	}
 	// cleanup data.
 	// remove the tab bar button panel group.
-	delete(tools.buttonPanelsMap, tabButtonID)
+	delete(buttonPanelsMap, tabButtonID)
 
 	return
 }
 
 // BuildSpawnTabButtonID forms an id for a spawned tab bar button.
-func (tools *Tools) BuildSpawnTabButtonID(tabBarID, tabName string, uniqueID uint64) (id string) {
+func BuildSpawnTabButtonID(tabBarID, tabName string, uniqueID uint64) (id string) {
 	id = fmt.Sprintf("%s-%s(%d)", tabBarID, tabName, uniqueID)
 	return
 }
 
 // BuildSpawnTabButtonMarkupPanelID forms an id for a spawned tab bar button's markup panel.
 // This exists mainly for spawn panel groups.
-func (tools *Tools) BuildSpawnTabButtonMarkupPanelID(tabBarID, tabName, panelName string, uniqueID uint64) (id string) {
-	buttonID := tools.BuildSpawnTabButtonID(tabBarID, tabName, uniqueID)
-	id = tools.buildSpawnTabButtonInnerMarkupPanelID(buttonID, panelName)
+func BuildSpawnTabButtonMarkupPanelID(tabBarID, tabName, panelName string, uniqueID uint64) (id string) {
+	buttonID := BuildSpawnTabButtonID(tabBarID, tabName, uniqueID)
+	id = buildSpawnTabButtonInnerMarkupPanelID(buttonID, panelName)
 	return
 }
 
-func (tools *Tools) newSpawnID() (id uint64) {
+func newSpawnID() (id uint64) {
 	// spawn ids begin with 1.
-	tools.spawnID++
-	id = tools.spawnID
+	spawnID++
+	id = spawnID
 	return
 }
 
 // buildSpawnUnderTabBarID forms an id for a spawned tab bar button.
-func (tools *Tools) buildSpawnUnderTabBarID(tabBarID string) (id string) {
+func buildSpawnUnderTabBarID(tabBarID string) (id string) {
 	id = tabBarID + "{{.DashUnderTabBar}}"
 	return
 }
 
 // buildSpawnTabButtonPanelID forms an id for a spawned tab bar button.
-func (tools *Tools) buildSpawnTabButtonPanelID(buttonID string) (id string) {
+func buildSpawnTabButtonPanelID(buttonID string) (id string) {
 	id = buttonID + "Panel"
 	return
 }
 
 // buildSpawnTabButtonPanelHeadingID forms an id for a spawned tab bar button button's inner panel.
-func (tools *Tools) buildSpawnTabButtonPanelHeadingID(buttonID string) (id string) {
-	id = tools.buildSpawnTabButtonPanelID(buttonID) + "{{.DashPanelHeading}}"
+func buildSpawnTabButtonPanelHeadingID(buttonID string) (id string) {
+	id = buildSpawnTabButtonPanelID(buttonID) + "{{.DashPanelHeading}}"
 	return
 }
 
 // buildSpawnTabButtonInnerPanelID forms an id for a spawned tab bar button button's inner panel.
-func (tools *Tools) buildSpawnTabButtonInnerPanelID(buttonID string) (id string) {
-	id = tools.buildSpawnTabButtonPanelID(buttonID) + "{{.DashInner}}"
+func buildSpawnTabButtonInnerPanelID(buttonID string) (id string) {
+	id = buildSpawnTabButtonPanelID(buttonID) + "{{.DashInner}}"
 	return
 }
 
 // buildSpawnTabButtonInnerMarkupPanelID forms an id for a spawned tab bar button's markup panel.
-func (tools *Tools) buildSpawnTabButtonInnerMarkupPanelID(buttonID, panelName string) (id string) {
-	id = tools.buildSpawnTabButtonInnerPanelID(buttonID) + "-" + panelName
+func buildSpawnTabButtonInnerMarkupPanelID(buttonID, panelName string) (id string) {
+	id = buildSpawnTabButtonInnerPanelID(buttonID) + "-" + panelName
 	return
 }
 
-func (tools *Tools) addTabBarButton(tabBar, newButton js.Value) {
-	notJS := tools.NotJS
-	notJS.AppendChild(tabBar, newButton)
+func addTabBarButton(tabBar, newButton js.Value) {
+	tabBar.Call("appendChild", newButton)
 }
 
-func (tools *Tools) setTabBarSpawnButtonOnClick(tabBarButton js.Value, uniqueID uint64) {
-	notJS := tools.NotJS
-	cb := tools.RegisterSpawnEventCallBack(
-		func(event js.Value) interface{} {
-			target := notJS.GetEventTarget(event)
-			tools.handleTabButtonOnClick(target)
-			return nil
-		},
-		true, true, true,
-		uniqueID,
-	)
-	tabBarButton.Set("onclick", cb)
+func setTabBarSpawnButtonOnClick(tabBarButton js.Value, uniqueID uint64) {
+	f := func(e event.Event) (nilReturn interface{}) {
+		if e.JSTarget.Get("tagName").String() != "BUTTON" {
+			// The user slid the mouse over the button and raised the mouse button.
+			// Button is not known so ignore.
+			return
+		}
+		handleTabButtonOnClick(e.JSTarget)
+		return
+	}
+	callback.AddEventHandler(f, tabBarButton, "click", false, uniqueID)
 }
 
-func (tools *Tools) addNewSpawnTabBarToLastPanelLevels(newTabBarID, firstAndOnlyPanelID string) {
-	tools.tabberTabBarLastPanel[newTabBarID] = firstAndOnlyPanelID
-}
-
-func (tools *Tools) removeSpawnTabBarButtonFromLastPanelLevels(tabBarID, panelID string) {
-	if tools.tabberTabBarLastPanel[tabBarID] == panelID {
-		tools.tabberTabBarLastPanel[tabBarID] = ""
+func removeSpawnTabBarButtonFromLastPanelLevels(tabBarID, panelID string) {
+	if tabberTabBarLastPanel[tabBarID] == panelID {
+		tabberTabBarLastPanel[tabBarID] = ""
 	}
 }
 `

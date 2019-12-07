@@ -5,7 +5,10 @@ package helloworldtemplatepanel
 import (
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/viewtools"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/dom"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/widgets"
 )
 
@@ -18,11 +21,11 @@ import (
 // panelController controls user input.
 type panelController struct {
 	uniqueID  uint64
+	document  *dom.DOM
 	panel     *spawnedPanel
 	group     *panelGroup
 	presenter *panelPresenter
 	messenger *panelMessenger
-	eventCh   chan viewtools.Event
 	unspawn   func() error
 
 	/* NOTE TO DEVELOPER. Step 1 of 5.
@@ -36,9 +39,10 @@ type panelController struct {
 	// <button id="addCustomerSubmit{{.SpawnID}}">Close</button>
 
 	import "syscall/js"
+	import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
 
-	addCustomerName   js.Value
-	addCustomerSubmit js.Value
+	addCustomerName   *markup.Element
+	addCustomerSubmit *markup.Element
 
 	*/
 
@@ -62,31 +66,36 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	// example:
 
+	import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
+
 	var id string
 
 	// Define the customer name input field.
-	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
-	if controller.addCustomerName = notJS.GetElementByID(id); controller.addCustomerName == null {
+	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerName = contoller.document.ElementByID(id); controller.addCustomerName == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 
 	// Define the submit button.
-	id = tools.FixSpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
-	if controller.addCustomerSubmit = notJS.GetElementByID(id); controller.addCustomerSubmit == null {
+	id = display.SpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerSubmit = contoller.document.ElementByID(id); controller.addCustomerSubmit == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 	// Handle the submit button's onclick event.
-	tools.AddSpawnEventHandler(controller.handleSubmit, controller.addCustomerSubmit, "click", false, controller.uniqueID)
+	controller.addCustomerSubmit.SetEventHandler(controller.handleSubmit, "click", false)
 
 	*/
 
 	// The button widget handles it's own events not this controller.
-	controller.widget = widgets.NewButton(tools, notJS)
-	id := tools.FixSpawnID("widgetWrapper{{.SpawnID}}", controller.uniqueID)
-	widgetWrapper := notJS.GetElementByID(id)
-	controller.widget.Spawn(widgetWrapper, "Close", controller.handleClick)
+	id := display.SpawnID("widgetWrapper{{.SpawnID}}", controller.uniqueID)
+	var widgetWrapper *markup.Element
+	if widgetWrapper = controller.document.ElementByID(id); widgetWrapper == nil {
+		err = errors.New("unable to find #" + id)
+		return
+	}
+	controller.widget = widgets.SpawnButton(controller.document, widgetWrapper, "Close", controller.handleClick)
 
 	return
 }
@@ -97,19 +106,25 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 // example:
 
-// import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
 
-func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn interface{}) {
-	// See renderer/viewtools/event.go.
-	// The viewtools.Event funcs.
+func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
+	// See renderer/event/event.go.
+	// The event.Event funcs.
 	//   e.PreventDefaultBehavior()
 	//   e.StopCurrentPhasePropagation()
 	//   e.StopAllPhasePropagation()
-	//   target := e.Target
-	//   event := e.Event
-	name := strings.TrimSpace(notJS.GetValue(controller.addCustomerName))
+	//   target := e.JSTarget
+	//   event := e.JSEvent
+	// You must use the javascript event e.JSEvent, as a js.Value.
+	// However, you can use the target as a *markup.Element
+	//   target := controller.document.NewElementFromJSValue(e.JSTarget)
+
+	name := strings.TrimSpace(controller.addCustomerName.Value())
 	if len(name) == 0 {
-		tools.Error("Customer Name is required.")
+		display.Error("Customer Name is required.")
 		return
 	}
 	r := &record.CustomerRecord{
@@ -121,13 +136,11 @@ func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn in
 
 */
 
-// handleClick unspawns.
-// First it unspawns the widget.
-// Then it unspawns the tab.
-func (controller *panelController) handleClick(event viewtools.Event) (nilInterface interface{}) {
+// handleClick unspawns this tab.
+func (controller *panelController) handleClick(e event.Event) (nilInterface interface{}) {
 	// Unspawn this panel's tab and all of it's panels.
 	if err := controller.unspawn(); err != nil {
-		tools.Error(err.Error())
+		display.Error(err.Error())
 	}
 	return
 }

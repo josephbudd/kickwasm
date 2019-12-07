@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/pkg/errors"
+
 	"github.com/josephbudd/kickwasm/tools/common"
 	"github.com/josephbudd/kickwasm/tools/rekickwasm/statements"
 
@@ -14,10 +16,10 @@ import (
 
 const (
 	applicationName        = "rekickwasm"
-	versionBreaking        = 12 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 13 // Kicwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
-	minumunKickwasmVersion = 12 // Minumum kickwasm version.
+	minumunKickwasmVersion = 13 // Minumum kickwasm version.
 )
 
 // CleanFlag means remove the ./rekickwasm/ folder
@@ -48,6 +50,14 @@ var InitFlag bool
 var HelpFlag bool
 
 func main() {
+
+	var err error
+	defer func() {
+		if err != nil {
+			os.Exit(1)
+		}
+	}()
+
 	// initialize the flags
 	flag.BoolVar(&InitFlag, "i", false, "Initializes. Backs up your source code and yaml files in ./rekickwasm/backup/. Creates yaml files for you to edit in ./rekickwasm/edit/.")
 	flag.BoolVar(&YAMLFlag, "yaml", false, "Restores ./rekickwasm/edit/yaml/ removing your edits.")
@@ -81,7 +91,6 @@ func main() {
 	// This tools must run in the framework's root folder.
 	var rootFolderPath string
 	var isRoot bool
-	var err error
 	if rootFolderPath, isRoot, err = common.IsRootFolder(); !isRoot {
 		if err != nil {
 			fmt.Println(err.Error())
@@ -114,6 +123,7 @@ func main() {
 	// The rest of these actions require that rekickwasm be initilized into the current folder.
 	if !rp.Initialized() {
 		fmt.Println(statements.NotInitialized)
+		err = errors.New("not initializied")
 		return
 	}
 	if RefactorFlag {
@@ -136,9 +146,14 @@ func main() {
 		}
 		// import finished
 		fmt.Println(statements.SuccessImport)
-		if !CleanFlag {
+	}
+	if UndoFlag {
+		// undo the backup
+		if err = rp.RestoreOriginal(); err != nil {
+			fmt.Println(err.Error())
 			return
 		}
+		fmt.Println(statements.SuccessUndo)
 	}
 	if CleanFlag {
 		// delete ./rekickwasm
@@ -156,16 +171,6 @@ func main() {
 			return
 		}
 		fmt.Println(statements.SuccessYAML)
-		return
-	}
-	if UndoFlag {
-		// undo the backup
-		if err = rp.RestoreOriginal(); err != nil {
-			fmt.Println(err.Error())
-			return
-		}
-		fmt.Println(statements.SuccessUndo)
-		return
 	}
 }
 

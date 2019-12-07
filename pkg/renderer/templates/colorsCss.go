@@ -34,18 +34,6 @@ body {
   border-color:rgb(88, 65, 1);
 }
 
-#closerMasterView
-{
-  background: hsla(44, 100%, 19%, 0.8);
-  border-color:black;
-}
-
-#closerMasterView-center
-{
-  background-color:hsla(44, 100%, 40%, 0.8);
-  border-color:rgb(88, 65, 1);
-}
-
 /******************************************************************************
 
     panels
@@ -113,7 +101,7 @@ div.{{.TabBar}} > button.selected-tab
 
 /* color level 0 if for the home button pad */
 
-#tabsMasterView > h1.{{.PanelHeading}}
+#mainMasterView > h1.{{.PanelHeading}}
 {
   color: black;
 }
@@ -467,36 +455,6 @@ button.{{$Dot.ClassPadButtonColorLevelPrefix}}{{$homeName}}:hover
 .{{.ModalUserContent}},
 .{{.ModalUserContent}} th,
 .{{.ModalUserContent}} td
-{
-  background: white;
-  color:black;
-}
-
-/******************************************************************************
-
-  closer user content
-
-******************************************************************************/
-
-.{{.CloserUserContent}} a {color:black;}
-.{{.CloserUserContent}} a:hover{color:black;}
-.{{.CloserUserContent}} a:visited{color:black;}
-
-.{{.CloserUserContent}} button
-{
-  border-color:black;
-  color:black;
-  background: white;
-}
-.{{.CloserUserContent}} button:hover
-{
-  background: white;
-  color:black;
-}
-
-.{{.CloserUserContent}},
-.{{.CloserUserContent}} th,
-.{{.CloserUserContent}} td
 {
   background: white;
   color:black;

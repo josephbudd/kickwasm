@@ -11,11 +11,11 @@ import (
 )
 
 // RemoveOldSpawnPackPackage removes a spawn package.
-func RemoveOldSpawnPackPackage(packageName, packagePath string) (err error) {
+func RemoveOldSpawnPackPackage(packagePath string) (err error) {
 	if !common.PathFound(packagePath) {
 		return
 	}
-	printNextStep("REMOVE THE OLD " + packageName + ".")
+	printNextStep("REMOVE THE OLD " + filepath.Base(packagePath) + ".")
 	if err = os.RemoveAll(packagePath); err != nil {
 		printError(err)
 		return
@@ -25,7 +25,8 @@ func RemoveOldSpawnPackPackage(packageName, packagePath string) (err error) {
 }
 
 // WriteNewSpawnPackage builds a new spawn package.
-func WriteNewSpawnPackage(packageName, packagePath, templatesFolder, sitePath string) (err error) {
+func WriteNewSpawnPackage(packagePath, templatesFolder, sitePath string) (err error) {
+	packageName := filepath.Base(packagePath)
 	printNextStep("WRITE THE NEW " + packageName + " SOURCE CODE.")
 	PrintLine(" * The " + packageName + " package contains your site folder's spawn html templates.")
 	args := []string{"-nu", "-o=" + packagePath, templatesFolder}
@@ -40,14 +41,14 @@ func WriteNewSpawnPackage(packageName, packagePath, templatesFolder, sitePath st
 }
 
 // BuildWASM builds the wasm code.
-func BuildWASM(rootFolderPath, rendererPath string) (err error) {
+func BuildWASM(rootFolderPath, sitePath, frameworkPath, rendererPath string) (err error) {
 	printNextStep("BUILD THE RENDERER GO CODE INTO WASM AT /site/app.wasm")
 	//GOARCH=wasm GOOS=js go build -o ../site/app.wasm Main.go panels.go
 	env := os.Environ()
 	env = append(env, "GOARCH=wasm")
 	env = append(env, "GOOS=js")
 	// args := []string{"build", "-o", filepath.Join("site", "app.wasm"), filepath.Join("rendererprocess", "Main.go"), filepath.Join("rendererprocess", "panels.go")}
-	args := []string{"build", "-o", filepath.Join(rootFolderPath, "site", "app.wasm"), filepath.Join(rootFolderPath, "rendererprocess", "Main.go"), filepath.Join(rootFolderPath, "rendererprocess", "panels.go")}
+	args := []string{"build", "-o", filepath.Join(sitePath, "app.wasm"), filepath.Join(rendererPath, "Main.go")}
 	var dump []byte
 	if dump, err = script.RunDump(env, "", "go", args...); err != nil {
 		fixPrintDump(rootFolderPath, dump, err)
@@ -58,7 +59,8 @@ func BuildWASM(rootFolderPath, rendererPath string) (err error) {
 }
 
 // RemoveOldSitePackPackage removes a spawn package.
-func RemoveOldSitePackPackage(packageName, packagePath string) (err error) {
+func RemoveOldSitePackPackage(packagePath string) (err error) {
+	packageName := filepath.Base(packagePath)
 	if !common.PathFound(packagePath) {
 		return
 	}
@@ -72,8 +74,9 @@ func RemoveOldSitePackPackage(packageName, packagePath string) (err error) {
 }
 
 // WriteSitePackPackageDontPack writes the site package.
-func WriteSitePackPackageDontPack(appWdPath, packageName, packagePath string) (err error) {
-	printNextStep("WRITE THE NEW " + packageName + " PACKAGE SOURCE CODE.")
+func WriteSitePackPackageDontPack(appWdPath, packagePath string) (err error) {
+	packageName := filepath.Base(packagePath)
+	printNextStep("WRITE THE NEW " + packagePath + " PACKAGE SOURCE CODE.")
 	PrintLine(" * The NEW " + packageName + " package will pretend to be a file store")
 	PrintLine("     but it will actually just read the files")
 	PrintLine("     in the site folder and return their contents.")
@@ -90,7 +93,8 @@ func WriteSitePackPackageDontPack(appWdPath, packageName, packagePath string) (e
 }
 
 // WriteSitePackPackagePack writes the site package.
-func WriteSitePackPackagePack(appWdPath, packageName, packagePath string) (err error) {
+func WriteSitePackPackagePack(appWdPath, packagePath string) (err error) {
+	packageName := filepath.Base(packagePath)
 	printNextStep("WRITE THE NEW " + packageName + " PACKAGE SOURCE CODE.")
 	PrintLine(" * The NEW " + packageName + " package will be a file store")
 	PrintLine("     of the site/ folder.")
@@ -107,7 +111,8 @@ func WriteSitePackPackagePack(appWdPath, packageName, packagePath string) (err e
 }
 
 // BuildSitePackPackage builds the site pack package.
-func BuildSitePackPackage(sitepackPackageName, sitepackPackagePath string) (err error) {
+func BuildSitePackPackage(sitepackPackagePath string) (err error) {
+	sitepackPackageName := filepath.Base(sitepackPackagePath)
 	printNextStep("BUILD THE NEW " + sitepackPackageName + " PACKAGE.")
 
 	var dump []byte

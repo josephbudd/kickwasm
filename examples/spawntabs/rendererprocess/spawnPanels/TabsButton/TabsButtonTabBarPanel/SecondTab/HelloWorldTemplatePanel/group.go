@@ -6,6 +6,10 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/dom"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/framework/viewtools"
 )
 
 /*
@@ -16,16 +20,11 @@ import (
 
 */
 
-const (
-	tabBarID        = "tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar"
-	tabName         = "SecondTab"
-	tabPanelHeading = "Second Tab"
-)
-
 // panelGroup is a group of 1 panel.
 // It also has a show panel func for each panel in this panel group.
 type panelGroup struct {
 	uniqueID    uint64
+	document  *dom.DOM
 	panelNameID map[string]string
 
 	helloWorldTemplatePanel js.Value
@@ -40,11 +39,13 @@ func (group *panelGroup) defineMembers() (err error) {
 	}()
 
 	var id string
-	id = tools.BuildSpawnTabButtonMarkupPanelID(tabBarID, tabName, "HelloWorldTemplatePanel", group.uniqueID)
-	if group.helloWorldTemplatePanel = notJS.GetElementByID(id); group.helloWorldTemplatePanel == null {
+    var panel *markup.Element
+	id = viewtools.BuildSpawnTabButtonMarkupPanelID("mainMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar", "SecondTab", "HelloWorldTemplatePanel", group.uniqueID)
+    if panel = group.document.ElementByID(id); panel == nil {
 		err = errors.New("unable to find #" + id)
 		return
-	}
+    }
+    group.helloWorldTemplatePanel = panel.JSValue()
 
 	return
 }
@@ -61,5 +62,5 @@ func (group *panelGroup) defineMembers() (err error) {
 Yet another "hello world".
 */
 func (group *panelGroup) showHelloWorldTemplatePanel() {
-	tools.ShowPanelInTabGroup(group.helloWorldTemplatePanel)
+	viewtools.ShowPanelInTabGroup(group.helloWorldTemplatePanel)
 }

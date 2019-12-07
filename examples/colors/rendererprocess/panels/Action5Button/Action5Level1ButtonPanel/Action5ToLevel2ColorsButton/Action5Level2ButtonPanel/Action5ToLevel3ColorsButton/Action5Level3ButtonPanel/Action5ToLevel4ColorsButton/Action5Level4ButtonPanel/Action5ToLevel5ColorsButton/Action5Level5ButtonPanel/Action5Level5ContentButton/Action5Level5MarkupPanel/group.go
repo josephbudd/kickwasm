@@ -6,6 +6,9 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/viewtools"
 )
 
 /*
@@ -30,10 +33,12 @@ func (group *panelGroup) defineMembers() (err error) {
 		}
 	}()
 
-	if group.action5Level5MarkupPanel = notJS.GetElementByID("tabsMasterView-home-pad-Action5Button-Action5Level1ButtonPanel-Action5ToLevel2ColorsButton-Action5Level2ButtonPanel-Action5ToLevel3ColorsButton-Action5Level3ButtonPanel-Action5ToLevel4ColorsButton-Action5Level4ButtonPanel-Action5ToLevel5ColorsButton-Action5Level5ButtonPanel-Action5Level5ContentButton-Action5Level5MarkupPanel"); group.action5Level5MarkupPanel == null {
-		err = errors.New("unable to find #tabsMasterView-home-pad-Action5Button-Action5Level1ButtonPanel-Action5ToLevel2ColorsButton-Action5Level2ButtonPanel-Action5ToLevel3ColorsButton-Action5Level3ButtonPanel-Action5ToLevel4ColorsButton-Action5Level4ButtonPanel-Action5ToLevel5ColorsButton-Action5Level5ButtonPanel-Action5Level5ContentButton-Action5Level5MarkupPanel")
+    var panel *markup.Element
+ if panel = document.ElementByID("mainMasterView-home-pad-Action5Button-Action5Level1ButtonPanel-Action5ToLevel2ColorsButton-Action5Level2ButtonPanel-Action5ToLevel3ColorsButton-Action5Level3ButtonPanel-Action5ToLevel4ColorsButton-Action5Level4ButtonPanel-Action5ToLevel5ColorsButton-Action5Level5ButtonPanel-Action5Level5ContentButton-Action5Level5MarkupPanel"); panel == nil {
+		err = errors.New("unable to find #mainMasterView-home-pad-Action5Button-Action5Level1ButtonPanel-Action5ToLevel2ColorsButton-Action5Level2ButtonPanel-Action5ToLevel3ColorsButton-Action5Level3ButtonPanel-Action5ToLevel4ColorsButton-Action5Level4ButtonPanel-Action5ToLevel5ColorsButton-Action5Level5ButtonPanel-Action5Level5ContentButton-Action5Level5MarkupPanel")
 		return
-	}
+    }
+    group.action5Level5MarkupPanel = panel.JSValue()
 
 	return
 }
@@ -45,7 +50,7 @@ func (group *panelGroup) defineMembers() (err error) {
 */
 
 // showAction5Level5MarkupPanel shows the panel you named Action5Level5MarkupPanel while hiding any other panels in this panel group.
-// This panel's id is tabsMasterView-home-pad-Action5Button-Action5Level1ButtonPanel-Action5ToLevel2ColorsButton-Action5Level2ButtonPanel-Action5ToLevel3ColorsButton-Action5Level3ButtonPanel-Action5ToLevel4ColorsButton-Action5Level4ButtonPanel-Action5ToLevel5ColorsButton-Action5Level5ButtonPanel-Action5Level5ContentButton-Action5Level5MarkupPanel.
+// This panel's id is mainMasterView-home-pad-Action5Button-Action5Level1ButtonPanel-Action5ToLevel2ColorsButton-Action5Level2ButtonPanel-Action5ToLevel3ColorsButton-Action5Level3ButtonPanel-Action5ToLevel4ColorsButton-Action5Level4ButtonPanel-Action5ToLevel5ColorsButton-Action5Level5ButtonPanel-Action5Level5ContentButton-Action5Level5MarkupPanel.
 // This panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
 // Param force boolean effects when this panel becomes visible.
 //  * if force is true then
@@ -58,5 +63,5 @@ Brought to you in the first service color.
 
 */
 func (group *panelGroup) showAction5Level5MarkupPanel(force bool) {
-	tools.ShowPanelInButtonGroup(group.action5Level5MarkupPanel, force)
+	viewtools.ShowPanelInButtonGroup(group.action5Level5MarkupPanel, force)
 }

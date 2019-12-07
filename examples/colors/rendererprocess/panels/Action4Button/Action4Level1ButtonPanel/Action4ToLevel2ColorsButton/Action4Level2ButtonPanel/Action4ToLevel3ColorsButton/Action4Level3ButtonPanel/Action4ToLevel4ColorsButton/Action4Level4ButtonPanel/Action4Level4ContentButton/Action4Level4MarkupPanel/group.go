@@ -6,6 +6,9 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/viewtools"
 )
 
 /*
@@ -30,10 +33,12 @@ func (group *panelGroup) defineMembers() (err error) {
 		}
 	}()
 
-	if group.action4Level4MarkupPanel = notJS.GetElementByID("tabsMasterView-home-pad-Action4Button-Action4Level1ButtonPanel-Action4ToLevel2ColorsButton-Action4Level2ButtonPanel-Action4ToLevel3ColorsButton-Action4Level3ButtonPanel-Action4ToLevel4ColorsButton-Action4Level4ButtonPanel-Action4Level4ContentButton-Action4Level4MarkupPanel"); group.action4Level4MarkupPanel == null {
-		err = errors.New("unable to find #tabsMasterView-home-pad-Action4Button-Action4Level1ButtonPanel-Action4ToLevel2ColorsButton-Action4Level2ButtonPanel-Action4ToLevel3ColorsButton-Action4Level3ButtonPanel-Action4ToLevel4ColorsButton-Action4Level4ButtonPanel-Action4Level4ContentButton-Action4Level4MarkupPanel")
+    var panel *markup.Element
+ if panel = document.ElementByID("mainMasterView-home-pad-Action4Button-Action4Level1ButtonPanel-Action4ToLevel2ColorsButton-Action4Level2ButtonPanel-Action4ToLevel3ColorsButton-Action4Level3ButtonPanel-Action4ToLevel4ColorsButton-Action4Level4ButtonPanel-Action4Level4ContentButton-Action4Level4MarkupPanel"); panel == nil {
+		err = errors.New("unable to find #mainMasterView-home-pad-Action4Button-Action4Level1ButtonPanel-Action4ToLevel2ColorsButton-Action4Level2ButtonPanel-Action4ToLevel3ColorsButton-Action4Level3ButtonPanel-Action4ToLevel4ColorsButton-Action4Level4ButtonPanel-Action4Level4ContentButton-Action4Level4MarkupPanel")
 		return
-	}
+    }
+    group.action4Level4MarkupPanel = panel.JSValue()
 
 	return
 }
@@ -45,7 +50,7 @@ func (group *panelGroup) defineMembers() (err error) {
 */
 
 // showAction4Level4MarkupPanel shows the panel you named Action4Level4MarkupPanel while hiding any other panels in this panel group.
-// This panel's id is tabsMasterView-home-pad-Action4Button-Action4Level1ButtonPanel-Action4ToLevel2ColorsButton-Action4Level2ButtonPanel-Action4ToLevel3ColorsButton-Action4Level3ButtonPanel-Action4ToLevel4ColorsButton-Action4Level4ButtonPanel-Action4Level4ContentButton-Action4Level4MarkupPanel.
+// This panel's id is mainMasterView-home-pad-Action4Button-Action4Level1ButtonPanel-Action4ToLevel2ColorsButton-Action4Level2ButtonPanel-Action4ToLevel3ColorsButton-Action4Level3ButtonPanel-Action4ToLevel4ColorsButton-Action4Level4ButtonPanel-Action4Level4ContentButton-Action4Level4MarkupPanel.
 // This panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
 // Param force boolean effects when this panel becomes visible.
 //  * if force is true then
@@ -58,5 +63,5 @@ Brought to you in the first service color.
 
 */
 func (group *panelGroup) showAction4Level4MarkupPanel(force bool) {
-	tools.ShowPanelInButtonGroup(group.action4Level4MarkupPanel, force)
+	viewtools.ShowPanelInButtonGroup(group.action4Level4MarkupPanel, force)
 }

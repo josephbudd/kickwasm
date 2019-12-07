@@ -9,6 +9,9 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -33,10 +36,12 @@ func (group *panelGroup) defineMembers() (err error) {
 		}
 	}()
 
-{{range $panel := .PanelGroup}}	if group.{{call $Dot.LowerCamelCase $panel.Name}} = notJS.GetElementByID("{{$panel.HTMLID}}"); group.{{call $Dot.LowerCamelCase $panel.Name}} == null {
+    var panel *markup.Element
+{{range $panel := .PanelGroup}} if panel = document.ElementByID("{{$panel.HTMLID}}"); panel == nil {
 		err = errors.New("unable to find #{{$panel.HTMLID}}")
 		return
-	}
+    }
+    group.{{call $Dot.LowerCamelCase $panel.Name}} = panel.JSValue()
 {{end}}
 	return
 }
@@ -53,7 +58,7 @@ func (group *panelGroup) defineMembers() (err error) {
 {{$panel.Note}}
 */
 func (group *panelGroup) show{{$panel.Name}}() {
-	tools.ShowPanelInTabGroup(group.{{call $Dot.LowerCamelCase $panel.Name}})
+	viewtools.ShowPanelInTabGroup(group.{{call $Dot.LowerCamelCase $panel.Name}})
 }
 {{end}}{{else}}{{range $panel := .PanelGroup}}
 
@@ -69,6 +74,6 @@ func (group *panelGroup) show{{$panel.Name}}() {
 {{$panel.Note}}
 */
 func (group *panelGroup) show{{$panel.Name}}(force bool) {
-	tools.ShowPanelInButtonGroup(group.{{call $Dot.LowerCamelCase $panel.Name}}, force)
+	viewtools.ShowPanelInButtonGroup(group.{{call $Dot.LowerCamelCase $panel.Name}}, force)
 }{{end}}{{end}}
 `

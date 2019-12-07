@@ -8,7 +8,7 @@ package {{call .PackageNameCase .PanelName}}
 import (
 	"github.com/pkg/errors"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
 )
 
 /*
@@ -20,11 +20,11 @@ import (
 // panelController controls user input.
 type panelController struct {
 	uniqueID  uint64
+	document  *dom.DOM
 	panel     *spawnedPanel
 	group     *panelGroup
 	presenter *panelPresenter
 	messenger *panelMessenger
-	eventCh   chan viewtools.Event
 	unspawn   func() error
 
 	/* NOTE TO DEVELOPER. Step 1 of 5.
@@ -38,9 +38,10 @@ type panelController struct {
 	// <button id="addCustomerSubmit{{.SpawnID}}">Close</button>
 
 	import "syscall/js"
+	import "{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
 
-	addCustomerName   js.Value
-	addCustomerSubmit js.Value
+	addCustomerName   *markup.Element
+	addCustomerSubmit *markup.Element
 
 	*/
 }
@@ -62,23 +63,25 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	// example:
 
+	import "{{.ApplicationGitPath}}{{.ImportRendererDisplay}}"
+
 	var id string
 
 	// Define the customer name input field.
-	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
-	if controller.addCustomerName = notJS.GetElementByID(id); controller.addCustomerName == null {
+	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerName = contoller.document.ElementByID(id); controller.addCustomerName == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 
 	// Define the submit button.
-	id = tools.FixSpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
-	if controller.addCustomerSubmit = notJS.GetElementByID(id); controller.addCustomerSubmit == null {
+	id = display.SpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerSubmit = contoller.document.ElementByID(id); controller.addCustomerSubmit == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 	// Handle the submit button's onclick event.
-	tools.AddSpawnEventHandler(controller.handleSubmit, controller.addCustomerSubmit, "click", false, controller.uniqueID)
+	controller.addCustomerSubmit.SetEventHandler(controller.handleSubmit, "click", false)
 
 	*/
 
@@ -91,19 +94,25 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 // example:
 
-// import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
+import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
+import "{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
+import "{{.ApplicationGitPath}}{{.ImportRendererDisplay}}"
 
-func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn interface{}) {
-	// See renderer/viewtools/event.go.
-	// The viewtools.Event funcs.
+func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
+	// See renderer/event/event.go.
+	// The event.Event funcs.
 	//   e.PreventDefaultBehavior()
 	//   e.StopCurrentPhasePropagation()
 	//   e.StopAllPhasePropagation()
-	//   target := e.Target
-	//   event := e.Event
-	name := strings.TrimSpace(notJS.GetValue(controller.addCustomerName))
+	//   target := e.JSTarget
+	//   event := e.JSEvent
+	// You must use the javascript event e.JSEvent, as a js.Value.
+	// However, you can use the target as a *markup.Element
+	//   target := controller.document.NewElementFromJSValue(e.JSTarget)
+
+	name := strings.TrimSpace(controller.addCustomerName.Value())
 	if len(name) == 0 {
-		tools.Error("Customer Name is required.")
+		display.Error("Customer Name is required.")
 		return
 	}
 	r := &record.CustomerRecord{

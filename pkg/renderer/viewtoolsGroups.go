@@ -9,14 +9,19 @@ import (
 )
 
 func createViewToolsGroupsGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
+	folderpaths := appPaths.GetPaths()
 	data := &struct {
 		HomeButtonPanelGroups map[string][]*project.ButtonPanelGroup
+		ApplicationGitPath    string
+		ImportRendererMarkup  string
 	}{
 		HomeButtonPanelGroups: builder.GenerateHomeButtonPanelGroups(),
+		ApplicationGitPath:    builder.ImportPath,
+		ImportRendererMarkup:  folderpaths.ImportRendererMarkup,
 	}
 	// execute the template
-	folderpaths := appPaths.GetPaths()
-	fname := "groups.go"
+	filenames := appPaths.GetFileNames()
+	fname := filenames.GroupsDotGo
 	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.ViewToolsGroups, data, appPaths)
 }

@@ -4,8 +4,6 @@ package action5level3markuppanel
 
 import (
 	"github.com/pkg/errors"
-
-	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/viewtools"
 )
 
 /*
@@ -19,7 +17,6 @@ type panelController struct {
 	group     *panelGroup
 	presenter *panelPresenter
 	messenger *panelMessenger
-	eventCh   chan viewtools.Event
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -28,9 +25,10 @@ type panelController struct {
 	// example:
 
 	import "syscall/js"
+	import "github.com/josephbudd/kickwasm/examples/colors/rendererprocess/markup"
 
-	addCustomerName   js.Value
-	addCustomerSubmit js.Value
+	addCustomerName   *markup.Element
+	addCustomerSubmit *markup.Element
 
 	*/
 }
@@ -53,18 +51,18 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 	// example:
 
 	// Define the customer name text input GUI controller.
-	if controller.addCustomerName = notJS.GetElementByID("addCustomerName"); controller.addCustomerName == null {
+	if controller.addCustomerName = document.ElementByID("addCustomerName"); controller.addCustomerName == nil {
 		err = errors.New("unable to find #addCustomerName")
 		return
 	}
 
 	// Define the submit button GUI controller.
-	if controller.addCustomerSubmit = notJS.GetElementByID("addCustomerSubmit"); controller.addCustomerSubmit == null {
+	if controller.addCustomerSubmit = document.ElementByID("addCustomerSubmit"); controller.addCustomerSubmit == nil {
 		err = errors.New("unable to find #addCustomerSubmit")
 		return
 	}
 	// Handle the submit button's onclick event.
-	tools.AddEventHandler(controller.handleSubmit, controller.addCustomerSubmit, "click", false)
+	controller.addCustomerSubmit.SetEventHandler(controller.handleSubmit, "click", false)
 
 	*/
 
@@ -77,20 +75,25 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 // example:
 
-// import "github.com/josephbudd/kickwasm/examples/colors/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/colors/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/colors/rendererprocess/event"
+import "github.com/josephbudd/kickwasm/examples/colors/rendererprocess/display"
 
-func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn interface{}) {
-	// See renderer/viewtools/event.go.
-	// The viewtools.Event funcs.
+func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
+	// See renderer/event/event.go.
+	// The event.Event funcs.
 	//   e.PreventDefaultBehavior()
 	//   e.StopCurrentPhasePropagation()
 	//   e.StopAllPhasePropagation()
-	//   target := e.Target
-	//   event := e.Event
+	//   target := e.JSTarget
+	//   event := e.JSEvent
+	// You must use the javascript event e.JSEvent, as a js.Value.
+	// However, you can use the target as a *markup.Element
+	//   target := document.NewElementFromJSValue(e.JSTarget)
 
-	name := strings.TrimSpace(notJS.GetValue(controller.addCustomerName))
+	name := strings.TrimSpace(controller.addCustomerName.Value())
 	if len(name) == 0 {
-		tools.Error("Customer Name is required.")
+		display.Error("Customer Name is required.")
 		return
 	}
 	r := &record.Customer{

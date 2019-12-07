@@ -123,10 +123,10 @@ func getOutput() (output, packageName string, err error) {
 	// 	err = errors.New(fmt.Sprintf("the output folder must be a valid go package name not %q", packageName))
 	// }
 	if first >= "0" && first <= "9" {
-		err = errors.New(fmt.Sprintf("1 the output folder must be a valid go package name not %q", packageName))
+		err = errors.New(fmt.Sprintf("the output folder must be a valid go package name not %q", packageName))
 	}
 	if strings.IndexAny(packageName, ` ~!@#$%^&*()-_+={}[]|'",./<>?`) >= 0 {
-		err = errors.New(fmt.Sprintf("2 the output folder must be a valid go package name not %q", packageName))
+		err = errors.New(fmt.Sprintf("the output folder must be a valid go package name not %q", packageName))
 	}
 	output = filepath.Join(dir, packageName)
 	return

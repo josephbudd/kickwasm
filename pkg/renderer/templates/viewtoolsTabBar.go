@@ -8,6 +8,9 @@ package viewtools
 import (
 	"strings"
 	"syscall/js"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
 )
 
 /*
@@ -18,58 +21,67 @@ import (
 */
 
 // ForceTabButtonClick implements the behavior of a tab button being clicked by the user.
-func (tools *Tools) ForceTabButtonClick(button js.Value) {
-	tools.handleTabButtonOnClick(button)
+func ForceTabButtonClick(button js.Value) {
+	handleTabButtonOnClick(button)
 }
 
-func (tools *Tools) initializeTabBar() {
-	notJS := tools.NotJS
-	tools.tabberLastPanelID = "{{.LastPanelID}}"
-	tools.tabberTabBarLastPanel = make(map[string]string, 20)
+func initializeTabBar() {
+	tabberLastPanelID = "{{.LastPanelID}}"
+	tabberTabBarLastPanel = make(map[string]string, 20)
 {{range $tabBarID, $lastPanelID := .LastPanelLevels}}
 	// the level is the tab bar id.
-	tools.tabberTabBarLastPanel["{{$tabBarID}}"] = "{{$lastPanelID}}"{{end}}
-	f := func(e Event) (nilReturn interface{}) {
-		tools.handleTabButtonOnClick(e.Target)
-		return
-	}
-	for id := range tools.tabberTabBarLastPanel {
+	tabberTabBarLastPanel["{{$tabBarID}}"] = "{{$lastPanelID}}"{{end}}
+	for id := range tabberTabBarLastPanel {
 		if len(id) > 0 {
-			tabbar := notJS.GetElementByID(id)
-			tools.AddEventHandler(f, tabbar, "click", false)
+			f := func(e event.Event) (nilReturn interface{}) {
+				if e.JSTarget.Get("tagName").String() != "BUTTON" {
+					// The tab button is not known so ignore.
+					return
+				}
+				handleTabButtonOnClick(e.JSTarget)
+				return
+			}
+			tabbar := getElementByID(document, id)
+			callback.AddEventHandler(f, tabbar, "click", false, 0)
 		}
 	}
 }
 
-func (tools *Tools) handleTabButtonOnClick(button js.Value) {
-	if !tools.HandleButtonClick() {
+func handleTabButtonOnClick(button js.Value) {
+	if !HandleButtonClick() {
 		return
 	}
-	tools.setTabButtonFocus(button)
-	nextpanelid := tools.NotJS.ID(button) + "Panel"
-	if nextpanelid != tools.tabberLastPanelID {
+	setTabButtonFocus(button)
+	nextpanelid := button.Get("id").String() + "Panel"
+	if nextpanelid != tabberLastPanelID {
 		// clear this level
 		parts := strings.Split(nextpanelid, "-")
 		nextpanellevel := parts[0]
-		tools.IDHide(tools.tabberTabBarLastPanel[nextpanellevel])
+		IDHide(tabberTabBarLastPanel[nextpanellevel])
 		// show the next panel
-		tools.IDShow(nextpanelid)
+		IDShow(nextpanelid)
 		// remember next panel. it is now the last panel.
-		tools.tabberLastPanelID = nextpanelid
-		tools.tabberTabBarLastPanel[nextpanellevel] = nextpanelid
+		tabberLastPanelID = nextpanelid
+		tabberTabBarLastPanel[nextpanellevel] = nextpanelid
 	}
-	tools.SizeApp()
+	SizeApp()
 }
 
-func (tools *Tools) setTabButtonFocus(tabinfocus js.Value) {
+func setTabButtonFocus(tabinfocus js.Value) {
 	// focus the tab now in focus
-	notJS := tools.NotJS
-	notJS.ClassListReplaceClass(tabinfocus, UnSelectedTabClassName, SelectedTabClassName)
-	p := notJS.ParentNode(tabinfocus)
-	children := notJS.ChildrenSlice(p)
-	for _, ch := range children {
-		if ch != tabinfocus && notJS.TagName(ch) == "BUTTON" && notJS.ClassListContains(ch, SelectedTabClassName) {
-			notJS.ClassListReplaceClass(ch, SelectedTabClassName, UnSelectedTabClassName)
+	classList := tabinfocus.Get("classList")
+	classList.Call("replace", UnSelectedTabClassName, SelectedTabClassName)
+	p := tabinfocus.Get("parentNode")
+	children := p.Get("children")
+	l := children.Length()
+	for i := 0; i < l; i++ {
+		ch := children.Index(i)
+		tagName := ch.Get("tagName").String()
+		if ch != tabinfocus && tagName == "BUTTON" {
+			classList := ch.Get("classList")
+			if classList.Call("contains", SelectedTabClassName).Bool() {
+				classList.Call("replace", SelectedTabClassName, UnSelectedTabClassName)
+			}
 		}
 	}
 }

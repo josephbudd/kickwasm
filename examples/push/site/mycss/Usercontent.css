@@ -1,4 +1,47 @@
 
+/******************************************************************************
+
+  print
+
+******************************************************************************/
+
+@media print {
+  ::-webkit-scrollbar
+  {
+    width: 0px;
+    height:0px;
+  }
+  
+  #mainMasterView-home-slider
+  {
+    color: black;
+    background: white;
+    margin-left: 0px;
+  }
+  #mainMasterView-home-slider div
+  {
+    color: black;
+    background: white;
+  }
+  #blackMasterView
+  {
+    visibility: hidden;
+  }
+  #mainMasterView-home-slider-back
+  {
+    visibility: hidden;
+  }
+  #mainMasterView-home-slider
+  {
+    margin-left: -50px;
+  }
+  /* You may or may not want to use these.
+  h1,
+  h2
+  {
+    display: none !important;
+  } */
+}
 
 /******************************************************************************
 
@@ -32,8 +75,7 @@
   word-spacing: 4px;
 }
 
-.modal-user-content,
-.closer-user-content
+.modal-user-content
 {
   overflow-x:hidden;
   overflow-y:auto;
@@ -57,36 +99,25 @@
 .modal-user-content select,
 .modal-user-content textarea,
 .modal-user-content th,
-.modal-user-content td,
-.closer-user-content button,
-.closer-user-content input,
-.closer-user-content label,
-.closer-user-content legend,
-.closer-user-content select,
-.closer-user-content textarea,
-.closer-user-content th,
-.closer-user-content td
+.modal-user-content td
 {
   font-size:20px
 }
 
 .user-markup button,
-.modal-user-content button,
-.closer-user-content button
+.modal-user-content button
 {
   border-width:1px;
   border-style:solid;
   cursor:pointer;
 }
 .user-markup button:hover,
-.modal-user-content button:hover,
-.closer-user-content button:hover
+.modal-user-content button:hover
 {
   cursor:pointer;
 }
 .user-markup button:focus,
-.modal-user-content button:focus,
-.closer-user-content button:focus
+.modal-user-content button:focus
 {
   outline: none;
 }
@@ -98,11 +129,7 @@
 .modal-user-content h3,
 .modal-user-content h4,
 .modal-user-content h5,
-.modal-user-content h6,
-.closer-user-content h3,
-.closer-user-content h4,
-.closer-user-content h5,
-.closer-user-content h6
+.modal-user-content h6
 {
   font-size:22px;
 }
@@ -111,8 +138,7 @@
 	right margin limits the width and brings it away from the scroll bar.
 */
 .user-markup p,
-.modal-user-content p,
-.closer-user-content p
+.modal-user-content p
 {
   display:block;
   clear:both;

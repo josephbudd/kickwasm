@@ -4,14 +4,12 @@ package helloworldtemplatepanel
 
 import (
 	"fmt"
-	"syscall/js"
 
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/notjs"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/lpc"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/paneling"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/viewtools"
 )
 
 /*
@@ -28,19 +26,17 @@ import (
 
 // Prepare prepares the panel to be spawned.
 // This is called once by package main when the application starts.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, phelp *paneling.Help) {
+func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, phelp *paneling.Help) {
 	quitCh = quitChan
 	eojCh = eojChan
 	receiveCh = receiveChan
 	sendCh = sendChan
-	tools = vtools
-	notJS = njs
 	help = phelp
 }
 
 // BuildPanel builds the panel's go code.
 // Returns the error.
-func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID map[string]string, panelData interface{}, unspawn func() error) (prepareToUnSpawn func(), err error) {
+func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelNameID map[string]string, panelData interface{}, unspawn func() error) (prepareToUnSpawn func(), err error) {
 
 	defer func() {
 		if err != nil {

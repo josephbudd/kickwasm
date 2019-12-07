@@ -6,59 +6,72 @@ const ViewToolsHideShow = `// +build js, wasm
 package viewtools
 
 import (
+	"log"
 	"syscall/js"
 )
 
 // IDIsShown returns is the element with the id is shown.
-func (tools *Tools) IDIsShown(id string) bool {
-	notJS := tools.NotJS
-	element := notJS.GetElementByID(id)
-	unseen := notJS.ClassListContains(element, UnSeenClassName)
-	return !unseen
+func IDIsShown(id string) (isShown bool) {
+	e := getElementByID(document, id)
+	classList := e.Get("classList")
+	isShown = !classList.Call("contains", UnSeenClassName).Bool()
+	return
 }
 
 // ElementIsShown returns if the element is shown.
-func (tools *Tools) ElementIsShown(element js.Value) bool {
-	unseen := tools.NotJS.ClassListContains(element, UnSeenClassName)
-	return !unseen
+func ElementIsShown(e js.Value) (isShown bool) {
+	classList := e.Get("classList")
+	isShown = !classList.Call("contains", UnSeenClassName).Bool()
+	return
 }
 
 // IDShow shows the element with the id.
-func (tools *Tools) IDShow(id string) {
-	tools.elementShow(tools.NotJS.GetElementByID(id), id)
+func IDShow(id string) {
+	elementShow(getElementByID(document, id), id)
 }
 
 // ElementShow shows the element.
-func (tools *Tools) ElementShow(element js.Value) {
-	tools.elementShow(element, tools.NotJS.ID(element))
+func ElementShow(e js.Value) {
+	elementShow(e, e.Get("id").String())
 }
 
-func (tools *Tools) elementShow(element js.Value, id string) {
-	if id != "tabsMasterView-home-slider-collection" && id != "tabsMasterView-home" && id != "closerMasterView" {
-		isSlider, _ := tools.toBeShownInGroup(element)
+func elementShow(e js.Value, id string) {
+	if id != "mainMasterView-home-slider-collection" && id != "mainMasterView-home" {
+		isSlider, _ := ShowInGroup(e, ToBeSeenClassName, ToBeUnSeenClassName)
 		if isSlider {
 			return
 		}
 	}
-	tools.NotJS.ClassListReplaceClass(element, UnSeenClassName, SeenClassName)
+	classList := e.Get("classList")
+	if classList.Call("replace", UnSeenClassName, SeenClassName).Bool() {
+		return
+	}
+	if !classList.Call("contains", SeenClassName).Bool() {
+		classList.Call("add", SeenClassName)
+	}
 }
 
 // IDHide hides the element with the id.
-func (tools *Tools) IDHide(id string) {
-	tools.elementHide(tools.NotJS.GetElementByID(id), id)
+func IDHide(id string) {
+	elementHide(getElementByID(document, id), id)
 }
 
 // ElementHide hides the element.
-func (tools *Tools) ElementHide(element js.Value) {
-	tools.elementHide(element, tools.NotJS.ID(element))
+func ElementHide(e js.Value) {
+	elementHide(e, e.Get("id").String())
 }
 
-func (tools *Tools) elementHide(element js.Value, id string) {
-	notJS := tools.NotJS
-	notJS.ConsoleLog("hiding #" + id)
-	if id != "tabsMasterView-home-slider-collection" && id != "tabsMasterView-home" && id != "closerMasterView" && tools.toBeHiddenInGroup(element) {
+func elementHide(e js.Value, id string) {
+	log.Println("hiding #" + id)
+	if id != "mainMasterView-home-slider-collection" && id != "mainMasterView-home" && hideInGroup(e, ToBeSeenClassName, ToBeUnSeenClassName) {
 		return
 	}
-	notJS.ClassListReplaceClass(element, SeenClassName, UnSeenClassName)
+	classList := e.Get("classList")
+	if classList.Call("replace", SeenClassName, UnSeenClassName).Bool() {
+		return
+	}
+	if !classList.Call("contains", UnSeenClassName).Bool() {
+		classList.Call("add", UnSeenClassName)
+	}
 }
 `

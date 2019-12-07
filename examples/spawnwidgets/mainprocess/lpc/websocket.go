@@ -34,12 +34,12 @@ func (server *Server) serveWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 	server.incConnectionCount()
 	defer func() {
-		log.Println("CLOSED WS CONNECTION")
+		// log.Println("CLOSED WS CONNECTION")
 		ws.Close()
 		server.decConnectionCount()
 		server.setLastDisconnect(time.Now())
 	}()
-	log.Println("OPENED WS CONNECTION")
+	// log.Println("OPENED WS CONNECTION")
 	closeWSConnectionCh := make(chan struct{})
 	stopReadLoopCh := make(chan struct{}, 1)
 	stopPingLoopCh := make(chan struct{}, 1)
@@ -89,7 +89,7 @@ func (server *Server) readLoop(ws *websocket.Conn,
 				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
 					log.Printf("readloop: unexpected close error is %s", err.Error())
 				} else {
-					log.Printf("readloop: error is %s", err.Error())
+					//log.Printf("readloop: error is %s", err.Error())
 				}
 				closeWSConnectionCh <- struct{}{}
 				return

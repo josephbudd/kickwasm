@@ -6,11 +6,8 @@ const PanelData = `{{$Dot := .}}// +build js, wasm
 package {{call .PackageNameCase .PanelName}}
 
 import (
-	"syscall/js"
-
+	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -32,13 +29,7 @@ var (
 	// sendCh sends messages to the main process.
 	sendCh lpc.Sending
 
-	// The framework's renderer API.
-	tools *viewtools.Tools
-
-	// Some javascipt like dom functions written in go.
-	notJS *notjs.NotJS
-
-	// The javascript null value
-	null = js.Null()
+	// The document object module.
+	document *dom.DOM
 )
 `

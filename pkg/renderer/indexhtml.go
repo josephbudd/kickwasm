@@ -38,14 +38,14 @@ func buildIndexHTMLNode(appPaths paths.ApplicationPathsI, builder *project.Build
 	}
 	htm.AppendChild(body)
 	// master view
-	tabsMasterView := builder.ToHTMLNode(tabsMasterViewID, addLocations)
-	body.AppendChild(tabsMasterView)
+	mainMasterView := builder.ToHTMLNode(mainMasterViewID, addLocations)
+	body.AppendChild(mainMasterView)
 	// modal view
 	modal := buildModalNode(builder)
 	body.AppendChild(modal)
-	// closer view
-	closer := buildCloserNode(builder)
-	body.AppendChild(closer)
+	// black screen behind printing
+	black := buildBlackNode(builder)
+	body.AppendChild(black)
 	return doc
 }
 
@@ -241,83 +241,15 @@ func buildModalNode(builder *project.Builder) (modal *html.Node) {
 	return
 }
 
-func buildCloserNode(builder *project.Builder) (closer *html.Node) {
-	closer = &html.Node{
+func buildBlackNode(builder *project.Builder) (black *html.Node) {
+	black = &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
 		Data:     "div",
 		Attr: []html.Attribute{
-			{Key: "id", Val: "closerMasterView"},
+			{Key: "id", Val: "blackMasterView"},
 			{Key: "class", Val: builder.Classes.UnSeen},
 		},
 	}
-	center := &html.Node{
-		Type:     html.ElementNode,
-		DataAtom: atom.Div,
-		Data:     "div",
-		Attr: []html.Attribute{
-			{Key: "id", Val: "closerMasterView-center"},
-			{Key: "class", Val: builder.Classes.CloserUserContent},
-		},
-	}
-	closer.AppendChild(center)
-	h1 := &html.Node{
-		Type:     html.ElementNode,
-		DataAtom: atom.H1,
-		Data:     "h1",
-	}
-	textNode := &html.Node{
-		Type: html.TextNode,
-		Data: "Close this application.",
-	}
-	h1.AppendChild(textNode)
-	center.AppendChild(h1)
-	// Are you certain paragraph
-	p := &html.Node{
-		Type:     html.ElementNode,
-		DataAtom: atom.P,
-		Data:     "p",
-	}
-	textNode = &html.Node{
-		Type: html.TextNode,
-		Data: "Are you certain that you want to close this application?",
-	}
-	p.AppendChild(textNode)
-	center.AppendChild(p)
-	// buttons paragraph
-	p = &html.Node{
-		Type:     html.ElementNode,
-		DataAtom: atom.P,
-		Data:     "p",
-	}
-	center.AppendChild(p)
-	button := &html.Node{
-		Type:     html.ElementNode,
-		DataAtom: atom.Div,
-		Data:     "button",
-		Attr: []html.Attribute{
-			{Key: "id", Val: "closerMasterView-cancel"},
-		},
-	}
-	textNode = &html.Node{
-		Type: html.TextNode,
-		Data: "No! Do not close this application.",
-	}
-	button.AppendChild(textNode)
-	p.AppendChild(button)
-	button = &html.Node{
-		Type:     html.ElementNode,
-		DataAtom: atom.Div,
-		Data:     "button",
-		Attr: []html.Attribute{
-			{Key: "id", Val: "closerMasterView-close"},
-		},
-	}
-	textNode = &html.Node{
-		Type: html.TextNode,
-		Data: "Yes, close this application.",
-	}
-	button.AppendChild(textNode)
-	p.AppendChild(button)
 	return
 }

@@ -7,14 +7,12 @@ package {{call .PackageNameCase .PanelName}}
 
 import (
 	"fmt"
-	"syscall/js"
 
 	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*
@@ -31,19 +29,17 @@ import (
 
 // Prepare prepares the panel to be spawned.
 // This is called once by package main when the application starts.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, phelp *paneling.Help) {
+func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, phelp *paneling.Help) {
 	quitCh = quitChan
 	eojCh = eojChan
 	receiveCh = receiveChan
 	sendCh = sendChan
-	tools = vtools
-	notJS = njs
 	help = phelp
 }
 
 // BuildPanel builds the panel's go code.
 // Returns the error.
-func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader js.Value, panelNameID map[string]string, panelData interface{}, unspawn func() error) (prepareToUnSpawn func(), err error) {
+func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelNameID map[string]string, panelData interface{}, unspawn func() error) (prepareToUnSpawn func(), err error) {
 
 	defer func() {
 		if err != nil {

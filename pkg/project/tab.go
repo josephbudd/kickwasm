@@ -119,13 +119,16 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 		h3.AppendChild(textNode)
 	}
 	tabPanel.AppendChild(h3)
-	// the tab panel has the tab panel group panel under the header.
-	// the tab panel group panel wraps inner markup panels.
+	// Under the h3 is the group of markup panels.
+	// How the group works.
+	//  The inner panel wraps the group of content panels.
+	//  Each content panel wraps a single markup panel.
 	innerID := t.PanelHTMLID + DashInnerString
 	t.PanelInnerHTMLID = innerID
 	attributes = make([]html.Attribute, 0, 10)
 	attributes = append(attributes, html.Attribute{Key: "id", Val: innerID})
-	attributes = append(attributes, html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classTabPanelGroup, classUserContent)})
+	// attributes = append(attributes, html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classTabPanelGroup, classUserContent)})
+	attributes = append(attributes, html.Attribute{Key: "class", Val: classTabPanelGroup})
 	innerPanel := &html.Node{
 		Type:     html.ElementNode,
 		DataAtom: atom.Div,
@@ -144,7 +147,7 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 		forwhat = fmt.Sprintf("This is one of a group of %d panels displayed when the %%q tab button is clicked.", l)
 	}
 	// tabs only have markup.
-	// each panel is the group is a markup panel.
+	// each panel in the group is a content panel wrapping a markup panel.
 	for i, p := range t.Panels {
 		p.H3ID = t.PanelH3HTMLID
 		builder.MarkupPanelCount++

@@ -15,6 +15,7 @@ const (
 	wasmPrefix     = "/wasm"
 	wasmExceDotJS  = "/wasm/wasm_exec.js"
 	wasmAppDotWASM = "/wasm/app.wasm"
+	favicon        = "/favicon.ico"
 )
 
 /*
@@ -61,7 +62,7 @@ func serve(w http.ResponseWriter, r *http.Request) {
 		withDefaultHeaders(w, r, serveFileStore)
 	case r.URL.Path == wasmAppDotWASM:
 		withDefaultHeaders(w, r, serveFileStore)
-	case r.URL.Path == "/favicon.ico":
+	case r.URL.Path == favicon:
 		withDefaultHeaders(w, r, serveFileStore)
 	default:
 		http.Error(w, "Not found", 404)
@@ -93,8 +94,10 @@ func serveFileStore(w http.ResponseWriter, r *http.Request) {
 	}
 	path = filepath.Join(filepaths.GetShortSitePath(), urlPath)
 	if bb, found = spawnwidgetssitepack.Contents(path); !found {
-		log.Printf("404 Error: %q not found", path)
-		http.Error(w, "Not found", 404)
+		if urlPath != favicon {
+			log.Printf("404 Error: %q not found", path)
+			http.Error(w, "Not found", 404)
+		}
 		return
 	}
 	header := w.Header()

@@ -7,61 +7,63 @@ package viewtools
 
 import (
 	"syscall/js"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
 )
 
 // CountWidgetsWaiting returns the number of widget event dispatchers listening to the eoj channel.
-func (tools *Tools) CountWidgetsWaiting() (count int) {
-	count = tools.countWidgetsWaiting
+func CountWidgetsWaiting() (count int) {
+	count = countWidgetsWaiting
 	return
 }
 
 // IncWidgetWaiting increments the number of widget event dispatchers listening to the eoj channel.
-func (tools *Tools) IncWidgetWaiting() {
-	tools.countWidgetsWaiting++
+func IncWidgetWaiting() {
+	countWidgetsWaiting++
 }
 
 // DecWidgetWaiting decrements the number of widget event dispatchers listening to the eoj channel.
-func (tools *Tools) DecWidgetWaiting() {
-	if tools.countWidgetsWaiting > 0 {
-		tools.countWidgetsWaiting--
+func DecWidgetWaiting() {
+	if countWidgetsWaiting > 0 {
+		countWidgetsWaiting--
 	}
 }
 
 // Spawned Widgets.
 
 type spawnedWidgetInfo struct {
-	element js.Value
-	id      uint64
+	jsWidget js.Value
+	id       uint64
 }
 
 // NewSpawnWidgetUniqueID returns a new id for a widget in a spawned panel.
-func (tools *Tools) NewSpawnWidgetUniqueID() (spawnWidgetID uint64) {
-	spawnWidgetID = tools.newSpawnID()
+func NewSpawnWidgetUniqueID() (spawnWidgetID uint64) {
+	spawnWidgetID = newSpawnID()
 	return
 }
 
 // SpawnWidget spawns a widget.
-func (tools *Tools) SpawnWidget(spawnWidgetID uint64, widget, parent js.Value) {
-	tools.IncWidgetWaiting()
-	tools.NotJS.AppendChild(parent, widget)
-	tools.spawnedWidgets[spawnWidgetID] = spawnedWidgetInfo{
-		element: widget,
-		id:      spawnWidgetID,
+func SpawnWidget(spawnWidgetID uint64, widget, parent js.Value) {
+	IncWidgetWaiting()
+	parent.Call("appendChild", widget)
+	spawnedWidgets[spawnWidgetID] = spawnedWidgetInfo{
+		jsWidget: widget,
+		id:       spawnWidgetID,
 	}
 	return
 }
 
 // UnSpawnWidget unspawns a widget.
-func (tools *Tools) UnSpawnWidget(spawnWidgetID uint64) {
+func UnSpawnWidget(spawnWidgetID uint64) {
 	var info spawnedWidgetInfo
 	var found bool
-	if info, found = tools.spawnedWidgets[spawnWidgetID]; !found {
+	if info, found = spawnedWidgets[spawnWidgetID]; !found {
 		return
 	}
-	parent := tools.NotJS.ParentNode(info.element)
-	tools.NotJS.RemoveChild(parent, info.element)
-	tools.DecWidgetWaiting()
-	tools.UnRegisterCallBacks(spawnWidgetID)
-	delete(tools.spawnedWidgets, spawnWidgetID)
+	parent := info.jsWidget.Get("parentNode")
+	parent.Call("removeChild", info.jsWidget)
+	DecWidgetWaiting()
+	callback.UnRegisterCallBacks(spawnWidgetID)
+	delete(spawnedWidgets, spawnWidgetID)
 }
 `

@@ -5,10 +5,9 @@ package createpanel
 import (
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/notjs"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/lpc"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/dom"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/paneling"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/viewtools"
 )
 
 /*
@@ -26,7 +25,7 @@ type Panel struct {
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, vtools *viewtools.Tools, njs *notjs.NotJS, help *paneling.Help) (panel *Panel, err error) {
+func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) (panel *Panel, err error) {
 
 	defer func() {
 		if err != nil {
@@ -38,18 +37,16 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	eojCh = eojChan
 	receiveCh = receiveChan
 	sendCh = sendChan
-	tools = vtools
-	notJS = njs
+	document = dom.NewDOM(0)
 
 	group := &panelGroup{}
 	controller := &panelController{
-		group:   group,
-		eventCh: make(chan viewtools.Event, 1024),
+		group: group,
 	}
 	presenter := &panelPresenter{
 		group:          group,
-		tabPanelHeader: notJS.GetElementByID("tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-H3"),
-		tabButton:      notJS.GetElementByID("tabsMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTab"),
+		tabPanelHeader: document.ElementByID("mainMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTabPanel-H3"),
+		tabButton:      document.ElementByID("mainMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar-FirstTab"),
 	}
 	messenger := &panelMessenger{
 		group: group,

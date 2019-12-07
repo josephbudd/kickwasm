@@ -6,6 +6,9 @@ import (
 	"syscall/js"
 
 	"github.com/pkg/errors"
+
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/viewtools"
 )
 
 /*
@@ -30,10 +33,12 @@ func (group *panelGroup) defineMembers() (err error) {
 		}
 	}()
 
-	if group.action1Level3MarkupPanel = notJS.GetElementByID("tabsMasterView-home-pad-Action1Button-Action1Level1ButtonPanel-Action1ToLevel2ColorsButton-Action1Level2ButtonPanel-Action1ToLevel3ColorsButton-Action1Level3ButtonPanel-Action1Level3ContentButton-Action1Level3MarkupPanel"); group.action1Level3MarkupPanel == null {
-		err = errors.New("unable to find #tabsMasterView-home-pad-Action1Button-Action1Level1ButtonPanel-Action1ToLevel2ColorsButton-Action1Level2ButtonPanel-Action1ToLevel3ColorsButton-Action1Level3ButtonPanel-Action1Level3ContentButton-Action1Level3MarkupPanel")
+    var panel *markup.Element
+ if panel = document.ElementByID("mainMasterView-home-pad-Action1Button-Action1Level1ButtonPanel-Action1ToLevel2ColorsButton-Action1Level2ButtonPanel-Action1ToLevel3ColorsButton-Action1Level3ButtonPanel-Action1Level3ContentButton-Action1Level3MarkupPanel"); panel == nil {
+		err = errors.New("unable to find #mainMasterView-home-pad-Action1Button-Action1Level1ButtonPanel-Action1ToLevel2ColorsButton-Action1Level2ButtonPanel-Action1ToLevel3ColorsButton-Action1Level3ButtonPanel-Action1Level3ContentButton-Action1Level3MarkupPanel")
 		return
-	}
+    }
+    group.action1Level3MarkupPanel = panel.JSValue()
 
 	return
 }
@@ -45,7 +50,7 @@ func (group *panelGroup) defineMembers() (err error) {
 */
 
 // showAction1Level3MarkupPanel shows the panel you named Action1Level3MarkupPanel while hiding any other panels in this panel group.
-// This panel's id is tabsMasterView-home-pad-Action1Button-Action1Level1ButtonPanel-Action1ToLevel2ColorsButton-Action1Level2ButtonPanel-Action1ToLevel3ColorsButton-Action1Level3ButtonPanel-Action1Level3ContentButton-Action1Level3MarkupPanel.
+// This panel's id is mainMasterView-home-pad-Action1Button-Action1Level1ButtonPanel-Action1ToLevel2ColorsButton-Action1Level2ButtonPanel-Action1ToLevel3ColorsButton-Action1Level3ButtonPanel-Action1Level3ContentButton-Action1Level3MarkupPanel.
 // This panel either becomes visible immediately or whenever this group of panels is made visible.  Whenever could be immediately if this panel group is currently visible.
 // Param force boolean effects when this panel becomes visible.
 //  * if force is true then
@@ -58,5 +63,5 @@ Brought to you in the first service color.
 
 */
 func (group *panelGroup) showAction1Level3MarkupPanel(force bool) {
-	tools.ShowPanelInButtonGroup(group.action1Level3MarkupPanel, force)
+	viewtools.ShowPanelInButtonGroup(group.action1Level3MarkupPanel, force)
 }

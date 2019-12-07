@@ -24,7 +24,7 @@ type panelPresenter struct {
 
 	// example:
 
-	editCustomerName js.Value
+	editCustomerName *markup.Element
 
 	*/
 }
@@ -46,7 +46,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 	// example:
 
 	// Define the edit form's customer name input field.
-	if presenter.editCustomerName = notJS.GetElementByID("editCustomerName"); presenter.editCustomerName == null {
+	if presenter.editCustomerName = document.ElementByID("editCustomerName"); presenter.editCustomerName == nil {
 		err = errors.New("unable to find #editCustomerName")
 		return
 	}
@@ -64,7 +64,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 // displayCustomer displays the customer in the edit customer form panel.
 func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
-	notJS.SetValue(presenter.editCustomerName, record.Name)
+	presenter.editCustomerName.SetValue(record.Name)
 }
 
 */

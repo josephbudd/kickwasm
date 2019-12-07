@@ -17,7 +17,7 @@ const (
 	outputFolder = ""
 	yamlFilePath = "kickwasm.yaml"
 
-	versionBreaking = 12 // Each new version breaks backwards compatibility.
+	versionBreaking = 13 // Each new version breaks backwards compatibility.
 	versionFeature  = 0  // Each new version adds features. Retains backwards compatibility.
 	versionPatch    = 0  // Each new version only fixes bugs. No added features. Retains backwards compatibility.
 )
@@ -72,6 +72,14 @@ func usageFunc() {
 }
 
 func main() {
+
+	var err error
+	defer func() {
+		if err != nil {
+			os.Exit(1)
+		}
+	}()
+
 	flag.Usage = usageFunc
 	flag.Parse()
 	if VersionFlag {
@@ -81,13 +89,15 @@ func main() {
 		return
 	}
 	// initialize paths
-	pwd, err := os.Getwd()
+	var pwd string
+	pwd, err = os.Getwd()
 	if err != nil {
 		log.Println("Tried to get the working directory but couldn't, ", err)
 		return
 	}
 	if !common.PathFound(yamlFilePath) {
 		flag.Usage()
+		err = common.ErrNoKickWasm
 		return
 	}
 	// var appPaths *paths.ApplicationPaths

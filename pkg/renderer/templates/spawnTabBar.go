@@ -23,9 +23,8 @@ const (
 
 // Prepare prepares the tab bar and it's panels and templates to be spawned.
 // This is called once by package main when the application starts.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
-	vtools *viewtools.Tools, njs *notjs.NotJS, help *paneling.Help) {
+func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
 {{ range .TabNames }}
-	{{ call $Dot.PackageNameCase . }}.Prepare(quitChan, eojChan, receiveChan, sendChan, vtools, njs, help){{end}}
+	{{ call $Dot.PackageNameCase . }}.Prepare(quitChan, eojChan, receiveChan, sendChan, help){{end}}
 }
 `

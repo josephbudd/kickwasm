@@ -6,7 +6,6 @@ const LPCChannelsGo = `{{ $Dot := . }}package lpc
 import (
 	"encoding/json"
 	"fmt"
-	"sync"
 
 	"github.com/pkg/errors"
 
@@ -20,46 +19,20 @@ type Sending chan interface{}
 // Receiving is a channel that receives from the renderer.
 type Receiving chan interface{}
 
-// EOJer signals lpc go process to quit.
-type EOJer interface {
-	Signal()
-	NewEOJ() (ch chan struct{})
-	Release()
-}
-
-// EOJing is has a channel with a dynami size.
-// The channel signals go routines to stop.
-// EOJing implements EOJer.
-type EOJing struct {
-	ch    chan struct{}
-	count int
-	signaled    bool
-	countMutex  *sync.Mutex
-	signalMutex *sync.Mutex
-}
-
 var (
 	send    Sending
 	receive Receiving
-	eoj     EOJer
 )
 
 func init() {
 	send = make(chan interface{}, 1024)
 	receive = make(chan interface{})
-	eoj = &EOJing{
-		ch:    make(chan struct{}, 1024),
-		count: 0,
-		countMutex:  &sync.Mutex{},
-		signalMutex: &sync.Mutex{},
-	}
 }
 
 // Channels returns the renderer connection channels.
-func Channels() (sendChan Sending, receiveChan Receiving, eojChan EOJer) {
+func Channels() (sendChan Sending, receiveChan Receiving) {
 	sendChan = send
 	receiveChan = receive
-	eojChan = eoj
 	return
 }
 
@@ -85,7 +58,7 @@ func (sending Sending) Payload(msg interface{}) (payload []byte, err error) {
 			return
 		}
 		id = 1{{ range $index, $name := .LPCNames }}
-case *message.{{ $name }}MainProcessToRenderer:
+	case *message.{{ $name }}MainProcessToRenderer:
 		if bb, err = json.Marshal(msg); err != nil {
 			return
 		}
@@ -139,38 +112,6 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 		err = errors.New(errMsg)
 	}
 	return
-}
-
-// Signal sends on the eoj channel signaling lpc go funcs to quit.
-func (eoj *EOJing) Signal() {
-	eoj.signalMutex.Lock()
-	if !eoj.signaled {
-		eoj.signaled = true
-		end := struct{}{}
-		for i := 0; i < eoj.count; i++ {
-			eoj.ch <- end
-		}
-	}
-	eoj.signalMutex.Unlock()
-}
-
-// NewEOJ returns a new eoj channel and increments the usage count.
-func (eoj *EOJing) NewEOJ() (ch chan struct{}) {
-	eoj.countMutex.Lock()
-	eoj.count++
-	ch = eoj.ch
-	eoj.countMutex.Unlock()
-	return
-}
-
-// Release decrements the usage count.
-// Call this at the end of your lpc handler func.
-func (eoj *EOJing) Release() {
-	eoj.countMutex.Lock()
-	if eoj.count > 0 {
-		eoj.count--
-	}
-	eoj.countMutex.Unlock()
 }
 `
 
@@ -319,7 +260,7 @@ func NewServer(listener net.Listener, quitCh chan struct{}, receiving Receiving,
 const LPCRunGo = `package lpc
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 	"os/exec"
@@ -331,6 +272,7 @@ import (
 
 var (
 	myServer *http.Server
+	WorryMessage string
 )
 
 // Run runs the application until the main process terminates.
@@ -345,16 +287,16 @@ var (
 //        You will want your handlerFunc to do things like load your javascript, css and any other files.
 func (server *Server) Run(handlerFunc http.HandlerFunc) error {
 	appurl := "http://" + server.listener.Addr().String()
-	log.Println("listen and serve: ", appurl)
+	// log.Println("listen and serve: ", appurl)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		server.serve(w, r, handlerFunc)
 	})
 	// start the server
 	go func() {
 		if waitServer(appurl) && startBrowser(appurl) {
-			log.Printf("A browser window should open. If not, please visit %s", appurl)
+			WorryMessage = fmt.Sprintf("A browser window should open. If not, please visit %s", appurl)
 		} else {
-			log.Printf("Please open your web browser and visit %s", appurl)
+			WorryMessage = fmt.Sprintf("Please open your web browser and visit %s", appurl)
 		}
 	}()
 	// start the still connected loop.
@@ -389,7 +331,6 @@ func startBrowser(url string) bool {
 		args = []string{"xdg-open"}
 	}
 	args2 := append(args[1:], url)
-	log.Println(args[0], strings.Join(args2, ", "))
 	cmd := exec.Command(args[0], args2...)
 	return cmd.Start() == nil
 }
@@ -456,14 +397,14 @@ func (server *Server) stillConnectedLoop(stopRunLoopCh chan os.Signal) {
 			if server.GetConnectionCount() == 0 {
 				if now.Sub(server.GetLastDisconnect()) > server.DisconnectMax {
 					myServer.Close()
-					log.Println("Ending server. Renderer disconnected.")
+					// log.Println("Ending server. Renderer disconnected.")
 					server.QuitChan <- struct{}{}
 					return
 				}
 			}
 		case <-stopRunLoopCh:
 			myServer.Close()
-			log.Println("Ending server. Main process canceled.")
+			// log.Println("Ending server. Main process canceled.")
 			server.QuitChan <- struct{}{}
 			return
 		}
@@ -508,12 +449,12 @@ func (server *Server) serveWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 	server.incConnectionCount()
 	defer func() {
-		log.Println("CLOSED WS CONNECTION")
+		// log.Println("CLOSED WS CONNECTION")
 		ws.Close()
 		server.decConnectionCount()
 		server.setLastDisconnect(time.Now())
 	}()
-	log.Println("OPENED WS CONNECTION")
+	// log.Println("OPENED WS CONNECTION")
 	closeWSConnectionCh := make(chan struct{})
 	stopReadLoopCh := make(chan struct{}, 1)
 	stopPingLoopCh := make(chan struct{}, 1)
@@ -563,7 +504,7 @@ func (server *Server) readLoop(ws *websocket.Conn,
 				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
 					log.Printf("readloop: unexpected close error is %s", err.Error())
 				} else {
-					log.Printf("readloop: error is %s", err.Error())
+					//log.Printf("readloop: error is %s", err.Error())
 				}
 				closeWSConnectionCh <- struct{}{}
 				return

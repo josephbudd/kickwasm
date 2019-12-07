@@ -27,6 +27,7 @@ type InitRendererToMainProcess struct {
 type InitMainProcessToRenderer struct {
 	Error        bool
 	ErrorMessage string
+	Fatal        bool
 }
 `
 
@@ -40,11 +41,17 @@ type LogRendererToMainProcess struct {
 }
 
 // LogMainProcessToRenderer is the Log message that the main process sends to the renderer.
+// Error indicates that an error occurred.
+// ErrorMessage is the error message to show the user in the renderer process.
+// Fatal indicates that the error is fatal and the renderer process must end.
+// If Fatal is true then this message is automatically handled by the renderer process. You can ignore it.
 type LogMainProcessToRenderer struct {
-	Error        bool
-	ErrorMessage string
 	Level        uint64
 	Message      string
+
+	Error        bool
+	ErrorMessage string
+	Fatal        bool
 }
 `
 
@@ -57,9 +64,14 @@ type {{.LPCName}}RendererToMainProcess struct {
 }
 
 // {{.LPCName}}MainProcessToRenderer is the {{.LPCName}} message that the main process sends to the renderer.
+// Error indicates that an error occurred.
+// ErrorMessage is the error message to show the user in the renderer process.
+// Fatal indicates that the error is fatal and the renderer process must end.
+// If Fatal is true then this message is automatically handled by the renderer process. You can ignore it.
 type {{.LPCName}}MainProcessToRenderer struct {
 	Error        bool
 	ErrorMessage string
+	Fatal        bool
 }
 `
 

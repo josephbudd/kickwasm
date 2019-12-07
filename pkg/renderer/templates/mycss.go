@@ -2,6 +2,49 @@ package templates
 
 // MyCSS is the mycss/mycss.css file.
 const MyCSS = `{{$Dot := .}}
+/******************************************************************************
+
+  print
+
+******************************************************************************/
+
+@media print {
+  ::-webkit-scrollbar
+  {
+    width: 0px;
+    height:0px;
+  }
+  
+  #mainMasterView-home-slider
+  {
+    color: black;
+    background: white;
+    margin-left: 0px;
+  }
+  #mainMasterView-home-slider div
+  {
+    color: black;
+    background: white;
+  }
+  #blackMasterView
+  {
+    visibility: hidden;
+  }
+  #mainMasterView-home-slider-back
+  {
+    visibility: hidden;
+  }
+  #mainMasterView-home-slider
+  {
+    margin-left: -50px;
+  }
+  /* You may or may not want to use these.
+  h1,
+  h2
+  {
+    display: none !important;
+  } */
+}
 
 /******************************************************************************
 
@@ -35,8 +78,7 @@ const MyCSS = `{{$Dot := .}}
   word-spacing: 4px;
 }
 
-.{{.ModalUserContent}},
-.{{.CloserUserContent}}
+.{{.ModalUserContent}}
 {
   overflow-x:hidden;
   overflow-y:auto;
@@ -60,36 +102,25 @@ const MyCSS = `{{$Dot := .}}
 .{{.ModalUserContent}} select,
 .{{.ModalUserContent}} textarea,
 .{{.ModalUserContent}} th,
-.{{.ModalUserContent}} td,
-.{{.CloserUserContent}} button,
-.{{.CloserUserContent}} input,
-.{{.CloserUserContent}} label,
-.{{.CloserUserContent}} legend,
-.{{.CloserUserContent}} select,
-.{{.CloserUserContent}} textarea,
-.{{.CloserUserContent}} th,
-.{{.CloserUserContent}} td
+.{{.ModalUserContent}} td
 {
   font-size:20px
 }
 
 .{{.UserMarkup}} button,
-.{{.ModalUserContent}} button,
-.{{.CloserUserContent}} button
+.{{.ModalUserContent}} button
 {
   border-width:1px;
   border-style:solid;
   cursor:pointer;
 }
 .{{.UserMarkup}} button:hover,
-.{{.ModalUserContent}} button:hover,
-.{{.CloserUserContent}} button:hover
+.{{.ModalUserContent}} button:hover
 {
   cursor:pointer;
 }
 .{{.UserMarkup}} button:focus,
-.{{.ModalUserContent}} button:focus,
-.{{.CloserUserContent}} button:focus
+.{{.ModalUserContent}} button:focus
 {
   outline: none;
 }
@@ -101,11 +132,7 @@ const MyCSS = `{{$Dot := .}}
 .{{.ModalUserContent}} h3,
 .{{.ModalUserContent}} h4,
 .{{.ModalUserContent}} h5,
-.{{.ModalUserContent}} h6,
-.{{.CloserUserContent}} h3,
-.{{.CloserUserContent}} h4,
-.{{.CloserUserContent}} h5,
-.{{.CloserUserContent}} h6
+.{{.ModalUserContent}} h6
 {
   font-size:22px;
 }
@@ -114,8 +141,7 @@ const MyCSS = `{{$Dot := .}}
 	right margin limits the width and brings it away from the scroll bar.
 */
 .{{.UserMarkup}} p,
-.{{.ModalUserContent}} p,
-.{{.CloserUserContent}} p
+.{{.ModalUserContent}} p
 {
   display:block;
   clear:both;

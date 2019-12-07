@@ -6,21 +6,21 @@ const ViewToolsMarkupGo = `// +build js, wasm
 package viewtools
 
 // CountMarkupPanels returns the number of markup panels.
-func (tools *Tools) CountMarkupPanels() (count int) {
-	count = tools.countSpawnedMarkupPanels + tools.countMarkupPanels
+func CountMarkupPanels() (count int) {
+	count = countSpawnedMarkupPanels + countMarkupPanels
 	return
 }
 
 // IncSpawnedPanels increments the number of spawned panels.
-func (tools *Tools) IncSpawnedPanels(n int) {
-	tools.countSpawnedMarkupPanels += n
+func IncSpawnedPanels(n int) {
+	countSpawnedMarkupPanels += n
 }
 
 // DecSpawnedPanels decrements the number of spawned panels.
-func (tools *Tools) DecSpawnedPanels(n int) {
-	tools.countSpawnedMarkupPanels -= n
-	if tools.countSpawnedMarkupPanels < 0 {
-		tools.countSpawnedMarkupPanels = 0
+func DecSpawnedPanels(n int) {
+	countSpawnedMarkupPanels -= n
+	if countSpawnedMarkupPanels < 0 {
+		countSpawnedMarkupPanels = 0
 	}
 }
 `

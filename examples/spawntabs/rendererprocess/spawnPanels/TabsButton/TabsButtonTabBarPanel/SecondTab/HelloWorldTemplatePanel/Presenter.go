@@ -3,9 +3,12 @@
 package helloworldtemplatepanel
 
 import (
-	"syscall/js"
+	"strings"
 
 	"github.com/pkg/errors"
+
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/dom"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/markup"
 )
 
 /*
@@ -17,11 +20,12 @@ import (
 // panelPresenter writes to the panel
 type panelPresenter struct {
 	uniqueID       uint64
+	document       *dom.DOM
 	group          *panelGroup
 	controller     *panelController
 	messenger      *panelMessenger
-	tabButton      js.Value
-	tabPanelHeader js.Value
+	tabButton      *markup.Element
+	tabPanelHeader *markup.Element
 
 	/* NOTE TO DEVELOPER: Step 1 of 3.
 
@@ -29,7 +33,7 @@ type panelPresenter struct {
 
 	// example:
 
-	addCustomerName js.Value
+	addCustomerName *markup.Element
 
 	*/
 }
@@ -49,6 +53,9 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 	// Define your panelPresenter members.
 
 	// example:
+
+	import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/framework/viewtools"
+
 	// my spawn template has a name input field and a submit button.
 	// <label for="addCustomerName{{.SpawnID}}">Name</label><input type="text" id="addCustomerName{{.SpawnID}}">
 
@@ -56,8 +63,8 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	// Define the customer name input field.
 	// Build it's id using the uniqueID.
-	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
-	if presenter.addCustomerName = notJS.GetElementByID(id); presenter.addCustomerName == null {
+	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	if presenter.addCustomerName = presenter.document.ElementByID(id); presenter.addCustomerName == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
@@ -70,23 +77,29 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 // Tab button label.
 
 func (presenter *panelPresenter) getTabLabel() (label string) {
-	label = notJS.GetInnerText(presenter.tabButton)
+	label = presenter.tabButton.InnerText()
 	return
 }
 
 func (presenter *panelPresenter) setTabLabel(label string) {
-	notJS.SetInnerText(presenter.tabButton, label)
+	presenter.tabButton.SetInnerText(label)
 }
 
 // Tab panel heading.
 
 func (presenter *panelPresenter) getTabPanelHeading() (heading string) {
-	heading = notJS.GetInnerText(presenter.tabPanelHeader)
+	heading = presenter.tabPanelHeader.InnerText()
 	return
 }
 
 func (presenter *panelPresenter) setTabPanelHeading(heading string) {
-	notJS.SetInnerText(presenter.tabPanelHeader, heading)
+	heading = strings.TrimSpace(heading)
+	if len(heading) == 0 {
+		presenter.tabPanelHeader.Hide()
+	} else {
+		presenter.tabPanelHeader.Show()
+	}
+	presenter.tabPanelHeader.SetInnerText(heading)
 }
 
 /* NOTE TO DEVELOPER. Step 3 of 3.
@@ -95,10 +108,12 @@ func (presenter *panelPresenter) setTabPanelHeading(heading string) {
 
 // example:
 
+import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/store/record"
+
 // displayCustomer displays the customer in the add customer form.
 // This short example only uses the customer name field in the form.
 func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
-	notJS.SetValue(presenter.addCustomerName, record.Name)
+	presenter.addCustomerName.SetValue(record.Name)
 }
 
 */

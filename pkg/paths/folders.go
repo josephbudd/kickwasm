@@ -14,7 +14,6 @@ type FolderNames struct {
 	Interfaces      string
 	LogLevels       string
 	MainProcess     string
-	NotJS           string
 	Paneling        string
 	Panels          string
 	Record          string
@@ -38,6 +37,19 @@ type FolderNames struct {
 	Message  string
 
 	SitePack string
+
+	// v 13 renderer
+
+	DOM         string
+	CallBack    string
+	Event       string
+	Location    string
+	Markup      string
+	Window      string
+	Display     string
+	Framework   string
+	Proofs      string
+	Application string
 }
 
 // GetFolderNames returns the folder names.
@@ -55,7 +67,6 @@ func GetFolderNames() *FolderNames {
 		Interfaces:      "interfaces",
 		LogLevels:       "loglevels",
 		MainProcess:     "mainprocess",
-		NotJS:           "notjs",
 		Paneling:        "paneling",
 		Panels:          "panels",
 		Record:          "record",
@@ -79,5 +90,18 @@ func GetFolderNames() *FolderNames {
 		Message:  "message",
 
 		SitePack: "sitepack",
+
+		// v 13 renderer
+
+		DOM:         "dom",
+		CallBack:    "callback",
+		Event:       "event",
+		Location:    "location",
+		Markup:      "markup",
+		Window:      "window",
+		Display:     "display",
+		Framework:   "framework",
+		Proofs:      "proofs",
+		Application: "application",
 	}
 }

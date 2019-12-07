@@ -36,7 +36,7 @@ body {
 
 ******************************************************************************/
 
-#tabsMasterView
+#mainMasterView
 {
   height:inherit;
   overflow:hidden;
@@ -76,33 +76,14 @@ body {
   overflow-y: auto;
 }
 
-#closerMasterView
+#blackMasterView
 {
   position: relative;
   z-index:2;
   top:0px;
   left:0px;
   position:absolute;
-  border-width:1px;
-  border-style:solid;
-  border-radius: 20px;
-  padding:50px;
-}
-
-#closerMasterView-center
-{
-  position:relative;
-  border-width:1px;
-  border-style:solid;
-  border-radius: 20px;
-  padding:10px;
-}
-
-#closerMasterView-center > h2
-{
-  margin-top:0;
-  margin-bottom:5px;
-  font-size:36px;
+  background-color: black;
 }
 
 /******************************************************************************
@@ -133,7 +114,7 @@ div.{{.TabPanel}}
 
 div.{{.TabPanelGroup}}
 {
-  overflow-y:auto;
+  /* overflow-y:auto; */
   padding-left:20px;
 }
 
@@ -185,7 +166,7 @@ div.{{.UnderTabBar}} .{{.PanelHeading}}
 
 ******************************************************************************/
 
-#tabsMasterView > h1.{{.PanelHeading}}
+#mainMasterView > h1.{{.PanelHeading}}
 {
   margin-top:0;
   margin-bottom:5px;

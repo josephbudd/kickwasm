@@ -3,11 +3,14 @@
 package helloworldtemplatepanel
 
 import (
-	"syscall/js"
-
 	"github.com/pkg/errors"
 
-	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/viewtools"
+	"strings"
+
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/display"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/dom"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/event"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/markup"
 )
 
 /*
@@ -19,11 +22,11 @@ import (
 // panelController controls user input.
 type panelController struct {
 	uniqueID  uint64
+	document  *dom.DOM
 	panel     *spawnedPanel
 	group     *panelGroup
 	presenter *panelPresenter
 	messenger *panelMessenger
-	eventCh   chan viewtools.Event
 	unspawn   func() error
 
 	/* NOTE TO DEVELOPER. Step 1 of 5.
@@ -37,18 +40,19 @@ type panelController struct {
 	// <button id="addCustomerSubmit{{.SpawnID}}">Close</button>
 
 	import "syscall/js"
+	import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/markup"
 
-	addCustomerName   js.Value
-	addCustomerSubmit js.Value
+	addCustomerName   *markup.Element
+	addCustomerSubmit *markup.Element
 
 	*/
 
 	//closeSpawnButton{{.SpawnID}}
-	closeSpawnButton js.Value
+	closeSpawnButton *markup.Element
 	//input{{.SpawnID}}
-	input js.Value
+	input *markup.Element
 	// setButton{{.SpawnID}}
-	setButton js.Value
+	setButton *markup.Element
 }
 
 // defineControlsHandlers defines the GUI's controllers and their event handlers.
@@ -68,52 +72,54 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	// example:
 
+	import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/display"
+
 	var id string
 
 	// Define the customer name input field.
-	id = tools.FixSpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
-	if controller.addCustomerName = notJS.GetElementByID(id); controller.addCustomerName == null {
+	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerName = contoller.document.ElementByID(id); controller.addCustomerName == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 
 	// Define the submit button.
-	id = tools.FixSpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
-	if controller.addCustomerSubmit = notJS.GetElementByID(id); controller.addCustomerSubmit == null {
+	id = display.SpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
+	if controller.addCustomerSubmit = contoller.document.ElementByID(id); controller.addCustomerSubmit == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 	// Handle the submit button's onclick event.
-	tools.AddSpawnEventHandler(controller.handleSubmit, controller.addCustomerSubmit, "click", false, controller.uniqueID)
+	controller.addCustomerSubmit.SetEventHandler(controller.handleSubmit, "click", false)
 
 	*/
 
 	var id string
 
 	// Define the self close button and set it's handler.
-	id = tools.FixSpawnID("closeSpawnButton{{.SpawnID}}", controller.uniqueID)
-	if controller.closeSpawnButton = notJS.GetElementByID(id); controller.closeSpawnButton == null {
+	id = display.SpawnID("closeSpawnButton{{.SpawnID}}", controller.uniqueID)
+	if controller.closeSpawnButton = controller.document.ElementByID(id); controller.closeSpawnButton == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
-	// Handle the submit button's onclick event.
-	tools.AddSpawnEventHandler(controller.handleClick, controller.closeSpawnButton, "click", false, controller.uniqueID)
+	// Handle the close button's onclick event.
+	controller.closeSpawnButton.SetEventHandler(controller.handleClick, "click", false)
 
 	// Define the label input.
-	id = tools.FixSpawnID("input{{.SpawnID}}", controller.uniqueID)
-	if controller.input = notJS.GetElementByID(id); controller.input == null {
+	id = display.SpawnID("input{{.SpawnID}}", controller.uniqueID)
+	if controller.input = controller.document.ElementByID(id); controller.input == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
 
 	// Define the label set button and set it's handler.
-	id = tools.FixSpawnID("setButton{{.SpawnID}}", controller.uniqueID)
-	if controller.setButton = notJS.GetElementByID(id); controller.setButton == null {
+	id = display.SpawnID("setButton{{.SpawnID}}", controller.uniqueID)
+	if controller.setButton = controller.document.ElementByID(id); controller.setButton == nil {
 		err = errors.New("unable to find #" + id)
 		return
 	}
-	// Handle the submit button's onclick event.
-	tools.AddSpawnEventHandler(controller.handleSetClick, controller.setButton, "click", false, controller.uniqueID)
+	// Handle the set button's onclick event.
+	controller.setButton.SetEventHandler(controller.handleSetClick, "click", false)
 
 	return
 }
@@ -124,19 +130,25 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 // example:
 
-// import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/spawntabs/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/event"
+import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/display"
 
-func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn interface{}) {
-	// See renderer/viewtools/event.go.
-	// The viewtools.Event funcs.
+func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
+	// See renderer/event/event.go.
+	// The event.Event funcs.
 	//   e.PreventDefaultBehavior()
 	//   e.StopCurrentPhasePropagation()
 	//   e.StopAllPhasePropagation()
-	//   target := e.Target
-	//   event := e.Event
-	name := strings.TrimSpace(notJS.GetValue(controller.addCustomerName))
+	//   target := e.JSTarget
+	//   event := e.JSEvent
+	// You must use the javascript event e.JSEvent, as a js.Value.
+	// However, you can use the target as a *markup.Element
+	//   target := controller.document.NewElementFromJSValue(e.JSTarget)
+
+	name := strings.TrimSpace(controller.addCustomerName.Value())
 	if len(name) == 0 {
-		tools.Error("Customer Name is required.")
+		display.Error("Customer Name is required.")
 		return
 	}
 	r := &record.CustomerRecord{
@@ -148,17 +160,17 @@ func (controller *panelController) handleSubmit(e viewtools.Event) (nilReturn in
 
 */
 
-func (controller *panelController) handleClick(event viewtools.Event) (nilReturn interface{}) {
+func (controller *panelController) handleClick(e event.Event) (nilReturn interface{}) {
 	if err := controller.unspawn(); err != nil {
-		tools.Error(err.Error())
+		display.Error(err.Error())
 	}
 	return
 }
 
-func (controller *panelController) handleSetClick(event viewtools.Event) (nilReturn interface{}) {
+func (controller *panelController) handleSetClick(e event.Event) (nilReturn interface{}) {
 	var text string
-	if text = notJS.GetValue(controller.input); len(text) == 0 {
-		tools.Error("Enter some text for the tab label.")
+	if text = strings.TrimSpace(controller.input.Value()); len(text) == 0 {
+		display.Error("Enter some text for the tab label.")
 		return
 	}
 	controller.presenter.setTabLabel(text)

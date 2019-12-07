@@ -13,16 +13,20 @@ func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) er
 	data := &struct {
 		ApplicationGitPath      string
 		Stores                  []string
+		ImportRendererCallBack  string
+		ImportRendererFramework string
 		ImportRendererPaneling  string
-		ImportRendererNotJS     string
 		ImportRendererViewTools string
+		ImportRendererLocation  string
 		ImportRendererLPC       string
 		ImportDomainLPCMessage  string
 	}{
 		ApplicationGitPath:      builder.ImportPath,
+		ImportRendererCallBack:  folderpaths.ImportRendererCallBack,
+		ImportRendererFramework: folderpaths.ImportRendererFramework,
 		ImportRendererPaneling:  folderpaths.ImportRendererPaneling,
-		ImportRendererNotJS:     folderpaths.ImportRendererNotJS,
 		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
+		ImportRendererLocation:  folderpaths.ImportRendererLocation,
 		ImportRendererLPC:       folderpaths.ImportRendererLPC,
 		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
 	}

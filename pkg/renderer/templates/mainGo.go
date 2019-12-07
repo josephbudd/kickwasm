@@ -7,10 +7,12 @@ package main
 
 import (
 	"log"
+	"syscall/js"
 
 	"{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFramework}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererNotJS}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererLocation}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
@@ -40,20 +42,18 @@ import (
 func main() {
 	sendChan, receiveChan, eojChan := lpc.Channels()
 	quitChan := make(chan struct{})
-	notJS := notjs.NewNotJS()
-	tools := viewtools.NewTools(notJS)
 	help := paneling.NewHelp()
 
 	// get the renderer's channels
-	host, port := notJS.HostPort()
-	client := lpc.NewClient(host, port, tools, quitChan, eojChan, receiveChan, sendChan)
+	host, port := location.HostPort()
+	client := lpc.NewClient(host, port, quitChan, eojChan, receiveChan, sendChan)
 
 	// finish initializing the messenger client.
 	err := client.Connect(func() {
-		if er := doPanels(quitChan, eojChan, receiveChan, sendChan, tools, notJS, help); er != nil {
+		if er := framework.DoPanels(quitChan, eojChan, receiveChan, sendChan, help); er != nil {
 			errmsg := er.Error()
-			tools.ConsoleLog(errmsg)
-			tools.Alert(errmsg)
+			log.Println(errmsg)
+			js.Global().Get("alert").Invoke(errmsg)
 			return
 		}
 		sendChan <- &message.InitRendererToMainProcess{}
@@ -65,6 +65,6 @@ func main() {
 
 	// wait for the application to quit.
 	<-eojChan
-	tools.Quit()
+	viewtools.Quit()
 }
 `

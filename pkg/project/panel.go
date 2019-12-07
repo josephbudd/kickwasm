@@ -35,10 +35,6 @@ func newPanel() *Panel {
 
 func (panel *Panel) markItUp(forwhat string, group []*Panel) string {
 	lines := make([]string, 0, 5)
-	var l int
-	if group != nil {
-		l = len(group)
-	}
 	// this panel comes from the user's json file.
 	// add comments in the html and then comments rendered.
 	lines = append(lines, emptyString)
@@ -51,6 +47,7 @@ func (panel *Panel) markItUp(forwhat string, group []*Panel) string {
 	lines = append(lines, emptyString)
 	lines = append(lines, forwhat)
 	lines = append(lines, emptyString)
+	l := len(group)
 	if l == 1 {
 		lines = append(lines, "This panel is the only panel in it's panel group.")
 	} else {
@@ -60,7 +57,7 @@ func (panel *Panel) markItUp(forwhat string, group []*Panel) string {
 		} else {
 			lines = append(lines, fmt.Sprintf("Your other %d panels in this group are", (l-1)))
 		}
-		if group != nil {
+		if l > 0 {
 			for _, p := range group {
 				if p != panel {
 					lines = append(lines, emptyString)

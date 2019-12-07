@@ -2,7 +2,10 @@
 
 package pushpanel
 
-import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
+import (
+	"github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/display"
+)
 
 /*
 
@@ -34,9 +37,9 @@ type panelMessenger struct {
 
 // example:
 
-// import "github.com/josephbudd/kickwasm/examples/push/domain/store/record"
-// import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
-
+import "github.com/josephbudd/kickwasm/examples/push/domain/store/record"
+import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
+import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/display"
 
 // Add Customer.
 
@@ -51,11 +54,11 @@ func (messenger *panelMessenger) addCustomer(r *record.Customer) {
 func (messenger *panelMessenger) addCustomerRX(msg *message.AddCustomerMainProcessToRenderer) {
 	if msg.UniqueID == messenger.uniqueID {
 		if msg.Error {
-			tools.Error(msg.ErrorMessage)
+			display.Error(msg.ErrorMessage)
 			return
 		}
 		// no errors
-		tools.Success("Customer Added.")
+		display.Success("Customer Added.")
 	}
 }
 
@@ -63,7 +66,7 @@ func (messenger *panelMessenger) addCustomerRX(msg *message.AddCustomerMainProce
 
 func (messenger *panelMessenger) timeRX(msg *message.TimeMainProcessToRenderer) {
 	if msg.Error {
-		tools.Error(msg.ErrorMessage)
+		display.Error(msg.ErrorMessage)
 		return
 	}
 	messenger.presenter.displayTimeSpan(msg.Time)
@@ -90,7 +93,7 @@ func (messenger *panelMessenger) dispatchMessages() {
 
 				// example:
 
-				// import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
+				import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
 
 				case *message.AddCustomerMainProcessToRenderer:
 					messenger.addCustomerRX(msg)
@@ -116,8 +119,8 @@ func (messenger *panelMessenger) initialSends() {
 
 	// example:
 
-	// import "github.com/josephbudd/kickwasm/examples/push/domain/data/loglevels"
-	// import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
+	import "github.com/josephbudd/kickwasm/examples/push/domain/data/loglevels"
+	import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
 
 	msg := &message.LogRendererToMainProcess{
 		Level:   loglevels.LogLevelInfo,
