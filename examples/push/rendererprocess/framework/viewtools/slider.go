@@ -23,11 +23,11 @@ func Back() {
 }
 
 func showSlider() {
-	ElementShow(tabsMasterviewHomeSlider)
+	ElementShow(mainMasterviewHomeSlider)
 }
 
 func hideSlider() {
-	ElementHide(tabsMasterviewHomeSlider)
+	ElementHide(mainMasterviewHomeSlider)
 }
 
 func initializeSlider() {
@@ -46,7 +46,7 @@ func initializeSlider() {
 					callback.AddEventHandler(handlePadButtonOnClick, ch, "click", false, 0)
 				}
 			}
-		} else if div == tabsMasterviewHomeButtonPad {
+		} else if div == mainMasterviewHomeButtonPad {
 			children := div.Get("children")
 			lch := children.Length()
 			for j := 0; j < lch; j++ {
@@ -62,7 +62,7 @@ func initializeSlider() {
 		handleBack(e.JSTarget)
 		return
 	}
-	callback.AddEventHandler(f, tabsMasterviewHomeSliderBack, "click", false, 0)
+	callback.AddEventHandler(f, mainMasterviewHomeSliderBack, "click", false, 0)
 }
 
 func handlePadButtonOnClick(e event.Event) (nilReturn interface{}) {
@@ -102,6 +102,6 @@ func hereIsVisible() (isVisible bool) {
 		return
 	}
 	p := here.Get("parentNode")
-	isVisible = (p == tabsMasterviewHomeSliderCollection)
+	isVisible = (p == mainMasterviewHomeSliderCollection)
 	return
 }

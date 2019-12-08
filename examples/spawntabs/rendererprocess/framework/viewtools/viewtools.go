@@ -72,12 +72,12 @@ var (
 	null      js.Value
 
 	body                               js.Value
-	tabsMasterview                     js.Value
-	tabsMasterviewHome                 js.Value
-	tabsMasterviewHomeButtonPad        js.Value
-	tabsMasterviewHomeSlider           js.Value
-	tabsMasterviewHomeSliderBack       js.Value
-	tabsMasterviewHomeSliderCollection js.Value
+	mainMasterview                     js.Value
+	mainMasterviewHome                 js.Value
+	mainMasterviewHomeButtonPad        js.Value
+	mainMasterviewHomeSlider           js.Value
+	mainMasterviewHomeSliderBack       js.Value
+	mainMasterviewHomeSliderCollection js.Value
 
 	// modal
 	modalMasterView        js.Value
@@ -148,12 +148,12 @@ func init() {
 	SpawnIDReplacePattern = spawnIDReplacePattern
 	bodies := document.Call("getElementsByTagName", "BODY")
 	body = bodies.Index(0)
-	tabsMasterview = getElementByID(document, MasterID)
-	tabsMasterviewHome = getElementByID(document, HomeID)
-	tabsMasterviewHomeButtonPad = getElementByID(document, HomePadID)
-	tabsMasterviewHomeSlider = getElementByID(document, SliderID)
-	tabsMasterviewHomeSliderBack = getElementByID(document, SliderBackID)
-	tabsMasterviewHomeSliderCollection = getElementByID(document, SliderCollectionID)
+	mainMasterview = getElementByID(document, MasterID)
+	mainMasterviewHome = getElementByID(document, HomeID)
+	mainMasterviewHomeButtonPad = getElementByID(document, HomePadID)
+	mainMasterviewHomeSlider = getElementByID(document, SliderID)
+	mainMasterviewHomeSliderBack = getElementByID(document, SliderBackID)
+	mainMasterviewHomeSliderCollection = getElementByID(document, SliderCollectionID)
 	// modal
 	modalMasterView = getElementByID(document, "modalInformationMasterView")
 	modalMasterViewCenter = getElementByID(document, "modalInformationMasterView-center")

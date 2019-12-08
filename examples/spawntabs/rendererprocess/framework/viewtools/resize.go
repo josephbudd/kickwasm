@@ -53,23 +53,23 @@ func overSizeApp() {
 
 func sizeTabsMasterView(w, h float64) {
 	// now set the masterview height
-	if ElementIsShown(tabsMasterview) {
+	if ElementIsShown(mainMasterview) {
 		// tabs masterview is visible
 		// subtract extras before setting
-		h -= window.HeightExtras(tabsMasterview)
-		w -= window.WidthExtras(tabsMasterview)
+		h -= window.HeightExtras(mainMasterview)
+		w -= window.WidthExtras(mainMasterview)
 		// set master view height, width
-		window.SetStyleHeight(tabsMasterview, h)
-		window.SetStyleWidth(tabsMasterview, w)
-		// div #tabsMasterview children
+		window.SetStyleHeight(mainMasterview, h)
+		window.SetStyleWidth(mainMasterview, w)
+		// div #mainMasterview children
 		// * H1
-		// * div #tabsMasterview-home
-		// * div #tabsMasterview-home-slider
+		// * div #mainMasterview-home
+		// * div #mainMasterview-home-slider
 		//
 		// Process h1
 		h1Ht := float64(0)
 
-		children := tabsMasterview.Get("children")
+		children := mainMasterview.Get("children")
 		l := children.Length()
 		for i := 0; i < l; i++ {
 			ch := children.Index(i)
@@ -84,41 +84,41 @@ func sizeTabsMasterView(w, h float64) {
 		// home panel or slider is under the h1.
 		h -= h1Ht
 		// Process Home
-		if ElementIsShown(tabsMasterviewHome) {
+		if ElementIsShown(mainMasterviewHome) {
 			// remove extra measurements
-			h -= window.HeightExtras(tabsMasterviewHome)
-			w -= window.WidthExtras(tabsMasterviewHome)
+			h -= window.HeightExtras(mainMasterviewHome)
+			w -= window.WidthExtras(mainMasterviewHome)
 			// set the inside height and width
-			window.SetStyleHeight(tabsMasterviewHome, h)
-			window.SetStyleWidth(tabsMasterviewHome, w)
+			window.SetStyleHeight(mainMasterviewHome, h)
+			window.SetStyleWidth(mainMasterviewHome, w)
 			// homepad is the button pad in home.
-			h -= window.HeightExtras(tabsMasterviewHomeButtonPad)
-			w -= window.WidthExtras(tabsMasterviewHomeButtonPad)
+			h -= window.HeightExtras(mainMasterviewHomeButtonPad)
+			w -= window.WidthExtras(mainMasterviewHomeButtonPad)
 			//h -= 100
-			window.SetStyleHeight(tabsMasterviewHomeButtonPad, h)
-			window.SetStyleWidth(tabsMasterviewHomeButtonPad, w)
+			window.SetStyleHeight(mainMasterviewHomeButtonPad, h)
+			window.SetStyleWidth(mainMasterviewHomeButtonPad, w)
 			return
 		}
 		// home is not visible check the slider
 		// Process Slider
-		if ElementIsShown(tabsMasterviewHomeSlider) {
+		if ElementIsShown(mainMasterviewHomeSlider) {
 			// remove extra measurements
-			h -= window.HeightExtras(tabsMasterviewHomeSlider)
-			w -= window.WidthExtras(tabsMasterviewHomeSlider)
+			h -= window.HeightExtras(mainMasterviewHomeSlider)
+			w -= window.WidthExtras(mainMasterviewHomeSlider)
 			// set the inside height and width
-			window.SetStyleHeight(tabsMasterviewHomeSlider, h)
-			window.SetStyleWidth(tabsMasterviewHomeSlider, w)
+			window.SetStyleHeight(mainMasterviewHomeSlider, h)
+			window.SetStyleWidth(mainMasterviewHomeSlider, w)
 			// slider has a back button
-			backOuterWidth := window.OuterWidth(tabsMasterviewHomeSliderBack)
+			backOuterWidth := window.OuterWidth(mainMasterviewHomeSliderBack)
 			w -= backOuterWidth
 			// size slider collection
-			h -= window.HeightExtras(tabsMasterviewHomeSliderCollection)
-			w -= window.WidthExtras(tabsMasterviewHomeSliderCollection)
-			window.SetStyleHeight(tabsMasterviewHomeSliderCollection, h)
-			window.SetStyleWidth(tabsMasterviewHomeSliderCollection, w)
+			h -= window.HeightExtras(mainMasterviewHomeSliderCollection)
+			w -= window.WidthExtras(mainMasterviewHomeSliderCollection)
+			window.SetStyleHeight(mainMasterviewHomeSliderCollection, h)
+			window.SetStyleWidth(mainMasterviewHomeSliderCollection, w)
 			// slider collection children
 
-			children := tabsMasterviewHomeSliderCollection.Get("children")
+			children := mainMasterviewHomeSliderCollection.Get("children")
 			l := children.Length()
 			for i := 0; i < l; i++ {
 				ch := children.Index(i)
@@ -140,7 +140,7 @@ func sizeTabsMasterView(w, h float64) {
 }
 
 func reSizeSliderBack(height, margintop float64) {
-	style := tabsMasterviewHomeSliderBack.Get("style")
+	style := mainMasterviewHomeSliderBack.Get("style")
 	style.Set("height", fmt.Sprintf("%fpx", height))
 	style.Set("margin-top", fmt.Sprintf("%fpx", margintop))
 }

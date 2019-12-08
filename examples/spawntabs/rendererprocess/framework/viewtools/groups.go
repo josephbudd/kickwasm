@@ -42,7 +42,7 @@ func ShowPanelInTabGroup(panel js.Value) {
 // 2. if the param target becomes visible.
 func ShowInGroup(target js.Value, showClass, hideClass string) (isSliderSub, isVisible bool) {
 	targetParent := target.Get("parentNode")
-	isSliderSub = targetParent == tabsMasterviewHomeSliderCollection
+	isSliderSub = targetParent == mainMasterviewHomeSliderCollection
 	// tab sibling panels are in sliders but they are special.
 	classList := target.Get("classList")
 	isTabSibling := classList.Call("contains", SliderPanelInnerSiblingClassName).Bool()
@@ -78,7 +78,7 @@ func ShowInGroup(target js.Value, showClass, hideClass string) (isSliderSub, isV
 		classList := div.Get("classList")
 		if isVisible = !classList.Call("contains", UnSeenClassName).Bool(); isVisible {
 			// only really visible if slider is visible
-			classList = tabsMasterviewHomeSlider.Get("classList")
+			classList = mainMasterviewHomeSlider.Get("classList")
 			isVisible = !classList.Call("contains", UnSeenClassName).Bool()
 			break
 		}
@@ -124,7 +124,7 @@ func HideShow(hideDiv, showDiv js.Value) {
 	if isSliderS {
 		// reset the back button's color class.
 		backColorLevel := showDiv.Call("getAttribute", "backColorLevel").String()
-		classList := tabsMasterviewHomeSliderBack.Get("classList")
+		classList := mainMasterviewHomeSliderBack.Get("classList")
 		firstClass := classList.Call("item", 0).String()
 		classList.Call("replace", firstClass, backColorLevel)
 	}
@@ -177,7 +177,7 @@ func setInGroup(group []js.Value, target js.Value, setClass, unSetClass string) 
 // Returns is the target is a slider sub panel, a child of the slider collection div.
 func hideInGroup(target js.Value, showClass, hideClass string) (isSliderSub bool) {
 	parentNode := target.Get("parentNode")
-	isSliderSub = parentNode == tabsMasterviewHomeSliderCollection
+	isSliderSub = parentNode == mainMasterviewHomeSliderCollection
 	if !isSliderSub {
 		// not in the slider collection.
 		return

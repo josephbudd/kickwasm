@@ -18,7 +18,7 @@ func beforePrint(e event.Event) (nilReturn interface{}) {
 	document.Set("title", printTitle)
 	ElementShow(blackMasterView)
 	extraHeight = 0
-	if !ElementIsShown(tabsMasterview) {
+	if !ElementIsShown(mainMasterview) {
 		// Master view is not visible there fore user content is not visilble.
 		return
 	}

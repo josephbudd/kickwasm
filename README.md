@@ -1,4 +1,4 @@
-# kickwasm version 13.0.0
+# kickwasm version 13.0.1
 
 An single page application framework generator written in go for applictions written in go.
 
@@ -6,7 +6,9 @@ An single page application framework generator written in go for applictions wri
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## December 07, 2019
+## December 08, 2019
+
+Fixed a typeo that didn't effect anything. It just pissed me off.
 
 ### Renderer process
 
