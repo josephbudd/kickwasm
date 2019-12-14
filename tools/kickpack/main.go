@@ -9,7 +9,6 @@ import (
 
 	"github.com/josephbudd/kickwasm/tools/kickpack/nopack"
 	"github.com/josephbudd/kickwasm/tools/kickpack/pack"
-	"github.com/pkg/errors"
 )
 
 // DestinationFlag is the output package name.
@@ -106,27 +105,24 @@ func main() {
 
 func getOutput() (output, packageName string, err error) {
 	if len(DestinationFlag) == 0 {
-		err = errors.New("missing output path -o")
+		err = fmt.Errorf("missing output path -o")
 		return
 	}
 	if strings.IndexAny(DestinationFlag, `;:`) >= 0 {
-		err = errors.New("-o has illegal characters")
+		err = fmt.Errorf("-o has illegal characters")
 		return
 	}
 	dir := filepath.Dir(DestinationFlag)
 	packageName = filepath.Base(DestinationFlag)
 	if packageName != strings.ToLower(packageName) {
-		err = errors.New("the output folder must be lower case")
+		err = fmt.Errorf("the output folder must be lower case")
 	}
 	first := packageName[:1]
-	// if (first >= "0" && first <= "9") || strings.IndexAny(packageName, ` ~!@#$%^&*()-_+={}[]|'",./<>?`) >= 0 {
-	// 	err = errors.New(fmt.Sprintf("the output folder must be a valid go package name not %q", packageName))
-	// }
 	if first >= "0" && first <= "9" {
-		err = errors.New(fmt.Sprintf("the output folder must be a valid go package name not %q", packageName))
+		err = fmt.Errorf("the output folder must be a valid go package name not %q", packageName)
 	}
 	if strings.IndexAny(packageName, ` ~!@#$%^&*()-_+={}[]|'",./<>?`) >= 0 {
-		err = errors.New(fmt.Sprintf("the output folder must be a valid go package name not %q", packageName))
+		err = fmt.Errorf("the output folder must be a valid go package name not %q", packageName)
 	}
 	output = filepath.Join(dir, packageName)
 	return
@@ -135,12 +131,12 @@ func getOutput() (output, packageName string, err error) {
 func getSources() (sources []string, err error) {
 	sources = flag.Args()
 	if len(sources) == 0 {
-		err = errors.New("missing sources")
+		err = fmt.Errorf("missing sources")
 		return
 	}
 	for _, s := range sources {
 		if strings.IndexAny(s, `;:`) >= 0 {
-			err = errors.New(fmt.Sprintf("%q is not a valid source.", s))
+			err = fmt.Errorf("%q is not a valid source", s)
 			return
 		}
 	}

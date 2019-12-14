@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/josephbudd/kickwasm/pkg/domain"
-	"github.com/pkg/errors"
 )
 
 // AddRemoteRecord add a new store.
@@ -12,7 +11,7 @@ func (mngr *Manager) AddRemoteRecord(recordname string) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessagef(err, "AddRemoteRecord")
+			err = fmt.Errorf("AddRemoteRecord: :%w", err)
 		}
 	}()
 
@@ -21,18 +20,15 @@ func (mngr *Manager) AddRemoteRecord(recordname string) (err error) {
 		return
 	}
 	if mngr.manifest.HaveDefaultRecord(recordName) {
-		errmsg := fmt.Sprintf("the local bolt store %q already exists", recordName)
-		err = errors.New(errmsg)
+		err = fmt.Errorf("the local bolt store %q already exists", recordName)
 		return
 	}
 	if mngr.manifest.HaveRemoteDB(recordName) {
-		errmsg := fmt.Sprintf("the remote database %q already exists", recordName)
-		err = errors.New(errmsg)
+		err = fmt.Errorf("the remote database %q already exists", recordName)
 		return
 	}
 	if mngr.manifest.HaveRemoteRecord(recordName) {
-		errmsg := fmt.Sprintf("the remote database record %q already exists", recordName)
-		err = errors.New(errmsg)
+		err = fmt.Errorf("the remote database record %q already exists", recordName)
 		return
 	}
 	// Create the domain/store/record/ store file.
@@ -48,7 +44,7 @@ func (mngr *Manager) DelRemoteRecord(recordname string) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessagef(err, "DelRemoteRecord")
+			err = fmt.Errorf("DelRemoteRecord: %w", err)
 		}
 	}()
 
@@ -57,8 +53,7 @@ func (mngr *Manager) DelRemoteRecord(recordname string) (err error) {
 		return
 	}
 	if !mngr.manifest.HaveRemoteRecord(recordName) {
-		errmsg := fmt.Sprintf("the remote record %q does not exist", recordName)
-		err = errors.New(errmsg)
+		err = fmt.Errorf("the remote record %q does not exist", recordName)
 		return
 	}
 	// Delete the domain/store/record/ store file.

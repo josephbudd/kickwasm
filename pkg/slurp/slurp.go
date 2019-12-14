@@ -5,8 +5,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-
-	"github.com/pkg/errors"
 )
 
 func (sl *Slurper) slurpApplication(fpath string) (appInfo *ApplicationInfo, err error) {
@@ -42,7 +40,7 @@ func (sl *Slurper) slurpHomeButtonPanels(parentFilePath string, button *ButtonIn
 		fullpath := filepath.Join(dir, fpath)
 		var bb []byte
 		if bb, err = getFileBB(fullpath); err != nil {
-			err = errors.New(err.Error() + " in " + parentFilePath)
+			err = fmt.Errorf(err.Error() + " in " + parentFilePath)
 			return
 		}
 		var panel *PanelInfo
@@ -85,7 +83,7 @@ func (sl *Slurper) slurpPanelButtonsTabs(parentFilePath string, panel *PanelInfo
 		for _, fpath := range button.PanelFiles {
 			fullpath := filepath.Join(dir, fpath)
 			if bb, err = getFileBB(fullpath); err != nil {
-				err = errors.New(err.Error() + " in " + parentFilePath)
+				err = fmt.Errorf(err.Error() + " in " + parentFilePath)
 				return
 			}
 			if pi, err = sl.checkButtonPanelInfoBB(bb, fullpath, nextLevel); err != nil {
@@ -118,7 +116,7 @@ func (sl *Slurper) slurpPanelButtonsTabs(parentFilePath string, panel *PanelInfo
 			fullpath := filepath.Join(dir, fpath)
 			bb, err = getFileBB(fullpath)
 			if err != nil {
-				err = errors.New(err.Error() + " in " + parentFilePath)
+				err = fmt.Errorf(err.Error() + " in " + parentFilePath)
 				return
 			}
 			panel, err = sl.checkTabPanelInfoBB(bb, fullpath, nextLevel)
@@ -130,7 +128,6 @@ func (sl *Slurper) slurpPanelButtonsTabs(parentFilePath string, panel *PanelInfo
 		}
 		if len(tab.Panels) == 0 {
 			err = fmt.Errorf(`the panel named %q, has a tab named %q which has no panels, in %s`, panel.Name, tab.ID, parentFilePath)
-			//err = errors.New(the panel namederr.Error() + " in " + parentFilePath)
 			return
 		}
 	}

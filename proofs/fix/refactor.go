@@ -1,7 +1,6 @@
 package fix
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -17,8 +16,8 @@ const (
 package provebuttonpanel
 
 import (
+	"fmt"
 	"github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/prove"
-	"github.com/pkg/errors"
 )
 		
 /*
@@ -40,7 +39,7 @@ type panelController struct {
 	// example:
 
 	import "syscall/js"
-	import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/markup"
+	import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/api/markup"
 
 	addCustomerName   *markup.Element
 	addCustomerSubmit *markup.Element
@@ -54,7 +53,7 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(controller *panelController) defineControlsHandlers()")
+			err = fmt.Errorf("(controller *panelController) defineControlsHandlers(): %w", err)
 		}
 	}()
 
@@ -67,13 +66,13 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	// Define the customer name text input GUI controller.
 	if controller.addCustomerName = document.ElementByID("addCustomerName"); controller.addCustomerName == nil {
-		err = errors.New("unable to find #addCustomerName")
+		err = fmt.Errorf("unable to find #addCustomerName")
 		return
 	}
 
 	// Define the submit button GUI controller.
 	if controller.addCustomerSubmit = document.ElementByID("addCustomerSubmit"); controller.addCustomerSubmit == nil {
-		err = errors.New("unable to find #addCustomerSubmit")
+		err = fmt.Errorf("unable to find #addCustomerSubmit")
 		return
 	}
 	// Handle the submit button's onclick event.
@@ -91,8 +90,8 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 // example:
 
 import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/domain/store/record"
-import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/event"
-import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/display"
+import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/api/event"
+import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/api/display"
 
 func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
 	// See renderer/event/event.go.
@@ -185,7 +184,7 @@ type panelMessenger struct {
 
 import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/domain/store/record"
 import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/domain/lpc/message"
-import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/display"
+import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/api/display"
 
 // Add Customer.
 
@@ -431,7 +430,7 @@ func Refactor(appName, description, sourceCodeFolderPath, kickwasmDotYAML, rekic
 			log.Println(string(dump))
 		}
 		if err == nil && len(dump) > 0 {
-			err = errors.New(appName + " kickbuild error")
+			err = fmt.Errorf(appName + " kickbuild error")
 		}
 		return
 	}
@@ -445,7 +444,7 @@ func Refactor(appName, description, sourceCodeFolderPath, kickwasmDotYAML, rekic
 	}
 	if dump, err = script.RunDump(nil, sourceCodeFolderPath, executable); err != nil {
 		if err == nil && len(dump) > 0 {
-			err = errors.New(appName + " run error")
+			err = fmt.Errorf(appName + " run error")
 		}
 	}
 	log.Println(string(dump))

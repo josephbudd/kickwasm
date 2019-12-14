@@ -8,10 +8,8 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/pkg/errors"
-
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/callback"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/event"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/spawnpack"
 )
 
@@ -30,7 +28,7 @@ func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userConte
 	// Find the tab bar.
 	var tabBar js.Value
 	if tabBar = getElementByID(document, tabBarID); tabBar == null {
-		err = errors.New("Unable to find tab bar #" + tabBarID)
+		err = fmt.Errorf("Unable to find tab bar #" + tabBarID)
 		return
 	}
 	// get the number of tabs in this tab bar.
@@ -64,7 +62,7 @@ func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userConte
 	underTabBarDivID := buildSpawnUnderTabBarID(tabBarID)
 	var underTabBarDiv js.Value
 	if underTabBarDiv = getElementByID(document, underTabBarDivID); underTabBarDiv == null {
-		err = errors.New("Unable to find under tab bar #" + underTabBarDivID)
+		err = fmt.Errorf("Unable to find under tab bar #" + underTabBarDivID)
 		return
 	}
 	// Create the tab panel
@@ -101,7 +99,7 @@ func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userConte
 		var markupbb []byte
 		var found bool
 		if markupbb, found = spawnpack.Contents(path); !found {
-			err = errors.New("Unable to find the spawn template at " + path)
+			err = fmt.Errorf("Unable to find the spawn template at " + path)
 			return
 		}
 		// get the panel name.
@@ -128,8 +126,7 @@ func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userConte
 		}
 		var hvscroll bool
 		if hvscroll, found = panelNameHVScroll[panelName]; !found {
-			emsg := fmt.Sprintf("Unable to find panel name %q in panelNameHVScroll", panelName)
-			err = errors.New(emsg)
+			err = fmt.Errorf("Unable to find panel name %q in panelNameHVScroll", panelName)
 			return
 		}
 		if hvscroll {
@@ -166,7 +163,7 @@ func UnSpawnTab(tabButton js.Value) (err error ) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "UnSpawnTab")
+			err = fmt.Errorf("UnSpawnTab: %w", err)
 		}
 	}()
 

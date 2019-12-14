@@ -8,8 +8,6 @@ package {{call .PackageNameCase .PanelName}}
 import (
 	"fmt"
 
-	"github.com/pkg/errors"
-
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
@@ -43,8 +41,7 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, pane
 
 	defer func() {
 		if err != nil {
-			message := fmt.Sprintf("%s.BuildPanel()", "{{call .PackageNameCase .PanelName}}")
-			err = errors.WithMessage(err, message)
+			err = fmt.Errorf("%s.BuildPanel(): %w", "{{call .PackageNameCase .PanelName}}", err)
 		}
 	}()
 

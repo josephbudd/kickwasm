@@ -7,11 +7,10 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/pkg/errors"
 
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/callback"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/viewtools"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
 	helloworldtemplatepanel "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel"
 )
 
@@ -49,8 +48,7 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 
 	defer func() {
 		if err != nil {
-			message := fmt.Sprintf("%s.Spawn()", "secondtab")
-			err = errors.WithMessage(err, message)
+			err = fmt.Errorf("%s.Spawn()", "secondtab: %w", err)
 		}
 	}()
 
@@ -88,8 +86,7 @@ func (tab *Tab) unSpawn() (err error) {
 
 	defer func() {
 		if err != nil {
-			message := fmt.Sprintf("secondtab.unSpawn(): uniqueID is %d", tab.uniqueID)
-			err = errors.WithMessage(err, message)
+			err = fmt.Errorf("secondtab.unSpawn(): uniqueID is %d: %w", tab.uniqueID, err)
 		}
 	}()
 
@@ -111,7 +108,7 @@ func (tab *Tab) unSpawn() (err error) {
 
 	// construct a new error from the accumulated errors.
 	if len(messages) > 0 {
-		err = errors.New(strings.Join(messages, "\n"))
+		err = fmt.Errorf(strings.Join(messages, "\n"))
 	}
 	return
 }

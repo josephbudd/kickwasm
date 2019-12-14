@@ -6,9 +6,8 @@ const SpawnTabPanelGroup = `{{$Dot := .}}{{$lpg := len .PanelGroup}}// +build js
 package {{call .PackageNameCase .PanelName}}
 
 import (
+	"fmt"
 	"syscall/js"
-
-	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
@@ -37,7 +36,7 @@ func (group *panelGroup) defineMembers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(group *panelGroup) defineMembers()")
+			err = fmt.Errorf("(group *panelGroup) defineMembers()")
 		}
 	}()
 
@@ -45,7 +44,7 @@ func (group *panelGroup) defineMembers() (err error) {
     var panel *markup.Element
 {{range $panel := .PanelGroup}}	id = viewtools.BuildSpawnTabButtonMarkupPanelID("{{$Dot.TabBarID}}", "{{$Dot.TabName}}", "{{$panel.Name}}", group.uniqueID)
     if panel = group.document.ElementByID(id); panel == nil {
-		err = errors.New("unable to find #" + id)
+		err = fmt.Errorf("unable to find #%s", id)
 		return
     }
     group.{{call $Dot.LowerCamelCase $panel.Name}} = panel.JSValue()

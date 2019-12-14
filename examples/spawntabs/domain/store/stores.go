@@ -1,9 +1,9 @@
 package store
 
 import (
+	"fmt"
 	"strings"
 
-	"github.com/pkg/errors"
 )
 
 /*
@@ -33,8 +33,7 @@ func (stores *Stores) Open() (err error) {
 	errList := make([]string, 0, 0)
 	defer func() {
 		if len(errList) > 0 {
-			msg := strings.Join(errList, "\n")
-			err = errors.New(msg)
+			err = fmt.Errorf(strings.Join(errList, "\n"))
 		}
 	}()
 
@@ -49,8 +48,7 @@ func (stores *Stores) Close() (err error) {
 	errList := make([]string, 0, 0)
 	defer func() {
 		if len(errList) > 0 {
-			msg := strings.Join(errList, "\n")
-			err = errors.New(msg)
+			err = fmt.Errorf(strings.Join(errList, "\n"))
 		}
 	}()
 

@@ -3,12 +3,13 @@
 package helloworldtemplatepanel
 
 import (
-	"github.com/pkg/errors"
+	"errors"
+	"fmt"
 
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/dom"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/display"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/dom"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/event"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/widgets"
 )
 
@@ -39,7 +40,7 @@ type panelController struct {
 	// <button id="addCustomerSubmit{{.SpawnID}}">Close</button>
 
 	import "syscall/js"
-	import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 
 	addCustomerName   *markup.Element
 	addCustomerSubmit *markup.Element
@@ -55,7 +56,7 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(controller *panelController) defineControlsHandlers()")
+			err = fmt.Errorf("(controller *panelController) defineControlsHandlers(): %w", err)
 		}
 	}()
 
@@ -66,21 +67,21 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	// example:
 
-	import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
+	import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/display"
 
 	var id string
 
 	// Define the customer name input field.
 	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
 	if controller.addCustomerName = contoller.document.ElementByID(id); controller.addCustomerName == nil {
-		err = errors.New("unable to find #" + id)
+		err = fmt.Errorf("unable to find #" + id)
 		return
 	}
 
 	// Define the submit button.
 	id = display.SpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
 	if controller.addCustomerSubmit = contoller.document.ElementByID(id); controller.addCustomerSubmit == nil {
-		err = errors.New("unable to find #" + id)
+		err = fmt.Errorf("unable to find #" + id)
 		return
 	}
 	// Handle the submit button's onclick event.
@@ -107,8 +108,8 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 // example:
 
 import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/store/record"
-import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
-import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/event"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/display"
 
 func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
 	// See renderer/event/event.go.

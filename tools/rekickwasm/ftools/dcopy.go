@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"github.com/pkg/errors"
 )
 
 // DCopy allows folders to be copied.
@@ -23,7 +21,7 @@ type DCopy struct {
 func NewDCopy(src, dest string, clearDest, copyHiddenFiles bool, skipFolders []string) (dcopy *DCopy, err error) {
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, `NewDCopy`)
+			err = fmt.Errorf("NewDCopy: %w", err)
 		}
 	}()
 	s := filepath.Clean(src)
@@ -58,7 +56,7 @@ func NewDCopy(src, dest string, clearDest, copyHiddenFiles bool, skipFolders []s
 func (dcopy *DCopy) Copy() (err error) {
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, `(dcopy *DCopy) Copy()`)
+			err = fmt.Errorf("(dcopy *DCopy) Copy(): %w", err)
 		}
 	}()
 	if dcopy.clearDestination {

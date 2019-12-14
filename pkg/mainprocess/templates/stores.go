@@ -27,11 +27,10 @@ func buildStores() (stores *store.Stores, err error) {
 const StoresGo = `{{ $Dot := . }}package main
 
 import (
+	"fmt"
 {{ if gt (len .BoltStores) 0 }}	"path/filepath"
 
-{{ end }}	"github.com/pkg/errors"
-
-{{ if gt (len .BoltStores) 0 }}	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
+{{ end }}{{ if gt (len .BoltStores) 0 }}	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 {{ end }}	"{{.ApplicationGitPath}}{{.ImportDomainStore}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainStoreStoring}}"
 )
@@ -54,13 +53,13 @@ func buildStores() (stores *store.Stores, err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "buildStores()")
+			err = fmt.Errorf("buildStores(): %w", err)
 		}
 	}()
 {{ if gt (len .BoltStores) 0 }}
 	var path string
 	if path, err = filepaths.BuildUserSubFoldersPath("boltdb"); err != nil {
-		err = errors.WithMessage(err, "filepaths.BuildUserSubFoldersPath(\"boltdb\")")
+		err = fmt.Errorf("filepaths.BuildUserSubFoldersPath(\"boltdb\"): %w", err)
 		return
 	}
 	path = filepath.Join(path, "stores.nosql"){{ end }}

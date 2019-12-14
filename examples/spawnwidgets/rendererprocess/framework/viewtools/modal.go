@@ -5,7 +5,7 @@ package viewtools
 import (
 	"fmt"
 
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/event"
 
 )
 

@@ -6,7 +6,7 @@ const SpawnTabPanelController = `// +build js, wasm
 package {{call .PackageNameCase .PanelName}}
 
 import (
-	"github.com/pkg/errors"
+	"fmt"
 
 	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
 )
@@ -52,7 +52,7 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(controller *panelController) defineControlsHandlers()")
+			err = fmt.Errorf("(controller *panelController) defineControlsHandlers(): %w", err)
 		}
 	}()
 
@@ -70,14 +70,14 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 	// Define the customer name input field.
 	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
 	if controller.addCustomerName = contoller.document.ElementByID(id); controller.addCustomerName == nil {
-		err = errors.New("unable to find #" + id)
+		err = fmt.Errorf("unable to find #" + id)
 		return
 	}
 
 	// Define the submit button.
 	id = display.SpawnID("addCustomerSubmit{{.SpawnID}}", controller.uniqueID)
 	if controller.addCustomerSubmit = contoller.document.ElementByID(id); controller.addCustomerSubmit == nil {
-		err = errors.New("unable to find #" + id)
+		err = fmt.Errorf("unable to find #" + id)
 		return
 	}
 	// Handle the submit button's onclick event.

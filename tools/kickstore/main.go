@@ -14,10 +14,10 @@ import (
 
 const (
 	applicationName        = "kickstore"
-	versionBreaking        = 13 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 14 // Kicwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
-	minumunKickwasmVersion = 13 // Minumum kickwasm version.
+	minumunKickwasmVersion = 14 // Minumum kickwasm version.
 )
 
 // VersionFlag means show the version.

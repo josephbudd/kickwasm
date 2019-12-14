@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/window"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/window"
 )
 
 func sizeSliderPanel(sliderPanel js.Value, w, h float64) {

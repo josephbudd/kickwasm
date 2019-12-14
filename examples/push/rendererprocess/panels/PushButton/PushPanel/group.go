@@ -3,11 +3,10 @@
 package pushpanel
 
 import (
+	"fmt"
 	"syscall/js"
 
-	"github.com/pkg/errors"
-
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/markup"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/viewtools"
 )
 
@@ -29,13 +28,13 @@ func (group *panelGroup) defineMembers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(group *panelGroup) defineMembers()")
+			err = fmt.Errorf("(group *panelGroup) defineMembers(): %w", err)
 		}
 	}()
 
     var panel *markup.Element
  if panel = document.ElementByID("mainMasterView-home-pad-PushButton-PushPanel"); panel == nil {
-		err = errors.New("unable to find #mainMasterView-home-pad-PushButton-PushPanel")
+	err = fmt.Errorf("unable to find #mainMasterView-home-pad-PushButton-PushPanel")
 		return
     }
     group.pushPanel = panel.JSValue()

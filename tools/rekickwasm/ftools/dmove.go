@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"github.com/pkg/errors"
 )
 
 // DMove moves a folder and its contents.
@@ -20,7 +18,7 @@ type DMove struct {
 func NewDMove(src, dest string, clearDest, copyHiddenFiles bool, skipFolders []string) (dmove *DMove, err error) {
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, `NewDMove`)
+			err = fmt.Errorf(`NewDMove: %w`, err)
 		}
 	}()
 	s := filepath.Clean(src)
@@ -55,7 +53,7 @@ func NewDMove(src, dest string, clearDest, copyHiddenFiles bool, skipFolders []s
 func (dmove *DMove) Move() (err error) {
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, `(dmove *DMove) Move()`)
+			err = fmt.Errorf(`(dmove *DMove) Move(): %w`, err)
 		}
 	}()
 	if dmove.clearDestination {

@@ -5,8 +5,8 @@ package viewtools
 import (
 	"syscall/js"
 
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/event"
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/window"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/event"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/window"
 )
 
 // SetPrintTitle sets the document title for printing.

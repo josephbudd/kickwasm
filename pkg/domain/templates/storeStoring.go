@@ -4,7 +4,7 @@ package templates
 const RemoteStoreStoringGo = `package storing
 
 import (
-	"github.com/pkg/errors"
+	"fmt"
 )
 
 // {{.Store}}RemoteAPI is the API of the {{.Store}} remote service connection.
@@ -24,7 +24,7 @@ func (store *{{.Store}}RemoteAPI) Open() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "{{.Store}}RemoteAPI.Open")
+			err = err = fmt.Errorf("{{.Store}}RemoteAPI.Open: %w", err)
 		}
 	}()
 
@@ -37,7 +37,7 @@ func (store *{{.Store}}RemoteAPI) Close() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "{{.Store}}RemoteAPI.Open")
+			err = fmt.Errorf("{{.Store}}RemoteAPI.Open: %w: ", err)
 		}
 	}()
 
@@ -50,11 +50,11 @@ const LocalBoltStoreStoringGo = `package storing
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 
 	"github.com/boltdb/bolt"
-	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
 )
@@ -86,12 +86,12 @@ func (store *{{.Store}}LocalBoltStore) Open() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "{{.Store}}LocalBoltStore.Open")
+			err = fmt.Errorf("{{.Store}}LocalBoltStore.Open: %w", err)
 		}
 	}()
 
 	if store.DB, err = bolt.Open(store.path, store.perms, nil); err != nil {
-		err = errors.WithMessage(err, "bolt.Open(path, filepaths.GetFmode(), nil)")
+		err = fmt.Errorf("bolt.Open(path, filepaths.GetFmode(), nil): %w", err)
 	}
 	return
 }
@@ -102,7 +102,7 @@ func (store *{{.Store}}LocalBoltStore) Close() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "{{.Store}}LocalBoltStore.Close")
+			err = fmt.Errorf("{{.Store}}LocalBoltStore.Close: %w", err)
 		}
 	}()
 

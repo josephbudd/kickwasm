@@ -3,12 +3,11 @@
 package helloworldtemplatepanel
 
 import (
+	"fmt"
 	"syscall/js"
 
-	"github.com/pkg/errors"
-
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/dom"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/dom"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/viewtools"
 )
 
@@ -34,7 +33,7 @@ func (group *panelGroup) defineMembers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(group *panelGroup) defineMembers()")
+			err = fmt.Errorf("(group *panelGroup) defineMembers()")
 		}
 	}()
 
@@ -42,7 +41,7 @@ func (group *panelGroup) defineMembers() (err error) {
     var panel *markup.Element
 	id = viewtools.BuildSpawnTabButtonMarkupPanelID("mainMasterView_home_pad_TabsButton_TabsButtonTabBarPanel_tab_bar", "SecondTab", "HelloWorldTemplatePanel", group.uniqueID)
     if panel = group.document.ElementByID(id); panel == nil {
-		err = errors.New("unable to find #" + id)
+		err = fmt.Errorf("unable to find #%s", id)
 		return
     }
     group.helloWorldTemplatePanel = panel.JSValue()

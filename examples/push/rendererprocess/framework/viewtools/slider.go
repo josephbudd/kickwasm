@@ -7,7 +7,7 @@ import (
 	"syscall/js"
 
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/callback"
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/event"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/event"
 )
 
 // Back simulates a click on the tall back button at the left of slider panels.

@@ -82,7 +82,6 @@ import (
 	"strings"
 
 	"github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/framework/proofs"
-	"github.com/pkg/errors"
 )
 
 // Pass will not return an error if rekickwasm worked.
@@ -91,7 +90,7 @@ func Pass() (err error) {
 	msg := make([]string, 0, 10)
 	defer func() {
 		if len(msg) > 0 {
-			err = errors.New(strings.Join(msg, "\n"))
+			err = fmt.Errorf(strings.Join(msg, "\n"))
 		}
 	}()
 

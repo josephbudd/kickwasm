@@ -3,10 +3,10 @@
 package pushpanel
 
 import (
-	"github.com/pkg/errors"
+	"fmt"
 
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/lpc"
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/dom"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/dom"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/paneling"
 )
 
@@ -29,7 +29,7 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "PushPanel")
+			err = fmt.Errorf("PushPanel: %w", err)
 		}
 	}()
 

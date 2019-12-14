@@ -3,12 +3,11 @@
 package helloworldtemplatepanel
 
 import (
+	"fmt"
 	"strings"
 
-	"github.com/pkg/errors"
-
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/dom"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/dom"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 )
 
 /*
@@ -44,7 +43,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(presenter *panelPresenter) defineMembers()")
+			err = fmt.Errorf("(presenter *panelPresenter) defineMembers(): %w", err)
 		}
 	}()
 
@@ -65,7 +64,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 	// Build it's id using the uniqueID.
 	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
 	if presenter.addCustomerName = presenter.document.ElementByID(id); presenter.addCustomerName == nil {
-		err = errors.New("unable to find #" + id)
+		err = fmt.Errorf("unable to find #" + id)
 		return
 	}
 

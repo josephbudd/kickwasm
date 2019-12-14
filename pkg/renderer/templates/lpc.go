@@ -10,8 +10,6 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"github.com/pkg/errors"
-
 	"{{.ApplicationGitPath}}{{.ImportDomainLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
 )
@@ -61,7 +59,7 @@ func (sending Sending) Payload(msg interface{}) (payload []byte, err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "sending.Payload")
+			err = fmt.Errorf("sending.Payload: %w", err)
 		}
 	}()
 
@@ -100,7 +98,7 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "receiving.Cargo")
+			err = fmt.Errorf("receiving.Cargo: %w", err)
 		}
 	}()
 
@@ -129,7 +127,7 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 		cargo = msg{{ end }}
 	default:
 		errMsg := fmt.Sprintf("no case found for payload id %d", payload.ID)
-		err = errors.New(errMsg)
+		err = fmt.Errorf(errMsg)
 	}
 	return
 }
@@ -144,8 +142,6 @@ import (
 	"fmt"
 	"log"
 	"syscall/js"
-
-	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
@@ -219,7 +215,7 @@ func (client *Client) Connect(callBack func()) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "client.Connect")
+			err = fmt.Errorf("client.Connect: %w", err)
 		}
 	}()
 
@@ -231,12 +227,12 @@ func (client *Client) Connect(callBack func()) (err error) {
 	ws := global.Get("WebSocket")
 	client.connection = ws.New(client.location)
 	if client.connection == js.Undefined() {
-		err = errors.New("connection is undefined")
+		err = fmt.Errorf("connection is undefined")
 		return
 	}
 	rs := client.connection.Get("readyState")
 	if rs.String() == "undefined" {
-		err = errors.New("readystate is undefined")
+		err = fmt.Errorf("readystate is undefined")
 		return
 	}
 	client.connection.Set("onopen", callback.RegisterCallBack(client.onOpen))

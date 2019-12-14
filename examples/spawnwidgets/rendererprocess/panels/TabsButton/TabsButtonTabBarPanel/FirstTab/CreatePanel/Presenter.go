@@ -3,11 +3,11 @@
 package createpanel
 
 import (
+	"fmt"
 	"strings"
 
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 
-	"github.com/pkg/errors"
 )
 
 /*
@@ -41,7 +41,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(presenter *panelPresenter) defineMembers()")
+			err = fmt.Errorf("(presenter *panelPresenter) defineMembers(): %w", err)
 		}
 	}()
 
@@ -53,7 +53,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	// Define the edit form's customer name input field.
 	if presenter.editCustomerName = document.ElementByID("editCustomerName"); presenter.editCustomerName == nil {
-		err = errors.New("unable to find #editCustomerName")
+		err = fmt.Errorf("unable to find #editCustomerName")
 		return
 	}
 
@@ -61,6 +61,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	return
 }
+
 // Tab button label.
 
 func (presenter *panelPresenter) getTabLabel() (label string) {

@@ -196,8 +196,6 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	"github.com/pkg/errors"
-
 	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 	"{{.SitePackImportPath}}"
 )
@@ -216,8 +214,7 @@ func NewApplicationSettings() (settings *ApplicationSettings, err error) {
 	var found bool
 	fpath = filepaths.GetShortSettingsPath()
 	if contents, found = {{.SitePackPackage}}.Contents(fpath); !found {
-		emsg := fmt.Sprintf("can't find %q", fpath)
-		err = errors.New(emsg)
+		err = fmt.Errorf("can't find %q", fpath)
 		return
 	}
 	settings = &ApplicationSettings{}

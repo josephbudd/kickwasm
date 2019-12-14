@@ -7,7 +7,7 @@ import (
 	"syscall/js"
 
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/callback"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/event"
 )
 
 /*

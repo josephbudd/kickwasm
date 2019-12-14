@@ -3,10 +3,10 @@
 package createpanel
 
 import (
-	"github.com/pkg/errors"
+	"fmt"
 
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/dom"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/dom"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/paneling"
 )
 
@@ -29,7 +29,7 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "CreatePanel")
+			err = fmt.Errorf("CreatePanel: %w", err)
 		}
 	}()
 

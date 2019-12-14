@@ -1,10 +1,10 @@
 package slurp
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/josephbudd/kickwasm/pkg/project"
-	"github.com/pkg/errors"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -20,7 +20,7 @@ func GetApplicationInfo(fpath string) (appInfo *ApplicationInfo, err error) {
 	}
 	appInfo = &ApplicationInfo{}
 	if err = yaml.Unmarshal(bb, appInfo); err != nil {
-		err = errors.New(err.Error() + " in " + fpath)
+		err = fmt.Errorf(err.Error() + " in " + fpath)
 		return
 	}
 	appInfo.SourcePath = fpath

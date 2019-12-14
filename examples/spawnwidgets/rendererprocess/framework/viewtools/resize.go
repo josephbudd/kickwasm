@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/callback"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/window"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/event"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/window"
 )
 
 func initializeResize() {

@@ -1,10 +1,9 @@
 package ftools
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
-
-	"github.com/pkg/errors"
 )
 
 // CopyFile copies a file.
@@ -12,7 +11,7 @@ func CopyFile(src, dest string) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "CopyFile")
+			err = fmt.Errorf("CopyFile: %w", err)
 		}
 	}()
 
@@ -24,14 +23,14 @@ func copyFile(src, dest string) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "copyFile")
+			err = fmt.Errorf("copyFile: %w", err)
 		}
 	}()
 
 	var srcInfo os.FileInfo
 	srcInfo, err = os.Stat(src)
 	if err != nil {
-		err = errors.WithMessage(err, `os.Stat(src)`)
+		err = fmt.Errorf(`os.Stat(src): %w`, err)
 		return
 	}
 	var bb []byte
@@ -42,7 +41,7 @@ func copyFile(src, dest string) (err error) {
 	srcDirInfo, _ := os.Stat(filepath.Dir(src))
 	dstDirPath := filepath.Dir(dest)
 	if err = os.MkdirAll(dstDirPath, srcDirInfo.Mode()); err != nil {
-		err = errors.WithMessage(err, `os.MkdirAll(dstDirPath, srcDirInfo.Mode())`)
+		err = fmt.Errorf(`os.MkdirAll(dstDirPath, srcDirInfo.Mode()): %w`, err)
 		return
 	}
 	err = writeFile(dest, srcInfo.Mode(), bb)
@@ -53,25 +52,25 @@ func readFile(path string) (bb []byte, err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "readFile")
+			err = fmt.Errorf("readFile: %w", err)
 		}
 	}()
 	// read
 	f, err := os.Open(path)
 	if err != nil {
-		err = errors.WithMessage(err, `os.Open(path)`)
+		err = fmt.Errorf(`os.Open(path): %w`, err)
 		return
 	}
 	var info os.FileInfo
 	info, err = f.Stat()
 	if err != nil {
-		err = errors.WithMessage(err, `f.Stat()`)
+		err = fmt.Errorf(`f.Stat(): %w`, err)
 	}
 	size := info.Size()
 	bb = make([]byte, size, size)
 	_, err = f.Read(bb)
 	if err != nil {
-		err = errors.WithMessage(err, `f.Read(bb)`)
+		err = fmt.Errorf(`f.Read(bb): %w`, err)
 	}
 	return
 }
@@ -80,23 +79,23 @@ func writeFile(path string, mode os.FileMode, bb []byte) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "writeFile")
+			err = fmt.Errorf("writeFile: %w", err)
 		}
 	}()
 
 	var ofile *os.File
 	ofile, err = os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, mode)
 	if err != nil {
-		err = errors.WithMessage(err, `os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, mode)`)
+		err = fmt.Errorf(`os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, mode): %w`, err)
 		return
 	}
 	if _, err = ofile.Write(bb); err != nil {
 		ofile.Close()
-		err = errors.WithMessage(err, `ofile.Write(bb)`)
+		err = fmt.Errorf(`ofile.Write(bb): %w`, err)
 		return
 	}
 	if err = ofile.Close(); err != nil {
-		err = errors.WithMessage(err, `ofile.Close()`)
+		err = fmt.Errorf(`ofile.Close(): %w`, err)
 		return
 	}
 	return

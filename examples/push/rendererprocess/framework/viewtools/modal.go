@@ -5,7 +5,7 @@ package viewtools
 import (
 	"fmt"
 
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/event"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/event"
 
 )
 

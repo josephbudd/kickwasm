@@ -5,8 +5,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/pkg/errors"
-
 	"gopkg.in/yaml.v2"
 )
 
@@ -279,12 +277,12 @@ func checkGenerateHomeSpawnTabButtonPanelGroups(want, got map[string][]*TabPanel
 	for wantTabName, wantTabPanelGroups = range want {
 		if gotTabPanelGroups, found = got[wantTabName]; !found {
 			emsg := fmt.Sprintf("Tab name %q not found in got.", wantTabName)
-			err = errors.New(emsg)
+			err = fmt.Errorf(emsg)
 			return
 		}
 		if len(gotTabPanelGroups) != len(wantTabPanelGroups) {
 			emsg := fmt.Sprintf("len(gotTabPanelGroups) %d != len(wantTabPanelGroups) %d.", len(gotTabPanelGroups), len(wantTabPanelGroups))
-			err = errors.New(emsg)
+			err = fmt.Errorf(emsg)
 			return
 		}
 		// match panel groups.
@@ -297,15 +295,13 @@ func checkGenerateHomeSpawnTabButtonPanelGroups(want, got map[string][]*TabPanel
 				}
 			}
 			if !found {
-				emsg := fmt.Sprintf("i is %d: wantTabPanelGroup.TabName %q != found in gotTabPanelGroups.\n\n%#v\n\n", i, wantTabPanelGroup.TabName, *gotTabPanelGroup)
-				err = errors.New(emsg)
+				err = fmt.Errorf("i is %d: wantTabPanelGroup.TabName %q != found in gotTabPanelGroups.\n\n%#v\n\n", i, wantTabPanelGroup.TabName, *gotTabPanelGroup)
 				return
 			}
 			var wantPanelName string
 			for wantPanelName = range wantTabPanelGroup.PanelNamesIDMap {
 				if _, found = gotTabPanelGroup.PanelNamesIDMap[wantPanelName]; !found {
-					emsg := fmt.Sprintf("gotTabPanelGroup.PanelNamesIDMap[%q] not found", wantPanelName)
-					err = errors.New(emsg)
+					err = fmt.Errorf("gotTabPanelGroup.PanelNamesIDMap[%q] not found", wantPanelName)
 					return
 				}
 			}

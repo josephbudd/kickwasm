@@ -5,10 +5,10 @@ package widgets
 import (
 	"fmt"
 
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/dom"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/event"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/display"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/dom"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/event"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 )
 
 // Button is a spawnable button.

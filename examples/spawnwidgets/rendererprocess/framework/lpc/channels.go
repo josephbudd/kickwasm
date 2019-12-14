@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"github.com/pkg/errors"
-
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc/message"
 )
@@ -58,7 +56,7 @@ func (sending Sending) Payload(msg interface{}) (payload []byte, err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "sending.Payload")
+			err = fmt.Errorf("sending.Payload: %w", err)
 		}
 	}()
 
@@ -92,7 +90,7 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "receiving.Cargo")
+			err = fmt.Errorf("receiving.Cargo: %w", err)
 		}
 	}()
 
@@ -115,7 +113,7 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 		cargo = msg
 	default:
 		errMsg := fmt.Sprintf("no case found for payload id %d", payload.ID)
-		err = errors.New(errMsg)
+		err = fmt.Errorf(errMsg)
 	}
 	return
 }

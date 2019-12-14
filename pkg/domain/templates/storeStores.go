@@ -4,10 +4,10 @@ package templates
 const StoreStoresGo = `{{ $Dot := . }}{{ $firstBoltStore := "" }}{{ if gt (len .BoltStores) 0 }}{{ $firstBoltStore = index .BoltStores 0 }}{{ end }}package store
 
 import (
+	"fmt"
 	"strings"
 {{ if or (gt (len .BoltStores) 0) (gt (len .RemoteDBs) 0) }}
 	"{{.ApplicationGitPath}}{{.ImportDomainStoreStoring}}"{{ end }}
-	"github.com/pkg/errors"
 )
 
 /*
@@ -41,8 +41,7 @@ func (stores *Stores) Open() (err error) {
 	errList := make([]string, 0, {{len .BoltStores}})
 	defer func() {
 		if len(errList) > 0 {
-			msg := strings.Join(errList, "\n")
-			err = errors.New(msg)
+			err = fmt.Errorf(strings.Join(errList, "\n"))
 		}
 	}()
 {{ if gt (len .BoltStores) 0 }}
@@ -67,8 +66,7 @@ func (stores *Stores) Close() (err error) {
 	errList := make([]string, 0, {{len .BoltStores}})
 	defer func() {
 		if len(errList) > 0 {
-			msg := strings.Join(errList, "\n")
-			err = errors.New(msg)
+			err = fmt.Errorf(strings.Join(errList, "\n"))
 		}
 	}()
 {{ if gt (len .BoltStores) 0 }}

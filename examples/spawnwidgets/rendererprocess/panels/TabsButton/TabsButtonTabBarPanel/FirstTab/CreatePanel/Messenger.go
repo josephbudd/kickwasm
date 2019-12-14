@@ -34,7 +34,7 @@ type panelMessenger struct {
 
 import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/store/record"
 import "github.com/josephbudd/kickwasm/examples/spawnwidgets/domain/lpc/message"
-import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/display"
+import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/display"
 
 // Add Customer.
 

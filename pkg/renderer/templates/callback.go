@@ -6,10 +6,9 @@ const CallBackGo = `// +build js, wasm
 package callback
 
 import (
+	"fmt"
 	"math"
 	"syscall/js"
-
-	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
 )
@@ -94,7 +93,7 @@ func UnRegisterCallBacks(panelUniqueID uint64) (err error) {
 	var funcs []js.Func
 	var found bool
 	if funcs, found = jsCallBacks[panelUniqueID]; !found {
-		err = errors.New("panelUniqueID not found in jsCallBacks")
+		err = fmt.Errorf("panelUniqueID not found in jsCallBacks")
 		return
 	}
 	for _, f := range funcs {

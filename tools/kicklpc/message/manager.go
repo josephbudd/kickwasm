@@ -6,8 +6,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/pkg/errors"
-
 	"github.com/josephbudd/kickwasm/pkg/cases"
 	"github.com/josephbudd/kickwasm/pkg/domain"
 	"github.com/josephbudd/kickwasm/pkg/mainprocess"
@@ -67,8 +65,7 @@ func (mngr *Manager) Add(messagename string) (err error) {
 	}
 	for _, name := range files {
 		if fName == name {
-			errmsg := fmt.Sprintf("the message %q already exists", messageName)
-			err = errors.New(errmsg)
+			err = fmt.Errorf("the message %q already exists", messageName)
 			return
 		}
 	}
@@ -90,8 +87,7 @@ func (mngr *Manager) Del(messagename string) (err error) {
 	errList := make([]string, 0, 2)
 	defer func() {
 		if len(errList) > 0 {
-			errmsg := strings.Join(errList, "\n")
-			err = errors.New(errmsg)
+			err = fmt.Errorf(strings.Join(errList, "\n"))
 		}
 	}()
 
@@ -111,8 +107,7 @@ func (mngr *Manager) Del(messagename string) (err error) {
 		}
 	}
 	if !found {
-		errmsg := fmt.Sprintf("the message %q does not exist", messageName)
-		err = errors.New(errmsg)
+		err = fmt.Errorf("the message %q does not exist", messageName)
 		return
 	}
 	// Delete the domain/message file.
@@ -214,11 +209,10 @@ func (mngr *Manager) fileNames() (messages []string, err error) {
 
 func (mngr *Manager) checkName(messagename string) (messageName string, err error) {
 	if messageName = cases.CamelCase(messagename); messageName != messagename {
-		msg := fmt.Sprintf("Message names are CamelCased so %q should be %q", messagename, messageName)
-		err = errors.New(msg)
+		err = fmt.Errorf("Message names are CamelCased so %q should be %q", messagename, messageName)
 	}
 	if messageName == mngr.log || messageName == mngr.init {
-		err = errors.New(messageName + " is one of the default message names")
+		err = fmt.Errorf(messageName + " is one of the default message names")
 	}
 	return
 }

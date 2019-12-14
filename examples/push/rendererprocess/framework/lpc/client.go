@@ -7,8 +7,6 @@ import (
 	"log"
 	"syscall/js"
 
-	"github.com/pkg/errors"
-
 	"github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/callback"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/viewtools"
@@ -81,7 +79,7 @@ func (client *Client) Connect(callBack func()) (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "client.Connect")
+			err = fmt.Errorf("client.Connect: %w", err)
 		}
 	}()
 
@@ -93,12 +91,12 @@ func (client *Client) Connect(callBack func()) (err error) {
 	ws := global.Get("WebSocket")
 	client.connection = ws.New(client.location)
 	if client.connection == js.Undefined() {
-		err = errors.New("connection is undefined")
+		err = fmt.Errorf("connection is undefined")
 		return
 	}
 	rs := client.connection.Get("readyState")
 	if rs.String() == "undefined" {
-		err = errors.New("readystate is undefined")
+		err = fmt.Errorf("readystate is undefined")
 		return
 	}
 	client.connection.Set("onopen", callback.RegisterCallBack(client.onOpen))

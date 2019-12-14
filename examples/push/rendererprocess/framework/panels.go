@@ -3,9 +3,9 @@
 package framework
 
 import (
+	"fmt"
 	"log"
 
-	"github.com/pkg/errors"
 
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/viewtools"
@@ -27,7 +27,7 @@ func DoPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 	
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "DoPanels")
+			err = fmt.Errorf("DoPanels: %w", err)
 			log.Println("Error: " + err.Error())
 		}
 	}()

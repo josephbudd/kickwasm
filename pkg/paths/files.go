@@ -82,7 +82,7 @@ type FileNames struct {
 	VSCodeMPWorkSpaceJSON string
 	VSCodeRPWorkSpaceJSON string
 
-	// v 13
+	// v 14
 
 	AttributesDotGo string
 	CallBackDotGo   string
@@ -190,7 +190,7 @@ func GetFileNames() *FileNames {
 		VSCodeMPWorkSpaceJSON: "mainprocess.code-workspace",
 		VSCodeRPWorkSpaceJSON: "rendererprocess.code-workspace",
 
-		// v 13
+		// v 14
 		AttributesDotGo:  "attributes.go",
 		CallBackDotGo:    "callback.go",
 		CheckedDotGo:     "checked.go",

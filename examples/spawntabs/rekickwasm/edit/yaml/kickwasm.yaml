@@ -1,0 +1,29 @@
+title: Spawn Tabs
+importPath: github.com/josephbudd/kickwasm/examples/spawntabs
+buttons:
+  - name: TabsButton
+    label: Tabs
+    panels:
+      - name: TabsButtonTabBarPanel
+        tabs:
+          - name: FirstTab
+            label: First Tab
+            panels:
+              - name: CreatePanel
+                note: Button to create a new hello world.
+                markup: |
+                  <p>
+                    <button id="newHelloWorldButton">New Hello World</button>
+                  </p>
+          - name: SecondTab
+            spawn: true
+            label: Second Tab
+            panels:
+              - name: HelloWorldTemplatePanel
+                note: Yet another "hello world".
+                markup: |
+                  <p id="p{{.SpawnID}}">Hello World {{.SpawnID}}!</p>
+                  <p>
+                      <button id="closeSpawnButton{{.SpawnID}}">Close</button>
+                  </p>
+

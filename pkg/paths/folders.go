@@ -38,7 +38,7 @@ type FolderNames struct {
 
 	SitePack string
 
-	// v 13 renderer
+	// v 14 renderer
 
 	DOM         string
 	CallBack    string
@@ -50,6 +50,7 @@ type FolderNames struct {
 	Framework   string
 	Proofs      string
 	Application string
+	API         string
 }
 
 // GetFolderNames returns the folder names.
@@ -91,7 +92,7 @@ func GetFolderNames() *FolderNames {
 
 		SitePack: "sitepack",
 
-		// v 13 renderer
+		// v 14 renderer
 
 		DOM:         "dom",
 		CallBack:    "callback",
@@ -103,5 +104,6 @@ func GetFolderNames() *FolderNames {
 		Framework:   "framework",
 		Proofs:      "proofs",
 		Application: "application",
+		API:         "api",
 	}
 }

@@ -5,10 +5,8 @@ package helloworldtemplatepanel
 import (
 	"fmt"
 
-	"github.com/pkg/errors"
-
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/lpc"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/paneling"
 )
 
@@ -40,8 +38,7 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, pane
 
 	defer func() {
 		if err != nil {
-			message := fmt.Sprintf("%s.BuildPanel()", "helloworldtemplatepanel")
-			err = errors.WithMessage(err, message)
+			err = fmt.Errorf("%s.BuildPanel(): %w", "helloworldtemplatepanel", err)
 		}
 	}()
 

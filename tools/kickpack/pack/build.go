@@ -1,8 +1,6 @@
 package pack
 
-import (
-	"github.com/pkg/errors"
-)
+import "fmt"
 
 // Build creates and writes the sources into a single package.
 // Param output is the output packages folder path.
@@ -12,11 +10,11 @@ import (
 func Build(output string, sources []string, packageName string, mustExist bool) (err error) {
 	var pathBytes map[string][]byte
 	if pathBytes, err = buildPathBytes(sources, mustExist); err != nil {
-		err = errors.WithMessage(err, "pack.Build read")
+		err = fmt.Errorf("pack.Build read: %w", err)
 		return
 	}
 	if err = write(pathBytes, output, packageName); err != nil {
-		err = errors.WithMessage(err, "pack.Build write")
+		err = fmt.Errorf("pack.Build write: %w", err)
 	}
 	return
 }

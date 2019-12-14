@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../common/"
+		},
+		{
+			"path": "/home/nil/go/src/github.com/josephbudd/kickwasm/tools/script"
 		}
 	],
 	"settings": {}

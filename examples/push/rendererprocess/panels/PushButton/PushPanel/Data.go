@@ -3,7 +3,7 @@
 package pushpanel
 
 import (
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/dom"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/dom"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/lpc"
 )
 

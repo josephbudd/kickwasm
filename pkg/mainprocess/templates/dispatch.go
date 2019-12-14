@@ -185,8 +185,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/pkg/errors"
-
 	"{{.ApplicationGitPath}}{{.ImportDomainDataLogLevels}}"
 	"{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
 	"{{.ApplicationGitPath}}{{.ImportMainProcessLPC}}"
@@ -223,17 +221,16 @@ func handleLog(ctx context.Context, rxMessage *message.LogRendererToMainProcess,
 		msg = "{{.ApplicationName}}: Warning: " + rxMessage.Message
 	case loglevels.LogLevelError:
 		msg = "{{.ApplicationName}}: Error: " + rxMessage.Message
-		err = errors.New(msg)
+		err = fmt.Errorf(msg)
 	case loglevels.LogLevelFatal:
 		msg = "{{.ApplicationName}}: Fatal: " + rxMessage.Message
-		err = errors.New(msg)
+		err = fmt.Errorf(msg)
 	default:
 		msg = fmt.Sprintf("{{.ApplicationName}}: %d: %s", rxMessage.Level, rxMessage.Message)
 	}
 	// Log the message from the renderer.
 	log.Println(msg)
 	// Send an update back to the renderer.
-	// In this case no errors.
 	txMessage := &message.LogMainProcessToRenderer{
 		Level:   rxMessage.Level,
 		Message: rxMessage.Message,

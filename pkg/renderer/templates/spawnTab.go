@@ -34,7 +34,6 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/pkg/errors"
 {{ range .SpawnImports }}
 	{{.}}{{end}}
 )
@@ -73,8 +72,7 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 
 	defer func() {
 		if err != nil {
-			message := fmt.Sprintf("%s.Spawn()", "{{call .PackageNameCase .TabName}}")
-			err = errors.WithMessage(err, message)
+			err = fmt.Errorf("%s.Spawn()", "{{call .PackageNameCase .TabName}}: %w", err)
 		}
 	}()
 
@@ -112,8 +110,7 @@ func (tab *Tab) unSpawn() (err error) {
 
 	defer func() {
 		if err != nil {
-			message := fmt.Sprintf("{{call .PackageNameCase .TabName}}.unSpawn(): uniqueID is %d", tab.uniqueID)
-			err = errors.WithMessage(err, message)
+			err = fmt.Errorf("{{call .PackageNameCase .TabName}}.unSpawn(): uniqueID is %d: %w", tab.uniqueID, err)
 		}
 	}()
 
@@ -135,7 +132,7 @@ func (tab *Tab) unSpawn() (err error) {
 
 	// construct a new error from the accumulated errors.
 	if len(messages) > 0 {
-		err = errors.New(strings.Join(messages, "\n"))
+		err = fmt.Errorf(strings.Join(messages, "\n"))
 	}
 	return
 }

@@ -5,8 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/pkg/errors"
-
 	"github.com/josephbudd/kickwasm/tools/rekickwasm/ftools"
 	"github.com/josephbudd/kickwasm/tools/rekickwasm/statements"
 
@@ -22,7 +20,6 @@ import (
 
 const (
 	panelDotGoTxtFile     = "original_panel_dot_go.txt"
-	errAlteredStores      = "you altered the stores in your yaml file"
 	templateFileExtension = ".tmpl"
 )
 
@@ -51,8 +48,7 @@ func (r *Refactorer) Refactor() (err error) {
 
 	defer func() {
 		if err != nil {
-			msg := fmt.Sprintf(statements.ErrorRefactorFormat, err.Error())
-			err = errors.New(msg)
+			err = fmt.Errorf(statements.ErrorRefactorFormat, err.Error())
 		}
 	}()
 
@@ -141,8 +137,7 @@ func (r *Refactorer) Refactor() (err error) {
 		}
 	}
 	if !differences && !scrollChanged {
-		msg := fmt.Sprintf(statements.ErrorRefactorFormat, statements.NothingRefactored)
-		err = errors.New(msg)
+		err = fmt.Errorf(statements.ErrorRefactorFormat, statements.NothingRefactored)
 		return
 	}
 	// Step 5: merge changes folder into refactor ( original ) folder.
@@ -207,15 +202,15 @@ func (r *Refactorer) Refactor() (err error) {
 
 func checkVersion(changesFlags, mergeFlags *flagdata.Flags) (err error) {
 	if changesFlags.KWVersionBreaking != mergeFlags.KWVersionBreaking {
-		err = errors.New("you altered the kwversionbreaking in your yaml file")
+		err = fmt.Errorf("you altered the kwversionbreaking in your yaml file")
 		return
 	}
 	if changesFlags.KWVersionFeature != mergeFlags.KWVersionFeature {
-		err = errors.New("you altered the kwversionfeature in your yaml file")
+		err = fmt.Errorf("you altered the kwversionfeature in your yaml file")
 		return
 	}
 	if changesFlags.KWVersionPatch != mergeFlags.KWVersionPatch {
-		err = errors.New("you altered the kwversionpatch in your yaml file")
+		err = fmt.Errorf("you altered the kwversionpatch in your yaml file")
 		return
 	}
 	return
@@ -224,11 +219,11 @@ func checkVersion(changesFlags, mergeFlags *flagdata.Flags) (err error) {
 // checkMainProcess returns an error if the user edited any main process parts of the main yaml file.
 func checkMainProcess(changesBuilder, mergeBuilder *project.Builder) (err error) {
 	if changesBuilder.Title != mergeBuilder.Title {
-		err = errors.New("you altered the title in your yaml file")
+		err = fmt.Errorf("you altered the title in your yaml file")
 		return
 	}
 	if changesBuilder.ImportPath != mergeBuilder.ImportPath {
-		err = errors.New("you altered the import path in your yaml file")
+		err = fmt.Errorf("you altered the import path in your yaml file")
 		return
 	}
 	return
@@ -326,7 +321,7 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "refactorPanelPaths")
+			err = fmt.Errorf("refactorPanelPaths: %w", err)
 		}
 	}()
 
@@ -354,11 +349,11 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 		src = filepath.Join(changesStartFolder, spawnPath.Path, panelName)
 		dst = filepath.Join(mergeStartFolder, spawnPath.Path, panelName)
 		if dcopy, err = ftools.NewDCopy(src, dst, false, false, nil); err != nil {
-			err = errors.WithMessage(err, "additions dcopy")
+			err = fmt.Errorf("additions dcopy: %w", err)
 			return
 		}
 		if err = dcopy.Copy(); err != nil {
-			err = errors.WithMessage(err, "additions copy")
+			err = fmt.Errorf("additions copy: %w", err)
 			return
 		}
 		// Template files.
@@ -373,7 +368,7 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 		src = filepath.Join(changesStartFolder, spawnPath.Path, fname)
 		dst = filepath.Join(mergeStartFolder, spawnPath.Path, fname)
 		if err = ftools.CopyFile(src, dst); err != nil {
-			err = errors.WithMessage(err, "additions")
+			err = fmt.Errorf("additions: %w", err)
 			return
 		}
 	}
@@ -392,11 +387,11 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 		dst = filepath.Join(mergeStartFolder, moveSpawnPath.To.Path, panelName)
 		var dm *ftools.DMove
 		if dm, err = ftools.NewDMove(src, dst, false, false, nil); err != nil {
-			err = errors.WithMessage(err, "moves")
+			err = fmt.Errorf("moves: %w", err)
 			return
 		}
 		if err = dm.Move(); err != nil {
-			err = errors.WithMessage(err, "moves")
+			err = fmt.Errorf("moves: %w", err)
 			return
 		}
 
@@ -411,7 +406,7 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 		dst = filepath.Join(mergeStartFolder, moveSpawnPath.To.Path, fname)
 		fm = ftools.NewFMove(src, dst, true, dmode)
 		if err = fm.Move(); err != nil {
-			err = errors.WithMessage(err, "moves")
+			err = fmt.Errorf("moves: %w", err)
 			return
 		}
 	}
@@ -426,7 +421,7 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 		}
 		dst = filepath.Join(mergeStartFolder, removeSpawnPath.Path, panelName)
 		if err = os.RemoveAll(dst); err != nil {
-			err = errors.WithMessage(err, "removals")
+			err = fmt.Errorf("removals: %w", err)
 			return
 		}
 
@@ -439,7 +434,7 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 		fname := panelName + templateFileExtension
 		src = filepath.Join(mergeStartFolder, removeSpawnPath.Path, fname)
 		if err = os.RemoveAll(src); err != nil {
-			err = errors.WithMessage(err, "removals")
+			err = fmt.Errorf("removals: %w", err)
 			return
 		}
 	}
@@ -451,7 +446,7 @@ func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *proje
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "refactorPanelGroupFiles")
+			err = fmt.Errorf("refactorPanelGroupFiles: %w", err)
 		}
 	}()
 
@@ -484,7 +479,7 @@ func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *proje
 		redundancy[src] = true
 		// Get the panel names ( folder names ) from the source.
 		if panelNames, err = getPanelNamesInFolder(src); err != nil {
-			err = errors.WithMessage(err, "additions getPanelNamesInFolder")
+			err = fmt.Errorf("additions getPanelNamesInFolder: %w", err)
 			return
 		}
 		// Copy group files from src to dst.
@@ -492,7 +487,7 @@ func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *proje
 			gpsrc = filepath.Join(src, panelName, fileNames.PanelGroupDotGo)
 			gpdst = filepath.Join(dst, panelName, fileNames.PanelGroupDotGo)
 			if err = ftools.CopyFile(gpsrc, gpdst); err != nil {
-				err = errors.WithMessage(err, "additions")
+				err = fmt.Errorf("additions: %w", err)
 				return
 			}
 		}
@@ -517,7 +512,7 @@ func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *proje
 		dst = filepath.Join(mergePaths.OutputRendererPanels, moveSpawnPath.To.Path)
 		// Get the panel names ( folder names ) from the source.
 		if panelNames, err = getPanelNamesInFolder(src); err != nil {
-			err = errors.WithMessage(err, "moves getPanelNamesInFolder")
+			err = fmt.Errorf("moves getPanelNamesInFolder: %w", err)
 			return
 		}
 		// Copy group files from src to dst.
@@ -525,7 +520,7 @@ func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *proje
 			gpsrc = filepath.Join(src, panelName, fileNames.PanelGroupDotGo)
 			gpdst = filepath.Join(dst, panelName, fileNames.PanelGroupDotGo)
 			if err = ftools.CopyFile(gpsrc, gpdst); err != nil {
-				err = errors.WithMessage(err, "moves")
+				err = fmt.Errorf("moves: %w", err)
 				return
 			}
 		}
@@ -551,7 +546,7 @@ func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *proje
 		dst = filepath.Join(mergePaths.OutputRendererPanels, removeSpawnPath.Path)
 		// Get the panel names ( folder names ) from the source.
 		if panelNames, err = getPanelNamesInFolder(src); err != nil {
-			err = errors.WithMessage(err, "removes getPanelNamesInFolder")
+			err = fmt.Errorf("removes getPanelNamesInFolder: %w", err)
 			return
 		}
 		// Copy group files from src to dst.
@@ -559,7 +554,7 @@ func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *proje
 			gpsrc = filepath.Join(src, panelName, fileNames.PanelGroupDotGo)
 			gpdst = filepath.Join(dst, panelName, fileNames.PanelGroupDotGo)
 			if err = ftools.CopyFile(gpsrc, gpdst); err != nil {
-				err = errors.WithMessage(err, "removals")
+				err = fmt.Errorf("removals: %w", err)
 				return
 			}
 		}
@@ -572,7 +567,7 @@ func (r *Refactorer) refactorSpawnPanelUneditableFiles(changesBuilder, mergeBuil
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "refactorSpawnPanelUneditableFiles")
+			err = fmt.Errorf("refactorSpawnPanelUneditableFiles: %w", err)
 		}
 	}()
 
@@ -592,7 +587,7 @@ func (r *Refactorer) refactorSpawnPanelUneditableFiles(changesBuilder, mergeBuil
 		src = filepath.Join(changesPaths.OutputRendererSpawns, spawnPath.Path, panelName)
 		dst = filepath.Join(mergePaths.OutputRendererSpawns, spawnPath.Path, panelName)
 		if err = copySpawnUnEditables(src, dst, fileNames, redundancy); err != nil {
-			err = errors.WithMessage(err, "additions")
+			err = fmt.Errorf("additions: %w", err)
 			return
 		}
 	}
@@ -608,7 +603,7 @@ func (r *Refactorer) refactorSpawnPanelUneditableFiles(changesBuilder, mergeBuil
 		src = filepath.Join(changesPaths.OutputRendererSpawns, moveSpawnPath.To.Path, panelName)
 		dst = filepath.Join(mergePaths.OutputRendererSpawns, moveSpawnPath.To.Path, panelName)
 		if err = copySpawnUnEditables(src, dst, fileNames, redundancy); err != nil {
-			err = errors.WithMessage(err, "moves to")
+			err = fmt.Errorf("moves to: %w", err)
 			return
 		}
 		// Fix the move from folder.
@@ -617,7 +612,7 @@ func (r *Refactorer) refactorSpawnPanelUneditableFiles(changesBuilder, mergeBuil
 		src = filepath.Join(changesPaths.OutputRendererSpawns, moveSpawnPath.From.Path, panelName)
 		dst = filepath.Join(mergePaths.OutputRendererSpawns, moveSpawnPath.From.Path, panelName)
 		if err = copySpawnUnEditables(src, dst, fileNames, redundancy); err != nil {
-			err = errors.WithMessage(err, "moves from")
+			err = fmt.Errorf("moves from: %w", err)
 			return
 		}
 	}
@@ -632,7 +627,7 @@ func (r *Refactorer) refactorSpawnPanelUneditableFiles(changesBuilder, mergeBuil
 		src = filepath.Join(changesPaths.OutputRendererSpawns, removeSpawnPath.Path, panelName)
 		dst = filepath.Join(mergePaths.OutputRendererSpawns, removeSpawnPath.Path, panelName)
 		if err = copySpawnUnEditables(src, dst, fileNames, redundancy); err != nil {
-			err = errors.WithMessage(err, "removals")
+			err = fmt.Errorf("removals: %w", err)
 			return
 		}
 	}
@@ -643,7 +638,7 @@ func (r *Refactorer) removeUnusedPanelTemplateFolders() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "Refactorer.removeUnusedPanelTemplateFolders()")
+			err = fmt.Errorf("Refactorer.removeUnusedPanelTemplateFolders(): %w", err)
 		}
 	}()
 
@@ -651,20 +646,20 @@ func (r *Refactorer) removeUnusedPanelTemplateFolders() (err error) {
 	mergePaths := r.rp.Refactor.GetPaths()
 	// Panel packages.
 	if err = walkFolders(changesPaths.OutputRendererPanels, mergePaths.OutputRendererPanels); err != nil {
-		err = errors.WithMessage(err, "OutputRendererPanels")
+		err = fmt.Errorf("OutputRendererPanels: %w", err)
 		return
 	}
 	if err = walkFolders(changesPaths.OutputRendererSpawns, mergePaths.OutputRendererSpawns); err != nil {
-		err = errors.WithMessage(err, "OutputRendererSpawns")
+		err = fmt.Errorf("OutputRendererSpawns: %w", err)
 		return
 	}
 	// Panel templates.
 	if err = walkFolders(changesPaths.OutputRendererTemplates, mergePaths.OutputRendererTemplates); err != nil {
-		err = errors.WithMessage(err, "OutputRendererTemplates")
+		err = fmt.Errorf("OutputRendererTemplates: %w", err)
 		return
 	}
 	if err = walkFolders(changesPaths.OutputRendererSpawnTemplates, mergePaths.OutputRendererSpawnTemplates); err != nil {
-		err = errors.WithMessage(err, "OutputRendererSpawnTemplates")
+		err = fmt.Errorf("OutputRendererSpawnTemplates: %w", err)
 	}
 	return
 }
@@ -723,7 +718,7 @@ func copySpawnUnEditables(panelsrc, paneldst string, fileNames *paths.FileNames,
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "copySpawnUnEditables")
+			err = fmt.Errorf("copySpawnUnEditables: %w", err)
 		}
 	}()
 

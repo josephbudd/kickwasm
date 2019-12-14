@@ -5,8 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/pkg/errors"
-
 	"github.com/josephbudd/kickwasm/pkg/paths"
 	"github.com/josephbudd/kickwasm/tools/rekickwasm/ftools"
 	"github.com/josephbudd/kickwasm/tools/rekickwasm/statements"
@@ -78,7 +76,7 @@ func (rp *RePaths) Initialized() (initialized bool) {
 // InitializeWorkingDirectory creates the folders.
 func (rp *RePaths) InitializeWorkingDirectory() (err error) {
 	if rp.Initialized() {
-		err = errors.New(statements.AlreadyInit)
+		err = fmt.Errorf(statements.AlreadyInit)
 		return
 	}
 	// Finish the constructor.
@@ -98,25 +96,21 @@ func (rp *RePaths) InitializeWorkingDirectory() (err error) {
 		[]string{RekickWasmFolder},
 	)
 	if err != nil {
-		msg := fmt.Sprintf(statements.ErrorInitFormat, err.Error())
-		err = errors.New(msg)
+		err = fmt.Errorf(statements.ErrorInitFormat, err.Error())
 		return
 	}
 	if err = fc.Copy(); err != nil {
-		msg := fmt.Sprintf(statements.ErrorInitFormat, err.Error())
-		err = errors.New(msg)
+		err = fmt.Errorf(statements.ErrorInitFormat, err.Error())
 		return
 	}
 	// remove the .rekickwasm/.changes/ folder if it exists.
 	if err = os.RemoveAll(changesPaths.Output); err != nil {
-		msg := fmt.Sprintf(statements.ErrorInitFormat, err.Error())
-		err = errors.New(msg)
+		err = fmt.Errorf(statements.ErrorInitFormat, err.Error())
 		return
 	}
 	// remove the .rekickwasm/refactor/ folder it if exists.
 	if err = os.RemoveAll(mergePaths.Output); err != nil {
-		msg := fmt.Sprintf(statements.ErrorInitFormat, err.Error())
-		err = errors.New(msg)
+		err = fmt.Errorf(statements.ErrorInitFormat, err.Error())
 		return
 	}
 	// copy original .kickwasm/ to ./rekickwasm/edit/
@@ -128,13 +122,11 @@ func (rp *RePaths) InitializeWorkingDirectory() (err error) {
 		nil,
 	)
 	if err != nil {
-		msg := fmt.Sprintf(statements.ErrorInitFormat, err.Error())
-		err = errors.New(msg)
+		err = fmt.Errorf(statements.ErrorInitFormat, err.Error())
 		return
 	}
 	if err = fc.Copy(); err != nil {
-		msg := fmt.Sprintf(statements.ErrorInitFormat, err.Error())
-		err = errors.New(msg)
+		err = fmt.Errorf(statements.ErrorInitFormat, err.Error())
 		return
 	}
 
@@ -236,7 +228,7 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 		./rendererprocess/spawnPanels/
 		./rendererprocess/framework/viewtools/
 		./rendererprocess/framework/proofs/
-		./rendererprocess/application/Application.go
+		./rendererprocess/api/application/Application.go
 
 		./site/templates/
 		./site/spawnTemplates/
@@ -251,6 +243,7 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	// Files to be copied.
 
 	// File in the ./mainprocess/ folder.
+
 	// ./mainprocess/panelMap.go
 	src = filepath.Join(srcPaths.OutputMainProcess, fileNames.PanelMapDotGo)
 	dst = filepath.Join(dstPaths.OutputMainProcess, fileNames.PanelMapDotGo)
@@ -259,6 +252,7 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	}
 
 	// Files and folders in the ./rendererprocess/ folder.
+
 	// ./rendererprocess/framework/panels.go
 	src = filepath.Join(srcPaths.OutputRendererFramework, fileNames.PanelsDotGo)
 	dst = filepath.Join(dstPaths.OutputRendererFramework, fileNames.PanelsDotGo)
@@ -288,7 +282,7 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	if err = _copyFolder(srcPaths.OutputRendererProofs, dstPaths.OutputRendererProofs); err != nil {
 		return
 	}
-	// ./rendererprocess/application/Application.go
+	// ./rendererprocess/api/application/Application.go
 	src = filepath.Join(srcPaths.OutputRendererApplication, fileNames.ApplicationDotGo)
 	dst = filepath.Join(dstPaths.OutputRendererApplication, fileNames.ApplicationDotGo)
 	if err = ftools.CopyFile(src, dst); err != nil {
@@ -296,6 +290,7 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	}
 
 	// Files and folders in the .site/ folder.
+
 	// ./site/css/
 	if err = _copyFolder(srcPaths.OutputRendererCSS, dstPaths.OutputRendererCSS); err != nil {
 		return
@@ -311,6 +306,7 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 	}
 
 	// The ./.kickwasm/ folder.
+
 	// ./.kickwasm
 	if err = _copyFolder(srcPaths.OutputDotKickwasm, dstPaths.OutputDotKickwasm); err != nil {
 		return

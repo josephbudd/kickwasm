@@ -6,9 +6,8 @@ const PanelGroup = `{{$Dot := .}}{{$lpg := len .PanelGroup}}// +build js, wasm
 package {{call .PackageNameCase .PanelName}}
 
 import (
+	"fmt"
 	"syscall/js"
-
-	"github.com/pkg/errors"
 
 	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
@@ -32,13 +31,13 @@ func (group *panelGroup) defineMembers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(group *panelGroup) defineMembers()")
+			err = fmt.Errorf("(group *panelGroup) defineMembers(): %w", err)
 		}
 	}()
 
     var panel *markup.Element
 {{range $panel := .PanelGroup}} if panel = document.ElementByID("{{$panel.HTMLID}}"); panel == nil {
-		err = errors.New("unable to find #{{$panel.HTMLID}}")
+	err = fmt.Errorf("unable to find #{{$panel.HTMLID}}")
 		return
     }
     group.{{call $Dot.LowerCamelCase $panel.Name}} = panel.JSValue()

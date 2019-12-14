@@ -4,7 +4,7 @@ package pushpanel
 
 import (
 	"github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/display"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/display"
 )
 
 /*
@@ -39,7 +39,7 @@ type panelMessenger struct {
 
 import "github.com/josephbudd/kickwasm/examples/push/domain/store/record"
 import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
-import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/display"
+import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/display"
 
 // Add Customer.
 

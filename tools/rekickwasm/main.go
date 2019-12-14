@@ -4,22 +4,22 @@ import (
 	"flag"
 	"fmt"
 	"os"
-
-	"github.com/pkg/errors"
+	"path/filepath"
 
 	"github.com/josephbudd/kickwasm/tools/common"
 	"github.com/josephbudd/kickwasm/tools/rekickwasm/statements"
 
 	"github.com/josephbudd/kickwasm/tools/rekickwasm/refactor"
 	"github.com/josephbudd/kickwasm/tools/rekickwasm/repath"
+	"github.com/josephbudd/kickwasm/tools/script"
 )
 
 const (
 	applicationName        = "rekickwasm"
-	versionBreaking        = 13 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 14 // Kicwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
-	minumunKickwasmVersion = 13 // Minumum kickwasm version.
+	minumunKickwasmVersion = 14 // Minumum kickwasm version.
 )
 
 // CleanFlag means remove the ./rekickwasm/ folder
@@ -46,6 +46,12 @@ var UndoFlag bool
 // InitFlag means create the initial yaml copy if it doesn't alreay exist.
 var InitFlag bool
 
+// EditFlag is the flag to the editor to use to edit ./rekickwasm/edit/yaml/kickwasm.yaml
+var EditFlag bool
+
+// EditorFlag is the flag to the editor to use to edit ./rekickwasm/edit/yaml/kickwasm.yaml
+var EditorFlag string
+
 // HelpFlag means display the help.
 var HelpFlag bool
 
@@ -60,15 +66,18 @@ func main() {
 
 	// initialize the flags
 	flag.BoolVar(&InitFlag, "i", false, "Initializes. Backs up your source code and yaml files in ./rekickwasm/backup/. Creates yaml files for you to edit in ./rekickwasm/edit/.")
+	flag.BoolVar(&EditFlag, "e", false, "edit ./rekickwasm/edit/yaml/kickwasm.yaml with the default editor.")
+	flag.StringVar(&EditorFlag, "E", "", "the editor to edit ./rekickwasm/edit/yaml/kickwasm.yaml with.")
 	flag.BoolVar(&YAMLFlag, "yaml", false, "Restores ./rekickwasm/edit/yaml/ removing your edits.")
-	//flag.BoolVar(&RefactorFlag, "R", false, "Refactor into ./rekickwasm/refactor/ using your changes in ./rekickwasm/yaml/.")
-	//flag.BoolVar(&ImportFlag, "I", false, `Import refactored code into the source code, Use after "rekickwasm -R"`)
 	flag.BoolVar(&RefactorImportFlag, "R", false, "Refactor using your edits in ./rekickwasm/edit/.")
 	flag.BoolVar(&UndoFlag, "u", false, "Undo the refactoring")
 	flag.BoolVar(&CleanFlag, "x", false, "Delete the ./rekickwasm/ folder.")
 	flag.BoolVar(&HelpFlag, "?", false, "help")
 	flag.BoolVar(&VersionFlag, "v", false, "version")
 	flag.Parse()
+	if len(EditorFlag) > 0 {
+		EditFlag = true
+	}
 	if RefactorImportFlag {
 		RefactorFlag = true
 		ImportFlag = true
@@ -84,7 +93,7 @@ func main() {
 		return
 	}
 	// Other flags are required in order to actually use rekickwasm.
-	if !InitFlag && !YAMLFlag && !RefactorFlag && !UndoFlag && !ImportFlag && !CleanFlag {
+	if !InitFlag && !YAMLFlag && !RefactorFlag && !UndoFlag && !ImportFlag && !CleanFlag && !EditFlag {
 		help()
 		return
 	}
@@ -118,12 +127,27 @@ func main() {
 			return
 		}
 		fmt.Println(statements.SuccessInit)
+		path := filepath.Join(rp.RekickWasmEditYAML, "kickwasm.yaml")
+		if len(EditorFlag) > 0 {
+			script.Run(EditorFlag, path)
+		} else {
+			script.Edit(path)
+		}
 		return
 	}
 	// The rest of these actions require that rekickwasm be initilized into the current folder.
 	if !rp.Initialized() {
 		fmt.Println(statements.NotInitialized)
-		err = errors.New("not initializied")
+		err = fmt.Errorf("not initializied")
+		return
+	}
+	if EditFlag {
+		path := filepath.Join(rp.RekickWasmEditYAML, "kickwasm.yaml")
+		if len(EditorFlag) > 0 {
+			script.Run(EditorFlag, path)
+		} else {
+			script.Edit(path)
+		}
 		return
 	}
 	if RefactorFlag {

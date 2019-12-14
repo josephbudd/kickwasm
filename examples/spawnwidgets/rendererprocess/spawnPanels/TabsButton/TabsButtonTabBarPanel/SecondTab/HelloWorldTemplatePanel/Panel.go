@@ -3,8 +3,8 @@
 package helloworldtemplatepanel
 
 import (
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/dom"
-	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/markup"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/dom"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 )
 
 /*

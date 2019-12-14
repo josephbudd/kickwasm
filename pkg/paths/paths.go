@@ -6,8 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // Import paths
@@ -50,14 +48,14 @@ const (
 	importDomainStoreStorer  = "/domain/store/storer"
 	importDomainStoreStoring = "/domain/store/storing"
 
-	// v 13
+	// v 14
 
-	importRendererDOM         = "/rendererprocess/dom"
-	importRendererMarkup      = "/rendererprocess/markup"
-	importRendererWindow      = "/rendererprocess/window"
-	importRendererEvent       = "/rendererprocess/event"
-	importRendererDisplay     = "/rendererprocess/display"
-	importRendererApplication = "/rendererprocess/application"
+	importRendererDOM         = "/rendererprocess/api/dom"
+	importRendererMarkup      = "/rendererprocess/api/markup"
+	importRendererWindow      = "/rendererprocess/api/window"
+	importRendererEvent       = "/rendererprocess/api/event"
+	importRendererDisplay     = "/rendererprocess/api/display"
+	importRendererApplication = "/rendererprocess/api/application"
 
 	// renderer framework
 
@@ -108,11 +106,12 @@ type Imports struct {
 	ImportDomainStoreStorer  string
 	ImportDomainStoreStoring string
 
-	// v 13
+	// v 14
+
+	ImportRendererCallBack string
+	ImportRendererLocation string
 
 	ImportRendererDOM         string
-	ImportRendererCallBack    string
-	ImportRendererLocation    string
 	ImportRendererMarkup      string
 	ImportRendererWindow      string
 	ImportRendererEvent       string
@@ -164,11 +163,12 @@ func GetImports() *Imports {
 		ImportDomainStoreStorer:  importDomainStoreStorer,
 		ImportDomainStoreStoring: importDomainStoreStoring,
 
-		// v 13
+		// v 14
+
+		ImportRendererCallBack: importRendererCallBack,
+		ImportRendererLocation: importRendererLocation,
 
 		ImportRendererDOM:         importRendererDOM,
-		ImportRendererCallBack:    importRendererCallBack,
-		ImportRendererLocation:    importRendererLocation,
 		ImportRendererMarkup:      importRendererMarkup,
 		ImportRendererWindow:      importRendererWindow,
 		ImportRendererEvent:       importRendererEvent,
@@ -251,7 +251,7 @@ func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 	ap.paths.ImportDomainStoreStorer = importDomainStoreStorer
 	ap.paths.ImportDomainStoreStoring = importDomainStoreStoring
 
-	// v 13
+	// v 14
 
 	ap.paths.ImportRendererDOM = importRendererDOM
 	ap.paths.ImportRendererCallBack = importRendererCallBack
@@ -354,8 +354,9 @@ type Paths struct {
 
 	OutputRendererLPC string
 
-	// v 13
+	// v 14
 
+	OutputRendererAPI         string
 	OutputRendererDOM         string
 	OutputRendererCallBack    string
 	OutputRendererLocation    string
@@ -411,7 +412,7 @@ type Paths struct {
 	ImportDomainStoreStorer  string
 	ImportDomainStoreStoring string
 
-	// v 13
+	// v 14
 
 	ImportRendererDOM         string
 	ImportRendererCallBack    string
@@ -475,14 +476,17 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	ap.paths.OutputRendererTemplates = filepath.Join(ap.paths.OutputRendererSite, folderNames.Templates)
 	ap.paths.OutputRendererSpawnTemplates = filepath.Join(ap.paths.OutputRendererSite, folderNames.SpawnTemplates)
 
-	// v 13
+	// v 14
 
-	ap.paths.OutputRendererDisplay = filepath.Join(ap.paths.OutputRenderer, folderNames.Display)
-	ap.paths.OutputRendererDOM = filepath.Join(ap.paths.OutputRenderer, folderNames.DOM)
-	ap.paths.OutputRendererMarkup = filepath.Join(ap.paths.OutputRenderer, folderNames.Markup)
-	ap.paths.OutputRendererEvent = filepath.Join(ap.paths.OutputRenderer, folderNames.Event)
-	ap.paths.OutputRendererWindow = filepath.Join(ap.paths.OutputRenderer, folderNames.Window)
-	ap.paths.OutputRendererApplication = filepath.Join(ap.paths.OutputRenderer, folderNames.Application)
+	// output renderer api
+
+	ap.paths.OutputRendererAPI = filepath.Join(ap.paths.OutputRenderer, folderNames.API)
+	ap.paths.OutputRendererDisplay = filepath.Join(ap.paths.OutputRendererAPI, folderNames.Display)
+	ap.paths.OutputRendererDOM = filepath.Join(ap.paths.OutputRendererAPI, folderNames.DOM)
+	ap.paths.OutputRendererMarkup = filepath.Join(ap.paths.OutputRendererAPI, folderNames.Markup)
+	ap.paths.OutputRendererEvent = filepath.Join(ap.paths.OutputRendererAPI, folderNames.Event)
+	ap.paths.OutputRendererWindow = filepath.Join(ap.paths.OutputRendererAPI, folderNames.Window)
+	ap.paths.OutputRendererApplication = filepath.Join(ap.paths.OutputRendererAPI, folderNames.Application)
 
 	// output renderer framework
 
@@ -564,7 +568,7 @@ func (ap *ApplicationPaths) MakeOutput() (err error) {
 		return
 	}
 
-	// v 13
+	// v 14
 	if err = os.MkdirAll(ap.paths.OutputRendererProofs, ap.DMode); err != nil {
 		return
 	}
@@ -617,12 +621,12 @@ func (ap *ApplicationPaths) WriteFile(fpath string, data []byte) (err error) {
 	var ofile *os.File
 	ofile, err = os.OpenFile(fpath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, ap.FMode)
 	if err != nil {
-		err = errors.Wrap(err, fmt.Sprintf("WriteFile: opening file %s:", fpath))
+		err = fmt.Errorf("WriteFile: opening file %s: %w", fpath, err)
 		return
 	}
 	defer ofile.Close()
 	if _, err = ofile.Write(data); err != nil {
-		err = errors.Wrap(err, fmt.Sprintf("WriteFile: writing to file %s", fpath))
+		err = fmt.Errorf("WriteFile: writing to file %s: %w", fpath, err)
 	}
 	return
 }

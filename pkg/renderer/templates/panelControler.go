@@ -6,7 +6,7 @@ const PanelController = `// +build js, wasm
 package {{call .PackageNameCase .PanelName}}
 
 import (
-	"github.com/pkg/errors"
+	"fmt"
 )
 
 /*
@@ -27,7 +27,6 @@ type panelController struct {
 
 	// example:
 
-	import "syscall/js"
 	import "{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
 
 	addCustomerName   *markup.Element
@@ -42,7 +41,7 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	defer func() {
 		if err != nil {
-			err = errors.WithMessage(err, "(controller *panelController) defineControlsHandlers()")
+			err = fmt.Errorf("(controller *panelController) defineControlsHandlers(): %w", err)
 		}
 	}()
 
@@ -55,13 +54,13 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	// Define the customer name text input GUI controller.
 	if controller.addCustomerName = document.ElementByID("addCustomerName"); controller.addCustomerName == nil {
-		err = errors.New("unable to find #addCustomerName")
+		err = fmt.Errorf("unable to find #addCustomerName")
 		return
 	}
 
 	// Define the submit button GUI controller.
 	if controller.addCustomerSubmit = document.ElementByID("addCustomerSubmit"); controller.addCustomerSubmit == nil {
-		err = errors.New("unable to find #addCustomerSubmit")
+		err = fmt.Errorf("unable to find #addCustomerSubmit")
 		return
 	}
 	// Handle the submit button's onclick event.

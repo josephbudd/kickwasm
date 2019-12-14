@@ -86,7 +86,7 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 	if err = createDOM(appPaths, builder); err != nil {
 		return
 	}
-	// v 13
+	// v 14
 	if err = createLocation(appPaths, builder); err != nil {
 		return
 	}
