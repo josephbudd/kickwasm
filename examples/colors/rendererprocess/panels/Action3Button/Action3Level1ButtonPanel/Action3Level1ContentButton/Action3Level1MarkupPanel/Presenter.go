@@ -24,6 +24,8 @@ type panelPresenter struct {
 
 	// example:
 
+	import "github.com/josephbudd/kickwasm/examples/colors/rendererprocess/api/markup"
+
 	editCustomerName *markup.Element
 
 	*/

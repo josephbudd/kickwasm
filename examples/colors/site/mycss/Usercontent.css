@@ -49,15 +49,6 @@
   user markup
 
 ******************************************************************************/
-
-/*
-  In the colors kickwasm.yaml file, the first markup panel of each button in the initial button pad
-    has hvscroll set to true. That allows for both horizontal and vertical scrolling.
-
-  The html templates for those first markup panels contain pretty much the same content as any other panel with 1 huge exeption.
-  The content is wrapped with a <div class="wide-text">.
-  See examples/colors/site/templates/Action1Button/Action1Level1ButtonPanel/Action1Level1ContentButton/Action1Level1MarkupPanel.tmpl
-*/
 .wide-text
 {
   min-width: 1000px;

@@ -139,6 +139,7 @@ const ClientGo = `// +build js, wasm
 package lpc
 
 import (
+	"container/list"
 	"fmt"
 	"log"
 	"syscall/js"
@@ -157,6 +158,38 @@ import (
 
 */
 
+// Queue is a queue.
+type Queue struct {
+	queue *list.List
+}
+
+func newQueue() (queue *Queue) {
+	queue = &Queue{
+		queue: list.New(),
+	}
+	return
+}
+
+func (q *Queue) length() (l int) {
+	l = q.queue.Len()
+	return
+}
+
+func (q *Queue) push(value []byte) {
+	q.queue.PushBack(value)
+}
+
+func (q *Queue) pop() (value []byte, found bool) {
+	if q.queue.Len() == 0 {
+		return
+	}
+	found = true
+	e := q.queue.Front()
+	value = e.Value.([]byte)
+	q.queue.Remove(e)
+	return
+}
+
 // Client is a wasm local process communication client.
 type Client struct {
 	host           string
@@ -165,7 +198,7 @@ type Client struct {
 	connection     js.Value
 	connected      bool
 	dispatching    bool
-	queue          [][]byte
+	queue          *Queue
 	OnOpenCallBack func()
 
 	SendChan    Sending
@@ -187,7 +220,7 @@ func NewClient(host string, port uint64, quitCh chan struct{}, eojCh chan struct
 		host:     host,
 		port:     port,
 		location: fmt.Sprintf("ws://%s:%d/ws", host, port),
-		queue:    make([][]byte, 0, 10),
+		queue:    newQueue(),
 
 		SendChan:    sending,
 		ReceiveChan: receiving,
@@ -245,10 +278,9 @@ func (client *Client) dispatch() {
 	if client.dispatching {
 		return
 	}
-	client.dispatching = len(client.queue) > 0
+	var payload []byte
+	payload, client.dispatching = client.queue.pop()
 	for client.dispatching {
-		payload := client.queue[0]
-		client.queue = client.queue[1:]
 		var cargo interface{}
 		var err error
 		if cargo, err = client.ReceiveChan.Cargo(payload); err != nil {
@@ -278,7 +310,7 @@ func (client *Client) dispatch() {
 		for i := 0; i < panelsCount; i++ {
 			client.ReceiveChan <- cargo
 		}
-		client.dispatching = len(client.queue) > 0
+		payload, client.dispatching = client.queue.pop()
 	}
 }
 
@@ -344,7 +376,7 @@ func (client *Client) onClose(this js.Value, args []js.Value) (nilReturn interfa
 func (client *Client) onMessage(this js.Value, args []js.Value) (nilReturn interface{}) {
 	e := args[0]
 	data := e.Get("data").String()
-	client.queue = append(client.queue, []byte(data))
+	client.queue.push([]byte(data))
 	client.dispatch()
 	return
 }
