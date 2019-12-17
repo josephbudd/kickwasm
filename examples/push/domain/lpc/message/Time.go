@@ -10,9 +10,9 @@ type TimeRendererToMainProcess struct {
 // Fatal indicates that the error is fatal and the renderer process must end.
 // If Fatal is true then this message is automatically handled by the renderer process. You can ignore it.
 type TimeMainProcessToRenderer struct {
+	Time string
+
 	Error        bool
 	ErrorMessage string
 	Fatal        bool
-
-	Time string
 }

@@ -28,7 +28,6 @@ type panelController struct {
 
 	// example:
 
-	import "syscall/js"
 	import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/markup"
 
 	addCustomerName   *markup.Element

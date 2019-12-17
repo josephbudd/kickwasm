@@ -13,7 +13,7 @@ import (
 
 // NewGracefullyCloseHandler makes an event handler which gracefully closes the application for you.
 // Use it in your panel controllers to handle your own application closing buttons.
-// Param qauitCh is the panel controller's quit channel.
+// Param quitCh is the panel controller's quit channel.
 func NewGracefullyCloseHandler(quitCh chan struct{}) (handler func(e event.Event) (nilReturn interface{})) {
 	handler = func(e event.Event) (nilReturn interface{}) {
 		callback.RemoveApplicationOnCloseHandler()
