@@ -62,7 +62,7 @@ func (sl *Slurper) checkApplicationInfo(yamlbb []byte, fpath string) (appInfo *A
 
 	// make sure there are homes
 	if len(appInfo.Homes) == 0 {
-		err = fmt.Errorf("homes is missing in " + fpath)
+		err = fmt.Errorf("the buttons for the initial button pad are missing in " + fpath)
 		return
 	}
 	homeButtonMap := make(map[string]string)
@@ -70,22 +70,22 @@ func (sl *Slurper) checkApplicationInfo(yamlbb []byte, fpath string) (appInfo *A
 		// home name
 		homeButton.SourcePath = fpath
 		if len(homeButton.ID) == 0 {
-			err = fmt.Errorf("a home button is missing a name")
+			err = fmt.Errorf("a button for the initial button pad is missing a name")
 			return
 		}
 		if _, found := homeButtonMap[homeButton.ID]; found {
-			err = fmt.Errorf(`the home button name %q is used more than once`, homeButton.ID)
+			err = fmt.Errorf(`the button name %q, for the initial button pad, is used more than once`, homeButton.ID)
 			return
 		}
 		for _, bn := range homeButtonMap {
 			if bn == homeButton.ID {
-				err = fmt.Errorf(`the home button name %q is used more than once`, homeButton.ID)
+				err = fmt.Errorf(`the button name %q, for the initial button pad, is used more than once`, homeButton.ID)
 				return
 			}
 		}
 		homeButtonMap[homeButton.ID] = homeButton.ID
 		if err = sl.checkButtonInfo(homeButton); err != nil {
-			err = fmt.Errorf(`in the home button named %q: %w`, homeButton.ID, err)
+			err = fmt.Errorf(`the button named %q, for the initial button pad: %w`, homeButton.ID, err)
 			return
 		}
 	}

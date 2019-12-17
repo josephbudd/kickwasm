@@ -6,10 +6,11 @@ An single page application framework generator written in GO for applictions wri
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## December 14, 2019
+## December 17, 2019
 
-### Version 14.0.2
+### Version 14.0.3
 
+Corrected some kickwasm.yaml file error messages.
 Something I meant to do and forgot. I redesigned the queue used in the framework's rendererprocess/framework/lpc/client.go.
 
 This is the last forseeable change to kickwasm. My commitment to kickwasm continues but my experimentation with kickwasm has ended because I think that I have made every possible improvement that I should. There fore I don't plan on any more framework breaking changes.
