@@ -6,7 +6,7 @@ An single page application framework generator written in GO for applictions wri
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## December 17, 2019
+## December 20, 2019
 
 ### Version 14.0.3
 
