@@ -39,6 +39,32 @@ func createLPC(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 	return
 }
 
+// RebuildClientDotGo rebuilds renderer/lpc/channels.go
+func RebuildClientDotGo(appPaths paths.ApplicationPathsI, importPath string, lpcNames []string) (err error) {
+	folderpaths := appPaths.GetPaths()
+	fileNames := appPaths.GetFileNames()
+
+	data := struct {
+		ApplicationGitPath      string
+		ImportDomainLPC         string
+		ImportDomainLPCMessage  string
+		ImportRendererViewTools string
+		ImportRendererCallBack  string
+		LPCNames                []string
+	}{
+		ApplicationGitPath:      importPath,
+		ImportDomainLPC:         folderpaths.ImportDomainLPC,
+		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
+		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
+		ImportRendererCallBack:  folderpaths.ImportRendererCallBack,
+		LPCNames:                lpcNames,
+	}
+	fname := fileNames.ClientDotGo
+	oPath := filepath.Join(folderpaths.OutputRendererLPC, fname)
+	err = templates.ProcessTemplate(fname, oPath, templates.ClientGo, data, appPaths)
+	return
+}
+
 // RebuildChannelsDotGo rebuilds renderer/lpc/channels.go
 func RebuildChannelsDotGo(appPaths paths.ApplicationPathsI, importPath string, lpcNames []string) (err error) {
 	folderpaths := appPaths.GetPaths()

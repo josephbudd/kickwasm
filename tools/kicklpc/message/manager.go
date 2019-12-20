@@ -144,7 +144,12 @@ func (mngr *Manager) rebuild() (err error) {
 	if err = domain.RebuildDomainLPCInstructions(mngr.appPaths, mngr.importGitPath, lpcNames); err != nil {
 		return
 	}
-	err = renderer.RebuildChannelsDotGo(mngr.appPaths, mngr.importGitPath, lpcNames)
+	if err = renderer.RebuildChannelsDotGo(mngr.appPaths, mngr.importGitPath, lpcNames); err != nil {
+		return
+	}
+	if err = renderer.RebuildClientDotGo(mngr.appPaths, mngr.importGitPath, lpcNames); err != nil {
+		return
+	}
 	return
 }
 
