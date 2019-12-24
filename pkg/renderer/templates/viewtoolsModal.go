@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsModal is the renderer/viewtools/modal.go file.
+// ViewToolsModal is the rendererprocess/viewtools/modal.go file.
 const ViewToolsModal = `// +build js, wasm
 
 package viewtools

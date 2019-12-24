@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsWidgetGo is the renderer/viewtools/widget.go file.
+// ViewToolsWidgetGo is the rendererprocess/viewtools/widget.go file.
 const ViewToolsWidgetGo = `// +build js, wasm
 
 package viewtools

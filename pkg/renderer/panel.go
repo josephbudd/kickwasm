@@ -11,7 +11,7 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
 )
 
-// createGoPanels creates the renderer/panels/ go panel files.
+// createGoPanels creates the rendererprocess/panels/ go panel files.
 // Only for organic not spawned panels.
 func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()

@@ -1,6 +1,6 @@
 package templates
 
-// MarkupChildParentGo is the renderer/markup/childparent.go file.
+// MarkupChildParentGo is the rendererprocess/markup/childparent.go file.
 const MarkupChildParentGo = `// +build js, wasm
 
 package markup

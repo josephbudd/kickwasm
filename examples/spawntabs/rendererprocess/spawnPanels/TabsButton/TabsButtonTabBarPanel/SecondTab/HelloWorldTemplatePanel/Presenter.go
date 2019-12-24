@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/display"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/dom"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/markup"
 )
@@ -35,6 +36,8 @@ type panelPresenter struct {
 	addCustomerName *markup.Element
 
 	*/
+
+	message string
 }
 
 // defineMembers defines the panelPresenter members by their html elements.
@@ -62,13 +65,26 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	// Define the customer name input field.
 	// Build it's id using the uniqueID.
-	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	id = display.SpawnID("addCustomerName{{.SpawnID}}", presenter.uniqueID)
 	if presenter.addCustomerName = presenter.document.ElementByID(id); presenter.addCustomerName == nil {
 		err = fmt.Errorf("unable to find #" + id)
 		return
 	}
 
 	*/
+
+	var id string
+	var p2 *markup.Element
+
+	// Define the 2nd paragraph.
+	// Build it's id using the uniqueID.
+	id = display.SpawnID("p2{{.SpawnID}}", presenter.uniqueID)
+	if p2 = presenter.document.ElementByID(id); p2 == nil {
+		err = fmt.Errorf("unable to find #" + id)
+		return
+	}
+	// Display the message in the 2nd paragraph.
+	p2.SetInnerText(presenter.message)
 
 	return
 }

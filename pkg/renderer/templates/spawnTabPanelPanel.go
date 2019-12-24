@@ -66,7 +66,7 @@ func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelN
 	// example:
 	//
 	// * Let's say that I define my spawn data types
-	//     in my own new folder at renderer/spawndata/
+	//     in my own new folder at rendererprocess/spawndata/
 	//     with the following definition.
 	//   type JoinedChatRoomSpawnData struct {
 	// 	     ServerName   string // Use for the panel heading.
@@ -87,12 +87,10 @@ func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelN
 	
 	import "{{.ApplicationGitPath}}{{.ImportRenderer}}/spawndata"
 
-	switch spawnData := spawnData.(type) {
-	case *spawndata.JoinedChatRoomSpawnData:
-		messenger.ircConnectionID = spawnData.ConnectionID
-		presenter.serverName = spawnData.ServerName
-		presenter.channelName = spawnData.ChannelName
-	}
+	data := spawnData.(*spawndata.JoinedChatRoomSpawnData)
+	messenger.ircConnectionID = data.ConnectionID
+	presenter.serverName = data.ServerName
+	presenter.channelName = data.ChannelName
 
 	*/
 
@@ -100,8 +98,8 @@ func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelN
 
 	// var help.
 
-	// This package's var help in Data.go is a pointer to the renderer/paneling.Help.
-	// If you redefined paneling.Help in renderer/paneling/Helping.go,
+	// This package's var help in Data.go is a pointer to the rendererprocess/paneling.Help.
+	// If you redefined paneling.Help in rendererprocess/paneling/Helping.go,
 	//   then you may need to use it here.
 	// Set any controller, presenter or messenger members that you added.
 	// Below is an example of me using help to set the messenger's state.

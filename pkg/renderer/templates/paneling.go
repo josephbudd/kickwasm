@@ -1,12 +1,12 @@
 package templates
 
-// PanelHelperInstructions is the template for the file renderer/paneling/instructions.txt
+// PanelHelperInstructions is the template for the file rendererprocess/paneling/instructions.txt
 const PanelHelperInstructions = `
 /*
 
 INSTRUCTIONS FOR USING THE Help struct.
 
-STEP 1: Edit the file Helping.go here in renderer/paneling/
+STEP 1: Edit the file Helping.go here in rendererprocess/paneling/
 		  by completing the definition of the struct Help.
 		In the example below I add funcs for getting states.
 
@@ -37,7 +37,7 @@ STEP 1: Edit the file Helping.go here in renderer/paneling/
 	func (help *Help) StateTest() uint64 { return uint64(1 << 5) }
 
 	
-STEP 2: In renderer/panels/ and renderer/spawnPanels/
+STEP 2: In rendererprocess/panels/ and rendererprocess/spawnPanels/
 		Add any members new members to your controllers, presenters, and messengers.
 		Set those new members in the panel constructor using help *paneling.Help
 
@@ -57,7 +57,7 @@ STEP 2: In renderer/panels/ and renderer/spawnPanels/
 		}
 `
 
-// PanelHelperImplementation is the template for the file renderer/implementations/starting/noHelp.go
+// PanelHelperImplementation is the template for the file rendererprocess/implementations/starting/noHelp.go
 const PanelHelperImplementation = `// +build js, wasm
 
 package paneling

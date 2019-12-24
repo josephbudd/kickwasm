@@ -1,6 +1,6 @@
 package templates
 
-// MarkupClassGo is the renderer/markup/class.go file.
+// MarkupClassGo is the rendererprocess/markup/class.go file.
 const MarkupClassGo = `// +build js, wasm
 
 package markup

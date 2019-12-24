@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsTabBar is the renderer/viewtools/tabbar.go template.
+// ViewToolsTabBar is the rendererprocess/viewtools/tabbar.go template.
 const ViewToolsTabBar = `// +build js, wasm
 
 package viewtools

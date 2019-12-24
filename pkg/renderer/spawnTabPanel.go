@@ -11,7 +11,7 @@ import (
 	"github.com/josephbudd/kickwasm/pkg/renderer/templates"
 )
 
-// createTabSpawnPanels creates the renderer/spawnPanels/ go panel files.
+// createTabSpawnPanels creates the rendererprocess/spawnPanels/ go panel files.
 // Only for spawned panels.
 func createTabSpawnPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()

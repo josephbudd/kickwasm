@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsGroups is the renderer/viewtools/groups.go template.
+// ViewToolsGroups is the rendererprocess/viewtools/groups.go template.
 const ViewToolsGroups = `// +build js, wasm
 
 package viewtools

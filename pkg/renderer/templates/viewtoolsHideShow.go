@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsHideShow is the renderer/viewtools/hideshow.go file.
+// ViewToolsHideShow is the rendererprocess/viewtools/hideshow.go file.
 const ViewToolsHideShow = `// +build js, wasm
 
 package viewtools

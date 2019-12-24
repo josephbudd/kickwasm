@@ -1,6 +1,6 @@
 package templates
 
-// MarkupDataGo is the renderer/markup/data.go file.
+// MarkupDataGo is the rendererprocess/markup/data.go file.
 const MarkupDataGo = `// +build js, wasm
 
 package markup

@@ -39,6 +39,7 @@ type panelController struct {
 	// <label for="addCustomerName{{.SpawnID}}">Name</label><input type="text" id="addCustomerName{{.SpawnID}}">
 	// <button id="addCustomerSubmit{{.SpawnID}}">Close</button>
 
+	import "syscall/js"
 	import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/markup"
 
 	addCustomerName   *markup.Element

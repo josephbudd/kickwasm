@@ -1,6 +1,6 @@
 package templates
 
-// MarkupElementGo is the renderer/markup/element.go file.
+// MarkupElementGo is the rendererprocess/markup/element.go file.
 const MarkupElementGo = `// +build js, wasm
 
 package markup

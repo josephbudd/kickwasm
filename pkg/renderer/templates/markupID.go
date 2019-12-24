@@ -1,6 +1,6 @@
 package templates
 
-// MarkupIDGo is the renderer/markup/id.go file.
+// MarkupIDGo is the rendererprocess/markup/id.go file.
 const MarkupIDGo = `// +build js, wasm
 
 package markup

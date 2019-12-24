@@ -1,6 +1,15 @@
-# What is there to learn from the colors example
+# Learn from the colors example
 
 ## Horizontally scrolled markup panels
+
+### Summary
+
+1. You declare markup panels in the kickwasm.yaml file with each panel that has a note and a markup. You can declare that a markup panel should allow for horizontal scrolling if needed by setting a panels **hvscroll: true**.
+1. If your markup panel has **hvscroll: true** then you must
+   * In the panel's HTML template file, wrap the markup with a block element.
+   * Style the wrapping block element's **min-width**.
+
+### Example code
 
 **examples/colors/.kickwasm/yaml/kickwasm.yaml** is the kickwasm.yaml file that was used to generate the colors source code. In the kickwasm.yaml file the markup panel **Action1Level1MarkupPanel** has
 
@@ -67,3 +76,18 @@ Below is the relative part of **kickwasm.yaml**.
   You can see this level's button pad by clicking the tall back button at the left.
 
 ```
+
+### Conclusion
+
+1. You declare markup panels in the kickwasm.yaml file with each panel that has a note and a markup. You can declare that a markup panel should allow for horizontal scrolling if needed by setting a panels **hvscroll: true**.
+1. **kickwasm** generates the framework. In the framework each markup panel declared in the kickwasm.yaml file
+   * Has it's own HTML template file.
+   * Has it's own go package. (We are not concerned with that here.)
+   * Will scroll vertically if needed by default.
+   * Will scroll horizontally if needed if you set **hvscroll: true** in the kickwasm.yaml file.
+
+If your markup panel has **hvscroll: true** then you must
+
+* In the panel's HTML template file, wrap the markup with a block element.
+* Style the wrapping block element's **min-width**.
+* Never class the wrapping block element with **resize-me-width**. The class **resize-me-width** forces the framework to size an element in a markup panel to fit inside it's parent.

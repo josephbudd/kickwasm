@@ -237,7 +237,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/dup_service_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `the home button name "NextButton" is used more than once`,
+			wantErrMessage: `the button name "NextButton", for the initial button pad, is used more than once`,
 		},
 		{
 			name: "fail bad panel name",
@@ -302,7 +302,7 @@ func TestDo(t *testing.T) {
 				yamlPath: "testyaml/fails/missing_button_name.yaml",
 			},
 			wantErr:        true,
-			wantErrMessage: `a home button is missing a name`,
+			wantErrMessage: `a button for the initial button pad is missing a name`,
 		},
 		{
 			name: "panels",
@@ -357,7 +357,7 @@ func TestDo(t *testing.T) {
 			got, err := sl.Gulp(tt.args.yamlPath)
 			if tt.wantErr && err != nil {
 				if err.Error() != tt.wantErrMessage {
-					t.Errorf("%s: got the wrong error message got: %s", tt.name, err.Error())
+					t.Errorf("%s: got the wrong error message got: %s\nwanted: %s", tt.name, err.Error(), tt.wantErrMessage)
 				}
 			} else {
 				if (err != nil) != tt.wantErr {

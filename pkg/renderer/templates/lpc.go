@@ -1,6 +1,6 @@
 package templates
 
-// ChannelsGo is renderer/lpc/channels.go.
+// ChannelsGo is rendererprocess/lpc/channels.go.
 const ChannelsGo = `{{ $Dot := . }}// +build js, wasm
 
 package lpc
@@ -133,7 +133,7 @@ func (receiving Receiving) Cargo(payloadbb []byte) (cargo interface{}, err error
 }
 `
 
-// ClientGo is renderer/lpc/client.go
+// ClientGo is rendererprocess/lpc/client.go
 const ClientGo = `// +build js, wasm
 
 package lpc

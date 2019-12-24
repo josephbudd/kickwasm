@@ -124,7 +124,7 @@ func (mngr *Manager) Del(messagename string) (err error) {
 
 // rebuild rebuilds the main process dispatcher, instructions.
 // rebuilds the domain instructions.
-// rebuilds the renderer/lpc/channels.go.
+// rebuilds the rendererprocess/lpc/channels.go.
 func (mngr *Manager) rebuild() (err error) {
 	var list []string
 	if list, err = mngr.filteredList(); err != nil {

@@ -1,6 +1,6 @@
 package templates
 
-// MarkupScrollGo is the renderer/markup/scroll.go file.
+// MarkupScrollGo is the rendererprocess/markup/scroll.go file.
 const MarkupScrollGo = `// +build js, wasm
 
 package markup

@@ -1,6 +1,6 @@
 package templates
 
-// MarkupCheckedGo is the renderer/markup/checked.go file.
+// MarkupCheckedGo is the rendererprocess/markup/checked.go file.
 const MarkupCheckedGo = `// +build js, wasm
 
 package markup

@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsCloser is the renderer/viewtools/closer.go file.
+// ViewToolsCloser is the rendererprocess/viewtools/closer.go file.
 const ViewToolsCloser = `// +build js, wasm
 
 package viewtools

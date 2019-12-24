@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsMarkupGo is the renderer/viewtools/markup.go template.
+// ViewToolsMarkupGo is the rendererprocess/viewtools/markup.go template.
 const ViewToolsMarkupGo = `// +build js, wasm
 
 package viewtools

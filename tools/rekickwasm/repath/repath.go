@@ -270,7 +270,7 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 		return
 	}
 	// ./rendererprocess/spawnPanels/
-	// The renderer/spawnPanels folder might not exist.
+	// The rendererprocess/spawnPanels folder might not exist.
 	if err = _copyFolder(srcPaths.OutputRendererSpawns, dstPaths.OutputRendererSpawns); err != nil {
 		return
 	}

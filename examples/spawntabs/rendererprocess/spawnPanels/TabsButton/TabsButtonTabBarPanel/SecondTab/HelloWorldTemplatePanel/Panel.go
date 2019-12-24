@@ -5,6 +5,7 @@ package helloworldtemplatepanel
 import (
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/dom"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/markup"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/spawndata"
 )
 
 /*
@@ -81,17 +82,18 @@ func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelN
 	//     from the main process into a *spawndata.JoinedChatRoomSpawnData.
 	// * Below is how I could use the *spawndata.JoinedChatRoomSpawnData here
 	//     in this constructor as I build this panel package.
-	
+
 	import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/spawndata"
 
-	switch spawnData := spawnData.(type) {
-	case *spawndata.JoinedChatRoomSpawnData:
-		messenger.ircConnectionID = spawnData.ConnectionID
-		presenter.serverName = spawnData.ServerName
-		presenter.channelName = spawnData.ChannelName
-	}
+	data := spawnData.(*spawndata.JoinedChatRoomSpawnData)
+	messenger.ircConnectionID = data.ConnectionID
+	presenter.serverName = data.ServerName
+	presenter.channelName = data.ChannelName
 
 	*/
+
+	data := spawnData.(*spawndata.SecondTab)
+	presenter.message = data.Message
 
 	/* NOTE TO DEVELOPER. Step 2 of 2.
 

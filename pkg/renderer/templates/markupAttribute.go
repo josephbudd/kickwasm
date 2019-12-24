@@ -1,6 +1,6 @@
 package templates
 
-// MarkupAttributeGo is the renderer/markup/attribute.go file.
+// MarkupAttributeGo is the rendererprocess/markup/attribute.go file.
 const MarkupAttributeGo = `// +build js, wasm
 
 package markup

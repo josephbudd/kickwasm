@@ -10,6 +10,7 @@ import (
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/event"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/markup"
 	secondtab "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab"
+	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/spawndata"
 )
 
 /*
@@ -125,7 +126,10 @@ func (controller *panelController) handleClick(e event.Event) (nilReturn interfa
 	n := spawnCount
 	tabLabel := fmt.Sprintf("Tab %d", n)
 	panelHeading := fmt.Sprintf("Panel Heading %d", n)
-	if _, err := secondtab.Spawn(tabLabel, panelHeading, nil); err != nil {
+	data := &spawndata.SecondTab{
+		Message: fmt.Sprintf("Message %d", n),
+	}
+	if _, err := secondtab.Spawn(tabLabel, panelHeading, data); err != nil {
 		display.Error(err.Error())
 	}
 	return

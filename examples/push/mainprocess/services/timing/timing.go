@@ -2,7 +2,6 @@ package timing
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
@@ -24,7 +23,6 @@ func Do(ctx context.Context, sending lpc.Sending) {
 				return
 			case t := <-timer.C:
 				f := t.Format(time.UnixDate)
-				log.Printf("timing.Do's go func is sending %q", f)
 				msg := &message.TimeMainProcessToRenderer{
 					Time: f,
 				}

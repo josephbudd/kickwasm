@@ -1,6 +1,6 @@
 package templates
 
-// FrameworkDoPanelsGo is renderer/framework/panels.go.
+// FrameworkDoPanelsGo is rendererprocess/framework/panels.go.
 const FrameworkDoPanelsGo = `{{$Dot := .}}// +build js, wasm
 
 package framework

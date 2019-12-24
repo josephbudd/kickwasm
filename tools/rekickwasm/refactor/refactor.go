@@ -172,7 +172,7 @@ func (r *Refactorer) Refactor() (err error) {
 	if err = dcopy.Copy(); err != nil {
 		return
 	}
-	// Copy renderer/lpc/client.go
+	// Copy rendererprocess/lpc/client.go
 	refactorPaths := r.rp.Refactor.GetPaths()
 	filenames := r.rp.Refactor.GetFileNames()
 	src := filepath.Join(changesPaths.OutputRendererLPC, filenames.ClientDotGo)
@@ -232,7 +232,7 @@ func checkMainProcess(changesBuilder, mergeBuilder *project.Builder) (err error)
 // refactorPanels rebuilds the application preserving what must not be changed.
 // The refactor folder is a copy of the original source.
 // The changes folder is the source built from the new yaml edits.
-// If the user is modifying the frammerge's renderer
+// If the user is modifying the framework's renderer
 //  then the changes source code is merged into the refactor source code
 //  so that the refactor source is the refactored source code.
 // Returns if modified and the error.
@@ -243,7 +243,7 @@ func (r *Refactorer) refactorPanels(changesBuilder, mergeBuilder *project.Builde
 	//  so that the refactor folder will be the refactored source code.
 	//
 	// Step 1: refactor site/templates/ and site/spawnTemplates
-	//         refactor renderer/panels/ and renderer/spawnPanels/.
+	//         refactor rendererprocess/panels/ and rendererprocess/spawnPanels/.
 	if err = r.refactorPanelPaths(changesBuilder, mergeBuilder, removals, additions, moves); err != nil {
 		return
 	}
@@ -335,7 +335,7 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 
 	// Additions
 	for panelName, spawnPath := range additions {
-		// renderer/panels/ folders
+		// rendererprocess/panels/ folders
 		// Copy the entire changes package folder to the refactor panels/ folder.
 		if spawnPath.Spawn {
 			changesStartFolder = changesPaths.OutputRendererSpawns
@@ -376,7 +376,7 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 	// Moves
 	dmode := r.rp.Changes.GetDMode()
 	for panelName, moveSpawnPath := range moves {
-		// renderer/panels/ folders
+		// rendererprocess/panels/ folders
 		// Move the entire refactor package folder to the new refactor panels/ folder.
 		if moveSpawnPath.From.Spawn {
 			mergeStartFolder = mergePaths.OutputRendererSpawns
@@ -413,7 +413,7 @@ func (r *Refactorer) refactorPanelPaths(changesBuilder, mergeBuilder *project.Bu
 
 	// Removals
 	for panelName, removeSpawnPath := range removals {
-		// renderer/panels/ folders
+		// rendererprocess/panels/ folders
 		if removeSpawnPath.Spawn {
 			mergeStartFolder = mergePaths.OutputRendererSpawns
 		} else {

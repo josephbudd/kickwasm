@@ -1,6 +1,6 @@
 package templates
 
-// MarkupSizeGo is the renderer/markup/size.go file.
+// MarkupSizeGo is the rendererprocess/markup/size.go file.
 const MarkupSizeGo = `// +build js, wasm
 
 package markup

@@ -61,6 +61,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	return
 }
+
 // Tab button label.
 
 func (presenter *panelPresenter) getTabLabel() (label string) {

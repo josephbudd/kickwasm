@@ -1,6 +1,6 @@
-# What is there to learn from the push example
+# Learn from the push example
 
-## How to start a go routine in the main process once the renderer process is up and running
+## Start a go routine in the main process once the renderer process is up and running
 
 ### The Init message from the renderer process
 
@@ -8,7 +8,12 @@ The init message is defined in **examples/push/domain/lpc/message/Init.go**. Whe
 
 ## The main process
 
-The init message is processed by the main process in **examples/push/mainprocess/lpc/dispatch/Init.go** which is shown below. **func handleInit**, ignores the message contents and simply calls **timing.Do(ctx, sending)** to start the timing service. Notice that timing.Do is passed the context and the channel used to send messages to the renderer process.
+The init message is processed by the main process in **examples/push/mainprocess/lpc/dispatch/Init.go** which is shown below. **func handleInit** is the actual message handler and it has no functionality until you give it some.
+
+In the push example I gave it some functionaly.
+
+1. It correctly ignores the message contents.
+1. It calls **timing.Do(ctx, sending)** to start the timing service. Notice that timing.Do is passed the context. It is also passed the channel used to send messages to the renderer process.
 
 ```go
 
@@ -52,7 +57,7 @@ func handleInit(ctx context.Context, rxmessage *message.InitRendererToMainProces
 
 ### The timing service in the main process
 
-The main process has a service that sends the time to the renderer process every second. The service is at **mainprocess/services/timing.go** shown below. **func Do** starts the service.
+In this push example, the main process has a service that sends the time to the renderer process every second. The service is at **mainprocess/services/timing.go** shown below. **func Do** starts the service.
 
 The service is simply a go routine which
 
@@ -65,7 +70,6 @@ package timing
 
 import (
   "context"
-  "log"
   "time"
 
   "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
@@ -87,7 +91,6 @@ func Do(ctx context.Context, sending lpc.Sending) {
         return
       case t := <-timer.C:
         f := t.Format(time.UnixDate)
-        log.Printf("timing.Do's go func is sending %q", f)
         msg := &message.TimeMainProcessToRenderer{
           Time: f,
         }
@@ -102,15 +105,15 @@ func Do(ctx context.Context, sending lpc.Sending) {
 
 ## The renderer process
 
-In this simple application there is only 1 markup panel. The panel is named **PushPanel**. It's template file is at **examples/push/site/templates/PushButton/PushPanel.tmpl** It's go package is at **examples/push/rendererprocess/panels/PushButton/PushPanel/**.
+In this push example, there is only 1 markup panel. The panel is named **PushPanel**. The panel's template file is at **examples/push/site/templates/PushButton/PushPanel.tmpl** The panel's go package is at **examples/push/rendererprocess/panels/PushButton/PushPanel/**.
 
-The **PushPanel** receives and displays the time. The panel messenger receives the message and the panel presenter displays it.
+The **PushPanel** receives and displays the time. The panel messenger receives the message and the panel presenter displays the time sent in the message.
 
 ### The renderer process receiving the Time message
 
-Below is the PushPanel's go package's messenger. A panel's messenger communicates with the main process.
+Below is the PushPanel's go package's messenger at **examples/push/rendererprocess/panels/PushButton/PushPanel/Messenger.go**. A panel's messenger communicates with the main process.
 
-1. In **func dispatchMessages**, the messenger receives the **TimeMainProcessToRenderer** message and distributes it to **func timeRX**.
+1. In **func dispatchMessages**, the messenger receives the **TimeMainProcessToRenderer** message and passes it to **func timeRX**.
 1. **timeRX** passes the message time string to the presenter's **displayTimeSpan** func which displays the time string.
 
 ```go
@@ -252,7 +255,7 @@ func (messenger *panelMessenger) initialSends() {
 
 ### The renderer process displaying the time
 
-Below is the PushPanel's go package's presenter. A panel's presenter outputs to the GUI.
+Below is the PushPanel's go package's presenter at **examples/push/rendererprocess/panels/PushButton/PushPanel/Presenter.go**. A panel's presenter outputs to the GUI.
 
 1. func **displayTimeSpan** displays the time.
 
@@ -348,3 +351,9 @@ func (presenter *panelPresenter) displayTimeSpan(s string) {
 }
 
 ```
+
+## Conclusion
+
+1. **func handleInit** in **mainprocess/lpc/dispatch/Init.go** must be given the funcitionality to call a service starter.
+1. **func handleInit** must pass the context in the call to the func which starts the service's go routine.
+1. The service's go routine must return when the context is done.

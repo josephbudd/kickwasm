@@ -1,6 +1,6 @@
 package templates
 
-// MarkupEventGo is the renderer/markup/evnets.go file.
+// MarkupEventGo is the rendererprocess/markup/evnets.go file.
 const MarkupEventGo = `// +build js, wasm
 
 package markup

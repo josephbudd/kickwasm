@@ -39,7 +39,7 @@ func createLPC(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 	return
 }
 
-// RebuildClientDotGo rebuilds renderer/lpc/channels.go
+// RebuildClientDotGo rebuilds rendererprocess/lpc/channels.go
 func RebuildClientDotGo(appPaths paths.ApplicationPathsI, importPath string, lpcNames []string) (err error) {
 	folderpaths := appPaths.GetPaths()
 	fileNames := appPaths.GetFileNames()
@@ -65,7 +65,7 @@ func RebuildClientDotGo(appPaths paths.ApplicationPathsI, importPath string, lpc
 	return
 }
 
-// RebuildChannelsDotGo rebuilds renderer/lpc/channels.go
+// RebuildChannelsDotGo rebuilds rendererprocess/lpc/channels.go
 func RebuildChannelsDotGo(appPaths paths.ApplicationPathsI, importPath string, lpcNames []string) (err error) {
 	folderpaths := appPaths.GetPaths()
 	fileNames := appPaths.GetFileNames()

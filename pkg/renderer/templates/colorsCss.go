@@ -1,6 +1,6 @@
 package templates
 
-// ColorsCSS is the renderer/css/colors.css template.
+// ColorsCSS is the rendererprocess/css/colors.css template.
 const ColorsCSS = `{{$Dot := .}}
 /******************************************************************************
 

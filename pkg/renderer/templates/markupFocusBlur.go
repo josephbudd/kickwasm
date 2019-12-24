@@ -1,6 +1,6 @@
 package templates
 
-// MarkupFocusBlurGo is the renderer/markup/focusblur.go file.
+// MarkupFocusBlurGo is the rendererprocess/markup/focusblur.go file.
 const MarkupFocusBlurGo = `// +build js, wasm
 
 package markup

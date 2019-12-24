@@ -1,6 +1,6 @@
 package templates
 
-// HostPortGo is the renderer/location/hostport.go file.
+// HostPortGo is the rendererprocess/location/hostport.go file.
 const HostPortGo = `// +build js, wasm
 
 package location

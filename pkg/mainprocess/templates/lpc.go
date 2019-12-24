@@ -364,7 +364,7 @@ func (server *Server) serve(w http.ResponseWriter, r *http.Request, handlerFunc 
 		// This is the initial web socket call from the renderer.
 		// It will start the main process web socket server, opening the web socket connection.
 		// The renderer and main process will send messages back and forth through this single connection.
-		// See domain/renderer/client.go func NewClient.
+		// See rendererprocess/lpc/client.go func NewClient.
 		server.serveWebSocket(w, r)
 		return
 	}

@@ -94,7 +94,7 @@ import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/ap
 import "github.com/josephbudd/kickwasm/proofs/%[1]s/%[1]stest/rendererprocess/api/display"
 
 func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
-	// See renderer/event/event.go.
+	// See rendererprocess/api/event/event.go.
 	// The event.Event funcs.
 	//   e.PreventDefaultBehavior()
 	//   e.StopCurrentPhasePropagation()
@@ -380,9 +380,9 @@ func Refactor(appName, description, sourceCodeFolderPath, kickwasmDotYAML, rekic
 	// Refactor the framework.
 	// Initialize the refactoring.
 	if testing {
-		log.Println(`script.RunDump(nil, sourceCodeFolderPath, "rekickwasm", "-i")`)
+		log.Println(`script.RunDump(nil, sourceCodeFolderPath, "rekickwasm", "-i", "-dne")`)
 	}
-	if dump, err = script.RunDump(nil, sourceCodeFolderPath, "rekickwasm", "-i"); err != nil {
+	if dump, err = script.RunDump(nil, sourceCodeFolderPath, "rekickwasm", "-i", "-dne"); err != nil {
 		if testing {
 			log.Println(string(dump))
 		}

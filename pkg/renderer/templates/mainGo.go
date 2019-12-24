@@ -1,6 +1,6 @@
 package templates
 
-// MainGo is the renderer/main.go template.
+// MainGo is the rendererprocess/main.go template.
 const MainGo = `// +build js, wasm
 
 package main
@@ -21,8 +21,8 @@ import (
 	YOU MAY EDIT THIS FILE.
 
 	For example: You may want to redefine the starting.Helper which is passed to your markup panel constructors.
-		1. Edit the definition of the renderer/interfaces/starter.Helper interface.
-		2. Define a new implementation of starter in the renderer/implementation/starting package.
+		1. Edit the definition of the rendererprocess/interfaces/starter.Helper interface.
+		2. Define a new implementation of starter in the rendererprocess/implementation/starting package.
 		3. In func main below, set helper to your new implementation.
 		4. Modify the Panel constructors in the markup panel packages
 		   in the render/panels/ folder to use your new definition

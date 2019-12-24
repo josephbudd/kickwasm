@@ -1,6 +1,6 @@
 package templates
 
-// CallBackGo is the renderer/callback/callback.go file.
+// CallBackGo is the rendererprocess/callback/callback.go file.
 const CallBackGo = `// +build js, wasm
 
 package callback

@@ -1,6 +1,6 @@
 package templates
 
-// MarkupHideShowGo is the renderer/markup/hideshow.go file.
+// MarkupHideShowGo is the rendererprocess/markup/hideshow.go file.
 const MarkupHideShowGo = `// +build js, wasm
 
 package markup

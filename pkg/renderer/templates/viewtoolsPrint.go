@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsPrint is the renderer/framework/viewtools/print.go file.
+// ViewToolsPrint is the rendererprocess/framework/viewtools/print.go file.
 const ViewToolsPrint = `// +build js, wasm
 
 package viewtools

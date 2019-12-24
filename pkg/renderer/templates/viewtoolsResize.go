@@ -1,6 +1,6 @@
 package templates
 
-// ViewToolsResize is the renderer/viewtools/resize.go template.
+// ViewToolsResize is the rendererprocess/viewtools/resize.go template.
 const ViewToolsResize = `// +build js, wasm
 
 package viewtools

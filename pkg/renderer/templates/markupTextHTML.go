@@ -1,6 +1,6 @@
 package templates
 
-// MarkupTextHTML is the renderer/markup/texthtml.go file.
+// MarkupTextHTML is the rendererprocess/markup/texthtml.go file.
 const MarkupTextHTML = `// +build js, wasm
 
 package markup

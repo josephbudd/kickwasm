@@ -1,6 +1,6 @@
 package templates
 
-// ApplicationGo is the renderer/application/application.go file.
+// ApplicationGo is the rendererprocess/application/application.go file.
 const ApplicationGo = `// +build js, wasm
 
 package application

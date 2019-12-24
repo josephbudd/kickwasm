@@ -1,6 +1,6 @@
 package templates
 
-// MarkupValueGo is the renderer/markup/value.go file.
+// MarkupValueGo is the rendererprocess/markup/value.go file.
 const MarkupValueGo = `// +build js, wasm
 
 package markup

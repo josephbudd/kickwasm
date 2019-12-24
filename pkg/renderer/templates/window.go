@@ -1,6 +1,6 @@
 package templates
 
-// WindowGo is the renderer/window/window.go file.
+// WindowGo is the rendererprocess/window/window.go file.
 const WindowGo = `// +build js, wasm
 
 package window

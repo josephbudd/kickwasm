@@ -1,6 +1,6 @@
 package templates
 
-// ViewtoolsHelpers is the renderer/viewtools/helpers.go file.
+// ViewtoolsHelpers is the rendererprocess/viewtools/helpers.go file.
 const ViewtoolsHelpers = `// +build js, wasm
 
 package viewtools

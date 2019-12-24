@@ -65,7 +65,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	// Define the customer name input field.
 	// Build it's id using the uniqueID.
-	id = display.SpawnID("addCustomerName{{.SpawnID}}", controller.uniqueID)
+	id = display.SpawnID("addCustomerName{{.SpawnID}}", presenter.uniqueID)
 	if presenter.addCustomerName = presenter.document.ElementByID(id); presenter.addCustomerName == nil {
 		err = fmt.Errorf("unable to find #" + id)
 		return

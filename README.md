@@ -6,15 +6,19 @@ An single page application framework generator written in GO for applictions wri
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## December 20, 2019
+## December 24, 2019
 
-### Version 14.0.3
+### Version 14.0.4
 
-Corrected some kickwasm.yaml file error messages.
-Corrected an issue in kicklpc so that now it updates client.go with checks for fatals.
-Something I meant to do and forgot. I redesigned the queue used in the framework's rendererprocess/framework/lpc/client.go.
+Changes that I had made to kickwasm had causes the some tests to fail. I fixed the tests.
+Changes I made to rekickwasm causes proofs to fail. I fixed rekickwams and proofs.
+Fixed errors I found in the docs that had to do with rendererprocess/ paths.
 
-This is the last forseeable change to kickwasm. My commitment to kickwasm continues but my experimentation with kickwasm has ended because I think that I have made every possible improvement that I should. There fore I don't plan on any more framework breaking changes.
+Reran tests and proofs.
+
+I'm adding READMEs to the examples. I updated the spawntabs examples so that it is also demonstrates using spawn data when spawning. The README covers all that.
+
+I have yet to produce the REAME for the examples/spawnwidgets/. That will be next: 14.0.5.
 
 The only unstable part of kickwasm is GO's package **syscall/js**. I have attempted to separate the kickwasm renderer API from **syscall/js** as much as possible while still exposing **syscall/js.Value** so that you have it when you absolutely need to have it.
 
