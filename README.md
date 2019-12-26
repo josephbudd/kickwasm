@@ -6,6 +6,13 @@ An single page application framework generator written in GO for applictions wri
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
+## December 26, 2019
+
+There is going to be a version 15.0.0
+
+Earlier I switched over to using context in the main process. I'm making the same changes to the renderer process now. I expect version 15.0.0 to be ready on or after the 1st of January.
+I hope that will be the end of framework breaking changes.
+
 ## December 24, 2019
 
 ### Version 14.0.4
