@@ -6,6 +6,7 @@ const FrameworkDoPanelsGo = `{{$Dot := .}}// +build js, wasm
 package framework
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -21,23 +22,22 @@ import (
 
 */
 
-// DoPanels builds and runs the panels.
-func DoPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
-	help *paneling.Help) (err error) {
+// DoMarkupPanels builds and runs the markup panels.
+func DoMarkupPanels(ctx context.Context, ctxCancel context.CancelFunc, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) (err error) {
 	
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("DoPanels: %w", err)
+			err = fmt.Errorf("DoMarkupPanels: %w", err)
 			log.Println("Error: " + err.Error())
 		}
 	}()
 
 	// 1. Prepare the spawn panels.{{ range $packageName, $path := .SpawnTabBarNamePath}}
-	{{call $Dot.PackageNameCase $packageName}}.Prepare(quitChan, eojChan, receiveChan, sendChan, help){{end}}
+	{{call $Dot.PackageNameCase $packageName}}.Prepare(ctx, ctxCancel, receiveChan, sendChan, help){{end}}
 
 	// 2. Construct the panel code.{{range $name, $path := .PanelNamePath}}
 	var {{call $Dot.LowerCamelCase $name}} *{{call $Dot.PackageNameCase $name}}.Panel
-	if {{call $Dot.LowerCamelCase $name}}, err = {{call $Dot.PackageNameCase $name}}.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if {{call $Dot.LowerCamelCase $name}}, err = {{call $Dot.PackageNameCase $name}}.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}{{end}}
 

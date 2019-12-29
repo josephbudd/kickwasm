@@ -6,34 +6,35 @@ An single page application framework generator written in GO for applictions wri
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## December 26, 2019
+## January 1, 2020
 
-There is going to be a version 15.0.0
+Version 15.0.0
 
-Earlier I switched over to using context in the main process. I'm making the same changes to the renderer process now. I expect version 15.0.0 to be ready on or after the 1st of January.
-I hope that will be the end of framework breaking changes.
+Context is now used in the renderer process as it was already used in the main process. This completes the refactoring of the kickwasm framework source code into compliance with GO version 1.13.
 
-## December 24, 2019
+I am finished making API breaking changes to kickwasm.
 
-### Version 14.0.4
+I tested version 15.0.0
 
-Changes that I had made to kickwasm had causes the some tests to fail. I fixed the tests.
-Changes I made to rekickwasm causes proofs to fail. I fixed rekickwams and proofs.
-Fixed errors I found in the docs that had to do with rendererprocess/ paths.
-
-Reran tests and proofs.
-
-I'm adding READMEs to the examples. I updated the spawntabs examples so that it is also demonstrates using spawn data when spawning. The README covers all that.
-
-I have yet to produce the REAME for the examples/spawnwidgets/. That will be next: 14.0.5.
-
-The only unstable part of kickwasm is GO's package **syscall/js**. I have attempted to separate the kickwasm renderer API from **syscall/js** as much as possible while still exposing **syscall/js.Value** so that you have it when you absolutely need to have it.
+1. By running
+   * make install
+   * make test
+   * make prove
+1. By rebuilding
+   * the examples in the examples/ folder.
+   * the [CRUD application](https://github.com/josephbudd/crud).
+1. Updated
+   * the CRUD wiki.
+   * the kickwasm.wiki.
 
 ## Kickwasm Summary
 
 You write a kickwasm.yaml file defining the application's GUI. Kickwasm generates the framework. The framework is your application's source code, written in GO, HTML, and CSS with the GUI built as defined in the kickwasm.yaml file.
 
-The source code builds an application that runs as 2 separate processes. The main process ( business logic ) is an http server running on the client. The renderer process ( view logic) runs in the client's browser. The 2 processes communicate with messages through channels.
+The source code builds an application that runs as 2 separate processes. The 2 processes communicate with with each other by sending and receiving messages through channels.
+
+1. The main process ( business logic ) is an http server running on the client.
+1. The renderer process ( view logic) runs in the client's browser.
 
 ### Application Development Tools
 
@@ -132,7 +133,8 @@ There are currently 17 proofs. Each proof tests one or more ways of refactoring 
 * Adds the test code to the renderer process' ProveButtonPanel go package.
 * Refactors the application's GUI using rekickwasm and another rekickwasm.yaml file.
 * Builds and runs the application so that the tests run inside the ProveButtonPanel's go package.
-* Removes the files and folders it created.
+* Logs the status of the run.
+* Removes the files and folders it created if the run was successful.
 
 Each application will popup up on your screen for less than a second while results are logged to the terminal. You can stop proofs at any time with ^c.
 

@@ -3,6 +3,7 @@
 package action5level4markuppanel
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/lpc"
@@ -25,7 +26,7 @@ type Panel struct {
 }
 
 // NewPanel constructs a new panel.
-func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) (panel *Panel, err error) {
+func NewPanel(ctx context.Context, ctxCancel context.CancelFunc, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) (panel *Panel, err error) {
 
 	defer func() {
 		if err != nil {
@@ -33,8 +34,8 @@ func NewPanel(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 		}
 	}()
 
-	quitCh = quitChan
-	eojCh = eojChan
+	rendererProcessCtx = ctx
+	rendererProcessCtxCancel = ctxCancel
 	receiveCh = receiveChan
 	sendCh = sendChan
 	document = dom.NewDOM(0)

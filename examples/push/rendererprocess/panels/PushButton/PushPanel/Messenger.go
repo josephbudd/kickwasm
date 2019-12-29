@@ -73,12 +73,12 @@ func (messenger *panelMessenger) timeRX(msg *message.TimeMainProcessToRenderer) 
 }
 
 // dispatchMessages dispatches LPC messages from the main process.
-// It stops when it receives on the eoj channel.
+// It stops when context is done.
 func (messenger *panelMessenger) dispatchMessages() {
 	go func() {
 		for {
 			select {
-			case <-eojCh:
+			case <-rendererProcessCtx.Done():
 				return
 			case msg := <-receiveCh:
 				// A message sent from the main process to the renderer.

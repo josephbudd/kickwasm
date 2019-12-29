@@ -3,9 +3,10 @@
 package helloworldtemplatepanel
 
 import (
+	"context"
+
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/dom"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/markup"
-	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/spawndata"
 )
 
 /*
@@ -26,7 +27,7 @@ type spawnedPanel struct {
 }
 
 // newPanel constructs a new panel.
-func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelNameID map[string]string, spawnData interface{}, unspawn func() error) (panel *spawnedPanel) {
+func newPanel(ctx context.Context, ctxCancel context.CancelFunc, uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelNameID map[string]string, spawnData interface{}) (panel *spawnedPanel) {
 
 	document := dom.NewDOM(uniqueID)
 	group := &panelGroup{
@@ -35,10 +36,11 @@ func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelN
 		panelNameID: panelNameID,
 	}
 	controller := &panelController{
-		group:    group,
-		uniqueID: uniqueID,
-		document: document,
-		unspawn:  unspawn,
+		ctx:       ctx,
+		ctxCancel: ctxCancel,
+		group:     group,
+		uniqueID:  uniqueID,
+		document:  document,
 	}
 	presenter := &panelPresenter{
 		group:          group,
@@ -48,10 +50,10 @@ func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelN
 		tabPanelHeader: tabPanelHeader,
 	}
 	messenger := &panelMessenger{
-		group:        group,
-		uniqueID:     uniqueID,
-		unspawn:      unspawn,
-		unSpawningCh: make(chan struct{}),
+		ctx:       ctx,
+		ctxCancel: ctxCancel,
+		group:     group,
+		uniqueID:  uniqueID,
 	}
 
 	/* NOTE TO DEVELOPER. Step 1 of 2.
@@ -92,9 +94,6 @@ func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelN
 
 	*/
 
-	data := spawnData.(*spawndata.SecondTab)
-	presenter.message = data.Message
-
 	/* NOTE TO DEVELOPER. Step 2 of 2.
 
 	// var help.
@@ -107,7 +106,7 @@ func newPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelN
 	//
 	// Example:
 
-	messenger.state = help.GetStateAdd()
+	messenger.state = help.GetStateIRCChannel()
 
 	*/
 

@@ -29,7 +29,6 @@ type Receiving chan interface{}
 var (
 	send    Sending
 	receive Receiving
-	eoj     chan struct{}
 	global  js.Value
 	alert   js.Value
 )
@@ -37,17 +36,15 @@ var (
 func init() {
 	send = make(chan interface{}, 1024)
 	receive = make(chan interface{}, 1024)
-	eoj = make(chan struct{}, 1024)
 	g := js.Global()
 	global = g
 	alert = g.Get("alert")
 }
 
 // Channels returns the renderer connection channels.
-func Channels() (sendChan, receiveChan chan interface{}, eojChan chan struct{}) {
+func Channels() (sendChan, receiveChan chan interface{}) {
 	sendChan = send
 	receiveChan = receive
-	eojChan = eoj
 	return
 }
 

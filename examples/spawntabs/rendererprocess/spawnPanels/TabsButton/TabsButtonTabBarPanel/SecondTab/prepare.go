@@ -3,6 +3,8 @@
 package secondtab
 
 import (
+	"context"
+
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/paneling"
 	helloworldtemplatepanel "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel"
@@ -17,7 +19,8 @@ import (
 */
 
 // Prepare initializes this package in preparation for spawning.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
+func Prepare(ctx context.Context, ctxCancel context.CancelFunc, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
+	rendererProcessCtx = ctx
 
-	helloworldtemplatepanel.Prepare(quitChan, eojChan, receiveChan, sendChan, help)
+	helloworldtemplatepanel.Prepare(ctxCancel, receiveChan, sendChan, help)
 }

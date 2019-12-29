@@ -3,6 +3,7 @@
 package secondtab
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"syscall/js"
@@ -29,13 +30,15 @@ const (
 
 var (
 	markupTemplatePaths = []string{"spawnTemplates/TabsButton/TabsButtonTabBarPanel/SecondTab/HelloWorldTemplatePanel.tmpl"}
+	rendererProcessCtx  context.Context
 )
 
 // Tab represents a tab that will spawn and unspawn an html tab bar tab.
 type Tab struct {
-	uniqueID      uint64
-	hTMLButton    js.Value
-	prepareToUnSpawns []func()
+	ctx        context.Context
+	ctxCancel  context.CancelFunc
+	uniqueID   uint64
+	hTMLButton js.Value
 }
 
 // Spawn creates the DOM elements and go code for a tab.
@@ -43,12 +46,12 @@ type Tab struct {
 // Param tabLabel is the label in the tab button. The button's innerText.
 // Param panelHeading is the heading for each panel.
 // Param panelData is an empty interface passed to each panel's spawn func.
-// Returns the tab unspawn func and the error.
-func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func() error, err error) {
+// Returns the tab's context cancel func ( which is the tab's unspawn func ) and the error.
+func Spawn(tabLabel, panelHeading string, panelData interface{}) (tabCtxCancel context.CancelFunc, err error) {
 
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("%s.Spawn()", "secondtab: %w", err)
+			err = fmt.Errorf("secondtab.Spawn(): %w", err)
 		}
 	}()
 
@@ -63,20 +66,27 @@ func Spawn(tabLabel, panelHeading string, panelData interface{}) (unspawn func()
 	tabButton := markup.NewElement(jsTabButton, uniqueID)
 	tabPanelHeader := markup.NewElement(jsTabPanelHeader, uniqueID)
 	// Define the tab.
+	tabCtx, tabCtxCancel := context.WithCancel(rendererProcessCtx)
 	tab := &Tab{
-		hTMLButton:    jsTabButton,
-		uniqueID:      uniqueID,
-		prepareToUnSpawns: make([]func(), 0, 20),
+		ctx:        tabCtx,
+		ctxCancel:  tabCtxCancel,
+		hTMLButton: jsTabButton,
+		uniqueID:   uniqueID,
 	}
-	unspawn = tab.unSpawn
 	// Build the go code.
-	var f func()
 
-	if f, err = helloworldtemplatepanel.BuildPanel(uniqueID, tabButton, tabPanelHeader, panelNameID, panelData, unspawn); err != nil {
+	if err = helloworldtemplatepanel.BuildPanel(tabCtx, tabCtxCancel, uniqueID, tabButton, tabPanelHeader, panelNameID, panelData); err != nil {
 		return
 	}
-	tab.prepareToUnSpawns = append(tab.prepareToUnSpawns, f)
-	viewtools.IncSpawnedPanels(len(tab.prepareToUnSpawns))
+	viewtools.IncSpawnedPanels(1)
+
+	go func(t *Tab) {
+		select {
+		case <-t.ctx.Done():
+			t.unSpawn()
+		}
+	}(tab)
+
 	return
 }
 
@@ -90,7 +100,7 @@ func (tab *Tab) unSpawn() (err error) {
 		}
 	}()
 
-	viewtools.DecSpawnedPanels(len(tab.prepareToUnSpawns))
+	viewtools.DecSpawnedPanels(1)
 
 	messages := make([]string, 0, 2)
 	// Remove the tab and panels from the DOM.
@@ -101,11 +111,6 @@ func (tab *Tab) unSpawn() (err error) {
 	if err = callback.UnRegisterCallBacks(tab.uniqueID); err != nil {
 		messages = append(messages, err.Error())
 	}
-	// Stop each panel messenger's message dispatcher.
-	for _, prepareToUnSpawn := range tab.prepareToUnSpawns {
-		prepareToUnSpawn()
-	}
-
 	// construct a new error from the accumulated errors.
 	if len(messages) > 0 {
 		err = fmt.Errorf(strings.Join(messages, "\n"))

@@ -3,6 +3,7 @@
 package framework
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -45,13 +46,12 @@ import (
 
 */
 
-// DoPanels builds and runs the panels.
-func DoPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
-	help *paneling.Help) (err error) {
+// DoMarkupPanels builds and runs the markup panels.
+func DoMarkupPanels(ctx context.Context, ctxCancel context.CancelFunc, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) (err error) {
 	
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("DoPanels: %w", err)
+			err = fmt.Errorf("DoMarkupPanels: %w", err)
 			log.Println("Error: " + err.Error())
 		}
 	}()
@@ -60,103 +60,103 @@ func DoPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCh
 
 	// 2. Construct the panel code.
 	var action1Level1MarkupPanel *action1level1markuppanel.Panel
-	if action1Level1MarkupPanel, err = action1level1markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action1Level1MarkupPanel, err = action1level1markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action1Level2MarkupPanel *action1level2markuppanel.Panel
-	if action1Level2MarkupPanel, err = action1level2markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action1Level2MarkupPanel, err = action1level2markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action1Level3MarkupPanel *action1level3markuppanel.Panel
-	if action1Level3MarkupPanel, err = action1level3markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action1Level3MarkupPanel, err = action1level3markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action1Level4MarkupPanel *action1level4markuppanel.Panel
-	if action1Level4MarkupPanel, err = action1level4markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action1Level4MarkupPanel, err = action1level4markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action1Level5MarkupPanel *action1level5markuppanel.Panel
-	if action1Level5MarkupPanel, err = action1level5markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action1Level5MarkupPanel, err = action1level5markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action2Level1MarkupPanel *action2level1markuppanel.Panel
-	if action2Level1MarkupPanel, err = action2level1markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action2Level1MarkupPanel, err = action2level1markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action2Level2MarkupPanel *action2level2markuppanel.Panel
-	if action2Level2MarkupPanel, err = action2level2markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action2Level2MarkupPanel, err = action2level2markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action2Level3MarkupPanel *action2level3markuppanel.Panel
-	if action2Level3MarkupPanel, err = action2level3markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action2Level3MarkupPanel, err = action2level3markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action2Level4MarkupPanel *action2level4markuppanel.Panel
-	if action2Level4MarkupPanel, err = action2level4markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action2Level4MarkupPanel, err = action2level4markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action2Level5MarkupPanel *action2level5markuppanel.Panel
-	if action2Level5MarkupPanel, err = action2level5markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action2Level5MarkupPanel, err = action2level5markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action3Level1MarkupPanel *action3level1markuppanel.Panel
-	if action3Level1MarkupPanel, err = action3level1markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action3Level1MarkupPanel, err = action3level1markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action3Level2MarkupPanel *action3level2markuppanel.Panel
-	if action3Level2MarkupPanel, err = action3level2markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action3Level2MarkupPanel, err = action3level2markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action3Level3MarkupPanel *action3level3markuppanel.Panel
-	if action3Level3MarkupPanel, err = action3level3markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action3Level3MarkupPanel, err = action3level3markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action3Level4MarkupPanel *action3level4markuppanel.Panel
-	if action3Level4MarkupPanel, err = action3level4markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action3Level4MarkupPanel, err = action3level4markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action3Level5MarkupPanel *action3level5markuppanel.Panel
-	if action3Level5MarkupPanel, err = action3level5markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action3Level5MarkupPanel, err = action3level5markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action4Level1MarkupPanel *action4level1markuppanel.Panel
-	if action4Level1MarkupPanel, err = action4level1markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action4Level1MarkupPanel, err = action4level1markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action4Level2MarkupPanel *action4level2markuppanel.Panel
-	if action4Level2MarkupPanel, err = action4level2markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action4Level2MarkupPanel, err = action4level2markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action4Level3MarkupPanel *action4level3markuppanel.Panel
-	if action4Level3MarkupPanel, err = action4level3markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action4Level3MarkupPanel, err = action4level3markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action4Level4MarkupPanel *action4level4markuppanel.Panel
-	if action4Level4MarkupPanel, err = action4level4markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action4Level4MarkupPanel, err = action4level4markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action4Level5MarkupPanel *action4level5markuppanel.Panel
-	if action4Level5MarkupPanel, err = action4level5markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action4Level5MarkupPanel, err = action4level5markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action5Level1MarkupPanel *action5level1markuppanel.Panel
-	if action5Level1MarkupPanel, err = action5level1markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action5Level1MarkupPanel, err = action5level1markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action5Level2MarkupPanel *action5level2markuppanel.Panel
-	if action5Level2MarkupPanel, err = action5level2markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action5Level2MarkupPanel, err = action5level2markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action5Level3MarkupPanel *action5level3markuppanel.Panel
-	if action5Level3MarkupPanel, err = action5level3markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action5Level3MarkupPanel, err = action5level3markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action5Level4MarkupPanel *action5level4markuppanel.Panel
-	if action5Level4MarkupPanel, err = action5level4markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action5Level4MarkupPanel, err = action5level4markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 	var action5Level5MarkupPanel *action5level5markuppanel.Panel
-	if action5Level5MarkupPanel, err = action5level5markuppanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if action5Level5MarkupPanel, err = action5level5markuppanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 

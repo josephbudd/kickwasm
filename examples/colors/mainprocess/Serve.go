@@ -35,13 +35,8 @@ const (
 	     In /site/templates/head.tmpl add the line:
 		  <style> @import url(widgetcss/vlist.css); </style>
 
-	  4. Rebuild the renderer process.
-		 $ cd renderer/
-		 $ build.sh
-
-	  5. Rebuild the main process.
-		 $ cd ..
-		 $ go build
+	  4. Rebuild and run.
+		 $ kickbuild -rp -mp -run
 
 */
 

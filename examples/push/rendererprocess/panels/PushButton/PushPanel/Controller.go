@@ -77,7 +77,7 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 		return
 	}
 	// Handle the close button's onclick event.
-	handler := application.NewGracefullyCloseHandler(quitCh)
+	handler := application.NewGracefullyCloseHandler(rendererProcessCtxCancel)
 	controller.closeButton.SetEventHandler(handler, "click", false)
 
 	return
@@ -94,7 +94,7 @@ import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/event"
 import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/display"
 
 func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
-	// See renderer/event/event.go.
+	// See rendererprocess/api/event/event.go.
 	// The event.Event funcs.
 	//   e.PreventDefaultBehavior()
 	//   e.StopCurrentPhasePropagation()

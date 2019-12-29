@@ -6,6 +6,8 @@ const SpawnTabBarPrepare = `{{$Dot := .}}// +build js, wasm
 package {{call .PackageNameCase .TabBarName}}
 
 import (
+	"context"
+
 {{ range .Imports }}	"{{$Dot.ApplicationGitPath}}{{.}}"
 {{end}})
 
@@ -23,8 +25,8 @@ const (
 
 // Prepare prepares the tab bar and it's panels and templates to be spawned.
 // This is called once by package main when the application starts.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
+func Prepare(ctx context.Context, ctxCancel context.CancelFunc, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
 {{ range .TabNames }}
-	{{ call $Dot.PackageNameCase . }}.Prepare(quitChan, eojChan, receiveChan, sendChan, help){{end}}
+	{{ call $Dot.PackageNameCase . }}.Prepare(ctx, ctxCancel, receiveChan, sendChan, help){{end}}
 }
 `

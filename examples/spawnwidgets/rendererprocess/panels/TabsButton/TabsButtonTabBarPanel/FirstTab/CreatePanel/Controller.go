@@ -3,13 +3,14 @@
 package createpanel
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/display"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/event"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/markup"
 	secondtab "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab"
-	"github.com/pkg/errors"
+	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/spawndata"
 )
 
 /*
@@ -95,7 +96,7 @@ import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api
 import "github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/api/display"
 
 func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
-	// See renderer/event/event.go.
+	// See rendererprocess/api/event/event.go.
 	// The event.Event funcs.
 	//   e.PreventDefaultBehavior()
 	//   e.StopCurrentPhasePropagation()
@@ -125,12 +126,16 @@ func (controller *panelController) handleClick(e event.Event) (nilReturn interfa
 	n := spawnCount
 	tabLabel := fmt.Sprintf("Tab %d", n)
 	panelHeading := fmt.Sprintf("Panel Heading %d", n)
+	// markup panel constructor data
+	data := &spawndata.SecondTab{
+		H3: fmt.Sprintf("This is the H3 for tab # %d", n),
+	}
 	// A tab's func Spawn returns
 	// * the tabs unspawn func,
 	// * the spawning error.
 	// The secondtab's unspawn func is ignored here
 	//  because each secondtab panel unspawns itself with it's button click handler.
-	if _, err := secondtab.Spawn(tabLabel, panelHeading, nil); err != nil {
+	if _, err := secondtab.Spawn(tabLabel, panelHeading, data); err != nil {
 		display.Error(err.Error())
 	}
 	return

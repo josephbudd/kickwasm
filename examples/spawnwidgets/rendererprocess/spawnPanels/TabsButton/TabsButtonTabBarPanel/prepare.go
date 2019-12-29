@@ -3,6 +3,8 @@
 package tabsbuttontabbarpanel
 
 import (
+	"context"
+
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/paneling"
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/spawnPanels/TabsButton/TabsButtonTabBarPanel/SecondTab"
@@ -22,7 +24,7 @@ const (
 
 // Prepare prepares the tab bar and it's panels and templates to be spawned.
 // This is called once by package main when the application starts.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
+func Prepare(ctx context.Context, ctxCancel context.CancelFunc, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) {
 
-	secondtab.Prepare(quitChan, eojChan, receiveChan, sendChan, help)
+	secondtab.Prepare(ctx, ctxCancel, receiveChan, sendChan, help)
 }

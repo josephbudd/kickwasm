@@ -3,7 +3,7 @@
 
 INSTRUCTIONS FOR USING THE Help struct.
 
-STEP 1: Edit the file Helping.go here in renderer/paneling/
+STEP 1: Edit the file Helping.go here in rendererprocess/paneling/
 		  by completing the definition of the struct Help.
 		In the example below I add funcs for getting states.
 
@@ -34,7 +34,7 @@ STEP 1: Edit the file Helping.go here in renderer/paneling/
 	func (help *Help) StateTest() uint64 { return uint64(1 << 5) }
 
 	
-STEP 2: In renderer/panels/ and renderer/spawnPanels/
+STEP 2: In rendererprocess/panels/ and rendererprocess/spawnPanels/
 		Add any members new members to your controllers, presenters, and messengers.
 		Set those new members in the panel constructor using help *paneling.Help
 

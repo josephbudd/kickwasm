@@ -3,6 +3,7 @@
 package helloworldtemplatepanel
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strings"
@@ -21,15 +22,16 @@ import (
 
 // panelController controls user input.
 type panelController struct {
+	ctx       context.Context
+	ctxCancel context.CancelFunc
 	uniqueID  uint64
 	document  *dom.DOM
 	panel     *spawnedPanel
 	group     *panelGroup
 	presenter *panelPresenter
 	messenger *panelMessenger
-	unspawn   func() error
 
-	/* NOTE TO DEVELOPER. Step 1 of 5.
+	/* NOTE TO DEVELOPER. Step 1 of 4.
 
 	// Declare your panelController members.
 
@@ -65,7 +67,7 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 		}
 	}()
 
-	/* NOTE TO DEVELOPER. Step 2 of 5.
+	/* NOTE TO DEVELOPER. Step 2 of 4.
 
 	// Define each controller in the GUI by it's html element.
 	// Handle each controller's events.
@@ -124,7 +126,7 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 	return
 }
 
-/* NOTE TO DEVELOPER. Step 3 of 5.
+/* NOTE TO DEVELOPER. Step 3 of 4.
 
 // Handlers and other functions.
 
@@ -135,7 +137,7 @@ import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/ev
 import "github.com/josephbudd/kickwasm/examples/spawntabs/rendererprocess/api/display"
 
 func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
-	// See renderer/event/event.go.
+	// See rendererprocess/api/event/event.go.
 	// The event.Event funcs.
 	//   e.PreventDefaultBehavior()
 	//   e.StopCurrentPhasePropagation()
@@ -161,9 +163,8 @@ func (controller *panelController) handleSubmit(e event.Event) (nilReturn interf
 */
 
 func (controller *panelController) handleClick(e event.Event) (nilReturn interface{}) {
-	if err := controller.unspawn(); err != nil {
-		display.Error(err.Error())
-	}
+	// Call the tab's cancel func.
+	controller.ctxCancel()
 	return
 }
 
@@ -177,28 +178,10 @@ func (controller *panelController) handleSetClick(e event.Event) (nilReturn inte
 	return
 }
 
-func (controller *panelController) UnSpawning() {
-
-	/* NOTE TO DEVELOPER. Step 4 of 5.
-
-	// This func is called when this tab and it's panels are in the process of unspawning.
-	// So if you have some cleaning up to do then do it now.
-	//
-	// For example if you have a widget that needs to be unspawned
-	//   because maybe it has a go routine running that needs to be stopped
-	//   then do it here.
-
-	// example:
-
-	controller.myWidget.UnSpawn()
-
-	*/
-}
-
 // initialCalls runs the first code that the controller needs to run.
 func (controller *panelController) initialCalls() {
 
-	/* NOTE TO DEVELOPER. Step 5 of 5.
+	/* NOTE TO DEVELOPER. Step 4 of 4.
 
 	// Make the initial calls.
 	// I use this to start up widgets. For example a virtual list widget.

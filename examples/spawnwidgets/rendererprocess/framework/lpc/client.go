@@ -3,6 +3,8 @@
 package lpc
 
 import (
+	"container/list"
+	"context"
 	"fmt"
 	"log"
 	"syscall/js"
@@ -21,7 +23,38 @@ import (
 
 */
 
-// Client is a wasm local process communication client.
+// Queue is a queue.
+type Queue struct {
+	queue *list.List
+}
+
+func newQueue() (queue *Queue) {
+	queue = &Queue{
+		queue: list.New(),
+	}
+	return
+}
+
+func (q *Queue) length() (l int) {
+	l = q.queue.Len()
+	return
+}
+
+func (q *Queue) push(value []byte) {
+	q.queue.PushBack(value)
+}
+
+func (q *Queue) pop() (value []byte, found bool) {
+	if q.queue.Len() == 0 {
+		return
+	}
+	found = true
+	e := q.queue.Front()
+	value = e.Value.([]byte)
+	q.queue.Remove(e)
+	return
+}
+
 type Client struct {
 	host           string
 	port           uint64
@@ -29,49 +62,28 @@ type Client struct {
 	connection     js.Value
 	connected      bool
 	dispatching    bool
-	queue          [][]byte
+	queue          *Queue
 	OnOpenCallBack func()
-
 	SendChan    Sending
 	ReceiveChan Receiving
-	EOJChan     chan struct{}
-	QuitCh      chan struct{}
-
-	// OnOpenCallBack func()
+	ctx         context.Context
+	ctxCancel   context.CancelFunc
 	lpcing bool
-
-	// handlers
-	OnConnectionBreakJS js.Func
-	OnConnectionBreak   func(this js.Value, args []js.Value) interface{}
 }
 
 // NewClient costructs a new Client.
-func NewClient(host string, port uint64, quitCh chan struct{}, eojCh chan struct{}, receiving Receiving, sending Sending) *Client {
+func NewClient(ctx context.Context, ctxCancel context.CancelFunc, host string, port uint64, receiving Receiving, sending Sending) *Client {
 	v := &Client{
-		host:     host,
-		port:     port,
-		location: fmt.Sprintf("ws://%s:%d/ws", host, port),
-		queue:    make([][]byte, 0, 10),
-
+		host:        host,
+		port:        port,
+		location:    fmt.Sprintf("ws://%s:%d/ws", host, port),
+		queue:       newQueue(),
 		SendChan:    sending,
 		ReceiveChan: receiving,
-		EOJChan:     eojCh,
-		QuitCh:      quitCh,
+		ctx:         ctx,
+		ctxCancel:   ctxCancel,
 	}
-	// Shut the renderer down when the connection breaks.
-	v.SetOnConnectionBreak(
-		func(event js.Value, args []js.Value) (nilReturn interface{}) {
-			quitCh <- struct{}{}
-			return
-		},
-	)
 	return v
-}
-
-// SetOnConnectionBreak set the handler for the connection break.
-func (client *Client) SetOnConnectionBreak(fn func(this js.Value, args []js.Value) interface{}) {
-	client.OnConnectionBreak = fn
-	client.OnConnectionBreakJS = callback.RegisterCallBack(fn)
 }
 
 // Connect connects to the server.
@@ -109,10 +121,9 @@ func (client *Client) dispatch() {
 	if client.dispatching {
 		return
 	}
-	client.dispatching = len(client.queue) > 0
+	var payload []byte
+	payload, client.dispatching = client.queue.pop()
 	for client.dispatching {
-		payload := client.queue[0]
-		client.queue = client.queue[1:]
 		var cargo interface{}
 		var err error
 		if cargo, err = client.ReceiveChan.Cargo(payload); err != nil {
@@ -137,19 +148,14 @@ func (client *Client) dispatch() {
 		for i := 0; i < panelsCount; i++ {
 			client.ReceiveChan <- cargo
 		}
-		client.dispatching = len(client.queue) > 0
+		payload, client.dispatching = client.queue.pop()
 	}
 }
 
 // Handlers.
 
 func (client *Client) onFatal() {
-    client.QuitCh <- struct{}{}
-}
-
-func (client *Client) onBreak(this js.Value, args []js.Value) (nilReturn interface{}) {
-	client.QuitCh <- struct{}{}
-	return
+	client.ctxCancel()
 }
 
 func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interface{}) {
@@ -163,6 +169,9 @@ func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interfac
 	go func() {
 		for {
 			select {
+			case <-client.ctx.Done():
+				client.lpcing = false
+				return
 			case cargo := <-client.SendChan:
 				log.Println("will send lpc cargo to main process")
 				var payload []byte
@@ -173,19 +182,6 @@ func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interfac
 					log.Println("payload is " + string(payload))
 					client.connection.Call("send", string(payload))
 				}
-			case <-client.QuitCh:
-				// each markup panel has a messenger with a message dispatcher go routine.
-				countWaiting := viewtools.CountMarkupPanels()
-				// func main
-				countWaiting++
-				// widgets
-				countWaiting += viewtools.CountWidgetsWaiting()
-				eoj := struct{}{}
-				for i := 0; i < countWaiting; i++ {
-					client.EOJChan <- eoj
-				}
-				client.lpcing = false
-				return
 			}
 		}
 	}()
@@ -196,14 +192,14 @@ func (client *Client) onOpen(this js.Value, args []js.Value) (nilReturn interfac
 func (client *Client) onClose(this js.Value, args []js.Value) (nilReturn interface{}) {
 	client.connected = false
 	log.Println("LPC has disconnected.")
-	client.OnConnectionBreak(js.Undefined(), nil)
+	client.ctxCancel()
 	return
 }
 
 func (client *Client) onMessage(this js.Value, args []js.Value) (nilReturn interface{}) {
 	e := args[0]
 	data := e.Get("data").String()
-	client.queue = append(client.queue, []byte(data))
+	client.queue.push([]byte(data))
 	client.dispatch()
 	return
 }

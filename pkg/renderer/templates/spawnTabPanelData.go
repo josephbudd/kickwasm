@@ -6,6 +6,8 @@ const SpawnTabPanelData = `{{$Dot := .}}// +build js, wasm
 package {{call .PackageNameCase .PanelName}}
 
 import (
+	"context"
+
 	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 )
@@ -17,11 +19,12 @@ import (
 */
 
 var (
-	// quitCh will close the application
-	quitCh chan struct{}
-
-	// eojCh will close each panel messenger's message dispatcher go routine.
-	eojCh chan struct{}
+	// rendererProcessCtxCancel is the renderer process's context cancel func.
+	// Calling it will stop the entire renderer process.
+	// To gracefully stop the entire renderer process use the api funcs
+	//   application.GracefullyClose(rendererProcessCtxCancel)
+	//   or application.NewGracefullyCloseHandler(rendererProcessCtxCancel)
+	rendererProcessCtxCancel context.CancelFunc
 
 	// receiveCh receives messages from the main process.
 	receiveCh lpc.Receiving

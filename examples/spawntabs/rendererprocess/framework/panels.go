@@ -3,6 +3,7 @@
 package framework
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -22,23 +23,22 @@ import (
 
 */
 
-// DoPanels builds and runs the panels.
-func DoPanels(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending,
-	help *paneling.Help) (err error) {
+// DoMarkupPanels builds and runs the markup panels.
+func DoMarkupPanels(ctx context.Context, ctxCancel context.CancelFunc, receiveChan lpc.Receiving, sendChan lpc.Sending, help *paneling.Help) (err error) {
 	
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("DoPanels: %w", err)
+			err = fmt.Errorf("DoMarkupPanels: %w", err)
 			log.Println("Error: " + err.Error())
 		}
 	}()
 
 	// 1. Prepare the spawn panels.
-	tabsbuttontabbarpanel.Prepare(quitChan, eojChan, receiveChan, sendChan, help)
+	tabsbuttontabbarpanel.Prepare(ctx, ctxCancel, receiveChan, sendChan, help)
 
 	// 2. Construct the panel code.
 	var createPanel *createpanel.Panel
-	if createPanel, err = createpanel.NewPanel(quitChan, eojChan, receiveChan, sendChan, help); err != nil {
+	if createPanel, err = createpanel.NewPanel(ctx, ctxCancel, receiveChan, sendChan, help); err != nil {
 		return
 	}
 

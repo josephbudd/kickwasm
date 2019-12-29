@@ -3,6 +3,8 @@
 package application
 
 import (
+	"context"
+
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/display"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/event"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/callback"
@@ -10,15 +12,22 @@ import (
 
 // NewGracefullyCloseHandler makes an event handler which gracefully closes the application for you.
 // Use it in your panel controllers to handle your own application closing buttons.
-// Param quitCh is the panel controller's quit channel.
-func NewGracefullyCloseHandler(quitCh chan struct{}) (handler func(e event.Event) (nilReturn interface{})) {
+// Param cancelFunc is the renderer process's context cancel func.
+func NewGracefullyCloseHandler(cancelFunc context.CancelFunc) (handler func(e event.Event) (nilReturn interface{})) {
 	handler = func(e event.Event) (nilReturn interface{}) {
-		callback.RemoveApplicationOnCloseHandler()
-		title := "Closing"
-		msg := "Closing <q>Example MP pushing time.</q>."
-		cb := func() { quitCh <- struct{}{} }
-		display.Inform(msg, title, cb)
+		GracefullyClose(cancelFunc)
 		return
 	}
+	return
+}
+
+// GracefullyClose gracefully closes the application for you.
+// Use it in your panel controllers.
+// Param cancelFunc is the renderer process's context cancel func.
+func GracefullyClose(cancelFunc context.CancelFunc) {
+	callback.RemoveApplicationOnCloseHandler()
+	title := "Closing"
+	msg := "Closing <q>Spawn Tabs</q>."
+	display.Inform(msg, title, cancelFunc)
 	return
 }

@@ -5,6 +5,10 @@ const SpawnTabPanelMessenger = `// +build js, wasm
 
 package {{call .PackageNameCase .PanelName}}
 
+import (
+	"context"
+)
+
 /*
 
 	Panel name: {{.PanelName}}
@@ -13,12 +17,12 @@ package {{call .PackageNameCase .PanelName}}
 
 // panelMessenger communicates with the main process via an asynchrounous connection.
 type panelMessenger struct {
-	uniqueID     uint64
-	group        *panelGroup
-	presenter    *panelPresenter
-	controller   *panelController
-	unspawn      func() error
-	unSpawningCh chan struct{}
+	ctx        context.Context
+	ctxCancel  context.CancelFunc
+	uniqueID   uint64
+	group      *panelGroup
+	presenter  *panelPresenter
+	controller *panelController
 
 	/* NOTE TO DEVELOPER. Step 1 of 4.
 
@@ -72,9 +76,7 @@ func (messenger *panelMessenger) dispatchMessages() {
 	go func() {
 		for {
 			select {
-			case <-eojCh:
-				return
-			case <-messenger.unSpawningCh:
+			case <-messenger.ctx.Done():
 				return
 			case msg := <-receiveCh:
 				// A message sent from the main process to the renderer.

@@ -3,6 +3,7 @@
 package helloworldtemplatepanel
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/josephbudd/kickwasm/examples/spawnwidgets/rendererprocess/framework/lpc"
@@ -24,9 +25,8 @@ import (
 
 // Prepare prepares the panel to be spawned.
 // This is called once by package main when the application starts.
-func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendChan lpc.Sending, phelp *paneling.Help) {
-	quitCh = quitChan
-	eojCh = eojChan
+func Prepare(ctxCancel context.CancelFunc, receiveChan lpc.Receiving, sendChan lpc.Sending, phelp *paneling.Help) {
+	rendererProcessCtxCancel = ctxCancel
 	receiveCh = receiveChan
 	sendCh = sendChan
 	help = phelp
@@ -34,7 +34,7 @@ func Prepare(quitChan, eojChan chan struct{}, receiveChan lpc.Receiving, sendCha
 
 // BuildPanel builds the panel's go code.
 // Returns the error.
-func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelNameID map[string]string, panelData interface{}, unspawn func() error) (prepareToUnSpawn func(), err error) {
+func BuildPanel(ctx context.Context, ctxCancel context.CancelFunc, uniqueID uint64, tabButton, tabPanelHeader *markup.Element, panelNameID map[string]string, panelData interface{}) (err error) {
 
 	defer func() {
 		if err != nil {
@@ -43,9 +43,7 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, pane
 	}()
 
 	// make the panel
-	panel := newPanel(uniqueID, tabButton, tabPanelHeader, panelNameID, panelData, unspawn)
-	prepareToUnSpawn = panel.PrepareToUnSpawn
-
+	panel := newPanel(ctx, ctxCancel, uniqueID, tabButton, tabPanelHeader, panelNameID, panelData)
 	if err = panel.group.defineMembers(); err != nil {
 		return
 	}
@@ -58,12 +56,5 @@ func BuildPanel(uniqueID uint64, tabButton, tabPanelHeader *markup.Element, pane
 	panel.messenger.dispatchMessages()
 	panel.controller.initialCalls()
 	panel.messenger.initialSends()
-
 	return
-}
-
-// PrepareToUnSpawn prepares to unspawn.
-func (panel *spawnedPanel) PrepareToUnSpawn() {
-	panel.messenger.unSpawningCh <- struct{}{}
-	panel.controller.UnSpawning()
 }
