@@ -9,16 +9,17 @@ import (
 
 	"github.com/josephbudd/kickwasm/examples/colors/domain/lpc/message"
 	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework"
-	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/location"
-	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/paneling"
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/framework/viewtools"
+	"github.com/josephbudd/kickwasm/examples/colors/rendererprocess/paneling"
 )
 
 /*
 	YOU MAY EDIT THIS FILE.
+	Rekickwasm will preserve this file for you.
 
-	For example: You may want to redefine the starting.Helper which is passed to your markup panel constructors.
+	For example: You may want to redefine the paneling.Help which is passed to your markup panel constructors.
 		1. Edit type Help struct in rendererprocess/paneling/Helping.go.
 		2. Modify each package's Panel.go func NewPanel in the markup panel packages
 		   in the renderprocess/panels/ folder to use your new definition
@@ -26,8 +27,6 @@ import (
 		3. Modify each package's Panel.go func newPanel in the markup panel packages
 			in the renderprocess/spawnPanels/ folder to use your new definition
 			of paneling.Help.
-
-	Rekickwasm will preserve this file for you.
 
 */
 

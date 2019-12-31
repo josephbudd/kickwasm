@@ -8,7 +8,12 @@ An single page application framework generator written in GO for applictions wri
 
 ## January 1, 2020
 
-Version 15.0.0
+Version 15.0.1:
+
+* Fixed 2 type-o's in version 15.0.0's source code documentation.
+* Fixed a type-o in this README.
+
+### Version 15.0.0
 
 Context is now used in the renderer process as it was already used in the main process. This completes the refactoring of the kickwasm framework source code into compliance with GO version 1.13.
 
@@ -23,6 +28,7 @@ I tested version 15.0.0
 1. By rebuilding
    * the examples in the examples/ folder.
    * the [CRUD application](https://github.com/josephbudd/crud).
+   * the [CWT application](https://github.com/josephbudd/cwt).
 1. Updated
    * the CRUD wiki.
    * the kickwasm.wiki.
@@ -44,7 +50,7 @@ The main process will probably need to use the default local **Bolt database** a
 
 The main process and renderer process will need to communicate with each other by sending messages through channels. That is simple and quick with the tool **kicklpc**.
 
-The GUI may need to be refactored. And by **refactored** I mean adding, deleting and moving buttons, tabs, and those markup panels with their respective GO packages that you coded, all over the place. That is safe, simple and quick with the tool **rekickwasm**.
+The GUI may need to be refactored. And by **refactored** I mean adding, deleting and moving buttons, tabs, and panels with their respective GO packages that you coded, all over the place. That is safe, simple and quick with the tool **rekickwasm**.
 
 ## GUI design is simple: Buttons, Tabs, Panels
 
@@ -115,7 +121,7 @@ I repeately use all of the kickwasm tools to add another missing part to the app
 ~/go/src/github.com/josephbudd/kickwasm$ make install
 ~/go/src/github.com/josephbudd/kickwasm$ make test
 ~/go/src/github.com/josephbudd/kickwasm$ make dependencies
-~/go/src/github.com/josephbudd/kickwasm$ make proofs
+~/go/src/github.com/josephbudd/kickwasm$ make prove
 ```
 
 **make install** will build kickwasm and put it and it's tools into the go/bin.
@@ -124,7 +130,7 @@ I repeately use all of the kickwasm tools to add another missing part to the app
 
 **make dependencies** will install the 3 GO packages that are required by the frameworks that you build with kickwasm. It will get them from github.com. So it might take a minute.
 
-**make proofs** will build and run the proofs. It will take a few minutes. The proofs make sure that rekickwasm refactors correctly.
+**make prove** will build and run the proofs. It will take a few minutes. The proofs make sure that rekickwasm refactors correctly.
 
 There are currently 17 proofs. Each proof tests one or more ways of refactoring the framework's GUI. Each proof is a go program that
 

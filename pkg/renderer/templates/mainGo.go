@@ -20,8 +20,9 @@ import (
 
 /*
 	YOU MAY EDIT THIS FILE.
+	Rekickwasm will preserve this file for you.
 
-	For example: You may want to redefine the starting.Helper which is passed to your markup panel constructors.
+	You may want to redefine the paneling.Help which is passed to your markup panel constructors.
 		1. Edit type Help struct in rendererprocess/paneling/Helping.go.
 		2. Modify each package's Panel.go func NewPanel in the markup panel packages
 		   in the renderprocess/panels/ folder to use your new definition
@@ -30,7 +31,6 @@ import (
 			in the renderprocess/spawnPanels/ folder to use your new definition
 			of paneling.Help.
 
-	Rekickwasm will preserve this file for you.
 
 */
 
