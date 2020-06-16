@@ -12,10 +12,10 @@ import (
 
 	"{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererFramework}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererLocation}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkLocation}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkLPC}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkViewTools}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
 )
 
 /*

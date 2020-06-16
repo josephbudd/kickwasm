@@ -9,7 +9,7 @@ import (
 	"context"
 	"fmt"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIDOM}}"
 )
 
 /*
@@ -40,7 +40,7 @@ type panelController struct {
 	// <button id="addCustomerSubmit{{.SpawnID}}">Close</button>
 
 	import "syscall/js"
-	import "{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
+	import "{{.ApplicationGitPath}}{{.ImportRendererAPIMarkup}}"
 
 	addCustomerName   *markup.Element
 	addCustomerSubmit *markup.Element
@@ -65,7 +65,7 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 
 	// example:
 
-	import "{{.ApplicationGitPath}}{{.ImportRendererDisplay}}"
+	import "{{.ApplicationGitPath}}{{.ImportRendererAPIDisplay}}"
 
 	var id string
 
@@ -97,8 +97,8 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 // example:
 
 import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
-import "{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
-import "{{.ApplicationGitPath}}{{.ImportRendererDisplay}}"
+import "{{.ApplicationGitPath}}{{.ImportRendererAPIDisplay}}"
+import "{{.ApplicationGitPath}}{{.ImportRendererAPIEvent}}"
 
 func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
 	// See rendererprocess/api/event/event.go.

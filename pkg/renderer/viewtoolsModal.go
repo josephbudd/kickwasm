@@ -12,14 +12,14 @@ func createViewToolsModalGo(appPaths paths.ApplicationPathsI, builder *project.B
 	folderpaths := appPaths.GetPaths()
 	fileNames := appPaths.GetFileNames()
 	data := struct {
-		ApplicationGitPath  string
-		ImportRendererEvent string
+		ApplicationGitPath     string
+		ImportRendererAPIEvent string
 	}{
-		ApplicationGitPath:  builder.ImportPath,
-		ImportRendererEvent: folderpaths.ImportRendererEvent,
+		ApplicationGitPath:     builder.ImportPath,
+		ImportRendererAPIEvent: folderpaths.ImportRendererAPIEvent,
 	}
 	fname := fileNames.ModalDotGo
-	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkViewTools, fname)
 	err = templates.ProcessTemplate(fname, oPath, templates.ViewToolsModal, data, appPaths)
 	return
 }

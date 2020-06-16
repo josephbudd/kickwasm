@@ -37,8 +37,8 @@ type panelMessenger struct {
 
 // example:
 
-import "github.com/josephbudd/kickwasm/examples/push/domain/store/record"
 import "github.com/josephbudd/kickwasm/examples/push/domain/lpc/message"
+import "github.com/josephbudd/kickwasm/examples/push/domain/store/record"
 import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/display"
 
 // Add Customer.

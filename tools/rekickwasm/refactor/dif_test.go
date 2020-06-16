@@ -11,14 +11,14 @@ import (
 )
 
 var (
-	buttonPanelsTabPanelsPath                 string
-	buttonPanelsTabPanelsScrollPath           string
-	buttonPanelsTabPanelsSwapButtonsPath      string
-	buttonPanelsTabPanelsSwapTabsPath         string
-	buttonPanelsTabPanelsReverseHomesPath  string
-	buttonPanelsTabPanelsSwapPanelsPath       string
-	buttonPanelsTabPanelsAddRemoveHomePath string
-	buttonPanelsTabPanelsAddRemovePanelsPath  string
+	buttonPanelsTabPanelsPath                string
+	buttonPanelsTabPanelsScrollPath          string
+	buttonPanelsTabPanelsSwapButtonsPath     string
+	buttonPanelsTabPanelsSwapTabsPath        string
+	buttonPanelsTabPanelsReverseHomesPath    string
+	buttonPanelsTabPanelsSwapPanelsPath      string
+	buttonPanelsTabPanelsAddRemoveHomePath   string
+	buttonPanelsTabPanelsAddRemovePanelsPath string
 )
 
 func init() {
@@ -99,50 +99,58 @@ func TestSwapTabs(t *testing.T) {
 		moves     = map[string]MoveSpawnPath{
 			"Home3Button1Panel1Tab1Panel": MoveSpawnPath{
 				From: SpawnPath{
-					Spawn:    false,
-					Path:     "Home3Button/Home3Button1Panel/Home3Button1Panel1Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home3Button/Home3Button1Panel/Home3Button1Panel1Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 				To: SpawnPath{
-					Spawn:    false,
-					Path:     "Home4Button/Home4Button1Panel/Home3Button1Panel1Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home4Button/Home4Button1Panel/Home3Button1Panel1Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 			},
 			"Home3Button1Panel2Tab1Panel": MoveSpawnPath{
 				From: SpawnPath{
-					Spawn:    false,
-					Path:     "Home3Button/Home3Button1Panel/Home3Button1Panel2Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home3Button/Home3Button1Panel/Home3Button1Panel2Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 				To: SpawnPath{
-					Spawn:    false,
-					Path:     "Home4Button/Home4Button1Panel/Home3Button1Panel2Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home4Button/Home4Button1Panel/Home3Button1Panel2Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 			},
 			"Home4Button1Panel1Tab1Panel": MoveSpawnPath{
 				From: SpawnPath{
-					Spawn:    false,
-					Path:     "Home4Button/Home4Button1Panel/Home4Button1Panel1Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home4Button/Home4Button1Panel/Home4Button1Panel1Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 				To: SpawnPath{
-					Spawn:    false,
-					Path:     "Home3Button/Home3Button1Panel/Home4Button1Panel1Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home3Button/Home3Button1Panel/Home4Button1Panel1Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 			},
 			"Home4Button1Panel2Tab1Panel": MoveSpawnPath{
 				From: SpawnPath{
-					Spawn:    false,
-					Path:     "Home4Button/Home4Button1Panel/Home4Button1Panel2Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home4Button/Home4Button1Panel/Home4Button1Panel2Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 				To: SpawnPath{
-					Spawn:    false,
-					Path:     "Home3Button/Home3Button1Panel/Home4Button1Panel2Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home3Button/Home3Button1Panel/Home4Button1Panel2Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 			},
 		}
@@ -307,50 +315,58 @@ func TestSwapPanels(t *testing.T) {
 			},
 			"Home3Button1Panel1Tab1Panel": MoveSpawnPath{
 				From: SpawnPath{
-					Spawn:    false,
-					Path:     "Home3Button/Home3Button1Panel/Home3Button1Panel1Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home3Button/Home3Button1Panel/Home3Button1Panel1Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 				To: SpawnPath{
-					Spawn:    false,
-					Path:     "Home3Button/Home3Button1Panel/Home3Button1Panel2Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home3Button/Home3Button1Panel/Home3Button1Panel2Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 			},
 			"Home3Button1Panel2Tab1Panel": MoveSpawnPath{
 				From: SpawnPath{
-					Spawn:    false,
-					Path:     "Home3Button/Home3Button1Panel/Home3Button1Panel2Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home3Button/Home3Button1Panel/Home3Button1Panel2Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 				To: SpawnPath{
-					Spawn:    false,
-					Path:     "Home3Button/Home3Button1Panel/Home3Button1Panel1Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home3Button/Home3Button1Panel/Home3Button1Panel1Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 			},
 			"Home4Button1Panel1Tab1Panel": MoveSpawnPath{
 				From: SpawnPath{
-					Spawn:    false,
-					Path:     "Home4Button/Home4Button1Panel/Home4Button1Panel1Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home4Button/Home4Button1Panel/Home4Button1Panel1Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 				To: SpawnPath{
-					Spawn:    false,
-					Path:     "Home4Button/Home4Button1Panel/Home4Button1Panel2Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home4Button/Home4Button1Panel/Home4Button1Panel2Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 			},
 			"Home4Button1Panel2Tab1Panel": MoveSpawnPath{
 				From: SpawnPath{
-					Spawn:    false,
-					Path:     "Home4Button/Home4Button1Panel/Home4Button1Panel2Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home4Button/Home4Button1Panel/Home4Button1Panel2Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 				To: SpawnPath{
-					Spawn:    false,
-					Path:     "Home4Button/Home4Button1Panel/Home4Button1Panel1Tab",
-					HVScroll: false,
+					Spawn:       false,
+					Path:        "Home4Button/Home4Button1Panel/Home4Button1Panel1Tab",
+					HVScroll:    false,
+					ParentIsTab: true,
 				},
 			},
 		}
@@ -384,26 +400,30 @@ func TestAddRemoveHome(t *testing.T) {
 	var (
 		additions = map[string]SpawnPath{
 			"Home5Button1Panel1Tab1Panel": SpawnPath{
-				Spawn:    false,
-				Path:     "Home5Button/Home5Button1Panel/Home5Button1Panel1Tab",
-				HVScroll: false,
+				Spawn:       false,
+				Path:        "Home5Button/Home5Button1Panel/Home5Button1Panel1Tab",
+				HVScroll:    false,
+				ParentIsTab: true,
 			},
 			"Home5Button1Panel2Tab1Panel": SpawnPath{
-				Spawn:    false,
-				Path:     "Home5Button/Home5Button1Panel/Home5Button1Panel2Tab",
-				HVScroll: false,
+				Spawn:       false,
+				Path:        "Home5Button/Home5Button1Panel/Home5Button1Panel2Tab",
+				HVScroll:    false,
+				ParentIsTab: true,
 			},
 		}
 		removals = map[string]SpawnPath{
 			"Home4Button1Panel1Tab1Panel": SpawnPath{
-				Spawn:    false,
-				Path:     "Home4Button/Home4Button1Panel/Home4Button1Panel1Tab",
-				HVScroll: false,
+				Spawn:       false,
+				Path:        "Home4Button/Home4Button1Panel/Home4Button1Panel1Tab",
+				HVScroll:    false,
+				ParentIsTab: true,
 			},
 			"Home4Button1Panel2Tab1Panel": SpawnPath{
-				Spawn:    false,
-				Path:     "Home4Button/Home4Button1Panel/Home4Button1Panel2Tab",
-				HVScroll: false,
+				Spawn:       false,
+				Path:        "Home4Button/Home4Button1Panel/Home4Button1Panel2Tab",
+				HVScroll:    false,
+				ParentIsTab: true,
 			},
 		}
 		moves            = map[string]MoveSpawnPath{}
@@ -511,28 +531,32 @@ func TestBuildPanelNamePathMap(t *testing.T) {
 				HVScroll: false,
 			},
 			"Home3Button1Panel1Tab1Panel": project.SpawnFolders{
-				Position: 2,
-				Spawn:    false,
-				Folders:  []string{"Home3Button", "Home3Button1Panel", "Home3Button1Panel1Tab"},
-				HVScroll: false,
+				Position:    2,
+				Spawn:       false,
+				Folders:     []string{"Home3Button", "Home3Button1Panel", "Home3Button1Panel1Tab"},
+				HVScroll:    false,
+				ParentIsTab: true,
 			},
 			"Home3Button1Panel2Tab1Panel": project.SpawnFolders{
-				Position: 3,
-				Spawn:    false,
-				Folders:  []string{"Home3Button", "Home3Button1Panel", "Home3Button1Panel2Tab"},
-				HVScroll: false,
+				Position:    3,
+				Spawn:       false,
+				Folders:     []string{"Home3Button", "Home3Button1Panel", "Home3Button1Panel2Tab"},
+				HVScroll:    false,
+				ParentIsTab: true,
 			},
 			"Home4Button1Panel1Tab1Panel": project.SpawnFolders{
-				Position: 3,
-				Spawn:    false,
-				Folders:  []string{"Home4Button", "Home4Button1Panel", "Home4Button1Panel1Tab"},
-				HVScroll: false,
+				Position:    3,
+				Spawn:       false,
+				Folders:     []string{"Home4Button", "Home4Button1Panel", "Home4Button1Panel1Tab"},
+				HVScroll:    false,
+				ParentIsTab: true,
 			},
 			"Home4Button1Panel2Tab1Panel": project.SpawnFolders{
-				Position: 4,
-				Spawn:    false,
-				Folders:  []string{"Home4Button", "Home4Button1Panel", "Home4Button1Panel2Tab"},
-				HVScroll: false,
+				Position:    4,
+				Spawn:       false,
+				Folders:     []string{"Home4Button", "Home4Button1Panel", "Home4Button1Panel2Tab"},
+				HVScroll:    false,
+				ParentIsTab: true,
 			},
 		}
 	)

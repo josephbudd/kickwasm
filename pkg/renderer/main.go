@@ -11,24 +11,24 @@ import (
 func createMainGo(appPaths paths.ApplicationPathsI, builder *project.Builder) error {
 	folderpaths := appPaths.GetPaths()
 	data := &struct {
-		ApplicationGitPath      string
-		Stores                  []string
-		ImportRendererCallBack  string
-		ImportRendererFramework string
-		ImportRendererPaneling  string
-		ImportRendererViewTools string
-		ImportRendererLocation  string
-		ImportRendererLPC       string
-		ImportDomainLPCMessage  string
+		ApplicationGitPath               string
+		Stores                           []string
+		ImportRendererFrameworkCallBack  string
+		ImportRendererFramework          string
+		ImportRendererPaneling           string
+		ImportRendererFrameworkViewTools string
+		ImportRendererFrameworkLocation  string
+		ImportRendererFrameworkLPC       string
+		ImportDomainLPCMessage           string
 	}{
-		ApplicationGitPath:      builder.ImportPath,
-		ImportRendererCallBack:  folderpaths.ImportRendererCallBack,
-		ImportRendererFramework: folderpaths.ImportRendererFramework,
-		ImportRendererPaneling:  folderpaths.ImportRendererPaneling,
-		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
-		ImportRendererLocation:  folderpaths.ImportRendererLocation,
-		ImportRendererLPC:       folderpaths.ImportRendererLPC,
-		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
+		ApplicationGitPath:               builder.ImportPath,
+		ImportRendererFrameworkCallBack:  folderpaths.ImportRendererFrameworkCallBack,
+		ImportRendererFramework:          folderpaths.ImportRendererFramework,
+		ImportRendererPaneling:           folderpaths.ImportRendererPaneling,
+		ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+		ImportRendererFrameworkLocation:  folderpaths.ImportRendererFrameworkLocation,
+		ImportRendererFrameworkLPC:       folderpaths.ImportRendererFrameworkLPC,
+		ImportDomainLPCMessage:           folderpaths.ImportDomainLPCMessage,
 	}
 	fileNames := paths.GetFileNames()
 	fname := fileNames.UCMainDotGo

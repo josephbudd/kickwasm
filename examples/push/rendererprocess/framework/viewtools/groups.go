@@ -42,7 +42,7 @@ func ShowPanelInTabGroup(panel js.Value) {
 // 2. if the param target becomes visible.
 func ShowInGroup(target js.Value, showClass, hideClass string) (isSliderSub, isVisible bool) {
 	targetParent := target.Get("parentNode")
-	isSliderSub = targetParent == mainMasterviewHomeSliderCollection
+	isSliderSub = targetParent.Equal(mainMasterviewHomeSliderCollection)
 	// tab sibling panels are in sliders but they are special.
 	classList := target.Get("classList")
 	isTabSibling := classList.Call("contains", SliderPanelInnerSiblingClassName).Bool()
@@ -55,7 +55,7 @@ func ShowInGroup(target js.Value, showClass, hideClass string) (isSliderSub, isV
 	var divs []js.Value
 	for _, divs = range buttonPanelsMap {
 		for _, div := range divs {
-			if target == div {
+			if target.Equal(div) {
 				// target is in this group
 				targetInGroup = true
 				break
@@ -160,7 +160,7 @@ func HideShow(hideDiv, showDiv js.Value) {
 func setInGroup(group []js.Value, target js.Value, setClass, unSetClass string) {
 	var classList js.Value
 	for _, panel := range group {
-		if panel != target {
+		if !target.Equal(panel) {
 			classList = panel.Get("classList")
 			if !classList.Call("replace", setClass, unSetClass).Bool() {
 				classList.Call("add", unSetClass)
@@ -177,7 +177,7 @@ func setInGroup(group []js.Value, target js.Value, setClass, unSetClass string) 
 // Returns is the target is a slider sub panel, a child of the slider collection div.
 func hideInGroup(target js.Value, showClass, hideClass string) (isSliderSub bool) {
 	parentNode := target.Get("parentNode")
-	isSliderSub = parentNode == mainMasterviewHomeSliderCollection
+	isSliderSub = parentNode.Equal(mainMasterviewHomeSliderCollection)
 	if !isSliderSub {
 		// not in the slider collection.
 		return
@@ -195,7 +195,7 @@ func initializeGroups() {
 	buttonid = "mainMasterView-home-pad-PushButton"
 	buttonPanelsMap[buttonid] = make([]js.Value, 0, 5)
 	panel = getElementByID(document, "mainMasterView-home-pad-PushButton-PushPanel")
-	if panel == js.Undefined() {
+	if panel.IsUndefined() {
 		message := "viewtools.initializeGroups: Cant find #mainMasterView-home-pad-PushButton-PushPanel"
 		alert.Invoke(message)
 		return

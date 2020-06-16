@@ -10,12 +10,12 @@ package markup
 // Parent returns the element's parent or nil.
 func (e *Element) Parent() (parent *Element) {
 	p := e.element.Get("parentNode")
-	if p == null {
+	if p.IsNull() {
 		return
 	}
 	parent = &Element{
 		element:       p,
-		panelUniqueID: e.panelUniqueID,
+		eventHandlerID: e.eventHandlerID,
 	}
 
 	return
@@ -30,7 +30,7 @@ func (e *Element) Children() (children []*Element) {
 		ch := chch.Call(itemMethodName, i)
 		children[i] = &Element{
 			element:       ch,
-			panelUniqueID: e.panelUniqueID,
+			eventHandlerID: e.eventHandlerID,
 		}
 	}
 	return

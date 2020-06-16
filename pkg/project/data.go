@@ -54,6 +54,7 @@ const (
 	classToBeUnSeen  = "tobe-unseen"
 
 	classSelected                = "selected-tab"
+	classUnderTab                = "under-tab"
 	classUnSelected              = "unselected-tab"
 	classPanelWithHeading        = "panel-with-heading"
 	classPanelWithTabBar         = "panel-with-tab-bar"
@@ -81,9 +82,11 @@ const (
 	classCookieCrumb            = "cookie-crumb"
 	classCookieCrumbLevelPrefix = "cookie-crumb-level-"
 
-	classUserContent            = "user-content"
-	classModalUserContent       = "modal-user-content"
-	classResizeMeWidthClassName = "resize-me-width"
+	classUserContent             = "user-content"
+	classModalUserContent        = "modal-user-content"
+	classResizeMeWidthClassName  = "resize-me-width"
+	classResizeMeHeightClassName = "resize-me-height"
+	classDoNotPrintClassName     = "do-not-print"
 
 	classVScroll    = "vscroll"
 	classHVScroll   = "hvscroll"

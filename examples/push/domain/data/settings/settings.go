@@ -5,8 +5,9 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	"github.com/josephbudd/kickwasm/examples/push/domain/data/filepaths"
 	"github.com/josephbudd/kickwasm/examples/pushsitepack"
+
+	"github.com/josephbudd/kickwasm/examples/push/domain/data/filepaths"
 )
 
 // ApplicationSettings are the settings for this application.

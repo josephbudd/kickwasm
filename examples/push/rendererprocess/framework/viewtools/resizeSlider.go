@@ -95,34 +95,45 @@ func sizeSliderPanelInnerPanelButtonPad(buttonPad js.Value, w, h float64) {
 }
 
 func sizeSliderPanelInnerPanelUserContent(userContent js.Value, w, h float64) {
+	userContentChildren := userContent.Get("children")
+	userContentClassList := userContent.Get("classList")
+	templateWrapper := userContentChildren.Index(0)
+	templateWrapperChildren := templateWrapper.Get("children")
+	template := templateWrapperChildren.Index(0)
+	templateClassList := template.Get("classList")
+	if templateClassList.Call("contains", ResizeMeHeightClassName).Bool() {
+		userContentClassList.Call("remove", VScrollClassName)
+	}
 	// Calculate and set the inside dimensions of the user content div.
 	// A user content panel has scroll bars to it's height must be set.
 	w -= window.WidthExtras(userContent)
 	h -= window.HeightExtras(userContent)
 	window.SetStyleWidth(userContent, w)
 	window.SetStyleHeight(userContent, h)
-	classList := userContent.Get("classList")
-	if classList.Call("contains", VScrollClassName).Bool() {
-		// Don't size the user content width.
-		return
+	// The user content div's child div wraps the template markup.
+	w -= window.WidthExtras(templateWrapper)
+	h -= window.HeightExtras(templateWrapper)
+	if !userContentClassList.Call("contains", VScrollClassName).Bool() {
+		// The user content div does not contain the vertical only scroll class.
+		// So size the markup width.
+		// Calculate and set the inside dimensions of the markup div.
+		w -= window.WidthExtras(template)
+		h -= window.HeightExtras(template)
+		window.SetStyleWidth(template, w)
+		window.SetStyleHeight(template, h)
 	}
-	// The user content div wraps the template markup.
-	children := userContent.Get("children")
-	markup := children.Index(0)
-	// Calculate and set the inside dimensions of the markup div.
-	w -= window.WidthExtras(markup)
-	h -= window.HeightExtras(markup)
-	window.SetStyleWidth(markup, w)
-	window.SetStyleHeight(markup, h)
 	// Check the children of the markup div for whatever needs it's width sized.
-	children = markup.Get("children")
+	children := template.Get("children")
 	l := children.Length()
 	for i := 0; i < l; i++ {
 		ch := children.Index(i)
 		classList := ch.Get("classList")
 		if !classList.Call("contains", UnSeenClassName).Bool() {
 			if classList.Call("contains", ResizeMeWidthClassName).Bool() {
-				resizeTemplateMarkup(ch, w, h)
+				resizeTemplateMarkupWidth(ch, w)
+			}
+			if classList.Call("contains", ResizeMeHeightClassName).Bool() {
+				resizeTemplateMarkupHeight(ch, h)
 			}
 		}
 	}
@@ -133,6 +144,7 @@ func sizeSliderPanelInnerPanelTabBar(tabbar, underTabbar js.Value, w, h float64)
 	// the tab bar height is already set.
 	// remove the height of the tab bar.
 	window.SetStyleWidth(tabbar, w-window.WidthExtras(tabbar))
+	formatTabBarTabs(tabbar)
 	h -= window.OuterHeight(tabbar)
 	// set the under tab bar width
 	w -= window.WidthExtras(underTabbar)
@@ -153,7 +165,7 @@ func sizeSliderPanelInnerPanelTabBar(tabbar, underTabbar js.Value, w, h float64)
 			break
 		}
 	}
-	if seen == undefined {
+	if seen.IsUndefined() {
 		// this will only happen in development and testing of kickwasm.
 		message := fmt.Sprintf("missing seen div under %s", underTabbar.Get("id").String())
 		alert.Invoke(message)
@@ -210,13 +222,16 @@ func sizeSliderPanelInnerPanelTabBar(tabbar, underTabbar js.Value, w, h float64)
 						// size all children with the ResizeMeWidthClassName
 						children4 := ch3.Get("children")
 						l4 := children4.Length()
-						width4 := w-chwx1-chwx2-chwx3
+						width4 := w - chwx1 - chwx2 - chwx3
 						for i4 := 0; i4 < l4; i4++ {
 							ch4 := children4.Index(i4)
 							classList := ch4.Get("classList")
 							if !classList.Call("contains", UnSeenClassName).Bool() {
 								if classList.Call("contains", ResizeMeWidthClassName).Bool() {
-									resizeTemplateMarkup(ch4, width4, h)
+									resizeTemplateMarkupWidth(ch4, width4)
+								}
+								if classList.Call("contains", ResizeMeHeightClassName).Bool() {
+									resizeTemplateMarkupHeight(ch, h)
 								}
 							}
 						}
@@ -229,7 +244,7 @@ func sizeSliderPanelInnerPanelTabBar(tabbar, underTabbar js.Value, w, h float64)
 	}
 }
 
-func resizeTemplateMarkup(mine js.Value, w, h float64) {
+func resizeTemplateMarkupWidth(mine js.Value, w float64) {
 	w = w - window.WidthExtras(mine)
 	window.SetStyleWidth(mine, w)
 	children := mine.Get("children")
@@ -239,7 +254,25 @@ func resizeTemplateMarkup(mine js.Value, w, h float64) {
 		classList := ch.Get("classList")
 		if !classList.Call("contains", UnSeenClassName).Bool() {
 			if classList.Call("contains", ResizeMeWidthClassName).Bool() {
-				resizeTemplateMarkup(ch, w, h)
+				resizeTemplateMarkupWidth(ch, w)
+			}
+		}
+	}
+}
+
+func resizeTemplateMarkupHeight(mine js.Value, h float64) {
+	h = h - window.HeightExtras(mine)
+	window.SetStyleHeight(mine, h)
+	children := mine.Get("children")
+	l := children.Length()
+	for i := 0; i < l; i++ {
+		ch := children.Index(i)
+		classList := ch.Get("classList")
+		if !classList.Call("contains", UnSeenClassName).Bool() {
+			if classList.Call("contains", ResizeMeHeightClassName).Bool() {
+				resizeTemplateMarkupHeight(ch, h)
+			} else {
+				h = h - window.OuterHeight(ch)
 			}
 		}
 	}

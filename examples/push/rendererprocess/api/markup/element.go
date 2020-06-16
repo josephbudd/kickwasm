@@ -9,13 +9,13 @@ import (
 // Element represents an HTML element.
 type Element struct {
 	element       js.Value
-	panelUniqueID uint64
+	eventHandlerID uint64
 }
 
-func NewElement(el js.Value, panelUniqueID uint64) (e *Element) {
+func NewElement(el js.Value, eventHandlerID uint64) (e *Element) {
 	e = &Element{
 		element:       el,
-		panelUniqueID: panelUniqueID,
+		eventHandlerID: eventHandlerID,
 	}
 	return
 }
@@ -28,13 +28,13 @@ func (e *Element) JSValue() (jsValue js.Value) {
 
 // Is returns if the 2 elements e and check, have the same exact javascript value.
 func (e *Element) Is(check *Element) (is bool) {
-	is = (e.element == check.element)
+	is = e.element.Equal(check.element)
 	return	
 }
 
 // ISJSValue returns if the 2 elements e and check, have the same exact javascript value.
 func (e *Element) IsJSValue(check js.Value) (is bool) {
-	is = (e.element == check)
+	is = e.element.Equal(check)
 	return	
 }
 

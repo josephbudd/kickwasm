@@ -127,7 +127,6 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 	t.PanelInnerHTMLID = innerID
 	attributes = make([]html.Attribute, 0, 10)
 	attributes = append(attributes, html.Attribute{Key: "id", Val: innerID})
-	// attributes = append(attributes, html.Attribute{Key: "class", Val: fmt.Sprintf("%s %s", classTabPanelGroup, classUserContent)})
 	attributes = append(attributes, html.Attribute{Key: "class", Val: classTabPanelGroup})
 	innerPanel := &html.Node{
 		Type:     html.ElementNode,
@@ -139,13 +138,6 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 	// Panel group of one or more user content panels.
 	// if more than one then only one if visible at a time.
 	// first is visible by default
-	l := len(t.Panels)
-	var forwhat string
-	if l == 1 {
-		forwhat = "This panel is displayed when the %q tab button is clicked."
-	} else {
-		forwhat = fmt.Sprintf("This is one of a group of %d panels displayed when the %%q tab button is clicked.", l)
-	}
 	// tabs only have markup.
 	// each panel in the group is a content panel wrapping a markup panel.
 	for i, p := range t.Panels {
@@ -188,16 +180,25 @@ func (builder *Builder) toTabPanelHTML(t *Tab, seen bool) (tabPanel *html.Node) 
 			Attr:     attributes,
 		}
 		userContentPanel.AppendChild(markupPanel)
-		//markup := p.markItUp(fmt.Sprintf(forwhat, t.Label), t.Panels)
 		// The markup for this panel is defined in the panel's yaml file.
-		// The panel's markup will be in a template file.
-		p.Template = p.markItUp(fmt.Sprintf(forwhat, t.Label), t.Panels)
 		// Put template code linking to the template file in this markup panel.
 		templateLink := &html.Node{
 			Type: html.TextNode,
 			Data: html.UnescapeString(fmt.Sprintf(`{{template "%s.tmpl"}}`, p.Name)),
 		}
 		markupPanel.AppendChild(templateLink)
+	}
+	// Now that the ids for all of the panels are created make the templates.
+	l := len(t.Panels)
+	for _, p := range t.Panels {
+		var forwhat string
+		if l == 1 {
+			forwhat = "This panel is displayed when the %q tab button is clicked."
+		} else {
+			forwhat = fmt.Sprintf("This is one of a group of %d panels displayed when the %%q tab button is clicked.", l)
+		}
+		// The panel's markup will be in a template file.
+		p.Template = p.markItUp(fmt.Sprintf(forwhat, t.Label), t.Panels)
 	}
 	return
 }

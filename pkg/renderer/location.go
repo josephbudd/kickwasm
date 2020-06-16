@@ -14,7 +14,7 @@ func createLocation(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 	var fname string
 	var oPath string
 	fname = fileNames.HostPortDotGo
-	oPath = filepath.Join(folderpaths.OutputRendererLocation, fname)
+	oPath = filepath.Join(folderpaths.OutputRendererFrameworkLocation, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.HostPortGo)); err != nil {
 		return
 	}

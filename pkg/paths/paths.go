@@ -50,22 +50,26 @@ const (
 
 	// v 14
 
-	importRendererDOM         = "/rendererprocess/api/dom"
-	importRendererMarkup      = "/rendererprocess/api/markup"
-	importRendererWindow      = "/rendererprocess/api/window"
-	importRendererEvent       = "/rendererprocess/api/event"
-	importRendererDisplay     = "/rendererprocess/api/display"
-	importRendererApplication = "/rendererprocess/api/application"
+	importRendererAPIDOM         = "/rendererprocess/api/dom"
+	importRendererAPIMarkup      = "/rendererprocess/api/markup"
+	importRendererAPIWindow      = "/rendererprocess/api/window"
+	importRendererAPIEvent       = "/rendererprocess/api/event"
+	importRendererAPIDisplay     = "/rendererprocess/api/display"
+	importRendererAPIApplication = "/rendererprocess/api/application"
 
 	// renderer framework
 
-	importRendererFramework = "/rendererprocess/framework"
-	importRendererCallBack  = "/rendererprocess/framework/callback"
-	importRendererLocation  = "/rendererprocess/framework/location"
-	importRendererLPC       = "/rendererprocess/framework/lpc"
-	importRendererSpawnPack = "/rendererprocess/framework/spawnpack"
-	importRendererViewTools = "/rendererprocess/framework/viewtools"
-	importRendererProofs    = "/rendererprocess/framework/proofs"
+	importRendererFramework          = "/rendererprocess/framework"
+	importRendererFrameworkCallBack  = "/rendererprocess/framework/callback"
+	importRendererFrameworkLocation  = "/rendererprocess/framework/location"
+	importRendererFrameworkLPC       = "/rendererprocess/framework/lpc"
+	importRendererFrameworkSpawnPack = "/rendererprocess/framework/spawnpack"
+	importRendererFrameworkViewTools = "/rendererprocess/framework/viewtools"
+	importRendererFrameworkProofs    = "/rendererprocess/framework/proofs"
+
+	// v 16
+
+	importRendererAPIJSValue = "/rendererprocess/api/jsvalue"
 )
 
 // Imports is the import paths.
@@ -81,7 +85,7 @@ type Imports struct {
 
 	ImportDomainLPC              string
 	ImportDomainLPCMessage       string
-	ImportRendererLPC            string
+	ImportRendererFrameworkLPC   string
 	ImportMainProcessLPC         string
 	ImportMainProcessLPCDispatch string
 
@@ -91,13 +95,13 @@ type Imports struct {
 
 	// renderer
 
-	ImportRenderer          string
-	ImportRendererPanels    string
-	ImportRendererViewTools string
-	ImportRendererPaneling  string
+	ImportRenderer                   string
+	ImportRendererPanels             string
+	ImportRendererFrameworkViewTools string
+	ImportRendererPaneling           string
 
-	ImportRendererSpawnPack   string
-	ImportRendererSpawnPanels string
+	ImportRendererFrameworkSpawnPack string
+	ImportRendererSpawnPanels        string
 
 	// store
 
@@ -108,20 +112,24 @@ type Imports struct {
 
 	// v 14
 
-	ImportRendererCallBack string
-	ImportRendererLocation string
+	ImportRendererFrameworkCallBack string
+	ImportRendererFrameworkLocation string
 
-	ImportRendererDOM         string
-	ImportRendererMarkup      string
-	ImportRendererWindow      string
-	ImportRendererEvent       string
-	ImportRendererDisplay     string
-	ImportRendererProofs      string
-	ImportRendererApplication string
+	ImportRendererAPIDOM          string
+	ImportRendererAPIMarkup       string
+	ImportRendererAPIWindow       string
+	ImportRendererAPIEvent        string
+	ImportRendererAPIDisplay      string
+	ImportRendererFrameworkProofs string
+	ImportRendererAPIApplication  string
 
 	// renderer framework
 
 	ImportRendererFramework string
+
+	// v 16
+
+	ImportRendererAPIJSValue string
 }
 
 // GetImports returns the go import paths.
@@ -138,7 +146,7 @@ func GetImports() *Imports {
 
 		ImportDomainLPC:              importDomainLPC,
 		ImportDomainLPCMessage:       importDomainLPCMessage,
-		ImportRendererLPC:            importRendererLPC,
+		ImportRendererFrameworkLPC:   importRendererFrameworkLPC,
 		ImportMainProcessLPC:         importMainProcessLPC,
 		ImportMainProcessLPCDispatch: importMainProcessLPCDispatch,
 
@@ -148,13 +156,13 @@ func GetImports() *Imports {
 
 		// renderer
 
-		ImportRenderer:          importRenderer,
-		ImportRendererPanels:    importRendererPanels,
-		ImportRendererViewTools: importRendererViewTools,
-		ImportRendererPaneling:  importRendererPaneling,
+		ImportRenderer:                   importRenderer,
+		ImportRendererPanels:             importRendererPanels,
+		ImportRendererFrameworkViewTools: importRendererFrameworkViewTools,
+		ImportRendererPaneling:           importRendererPaneling,
 
-		ImportRendererSpawnPack:   importRendererSpawnPack,
-		ImportRendererSpawnPanels: importRendererSpawnPanels,
+		ImportRendererFrameworkSpawnPack: importRendererFrameworkSpawnPack,
+		ImportRendererSpawnPanels:        importRendererSpawnPanels,
 
 		// store
 
@@ -165,20 +173,24 @@ func GetImports() *Imports {
 
 		// v 14
 
-		ImportRendererCallBack: importRendererCallBack,
-		ImportRendererLocation: importRendererLocation,
+		ImportRendererFrameworkCallBack: importRendererFrameworkCallBack,
+		ImportRendererFrameworkLocation: importRendererFrameworkLocation,
 
-		ImportRendererDOM:         importRendererDOM,
-		ImportRendererMarkup:      importRendererMarkup,
-		ImportRendererWindow:      importRendererWindow,
-		ImportRendererEvent:       importRendererEvent,
-		ImportRendererDisplay:     importRendererDisplay,
-		ImportRendererProofs:      importRendererProofs,
-		ImportRendererApplication: importRendererApplication,
+		ImportRendererAPIDOM:          importRendererAPIDOM,
+		ImportRendererAPIMarkup:       importRendererAPIMarkup,
+		ImportRendererAPIWindow:       importRendererAPIWindow,
+		ImportRendererAPIEvent:        importRendererAPIEvent,
+		ImportRendererAPIDisplay:      importRendererAPIDisplay,
+		ImportRendererFrameworkProofs: importRendererFrameworkProofs,
+		ImportRendererAPIApplication:  importRendererAPIApplication,
 
 		// renderer framework
 
 		ImportRendererFramework: importRendererFramework,
+
+		// v 16
+
+		ImportRendererAPIJSValue: importRendererAPIJSValue,
 	}
 }
 
@@ -231,7 +243,7 @@ func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 
 	ap.paths.ImportDomainLPC = importDomainLPC
 	ap.paths.ImportDomainLPCMessage = importDomainLPCMessage
-	ap.paths.ImportRendererLPC = importRendererLPC
+	ap.paths.ImportRendererFrameworkLPC = importRendererFrameworkLPC
 	ap.paths.ImportMainProcessLPC = importMainProcessLPC
 	ap.paths.ImportMainProcessLPCDispatch = importMainProcessLPCDispatch
 
@@ -240,10 +252,10 @@ func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 
 	ap.paths.ImportRenderer = importRenderer
 	ap.paths.ImportRendererPanels = importRendererPanels
-	ap.paths.ImportRendererViewTools = importRendererViewTools
+	ap.paths.ImportRendererFrameworkViewTools = importRendererFrameworkViewTools
 	ap.paths.ImportRendererPaneling = importRendererPaneling
 
-	ap.paths.ImportRendererSpawnPack = importRendererSpawnPack
+	ap.paths.ImportRendererFrameworkSpawnPack = importRendererFrameworkSpawnPack
 	ap.paths.ImportRendererSpawnPanels = importRendererSpawnPanels
 
 	ap.paths.ImportDomainStore = importDomainStore
@@ -253,19 +265,23 @@ func (ap *ApplicationPaths) Initialize(pwd, outputFolder, appname string) {
 
 	// v 14
 
-	ap.paths.ImportRendererDOM = importRendererDOM
-	ap.paths.ImportRendererCallBack = importRendererCallBack
-	ap.paths.ImportRendererLocation = importRendererLocation
-	ap.paths.ImportRendererMarkup = importRendererMarkup
-	ap.paths.ImportRendererWindow = importRendererWindow
-	ap.paths.ImportRendererEvent = importRendererEvent
-	ap.paths.ImportRendererDisplay = importRendererDisplay
-	ap.paths.ImportRendererProofs = importRendererProofs
-	ap.paths.ImportRendererApplication = importRendererApplication
+	ap.paths.ImportRendererAPIDOM = importRendererAPIDOM
+	ap.paths.ImportRendererFrameworkCallBack = importRendererFrameworkCallBack
+	ap.paths.ImportRendererFrameworkLocation = importRendererFrameworkLocation
+	ap.paths.ImportRendererAPIMarkup = importRendererAPIMarkup
+	ap.paths.ImportRendererAPIWindow = importRendererAPIWindow
+	ap.paths.ImportRendererAPIEvent = importRendererAPIEvent
+	ap.paths.ImportRendererAPIDisplay = importRendererAPIDisplay
+	ap.paths.ImportRendererFrameworkProofs = importRendererFrameworkProofs
+	ap.paths.ImportRendererAPIApplication = importRendererAPIApplication
 
 	// framework
 
 	ap.paths.ImportRendererFramework = importRendererFramework
+
+	// v 16
+
+	ap.paths.ImportRendererAPIJSValue = importRendererAPIJSValue
 }
 
 // GetDMode returns the file mode for directories.
@@ -338,38 +354,42 @@ type Paths struct {
 
 	// output renderer
 
-	OutputRenderer               string
-	OutputRendererCSS            string
-	OutputRendererMyCSS          string
-	OutputRendererTemplates      string
-	OutputRendererSpawnTemplates string
-	OutputRendererPanels         string
-	OutputRendererSpawns         string
-	OutputRendererSite           string
-	OutputRendererViewTools      string
-	OutputRendererPaneling       string
-	OutputRendererSpawnPack      string
+	OutputRenderer                   string
+	OutputRendererCSS                string
+	OutputRendererMyCSS              string
+	OutputRendererTemplates          string
+	OutputRendererSpawnTemplates     string
+	OutputRendererPanels             string
+	OutputRendererSpawns             string
+	OutputRendererSite               string
+	OutputRendererFrameworkViewTools string
+	OutputRendererPaneling           string
+	OutputRendererFrameworkSpawnPack string
 
 	// output renderer lpc
 
-	OutputRendererLPC string
+	OutputRendererFrameworkLPC string
 
 	// v 14
 
-	OutputRendererAPI         string
-	OutputRendererDOM         string
-	OutputRendererCallBack    string
-	OutputRendererLocation    string
-	OutputRendererMarkup      string
-	OutputRendererWindow      string
-	OutputRendererEvent       string
-	OutputRendererDisplay     string
-	OutputRendererProofs      string
-	OutputRendererApplication string
+	OutputRendererAPI               string
+	OutputRendererDOM               string
+	OutputRendererFrameworkCallBack string
+	OutputRendererFrameworkLocation string
+	OutputRendererMarkup            string
+	OutputRendererWindow            string
+	OutputRendererEvent             string
+	OutputRendererDisplay           string
+	OutputRendererFrameworkProofs   string
+	OutputRendererApplication       string
 
 	// framework
 
 	OutputRendererFramework string
+
+	// v 16
+
+	OutputRendererAPIJSValue string
 
 	// import domain
 
@@ -393,17 +413,17 @@ type Paths struct {
 
 	// import renderer
 
-	ImportRenderer          string
-	ImportRendererPanels    string
-	ImportRendererViewTools string
-	ImportRendererPaneling  string
+	ImportRenderer                   string
+	ImportRendererPanels             string
+	ImportRendererFrameworkViewTools string
+	ImportRendererPaneling           string
 
-	ImportRendererSpawnPack   string
-	ImportRendererSpawnPanels string
+	ImportRendererFrameworkSpawnPack string
+	ImportRendererSpawnPanels        string
 
 	// import renderer lpc
 
-	ImportRendererLPC string
+	ImportRendererFrameworkLPC string
 
 	// import store
 
@@ -414,19 +434,23 @@ type Paths struct {
 
 	// v 14
 
-	ImportRendererDOM         string
-	ImportRendererCallBack    string
-	ImportRendererLocation    string
-	ImportRendererMarkup      string
-	ImportRendererWindow      string
-	ImportRendererEvent       string
-	ImportRendererDisplay     string
-	ImportRendererProofs      string
-	ImportRendererApplication string
+	ImportRendererAPIDOM            string
+	ImportRendererFrameworkCallBack string
+	ImportRendererFrameworkLocation string
+	ImportRendererAPIMarkup         string
+	ImportRendererAPIWindow         string
+	ImportRendererAPIEvent          string
+	ImportRendererAPIDisplay        string
+	ImportRendererFrameworkProofs   string
+	ImportRendererAPIApplication    string
 
 	// renderer framework
 
 	ImportRendererFramework string
+
+	// v 16
+
+	ImportRendererAPIJSValue string
 }
 
 // initializeOutput defines the output paths
@@ -491,12 +515,12 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	// output renderer framework
 
 	ap.paths.OutputRendererFramework = filepath.Join(ap.paths.OutputRenderer, folderNames.Framework)
-	ap.paths.OutputRendererViewTools = filepath.Join(ap.paths.OutputRendererFramework, folderNames.ViewTools)
-	ap.paths.OutputRendererSpawnPack = filepath.Join(ap.paths.OutputRendererFramework, folderNames.SpawnPack)
-	ap.paths.OutputRendererCallBack = filepath.Join(ap.paths.OutputRendererFramework, folderNames.CallBack)
-	ap.paths.OutputRendererLocation = filepath.Join(ap.paths.OutputRendererFramework, folderNames.Location)
-	ap.paths.OutputRendererProofs = filepath.Join(ap.paths.OutputRendererFramework, folderNames.Proofs)
-	// ap.paths.OutputRendererLPC is below
+	ap.paths.OutputRendererFrameworkViewTools = filepath.Join(ap.paths.OutputRendererFramework, folderNames.ViewTools)
+	ap.paths.OutputRendererFrameworkSpawnPack = filepath.Join(ap.paths.OutputRendererFramework, folderNames.SpawnPack)
+	ap.paths.OutputRendererFrameworkCallBack = filepath.Join(ap.paths.OutputRendererFramework, folderNames.CallBack)
+	ap.paths.OutputRendererFrameworkLocation = filepath.Join(ap.paths.OutputRendererFramework, folderNames.Location)
+	ap.paths.OutputRendererFrameworkProofs = filepath.Join(ap.paths.OutputRendererFramework, folderNames.Proofs)
+	// ap.paths.OutputRendererFrameworkLPC is below
 
 	// output mainprocess folder and sub folders.
 	ap.paths.OutputMainProcess = filepath.Join(ap.paths.Output, folderNames.MainProcess)
@@ -504,9 +528,13 @@ func (ap *ApplicationPaths) initializeOutput(pwd, outputFolder, appname string) 
 	// output lpc
 	ap.paths.OutputDomainLPC = filepath.Join(ap.paths.OutputDomain, folderNames.LPC)
 	ap.paths.OutputDomainLPCMessage = filepath.Join(ap.paths.OutputDomainLPC, folderNames.Message)
-	ap.paths.OutputRendererLPC = filepath.Join(ap.paths.OutputRendererFramework, folderNames.LPC)
+	ap.paths.OutputRendererFrameworkLPC = filepath.Join(ap.paths.OutputRendererFramework, folderNames.LPC)
 	ap.paths.OutputMainProcessLPC = filepath.Join(ap.paths.OutputMainProcess, folderNames.LPC)
 	ap.paths.OutputMainProcessLPCDispatch = filepath.Join(ap.paths.OutputMainProcessLPC, folderNames.Dispatch)
+
+	// version 16
+
+	ap.paths.OutputRendererAPIJSValue = filepath.Join(ap.paths.OutputRendererAPI, folderNames.JSValue)
 }
 
 // MakeOutput creates the output paths
@@ -569,7 +597,7 @@ func (ap *ApplicationPaths) MakeOutput() (err error) {
 	}
 
 	// v 14
-	if err = os.MkdirAll(ap.paths.OutputRendererProofs, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererFrameworkProofs, ap.DMode); err != nil {
 		return
 	}
 	if err = os.MkdirAll(ap.paths.OutputRendererDisplay, ap.DMode); err != nil {
@@ -592,19 +620,25 @@ func (ap *ApplicationPaths) MakeOutput() (err error) {
 	}
 
 	// renderer framework
-	if err = os.MkdirAll(ap.paths.OutputRendererCallBack, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererFrameworkCallBack, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputRendererLocation, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererFrameworkLocation, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputRendererSpawnPack, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererFrameworkSpawnPack, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputRendererLPC, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererFrameworkLPC, ap.DMode); err != nil {
 		return
 	}
-	if err = os.MkdirAll(ap.paths.OutputRendererViewTools, ap.DMode); err != nil {
+	if err = os.MkdirAll(ap.paths.OutputRendererFrameworkViewTools, ap.DMode); err != nil {
+		return
+	}
+
+	// v 16
+
+	if err = os.MkdirAll(ap.paths.OutputRendererAPIJSValue, ap.DMode); err != nil {
 		return
 	}
 

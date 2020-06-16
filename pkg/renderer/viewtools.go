@@ -46,9 +46,6 @@ func createViewTools(appPaths paths.ApplicationPathsI, builder *project.Builder)
 	if err = createViewToolsMarkupGo(appPaths); err != nil {
 		return
 	}
-	if err = createViewToolsWidgetsGo(appPaths, builder); err != nil {
-		return
-	}
 	if err = createViewToolsPrintGo(appPaths, builder); err != nil {
 		return
 	}
@@ -73,31 +70,31 @@ func createViewToolsGo(appPaths paths.ApplicationPathsI, builder *project.Builde
 		}
 	}
 	data := &struct {
-		IDs                    *project.IDs
-		Classes                *project.Classes
-		Attributes             *project.Attributes
-		ImportRendererCallBack string
-		ImportRendererDOM      string
-		ApplicationGitPath     string
-		ImportRendererMarkup   string
-		SpawnIDReplacePattern  string
-		PanelNameHVScroll      string
-		NumberOfMarkupPanels   uint64
+		IDs                             *project.IDs
+		Classes                         *project.Classes
+		Attributes                      *project.Attributes
+		ImportRendererFrameworkCallBack string
+		ImportRendererAPIDOM            string
+		ApplicationGitPath              string
+		ImportRendererAPIMarkup         string
+		SpawnIDReplacePattern           string
+		PanelNameHVScroll               string
+		NumberOfMarkupPanels            uint64
 	}{
-		IDs:                    builder.IDs,
-		Classes:                builder.Classes,
-		Attributes:             builder.Attributes,
-		ImportRendererCallBack: folderpaths.ImportRendererCallBack,
-		ApplicationGitPath:     builder.ImportPath,
-		ImportRendererDOM:      folderpaths.ImportRendererDOM,
-		ImportRendererMarkup:   folderpaths.ImportRendererMarkup,
-		SpawnIDReplacePattern:  project.SpawnIDReplacePattern,
-		PanelNameHVScroll:      fmt.Sprintf("%#v", panelNameHVScroll),
-		NumberOfMarkupPanels:   builder.MarkupPanelCount,
+		IDs:                             builder.IDs,
+		Classes:                         builder.Classes,
+		Attributes:                      builder.Attributes,
+		ImportRendererFrameworkCallBack: folderpaths.ImportRendererFrameworkCallBack,
+		ApplicationGitPath:              builder.ImportPath,
+		ImportRendererAPIDOM:            folderpaths.ImportRendererAPIDOM,
+		ImportRendererAPIMarkup:         folderpaths.ImportRendererAPIMarkup,
+		SpawnIDReplacePattern:           project.SpawnIDReplacePattern,
+		PanelNameHVScroll:               fmt.Sprintf("%#v", panelNameHVScroll),
+		NumberOfMarkupPanels:            builder.MarkupPanelCount,
 	}
 	// execute the template
 	fileNames := paths.GetFileNames()
 	fname := fileNames.ViewToolsDotGo
-	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkViewTools, fname)
 	return templates.ProcessTemplate(fname, oPath, templates.ViewTools, data, appPaths)
 }

@@ -12,18 +12,18 @@ func createViewToolsCloserGo(appPaths paths.ApplicationPathsI, builder *project.
 	folderpaths := appPaths.GetPaths()
 	filenames := appPaths.GetFileNames()
 	data := &struct {
-		ApplicationGitPath     string
-		ImportRendererCallBack string
-		ImportRendererDOM      string
-		ImportRendererEvent    string
+		ApplicationGitPath              string
+		ImportRendererFrameworkCallBack string
+		ImportRendererAPIDOM            string
+		ImportRendererAPIEvent          string
 	}{
-		ApplicationGitPath:     builder.ImportPath,
-		ImportRendererCallBack: folderpaths.ImportRendererCallBack,
-		ImportRendererDOM:      folderpaths.ImportRendererDOM,
-		ImportRendererEvent:    folderpaths.ImportRendererEvent,
+		ApplicationGitPath:              builder.ImportPath,
+		ImportRendererFrameworkCallBack: folderpaths.ImportRendererFrameworkCallBack,
+		ImportRendererAPIDOM:            folderpaths.ImportRendererAPIDOM,
+		ImportRendererAPIEvent:          folderpaths.ImportRendererAPIEvent,
 	}
 	fname := filenames.CloserDotGo //"closer.go"
-	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkViewTools, fname)
 	err = templates.ProcessTemplate(fname, oPath, templates.ViewToolsCloser, data, appPaths)
 	return
 }

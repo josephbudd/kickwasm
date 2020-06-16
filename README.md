@@ -1,41 +1,66 @@
 # kickwasm
 
-An single page application framework generator written in GO for applictions written in GO.
+kickwasm is a single page application framework generator written in GO for applictions written in GO. kickwasm has it's own tools to keep development with kickwasm simple.
 
-## Still experimental only because the GO package syscall/js is still experimental
+I developed the kickwasm GUI for a client who never used a computer. The current kickwasm GUI is the final design developed while testing with that user.
+
+**Still experimental because the GO package syscall/js is still experimental.**
+
+## Goals
+
+1. Find and fix bugs! 😖
+1. Keep the API simple or even simpler so that I have the freedom to do what I want.
+1. Not break the API any further.
+1. Keep up with changes in syscall/js.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/josephbudd/kickwasm)](https://goreportcard.com/report/github.com/josephbudd/kickwasm)
 
-## January 1, 2020
+## June 16, 2020
 
-Version 15.0.1:
+### Version 16.0.0
 
-* Fixed 2 type-o's in version 15.0.0's source code documentation.
-* Fixed a type-o in this README.
+All of the built in tests run with the make file work perfectly however, I always build new applications for the final tests.
 
-### Version 15.0.0
+1. I am currently building new applications.
+1. I still have to update the wiki.
 
-Context is now used in the renderer process as it was already used in the main process. This completes the refactoring of the kickwasm framework source code into compliance with GO version 1.13.
+Thanks to bill gates' attempt to take over the world with his chinese virus, this version does contain API breaking changes. All of my usual wifi hot spots had been and still are closed. However, the park just opened up.
 
-I am finished making API breaking changes to kickwasm.
+Version 16 also contains some improvements I needed, bug fixes and documentation fixes. Also I made the following additions.
 
-I tested version 15.0.0
+1. Refactored for go version 1.14's major changes to syscall/js.
+1. The tiny renderer process API package at rendererprocess/api/jsvalue allows the developer to use the the go package's "syscall/js" Value and still work seamlessly with the framework's renderer process. It's for developers who only want to use syscall/js.
+1. The larger renderer process API package at renderprocess/api/markup wraps syscall/js while allowing the user to work seamlessly with the framework's renderer process. It has been expaneded.
+1. Tabs. The user can slide tabs to different positions in the tab bar. Also tabs are no longer printed.
+1. Improvements to how the rendererprocess/framework/viewtools package resizes markup panels.
+1. Improvments to rekickwasm and added a test and proof to demonstrate that the change works.
+1. I make a widgets demonstration program called kwwidgets which demonstrates how to use and build renderer process widgets for kickwasm. I have yet to put it up at github.
 
-1. By running
-   * make install
-   * make test
-   * make prove
-1. By rebuilding
-   * the examples in the examples/ folder.
-   * the [CRUD application](https://github.com/josephbudd/crud).
-   * the [CWT application](https://github.com/josephbudd/cwt).
-1. Updated
-   * the CRUD wiki.
-   * the kickwasm.wiki.
+I used version 16 to totally refactor my cwt application and it was so easy to do. I am really pleased with kickasm and it's tool chain.
+
+#### Tests
+
+I tested version 16.0.0 by running
+
+* make install
+* make test
+* make prove
+
+I want to do more tests by rebuilding
+
+* kickwasm/examples/colors
+* kickwasm/examples/spawnwidget
+* [CRUD application](https://github.com/josephbudd/crud)
+* [CWT application](https://github.com/josephbudd/cwt)
+
+I want to update
+
+* the kickwasm.wiki.
+* the CRUD wiki.
 
 ## Kickwasm Summary
 
-You write a kickwasm.yaml file defining the application's GUI. Kickwasm generates the framework. The framework is your application's source code, written in GO, HTML, and CSS with the GUI built as defined in the kickwasm.yaml file.
+You begin your project by writing a kickwasm.yaml file. The kickwasm.yaml file defines your application's GUI. You run kickwasm and it generates the framework. The framework is your application's source code, written in GO, HTML, and CSS with the GUI built as defined in the kickwasm.yaml file.
 
 The source code builds an application that runs as 2 separate processes. The 2 processes communicate with with each other by sending and receiving messages through channels.
 
@@ -75,8 +100,12 @@ Panels always exist in a group. Even if the group only has one panel. In a panel
 A panel can have buttons or tabs or markup.
 
 * **A panel with buttons** is rendered in the GUI as a button pad. **The framework controls the button pad for you.** When the user clicks on a button the button pad disapears and the user is shown the button's panel group.
-* **A panel with tabs** is renderered in the GUI as a tab bar of tabs. **The framework controls the tab bar for you.** When the user clicks on a tab the tab moves to the front of the other tabs. The front tab in the tab bar appears larger and infront of the other tabs and it's panel group is always displayed under it.
-* **A panel with markup** renders it's own HTML in the GUI. **You control the markup panel with it's own HTML template file and it's own GO package.** In the GO package the **panelController** controls user input. The **panelPresenter** writes to the panel. The **panelMessenger** communicates with the main process. The **panelGroup** has a show func for each panel in the panel group. Each show func makes it's panel visible and hides the other panels in the panel group.
+* **A panel with tabs** is renderered in the GUI as a tab bar of tabs. **The framework controls the tab bar for you.** When the user clicks on a tab, the tab moves to the front of the other tabs. The front tab in the tab bar appears larger and infront of the other tabs and it's panel group is always displayed under it.
+* **A panel with markup** renders it's own HTML in the GUI. **You control the markup panel with it's own HTML template file and it's own GO package.** In the GO package,
+  * the **panelController** controls user input,
+  * the **panelPresenter** writes to the panel,
+  * the **panelMessenger** communicates with the main process.
+  * The **panelGroup** has a show func for each panel in the panel group. Each show func makes it's panel visible and hides the other panels in the panel group.
 
 ## A hello world kickwasm.yaml file
 
@@ -210,9 +239,9 @@ The video demonstrates some of what the framework does on its own without any co
 
 [![building and running the colors example](https://i.vimeocdn.com/video/744492343_640.webp?mw=550&amp;mh=310&amp;q=70)](https://vimeo.com/305091395)
 
-### Spawntabs example
+### Spawnwidgets example
 
-The spawntabs example is a simple tab spawning and unspawning application.
+The spawnwidgets example is a simple tab spawning and unspawning application. It also uses a simple widget button as an example of widgets in spawned tab panels. It's README explains what is happening and where it is happening.
 
 The video shows tabs being spawned and unspawned.
 

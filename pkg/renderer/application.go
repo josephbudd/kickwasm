@@ -12,17 +12,17 @@ func createApplication(appPaths paths.ApplicationPathsI, builder *project.Builde
 	folderpaths := appPaths.GetPaths()
 	filenames := appPaths.GetFileNames()
 	data := struct {
-		Title                  string
-		ApplicationGitPath     string
-		ImportRendererDisplay  string
-		ImportRendererEvent    string
-		ImportRendererCallBack string
+		Title                           string
+		ApplicationGitPath              string
+		ImportRendererAPIDisplay        string
+		ImportRendererAPIEvent          string
+		ImportRendererFrameworkCallBack string
 	}{
-		Title:                  builder.Title,
-		ApplicationGitPath:     builder.ImportPath,
-		ImportRendererDisplay:  folderpaths.ImportRendererDisplay,
-		ImportRendererEvent:    folderpaths.ImportRendererEvent,
-		ImportRendererCallBack: folderpaths.ImportRendererCallBack,
+		Title:                           builder.Title,
+		ApplicationGitPath:              builder.ImportPath,
+		ImportRendererAPIDisplay:        folderpaths.ImportRendererAPIDisplay,
+		ImportRendererAPIEvent:          folderpaths.ImportRendererAPIEvent,
+		ImportRendererFrameworkCallBack: folderpaths.ImportRendererFrameworkCallBack,
 	}
 	fname := filenames.ApplicationDotGo
 	oPath := filepath.Join(folderpaths.OutputRendererApplication, fname)

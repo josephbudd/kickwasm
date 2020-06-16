@@ -108,6 +108,10 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder, addLocat
 	if err = createApplication(appPaths, builder); err != nil {
 		return
 	}
+	// v 16
+	if err = createJSValue(appPaths, builder); err != nil {
+		return
+	}
 
 	return
 }

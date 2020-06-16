@@ -65,8 +65,8 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 // example:
 
 // displayCustomer displays the customer in the edit customer form panel.
-func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
-	presenter.editCustomerName.SetValue(record.Name)
+func (presenter *panelPresenter) displayCustomer(r *record.CustomerRecord) {
+	presenter.editCustomerName.SetValue(r.Name)
 }
 
 */

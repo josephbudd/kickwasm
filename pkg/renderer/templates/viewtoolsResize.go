@@ -8,9 +8,9 @@ package viewtools
 import (
 	"fmt"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWindow}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIEvent}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIWindow}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkCallBack}}"
 )
 
 func initializeResize() {

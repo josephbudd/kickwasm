@@ -41,7 +41,7 @@ type Classes struct {
 	ToBeSeen                string
 	ToBeUnSeen              string
 	SelectedTab             string
-	UnSelectedTab           string
+	UnderTab                string
 	PanelWithHeading        string
 	PanelWithTabBar         string
 	PanelHeading            string
@@ -50,6 +50,8 @@ type Classes struct {
 	UserContent             string
 	ModalUserContent        string
 	ResizeMeWidth           string
+	ResizeMeHeight          string
+	DoNotPrint              string
 	VScroll                 string
 	HVScroll                string
 	UserMarkup              string
@@ -60,7 +62,6 @@ type Classes struct {
 	SliderPanelInnerSibling string
 	SliderPanelPad          string
 	SliderButtonPad         string
-	ResizeMeWidthClassName  string
 
 	CookieCrumb            string
 	CookieCrumbLevelPrefix string
@@ -95,10 +96,10 @@ func NewBuilder() *Builder {
 	return &Builder{
 		panel: newPanel(),
 		Classes: &Classes{
-			Tab:           classTab,
-			SelectedTab:   classSelected,
-			UnSelectedTab: classUnSelected,
-			TabPanel:      classTabPanel,
+			Tab:         classTab,
+			SelectedTab: classSelected,
+			UnderTab:    classUnderTab,
+			TabPanel:    classTabPanel,
 
 			TabBar:      classTabBar,
 			UnderTabBar: classUnderTabBar,
@@ -112,6 +113,8 @@ func NewBuilder() *Builder {
 			UserContent:             classUserContent,
 			ModalUserContent:        classModalUserContent,
 			ResizeMeWidth:           classResizeMeWidthClassName,
+			ResizeMeHeight:          classResizeMeHeightClassName,
+			DoNotPrint:              classDoNotPrintClassName,
 			VScroll:                 classVScroll,
 			HVScroll:                classHVScroll,
 			UserMarkup:              classUserMarkup,

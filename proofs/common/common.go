@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -41,26 +42,32 @@ func PathFound(path string) (found bool) {
 
 // Write writes and closes the file.
 func Write(path, content string) (err error) {
-	// fmt.Printf("Write(%q, content string)\n", path)
+
 	var f *os.File
-	if f, err = os.Create(path); err != nil {
-		return
-	}
 	defer func() {
-		cErr := f.Close()
-		if err == nil {
-			err = cErr
+		if f != nil {
+			cErr := f.Close()
+			if err == nil {
+				err = cErr
+			}
+		}
+		if err != nil {
+			err = fmt.Errorf("common.Write: %w", err)
 		}
 	}()
 
-	if _, err = f.Write([]byte(content)); err != nil {
+	if f, err = os.Create(path); err != nil {
 		return
 	}
+
+	_, err = f.Write([]byte(content))
 	return
 }
 
 // MkDir makes a dir.
 func MkDir(path string) (err error) {
-	err = os.MkdirAll(path, os.ModePerm)
+	if err = os.MkdirAll(path, os.ModePerm); err != nil {
+		err = fmt.Errorf("common.MkDir: %w", err)
+	}
 	return
 }

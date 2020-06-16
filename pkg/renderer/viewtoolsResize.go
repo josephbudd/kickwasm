@@ -11,34 +11,34 @@ import (
 func createResizeGo(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()
 	data := &struct {
-		IDs                    *project.IDs
-		Classes                *project.Classes
-		Attributes             *project.Attributes
-		ApplicationGitPath     string
-		ImportRendererWindow   string
-		ImportRendererCallBack string
-		ImportRendererEvent    string
+		IDs                             *project.IDs
+		Classes                         *project.Classes
+		Attributes                      *project.Attributes
+		ApplicationGitPath              string
+		ImportRendererAPIWindow         string
+		ImportRendererFrameworkCallBack string
+		ImportRendererAPIEvent          string
 	}{
-		IDs:                    builder.IDs,
-		Classes:                builder.Classes,
-		Attributes:             builder.Attributes,
-		ApplicationGitPath:     builder.ImportPath,
-		ImportRendererWindow:   folderpaths.ImportRendererWindow,
-		ImportRendererCallBack: folderpaths.ImportRendererCallBack,
-		ImportRendererEvent:    folderpaths.ImportRendererEvent,
+		IDs:                             builder.IDs,
+		Classes:                         builder.Classes,
+		Attributes:                      builder.Attributes,
+		ApplicationGitPath:              builder.ImportPath,
+		ImportRendererAPIWindow:         folderpaths.ImportRendererAPIWindow,
+		ImportRendererFrameworkCallBack: folderpaths.ImportRendererFrameworkCallBack,
+		ImportRendererAPIEvent:          folderpaths.ImportRendererAPIEvent,
 	}
 	var fname string
 	var oPath string
 	filenames := appPaths.GetFileNames()
 
 	fname = filenames.ResizeDotGo
-	oPath = filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	oPath = filepath.Join(folderpaths.OutputRendererFrameworkViewTools, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.ViewToolsResize, data, appPaths); err != nil {
 		return
 	}
 
 	fname = filenames.ResizeSliderDotGo
-	oPath = filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	oPath = filepath.Join(folderpaths.OutputRendererFrameworkViewTools, fname)
 	err = templates.ProcessTemplate(fname, oPath, templates.ViewToolsResizeSliderPanel, data, appPaths)
 	return
 }

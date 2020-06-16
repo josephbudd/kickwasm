@@ -6,7 +6,7 @@ const MarkupScrollGo = `// +build js, wasm
 package markup
 
 import (
-	"{{.ApplicationGitPath}}{{.ImportRendererWindow}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIWindow}}"
 )
 
 // scroll

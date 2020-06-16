@@ -94,9 +94,10 @@ type MoveSpawnPath struct {
 
 // SpawnPath indicates a path and if it is spawned.
 type SpawnPath struct {
-	Spawn    bool
-	Path     string
-	HVScroll bool
+	Spawn       bool
+	Path        string
+	HVScroll    bool
+	ParentIsTab bool
 }
 
 // DifPanelPaths returns panel names mapped to their relative paths.
@@ -115,9 +116,10 @@ func DifPanelPaths(changes, original *project.Builder) (removals, additions map[
 	orPathPanelNamesMap := make(map[SpawnPath][]string)
 	for name, spawnFolders := range orPanelNamePathMap {
 		spawnPath := SpawnPath{
-			Spawn:    spawnFolders.Spawn,
-			Path:     filepath.Join(spawnFolders.Folders...),
-			HVScroll: spawnFolders.HVScroll,
+			Spawn:       spawnFolders.Spawn,
+			Path:        filepath.Join(spawnFolders.Folders...),
+			HVScroll:    spawnFolders.HVScroll,
+			ParentIsTab: spawnFolders.ParentIsTab,
 		}
 		if _, found := orPathPanelNamesMap[spawnPath]; !found {
 			orPathPanelNamesMap[spawnPath] = make([]string, 0, 5)
@@ -134,9 +136,10 @@ func DifPanelPaths(changes, original *project.Builder) (removals, additions map[
 	// for chName, chPath := range chPanelNamePathMap {
 	for chName, chSpawnFolders := range chPanelNamePathMap {
 		chSpawnPath := SpawnPath{
-			Spawn:    chSpawnFolders.Spawn,
-			Path:     filepath.Join(chSpawnFolders.Folders...),
-			HVScroll: chSpawnFolders.HVScroll,
+			Spawn:       chSpawnFolders.Spawn,
+			Path:        filepath.Join(chSpawnFolders.Folders...),
+			HVScroll:    chSpawnFolders.HVScroll,
+			ParentIsTab: chSpawnFolders.ParentIsTab,
 		}
 		orSpawnFolders, found := orPanelNamePathMap[chName]
 		if !found {
@@ -145,21 +148,32 @@ func DifPanelPaths(changes, original *project.Builder) (removals, additions map[
 		} else {
 			// possible move
 			orSpawnPath := SpawnPath{
-				Spawn:    orSpawnFolders.Spawn,
-				Path:     filepath.Join(orSpawnFolders.Folders...),
-				HVScroll: orSpawnFolders.HVScroll,
+				Spawn:       orSpawnFolders.Spawn,
+				Path:        filepath.Join(orSpawnFolders.Folders...),
+				HVScroll:    orSpawnFolders.HVScroll,
+				ParentIsTab: orSpawnFolders.ParentIsTab,
 			}
 			if chSpawnPath.Path != orSpawnPath.Path {
 				// an attempt to move
-				if chSpawnFolders.Spawn == orSpawnFolders.Spawn {
-					// ok to move because spawn is unchanged.
-					// move
-					moves[chName] = MoveSpawnPath{
-						From: orSpawnPath,
-						To:   chSpawnPath,
+				if chSpawnPath.ParentIsTab == orSpawnPath.ParentIsTab {
+					// Panel moves from one tab to another tab or from one button to another button.
+					if chSpawnFolders.Spawn == orSpawnFolders.Spawn {
+						// ok to move because spawn is unchanged.
+						// move
+						moves[chName] = MoveSpawnPath{
+							From: orSpawnPath,
+							To:   chSpawnPath,
+						}
+					} else {
+						// spawn changed so this is a removal and addition.
+						// remove from original
+						removals[chName] = orSpawnPath
+						// add to refactor
+						additions[chName] = chSpawnPath
 					}
 				} else {
-					// spawn changed so this is a removal and addition.
+					// Panel moves from a tab to a button or from a button to a tab.
+					// So this is a removal and addition.
 					// remove from original
 					removals[chName] = orSpawnPath
 					// add to refactor
@@ -178,8 +192,9 @@ func DifPanelPaths(changes, original *project.Builder) (removals, additions map[
 		if !found {
 			path := filepath.Join(orSpawnFolders.Folders...)
 			orSpawnPath := SpawnPath{
-				Spawn: orSpawnFolders.Spawn,
-				Path:  path,
+				Spawn:       orSpawnFolders.Spawn,
+				Path:        path,
+				ParentIsTab: orSpawnFolders.ParentIsTab,
 			}
 			removals[orName] = orSpawnPath
 		}

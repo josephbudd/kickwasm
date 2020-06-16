@@ -35,9 +35,9 @@ type panelMessenger struct {
 
 // example:
 
-import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
 import "{{.ApplicationGitPath}}{{.ImportDomainLPCMessage}}"
-import "{{.ApplicationGitPath}}{{.ImportRendererDisplay}}"
+import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
+import "{{.ApplicationGitPath}}{{.ImportRendererAPIDisplay}}"
 
 // Add Customer.
 

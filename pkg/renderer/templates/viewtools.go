@@ -8,7 +8,7 @@ package viewtools
 import (
 	"syscall/js"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkCallBack}}"
 )
 
 /*
@@ -24,7 +24,7 @@ const (
 	spawnIDReplacePattern  = "{{.SpawnIDReplacePattern}}"
 	TabClassName           = "{{.Classes.Tab}}"
 	SelectedTabClassName   = "{{.Classes.SelectedTab}}"
-	UnSelectedTabClassName = "{{.Classes.UnSelectedTab}}"
+	UnderTabClassName      = "{{.Classes.UnderTab}}"
 	TabPanelClassName      = "{{.Classes.TabPanel}}"
 
 	TabBarClassName      = "{{.Classes.TabBar}}"
@@ -38,6 +38,7 @@ const (
 	TabPanelGroupClassName           = "{{.Classes.TabPanelGroup}}"
 	UserContentClassName             = "{{.Classes.UserContent}}"
 	ResizeMeWidthClassName           = "{{.Classes.ResizeMeWidth}}"
+	ResizeMeHeightClassName           = "{{.Classes.ResizeMeHeight}}"
 
 	SliderClassName                  = "{{.Classes.Slider}}"
 	SliderPanelClassName             = "{{.Classes.SliderPanel}}"
@@ -120,11 +121,6 @@ var (
 
 	countMarkupPanels = {{.NumberOfMarkupPanels}}
 	countSpawnedMarkupPanels int
-	countWidgetsWaiting      int
-
-	// spawned widgets
-
-	spawnedWidgets = make(map[uint64]spawnedWidgetInfo, 100)
 
 	// printing
 
@@ -176,5 +172,24 @@ func init() {
 	initializeSlider()
 	initializeResize()
 	initializeTabBar()
+}
+
+// containsPoint returns if the rectangle contains the point at x,y.
+func containsPoint(rectangle js.Value, clientX, clientY float64) (contains bool) {
+	left := rectangle.Get("left").Float()
+	width := rectangle.Get("width").Float()
+	right := left + width
+	top := rectangle.Get("top").Float()
+	height := rectangle.Get("height").Float()
+	bottom := top + height
+
+	if clientX < left || clientX > right {
+		return
+	}
+	if clientY < top || clientY > bottom {
+		return
+	}
+	contains = true
+	return
 }
 `

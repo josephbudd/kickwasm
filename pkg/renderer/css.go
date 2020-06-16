@@ -22,6 +22,7 @@ type cssTemplateData struct {
 	UnderTabBar      string
 	Selected         string
 	TabBar           string
+	DoNotPrint       string
 	PanelHeading     string
 	TabPanel         string
 	TabPanelGroup    string
@@ -82,6 +83,7 @@ func createCSS(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 		UnderTabBar:      builder.Classes.UnderTabBar,
 		Selected:         builder.Classes.SelectedTab,
 		TabBar:           builder.Classes.TabBar,
+		DoNotPrint:       builder.Classes.DoNotPrint,
 		PanelHeading:     builder.Classes.PanelHeading,
 		TabPanel:         builder.Classes.TabPanel,
 		TabPanelGroup:    builder.Classes.TabPanelGroup,

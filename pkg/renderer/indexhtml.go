@@ -157,7 +157,8 @@ func buildHeadNode(appPaths paths.ApplicationPathsI, builder *project.Builder) (
 				return await WebAssembly.instantiate(source, importObject);
 			};
 		}
-	
+
+		const go = new Go();
 		(
 			async function() {
 				const go = new Go()

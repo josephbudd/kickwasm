@@ -9,7 +9,7 @@ import (
 	"fmt"{{ if .IsTabSiblingPanel }}
 	"strings"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIMarkup}}"
 {{ end }}
 )
 
@@ -35,7 +35,7 @@ type panelPresenter struct {
 
 	// example:{{ if not .IsTabSiblingPanel }}
 
-	import "{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"{{ end }}
+	import "{{.ApplicationGitPath}}{{.ImportRendererAPIMarkup}}"{{ end }}
 
 	editCustomerName *markup.Element
 
@@ -104,8 +104,8 @@ func (presenter *panelPresenter) setTabPanelHeading(heading string) {
 // example:
 
 // displayCustomer displays the customer in the edit customer form panel.
-func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
-	presenter.editCustomerName.SetValue(record.Name)
+func (presenter *panelPresenter) displayCustomer(r *record.CustomerRecord) {
+	presenter.editCustomerName.SetValue(r.Name)
 }
 
 */

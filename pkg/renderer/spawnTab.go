@@ -26,9 +26,9 @@ type spawnTabData struct {
 	PrepareImports []string
 	SpawnImports   []string
 
-	ApplicationGitPath      string
-	ImportRendererViewTools string
-	ImportDomainStoreRecord string
+	ApplicationGitPath               string
+	ImportRendererFrameworkViewTools string
+	ImportDomainStoreRecord          string
 
 	CamelCase       func(string) string
 	LowerCamelCase  func(string) string
@@ -56,22 +56,22 @@ func createSpawnTabFiles(appPaths paths.ApplicationPathsI, builder *project.Buil
 	// Build the core imports for each api.go.
 	// Let each tab bar add the rest of the imports.
 	prepareCoreImports := make([]string, 2)
-	prepareCoreImports[0] = builder.ImportPath + folderpaths.ImportRendererLPC
+	prepareCoreImports[0] = builder.ImportPath + folderpaths.ImportRendererFrameworkLPC
 	prepareCoreImports[1] = builder.ImportPath + folderpaths.ImportRendererPaneling
 
 	spawnCoreImports := make([]string, 3)
-	spawnCoreImports[0] = builder.ImportPath + folderpaths.ImportRendererViewTools
-	spawnCoreImports[1] = builder.ImportPath + folderpaths.ImportRendererMarkup
-	spawnCoreImports[2] = builder.ImportPath + folderpaths.ImportRendererCallBack
+	spawnCoreImports[0] = builder.ImportPath + folderpaths.ImportRendererFrameworkViewTools
+	spawnCoreImports[1] = builder.ImportPath + folderpaths.ImportRendererAPIMarkup
+	spawnCoreImports[2] = builder.ImportPath + folderpaths.ImportRendererFrameworkCallBack
 	// Build the tab bar template data.
 	// Let each tab bar set the rest of the spawnTabData members.
 	data := &spawnTabData{
-		ApplicationGitPath:      builder.ImportPath,
-		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
-		ImportDomainStoreRecord: folderpaths.ImportDomainStoreRecord,
-		CamelCase:               cases.CamelCase,
-		LowerCamelCase:          cases.LowerCamelCase,
-		LowerCase:               strings.ToLower,
+		ApplicationGitPath:               builder.ImportPath,
+		ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+		ImportDomainStoreRecord:          folderpaths.ImportDomainStoreRecord,
+		CamelCase:                        cases.CamelCase,
+		LowerCamelCase:                   cases.LowerCamelCase,
+		LowerCase:                        strings.ToLower,
 		SplitTabJoin: func(s string) string {
 			ss := strings.Split(s, "\n")
 			return "\t" + strings.Join(ss, "\n\t")

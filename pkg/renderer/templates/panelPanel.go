@@ -9,8 +9,8 @@ import (
 	"context"
 	"fmt"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIDOM}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 )
 

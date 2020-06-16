@@ -12,6 +12,9 @@ import (
 
 var testFolders = []string{
 
+	// panels from tabs to buttons and buttons to tabs.
+	"tp2b",
+
 	// initial button pad.
 	"initaddtabs",
 	"initrot",

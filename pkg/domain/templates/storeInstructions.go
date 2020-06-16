@@ -14,7 +14,7 @@ It will eventually end up being passed to your lpc message handlers
 
 ABOUT THE FILES IN domain/store/record/
 
-{{ if (gt (len .BoltStores) 0) or (gt (len .RemoteRecords) 0) }}{{ range .BoltStores}}* {{.}}.go contains the {{.}} struct which is the {{.}} record.
+{{ if or (gt (len .BoltStores) 0) (gt (len .RemoteRecords) 0) }}{{ range .BoltStores}}* {{.}}.go contains the {{.}} struct which is the {{.}} record.
 The file was created by kickstore for the application's local bolt database. When it was created, the struct's only member was "ID uint64".
 You will want to edit the record definition so that it contains the members that you need.
 {{ end }}{{ range .RemoteRecords}}* {{.}}.go contains the {{.}} struct which is the {{.}} record.
@@ -24,7 +24,7 @@ You will want to edit the record definition so that it contains the members that
 
 ABOUT THE FILES IN domain/store/storer/
 
-{{ if (gt (len .BoltStores) 0) or (gt (len .RemoteDBs) 0) }}{{ range .BoltStores}}* {{.}}.go contains the {{.}}Storer interface which defines the local bolt {{.}} data store's ( API ).
+{{ if or (gt (len .BoltStores) 0) (gt (len .RemoteDBs) 0) }}{{ range .BoltStores}}* {{.}}.go contains the {{.}}Storer interface which defines the local bolt {{.}} data store's ( API ).
 The file was created by kickstore with a complete interface definition.
 You may need to edit the interface definition so that it more closely meets your needs.
 Likewise may also need to edit it's implementation in domain/store/storing/{{.}}.go.
@@ -36,7 +36,7 @@ Likewise, you will also need to edit it's implementation in domain/store/storing
 
 ABOUT THE FILES IN domain/store/storing/
 
-{{ if (gt (len .BoltStores) 0) or (gt (len .RemoteDBs) 0) }}{{ range .BoltStores}}* {{.}}.go contains the {{.}}BoltDB struct and it's implementation of the local bolt {{.}} data store's ( API ).
+{{ if or (gt (len .BoltStores) 0) (gt (len .RemoteDBs) 0) }}{{ range .BoltStores}}* {{.}}.go contains the {{.}}BoltDB struct and it's implementation of the local bolt {{.}} data store's ( API ).
 The file was created by kickstore with a complete interface implementation.
 The {{.}}BoltDB struct implements the {{.}}Storer interface defined in domain/store/storer/{{.}}.go.
 {{ end }}{{ range .RemoteDBs}}* {{.}}.go contains the {{.}}DB struct and it's implementation of the remote {{.}} database's ( API ).

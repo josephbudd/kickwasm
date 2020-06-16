@@ -24,6 +24,9 @@ var (
 	typeAttributeName      = "type"
 	valueAttributeName     = "value"
 
+	styleAttributeName = "style"
+	pxFormatter        = "%fpx"
+
 	addMethodName           = "add"
 	containsMethodName      = "contains"
 	itemMethodName          = "item"
@@ -38,8 +41,10 @@ var (
 	checkboxTypeName = "checkbox"
 	radioTypeName    = "radio"
 
-	hVScrollClassName = "{{.HVScrollClassName}}"
-	resizeMeWidthClassName = "{{.ResizeMeWidthClassName}}"
+	hVScrollClassName       = "{{.HVScrollClassName}}"
+	resizeMeWidthClassName  = "{{.ResizeMeWidthClassName}}"
+	resizeMeHeightClassName = "{{.ResizeMeHeightClassName}}"
+	doNotPrintClassName     = "{{.DoNotPrintClassName}}"
 )
 
 func init() {

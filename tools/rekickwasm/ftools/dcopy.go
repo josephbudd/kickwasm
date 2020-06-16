@@ -19,11 +19,13 @@ type DCopy struct {
 // NewDCopy constructs a new DCopy.
 // Copies the contents of dcopy.sourceFolder to dcopy.destinationFolder.
 func NewDCopy(src, dest string, clearDest, copyHiddenFiles bool, skipFolders []string) (dcopy *DCopy, err error) {
+
 	defer func() {
 		if err != nil {
 			err = fmt.Errorf("NewDCopy: %w", err)
 		}
 	}()
+
 	s := filepath.Clean(src)
 	d := filepath.Clean(dest)
 	if s == d {
@@ -54,11 +56,13 @@ func NewDCopy(src, dest string, clearDest, copyHiddenFiles bool, skipFolders []s
 
 // Copy does a folder copy
 func (dcopy *DCopy) Copy() (err error) {
+
 	defer func() {
 		if err != nil {
 			err = fmt.Errorf("(dcopy *DCopy) Copy(): %w", err)
 		}
 	}()
+
 	if dcopy.clearDestination {
 		if err = os.RemoveAll(dcopy.destinationFolder); err != nil && !os.IsNotExist(err) {
 			return
@@ -112,7 +116,7 @@ func (dcopy *DCopy) Copy() (err error) {
 				}
 				// copying this file.
 				destPath := filepath.Join(dcopy.destinationFolder, dest)
-				//fmt.Printf("will copy %q to %q\n", path, destPath)
+				// fmt.Printf("will copy %q to %q\n", path, destPath)
 				copyFile(path, destPath)
 			}
 			return nil

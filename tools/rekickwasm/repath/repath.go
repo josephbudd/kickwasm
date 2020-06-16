@@ -260,8 +260,8 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 		return
 	}
 	// ./rendererprocess/framework/lpc/client.go
-	src = filepath.Join(srcPaths.OutputRendererLPC, fileNames.ClientDotGo)
-	dst = filepath.Join(dstPaths.OutputRendererLPC, fileNames.ClientDotGo)
+	src = filepath.Join(srcPaths.OutputRendererFrameworkLPC, fileNames.ClientDotGo)
+	dst = filepath.Join(dstPaths.OutputRendererFrameworkLPC, fileNames.ClientDotGo)
 	if err = ftools.CopyFile(src, dst); err != nil {
 		return
 	}
@@ -275,11 +275,11 @@ func copyFolder(srcApplicationPaths, dstApplicationPaths *paths.ApplicationPaths
 		return
 	}
 	// ./rendererprocess/framework/viewtools/
-	if err = _copyFolder(srcPaths.OutputRendererViewTools, dstPaths.OutputRendererViewTools); err != nil {
+	if err = _copyFolder(srcPaths.OutputRendererFrameworkViewTools, dstPaths.OutputRendererFrameworkViewTools); err != nil {
 		return
 	}
 	// ./rendererprocess/framework/proofs/
-	if err = _copyFolder(srcPaths.OutputRendererProofs, dstPaths.OutputRendererProofs); err != nil {
+	if err = _copyFolder(srcPaths.OutputRendererFrameworkProofs, dstPaths.OutputRendererFrameworkProofs); err != nil {
 		return
 	}
 	// ./rendererprocess/api/application/Application.go

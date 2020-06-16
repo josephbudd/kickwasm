@@ -15,105 +15,121 @@ func createMarkup(appPaths paths.ApplicationPathsI, builder *project.Builder) (e
 	var fname string
 	var oPath string
 	data := &struct {
-		ApplicationGitPath      string
-		ImportRendererCallBack  string
-		ImportRendererEvent     string
-		ImportRendererWindow    string
-		ImportRendererViewTools string
-		HVScrollClassName       string
-		ResizeMeWidthClassName  string
+		ApplicationGitPath               string
+		ImportRendererFrameworkCallBack  string
+		ImportRendererAPIEvent           string
+		ImportRendererAPIWindow          string
+		ImportRendererFrameworkViewTools string
+		HVScrollClassName                string
+		ResizeMeWidthClassName           string
+		ResizeMeHeightClassName          string
+		DoNotPrintClassName              string
 	}{
-		ApplicationGitPath:      builder.ImportPath,
-		ImportRendererCallBack:  folderpaths.ImportRendererCallBack,
-		ImportRendererEvent:     folderpaths.ImportRendererEvent,
-		ImportRendererWindow:    folderpaths.ImportRendererWindow,
-		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
-		HVScrollClassName:       classes.HVScroll,
-		ResizeMeWidthClassName:  classes.ResizeMeWidth,
+		ApplicationGitPath:               builder.ImportPath,
+		ImportRendererFrameworkCallBack:  folderpaths.ImportRendererFrameworkCallBack,
+		ImportRendererAPIEvent:           folderpaths.ImportRendererAPIEvent,
+		ImportRendererAPIWindow:          folderpaths.ImportRendererAPIWindow,
+		ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+		HVScrollClassName:                classes.HVScroll,
+		ResizeMeWidthClassName:           classes.ResizeMeWidth,
+		ResizeMeHeightClassName:          classes.ResizeMeHeight,
+		DoNotPrintClassName:              classes.DoNotPrint,
 	}
 
-	// rendererprocess/markup/attributes.go
+	// rendererprocess/api/markup/attributes.go
 	fname = fileNames.AttributesDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupAttributeGo)); err != nil {
 		return
 	}
-	// rendererprocess/markup/checked.go
+	// rendererprocess/api/markup/checked.go
 	fname = fileNames.CheckedDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupCheckedGo)); err != nil {
 		return
 	}
-	// rendererprocess/markup/childParent.go
+	// rendererprocess/api/markup/childParent.go
 	fname = fileNames.ChildParentDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupChildParentGo)); err != nil {
 		return
 	}
-	// rendererprocess/markup/class.go
+	// rendererprocess/api/markup/class.go
 	fname = fileNames.ClassDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupClassGo)); err != nil {
 		return
 	}
-	// rendererprocess/markup/data.go
+	// rendererprocess/api/markup/data.go
 	fname = fileNames.LCDataDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
-	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupDataGo)); err != nil {
+	if err = templates.ProcessTemplate(fname, oPath, templates.MarkupDataGo, data, appPaths); err != nil {
 		return
 	}
-	// rendererprocess/markup/element.go
+	// rendererprocess/api/markup/element.go
 	fname = fileNames.ElementDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.MarkupElementGo, data, appPaths); err != nil {
 		return
 	}
-	// rendererprocess/markup/event.go
+	// rendererprocess/api/markup/event.go
 	fname = fileNames.EventDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.MarkupEventGo, data, appPaths); err != nil {
 		return
 	}
-	// rendererprocess/markup/focusblur.go
+	// rendererprocess/api/markup/focusblur.go
 	fname = fileNames.FocusBlurDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupFocusBlurGo)); err != nil {
 		return
 	}
-	// rendererprocess/markup/hideshow.go
+	// rendererprocess/api/markup/hideshow.go
 	fname = fileNames.HideShowDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.MarkupHideShowGo, data, appPaths); err != nil {
 		return
 	}
-	// rendererprocess/markup/scroll.go
+	// rendererprocess/api/markup/scroll.go
 	fname = fileNames.ScrollDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.MarkupScrollGo, data, appPaths); err != nil {
 		return
 	}
-	// rendererprocess/markup/size.go
+	// rendererprocess/api/markup/metrics.go
+	fname = fileNames.MetricsDotGo
+	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
+	if err = templates.ProcessTemplate(fname, oPath, templates.MarkupMetricsGo, data, appPaths); err != nil {
+		return
+	}
+	// rendererprocess/api/markup/size.go
 	fname = fileNames.SizeDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.MarkupSizeGo, data, appPaths); err != nil {
 		return
 	}
-	// rendererprocess/markup/texthtml.go
+	// rendererprocess/api/markup/texthtml.go
 	fname = fileNames.TextHTMLDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupTextHTML)); err != nil {
 		return
 	}
-	// rendererprocess/markup/value.go
+	// rendererprocess/api/markup/value.go
 	fname = fileNames.ValueDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupValueGo)); err != nil {
 		return
 	}
-	// rendererprocess/markup/id.go
+	// rendererprocess/api/markup/id.go
 	fname = fileNames.IDDotGo
 	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
 	if err = appPaths.WriteFile(oPath, []byte(templates.MarkupIDGo)); err != nil {
+		return
+	}
+	// rendererprocess/api/markup/print.go
+	fname = fileNames.PrintDotGo
+	oPath = filepath.Join(folderpaths.OutputRendererMarkup, fname)
+	if err = templates.ProcessTemplate(fname, oPath, templates.MarkupPrintGo, data, appPaths); err != nil {
 		return
 	}
 	return

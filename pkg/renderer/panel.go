@@ -43,23 +43,23 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					tabButtonID = buttonPanelGroups.ButtonID
 				}
 				data := &struct {
-					PanelName                 string
-					PanelID                   string
-					PanelH3ID                 string
-					PanelGroup                []*project.Panel
-					IsTabSiblingPanel         bool
-					TabButtonID               string
-					ApplicationGitPath        string
-					ImportRendererDOM         string
-					ImportRendererDisplay     string
-					ImportRendererEvent       string
-					ImportRendererLPC         string
-					ImportRendererMarkup      string
-					ImportRendererViewTools   string
-					ImportRendererPaneling    string
-					ImportDomainDataLogLevels string
-					ImportDomainStoreRecord   string
-					ImportDomainLPCMessage    string
+					PanelName                        string
+					PanelID                          string
+					PanelH3ID                        string
+					PanelGroup                       []*project.Panel
+					IsTabSiblingPanel                bool
+					TabButtonID                      string
+					ApplicationGitPath               string
+					ImportRendererAPIDOM             string
+					ImportRendererAPIDisplay         string
+					ImportRendererAPIEvent           string
+					ImportRendererFrameworkLPC       string
+					ImportRendererAPIMarkup          string
+					ImportRendererFrameworkViewTools string
+					ImportRendererPaneling           string
+					ImportDomainDataLogLevels        string
+					ImportDomainStoreRecord          string
+					ImportDomainLPCMessage           string
 
 					CamelCase       func(string) string
 					LowerCamelCase  func(string) string
@@ -69,23 +69,23 @@ func createGoPanels(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 					StartBracket string
 					EndBracket   string
 				}{
-					PanelName:                 panelName,
-					PanelID:                   panel.HTMLID,
-					PanelH3ID:                 panel.H3ID,
-					PanelGroup:                panelGroup,
-					IsTabSiblingPanel:         buttonPanelGroups.IsTabButton,
-					TabButtonID:               tabButtonID,
-					ApplicationGitPath:        builder.ImportPath,
-					ImportRendererDisplay:     folderpaths.ImportRendererDisplay,
-					ImportRendererDOM:         folderpaths.ImportRendererDOM,
-					ImportRendererEvent:       folderpaths.ImportRendererEvent,
-					ImportRendererLPC:         folderpaths.ImportRendererLPC,
-					ImportRendererMarkup:      folderpaths.ImportRendererMarkup,
-					ImportRendererViewTools:   folderpaths.ImportRendererViewTools,
-					ImportRendererPaneling:    folderpaths.ImportRendererPaneling,
-					ImportDomainDataLogLevels: folderpaths.ImportDomainDataLogLevels,
-					ImportDomainStoreRecord:   folderpaths.ImportDomainStoreRecord,
-					ImportDomainLPCMessage:    folderpaths.ImportDomainLPCMessage,
+					PanelName:                        panelName,
+					PanelID:                          panel.HTMLID,
+					PanelH3ID:                        panel.H3ID,
+					PanelGroup:                       panelGroup,
+					IsTabSiblingPanel:                buttonPanelGroups.IsTabButton,
+					TabButtonID:                      tabButtonID,
+					ApplicationGitPath:               builder.ImportPath,
+					ImportRendererAPIDisplay:         folderpaths.ImportRendererAPIDisplay,
+					ImportRendererAPIDOM:             folderpaths.ImportRendererAPIDOM,
+					ImportRendererAPIEvent:           folderpaths.ImportRendererAPIEvent,
+					ImportRendererFrameworkLPC:       folderpaths.ImportRendererFrameworkLPC,
+					ImportRendererAPIMarkup:          folderpaths.ImportRendererAPIMarkup,
+					ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+					ImportRendererPaneling:           folderpaths.ImportRendererPaneling,
+					ImportDomainDataLogLevels:        folderpaths.ImportDomainDataLogLevels,
+					ImportDomainStoreRecord:          folderpaths.ImportDomainStoreRecord,
+					ImportDomainLPCMessage:           folderpaths.ImportDomainLPCMessage,
 
 					CamelCase:      cases.CamelCase,
 					LowerCamelCase: cases.LowerCamelCase,

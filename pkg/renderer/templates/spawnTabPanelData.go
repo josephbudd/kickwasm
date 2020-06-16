@@ -8,7 +8,7 @@ package {{call .PackageNameCase .PanelName}}
 import (
 	"context"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererLPC}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkLPC}}"
 	"{{.ApplicationGitPath}}{{.ImportRendererPaneling}}"
 )
 

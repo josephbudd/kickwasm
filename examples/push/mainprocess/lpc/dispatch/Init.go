@@ -21,7 +21,7 @@ import (
 //   The InitRendererToMainProcess message signals that
 //   * the renderer process is up and running,
 //   * the main process may push messages to the renderer process.
-//   The message is sent from renderer/Main.go which you can edit.
+//   The message is sent from rendererprocess/Main.go which you can edit.
 // handleInit's response back to the renderer is the *message.InitMainProcessToRenderer.
 // Param ctx is the context. if <-ctx.Done() then the main process is shutting down.
 // Param rxmessage *message.InitRendererToMainProcess is the message received from the renderer.

@@ -32,7 +32,7 @@ ABOUT THE FILES IN THE FOLDER domain/lpc/message/.
      The message signals that
      * the renderer process is up and running,
      * the main process may push messages to the renderer process.
-     The message is sent from renderer/Main.go which you can edit.
+     The message is sent from rendererprocess/Main.go which you can edit.
   2. LogMainProcessToRenderer is the message that the main process sends to the renderer.
      * You may or may not have a use for LogMainProcessToRenderer.
 

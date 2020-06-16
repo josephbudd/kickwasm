@@ -14,27 +14,27 @@ func createLPC(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 	fileNames := appPaths.GetFileNames()
 
 	data := struct {
-		ApplicationGitPath      string
-		ImportDomainLPC         string
-		ImportDomainLPCMessage  string
-		ImportRendererViewTools string
-		ImportRendererCallBack  string
-		LPCNames                []string
+		ApplicationGitPath               string
+		ImportDomainLPC                  string
+		ImportDomainLPCMessage           string
+		ImportRendererFrameworkViewTools string
+		ImportRendererFrameworkCallBack  string
+		LPCNames                         []string
 	}{
-		ApplicationGitPath:      builder.ImportPath,
-		ImportDomainLPC:         folderpaths.ImportDomainLPC,
-		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
-		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
-		ImportRendererCallBack:  folderpaths.ImportRendererCallBack,
-		LPCNames:                make([]string, 0),
+		ApplicationGitPath:               builder.ImportPath,
+		ImportDomainLPC:                  folderpaths.ImportDomainLPC,
+		ImportDomainLPCMessage:           folderpaths.ImportDomainLPCMessage,
+		ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+		ImportRendererFrameworkCallBack:  folderpaths.ImportRendererFrameworkCallBack,
+		LPCNames:                         make([]string, 0),
 	}
 	fname := fileNames.ChannelsDotGo
-	oPath := filepath.Join(folderpaths.OutputRendererLPC, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkLPC, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.ChannelsGo, data, appPaths); err != nil {
 		return
 	}
 	fname = fileNames.ClientDotGo
-	oPath = filepath.Join(folderpaths.OutputRendererLPC, fname)
+	oPath = filepath.Join(folderpaths.OutputRendererFrameworkLPC, fname)
 	err = templates.ProcessTemplate(fname, oPath, templates.ClientGo, data, appPaths)
 	return
 }
@@ -45,22 +45,22 @@ func RebuildClientDotGo(appPaths paths.ApplicationPathsI, importPath string, lpc
 	fileNames := appPaths.GetFileNames()
 
 	data := struct {
-		ApplicationGitPath      string
-		ImportDomainLPC         string
-		ImportDomainLPCMessage  string
-		ImportRendererViewTools string
-		ImportRendererCallBack  string
-		LPCNames                []string
+		ApplicationGitPath               string
+		ImportDomainLPC                  string
+		ImportDomainLPCMessage           string
+		ImportRendererFrameworkViewTools string
+		ImportRendererFrameworkCallBack  string
+		LPCNames                         []string
 	}{
-		ApplicationGitPath:      importPath,
-		ImportDomainLPC:         folderpaths.ImportDomainLPC,
-		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
-		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
-		ImportRendererCallBack:  folderpaths.ImportRendererCallBack,
-		LPCNames:                lpcNames,
+		ApplicationGitPath:               importPath,
+		ImportDomainLPC:                  folderpaths.ImportDomainLPC,
+		ImportDomainLPCMessage:           folderpaths.ImportDomainLPCMessage,
+		ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+		ImportRendererFrameworkCallBack:  folderpaths.ImportRendererFrameworkCallBack,
+		LPCNames:                         lpcNames,
 	}
 	fname := fileNames.ClientDotGo
-	oPath := filepath.Join(folderpaths.OutputRendererLPC, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkLPC, fname)
 	err = templates.ProcessTemplate(fname, oPath, templates.ClientGo, data, appPaths)
 	return
 }
@@ -71,22 +71,22 @@ func RebuildChannelsDotGo(appPaths paths.ApplicationPathsI, importPath string, l
 	fileNames := appPaths.GetFileNames()
 
 	data := struct {
-		ApplicationGitPath      string
-		ImportDomainLPC         string
-		ImportDomainLPCMessage  string
-		ImportRendererViewTools string
-		LPCNames                []string
-		Inc2                    func(int) int
+		ApplicationGitPath               string
+		ImportDomainLPC                  string
+		ImportDomainLPCMessage           string
+		ImportRendererFrameworkViewTools string
+		LPCNames                         []string
+		Inc2                             func(int) int
 	}{
-		ApplicationGitPath:      importPath,
-		ImportDomainLPC:         folderpaths.ImportDomainLPC,
-		ImportDomainLPCMessage:  folderpaths.ImportDomainLPCMessage,
-		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
-		LPCNames:                lpcNames,
-		Inc2:                    func(i int) int { return i + 2 },
+		ApplicationGitPath:               importPath,
+		ImportDomainLPC:                  folderpaths.ImportDomainLPC,
+		ImportDomainLPCMessage:           folderpaths.ImportDomainLPCMessage,
+		ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+		LPCNames:                         lpcNames,
+		Inc2:                             func(i int) int { return i + 2 },
 	}
 	fname := fileNames.ChannelsDotGo
-	oPath := filepath.Join(folderpaths.OutputRendererLPC, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkLPC, fname)
 	if err = os.Remove(oPath); err != nil && !os.IsNotExist(err) {
 		return
 	}

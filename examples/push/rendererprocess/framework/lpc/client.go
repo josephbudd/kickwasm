@@ -102,7 +102,7 @@ func (client *Client) Connect(callBack func()) (err error) {
 	// setup the web socket
 	ws := global.Get("WebSocket")
 	client.connection = ws.New(client.location)
-	if client.connection == js.Undefined() {
+	if client.connection.IsUndefined() {
 		err = fmt.Errorf("connection is undefined")
 		return
 	}

@@ -6,8 +6,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/dom"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/lpc"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/paneling"
 )
 

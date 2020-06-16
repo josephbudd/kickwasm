@@ -8,7 +8,7 @@ package viewtools
 import (
 	"fmt"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIEvent}}"
 
 )
 

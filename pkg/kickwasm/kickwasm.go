@@ -24,7 +24,7 @@ func Do(pwd, outputFolder, yamlpath string, addLocations bool, vBreaking, vFeatu
 	sl := slurp.NewSlurper()
 	builder, err := sl.Gulp(yamlpath)
 	if err != nil {
-		err = fmt.Errorf("Tried to slurp the YAML file(s) but counldn't, %s", err.Error())
+		err = fmt.Errorf("Tried to slurp the YAML file(s) but couldn't, %s", err.Error())
 		return
 	}
 	importPath = builder.ImportPath

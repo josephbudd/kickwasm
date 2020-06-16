@@ -196,8 +196,9 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 	"{{.SitePackImportPath}}"
+
+	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 )
 
 // ApplicationSettings are the settings for this application.

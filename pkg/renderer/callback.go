@@ -14,14 +14,14 @@ func createCallBack(appPaths paths.ApplicationPathsI, builder *project.Builder) 
 	var fname string
 	var oPath string
 	data := &struct {
-		ApplicationGitPath  string
-		ImportRendererEvent string
+		ApplicationGitPath     string
+		ImportRendererAPIEvent string
 	}{
-		ApplicationGitPath:  builder.ImportPath,
-		ImportRendererEvent: folderpaths.ImportRendererEvent,
+		ApplicationGitPath:     builder.ImportPath,
+		ImportRendererAPIEvent: folderpaths.ImportRendererAPIEvent,
 	}
 	fname = fileNames.CallBackDotGo
-	oPath = filepath.Join(folderpaths.OutputRendererCallBack, fname)
+	oPath = filepath.Join(folderpaths.OutputRendererFrameworkCallBack, fname)
 	if err = templates.ProcessTemplate(fname, oPath, templates.CallBackGo, data, appPaths); err != nil {
 		return
 	}

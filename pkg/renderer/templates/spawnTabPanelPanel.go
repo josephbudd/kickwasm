@@ -8,8 +8,8 @@ package {{call .PackageNameCase .PanelName}}
 import (
 	"context"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIDOM}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIMarkup}}"
 )
 
 /*

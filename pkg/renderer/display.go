@@ -12,13 +12,15 @@ func createDisplay(appPaths paths.ApplicationPathsI, builder *project.Builder) (
 	folderpaths := appPaths.GetPaths()
 	fileNames := paths.GetFileNames()
 	data := &struct {
-		ApplicationGitPath      string
-		ImportRendererViewTools string
-		ImportRendererLocation  string
+		ApplicationGitPath               string
+		ImportRendererFrameworkViewTools string
+		ImportRendererFrameworkLocation  string
+		SpawnIDReplacePattern            string
 	}{
-		ApplicationGitPath:      builder.ImportPath,
-		ImportRendererViewTools: folderpaths.ImportRendererViewTools,
-		ImportRendererLocation:  folderpaths.ImportRendererLocation,
+		ApplicationGitPath:               builder.ImportPath,
+		ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+		ImportRendererFrameworkLocation:  folderpaths.ImportRendererFrameworkLocation,
+		SpawnIDReplacePattern:            project.SpawnIDReplacePattern,
 	}
 	var fname string
 	var oPath string

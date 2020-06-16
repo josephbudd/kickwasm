@@ -31,7 +31,7 @@ var (
 
 const (
 	applicationName        = "kickbuild"
-	versionBreaking        = 14 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 16 // Kickwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
 	minumunKickwasmVersion = 14 // Minumum kickwasm version.
@@ -170,11 +170,11 @@ func buildRendererProcess() (err error) {
 	jobs.PrintLine("BUILD THE RENDERER PROCESS.")
 	jobs.PrintLine("")
 	// Remove the old spawn package if it's there.
-	if err = jobs.RemoveOldSpawnPackPackage(folderPaths.OutputRendererSpawnPack); err != nil {
+	if err = jobs.RemoveOldSpawnPackPackage(folderPaths.OutputRendererFrameworkSpawnPack); err != nil {
 		return
 	}
 	// Write the new spawn package.
-	if err = jobs.WriteNewSpawnPackage(folderPaths.OutputRendererSpawnPack, folderNames.SpawnTemplates, folderPaths.OutputRendererSite); err != nil {
+	if err = jobs.WriteNewSpawnPackage(folderPaths.OutputRendererFrameworkSpawnPack, folderNames.SpawnTemplates, folderPaths.OutputRendererSite); err != nil {
 		return
 	}
 	// Build the wasm.

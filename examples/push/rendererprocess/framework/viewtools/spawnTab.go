@@ -8,8 +8,8 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/callback"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/event"
+	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/callback"
 	"github.com/josephbudd/kickwasm/examples/push/rendererprocess/framework/spawnpack"
 )
 
@@ -24,10 +24,10 @@ func FixSpawnID(id string, uniqueID uint64) (fixedID string) {
 // It returns their uniqueID, the tab button id, panels names mapped to their ids.
 func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userContentPanelPaths []string) (tabButton, tabPanelHeader js.Value, uniqueID uint64, panelNameID map[string]string, err error) {
 	var classList js.Value
-	uniqueID = newSpawnID()
+	uniqueID = callback.NewEventHandlerID()
 	// Find the tab bar.
 	var tabBar js.Value
-	if tabBar = getElementByID(document, tabBarID); tabBar == null {
+	if tabBar = getElementByID(document, tabBarID); tabBar.IsNull() {
 		err = fmt.Errorf("Unable to find tab bar #" + tabBarID)
 		return
 	}
@@ -39,7 +39,6 @@ func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userConte
 	tabButton.Set("id", tabButtonID)
 	classList = tabButton.Get("classList")
 	classList.Call("add", TabClassName)
-	classList.Call("add", UnSelectedTabClassName)
 
 	label := document.Call("createTextNode", tabLabel)
 	tabButton.Call("appendChild", label)
@@ -61,7 +60,7 @@ func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userConte
 	// The tab's panel is inside the under tab bar div.
 	underTabBarDivID := buildSpawnUnderTabBarID(tabBarID)
 	var underTabBarDiv js.Value
-	if underTabBarDiv = getElementByID(document, underTabBarDivID); underTabBarDiv == null {
+	if underTabBarDiv = getElementByID(document, underTabBarDivID); underTabBarDiv.IsNull() {
 		err = fmt.Errorf("Unable to find under tab bar #" + underTabBarDivID)
 		return
 	}
@@ -154,6 +153,9 @@ func SpawnTab(tabBarID, tabName, tabLabel, tabPanelHeadingText string, userConte
 	buttonPanelsMap[tabButtonID] = userContentPanels
 	// tab button onclick handler
 	setTabBarSpawnButtonOnClick(tabButton, uniqueID)
+
+	// Re format the tabs in the tab bar.
+	reformatTabBarTabs(tabBar)
 	return
 }
 
@@ -178,13 +180,20 @@ func UnSpawnTab(tabButton js.Value) (err error ) {
 	var i int
 	for i = 0; i < l; i++ {
 		sibling := siblings.Index(i)
-		if sibling == tabButton {
+		if sibling.Equal(tabButton) {
 			break
 		}
 	}
 	if i > 0 {
-		ForceTabButtonClick(siblings.Index(i-1))
+		// The tab being closed is not the first tab.
+		// So click on the tab before this tab.
+		i--
+	} else {
+		// The tab being closed is the first tab.
+		// So click on the second tab.
+		i++
 	}
+	ForceTabButtonClick(siblings.Index(i))
 
 	// Step 2: The tab button.
 	// Remove this tab from the tab bar in the DOM.
@@ -205,6 +214,9 @@ func UnSpawnTab(tabButton js.Value) (err error ) {
 	// remove the tab bar button panel group.
 	delete(buttonPanelsMap, tabButtonID)
 
+	// Reformat the tabs in the tab bar.
+	reformatTabBarTabs(tabBar)
+
 	return
 }
 
@@ -219,13 +231,6 @@ func BuildSpawnTabButtonID(tabBarID, tabName string, uniqueID uint64) (id string
 func BuildSpawnTabButtonMarkupPanelID(tabBarID, tabName, panelName string, uniqueID uint64) (id string) {
 	buttonID := BuildSpawnTabButtonID(tabBarID, tabName, uniqueID)
 	id = buildSpawnTabButtonInnerMarkupPanelID(buttonID, panelName)
-	return
-}
-
-func newSpawnID() (id uint64) {
-	// spawn ids begin with 1.
-	spawnID++
-	id = spawnID
 	return
 }
 

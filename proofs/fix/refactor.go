@@ -151,9 +151,7 @@ func Refactor(appName, description, sourceCodeFolderPath, kickwasmDotYAML, rekic
 	executable := common.Executable("." + string(os.PathSeparator) + filepath.Base(sourceCodeFolderPath))
 	defer func() {
 		if err != nil {
-			log.Println("Refactor error: ", err.Error())
-		} else {
-			log.Println("no error")
+			err = fmt.Errorf("Refactor error: %w", err)
 		}
 		if !testing {
 			// remove the source code folders.
@@ -171,10 +169,12 @@ func Refactor(appName, description, sourceCodeFolderPath, kickwasmDotYAML, rekic
 	// Make the source code folder.
 	if common.PathFound(sourceCodeFolderPath) {
 		if err = os.RemoveAll(sourceCodeFolderPath); err != nil {
+			err = fmt.Errorf("os.RemoveAll(sourceCodeFolderPath): %w", err)
 			return
 		}
 	}
 	if err = common.MkDir(sourceCodeFolderPath); err != nil {
+		err = fmt.Errorf("common.MkDir(sourceCodeFolderPath): %w", err)
 		return
 	}
 	// Write the kickwasm.yaml file and build the framework.
@@ -190,6 +190,7 @@ func Refactor(appName, description, sourceCodeFolderPath, kickwasmDotYAML, rekic
 		if testing {
 			log.Println(string(dump))
 		}
+		err = fmt.Errorf(string(dump))
 		return
 	}
 	if testing {

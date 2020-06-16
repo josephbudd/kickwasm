@@ -8,8 +8,8 @@ package viewtools
 import (
 	"syscall/js"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererWindow}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIEvent}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIWindow}}"
 )
 
 // SetPrintTitle sets the document title for printing.
@@ -63,7 +63,7 @@ func findCurrentUserContent() (div js.Value, found bool) {
 	}
 	id := div.Get("id").String() + "-inner-user-content"
 	div = document.Call("getElementById", id)
-	found = div != null
+	found = div.IsNull()
 	return
 }
 

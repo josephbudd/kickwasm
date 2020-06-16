@@ -8,9 +8,9 @@ package application
 import (
 	"context"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererDisplay}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIDisplay}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIEvent}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkCallBack}}"
 )
 
 // NewGracefullyCloseHandler makes an event handler which gracefully closes the application for you.
@@ -30,7 +30,7 @@ func NewGracefullyCloseHandler(cancelFunc context.CancelFunc) (handler func(e ev
 func GracefullyClose(cancelFunc context.CancelFunc) {
 	callback.RemoveApplicationOnCloseHandler()
 	title := "Closing"
-	msg := "Closing <q>Spawn Tabs</q>."
+	msg := "Closing <q>{{.Title}}</q>."
 	display.Inform(msg, title, cancelFunc)
 	return
 }

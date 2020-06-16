@@ -13,20 +13,19 @@ import (
 )
 
 const (
-	// outputFolder = "output"
 	outputFolder = ""
 	yamlFilePath = "kickwasm.yaml"
 
-	versionBreaking = 15 // Each new version breaks backwards compatibility.
+	versionBreaking = 16 // Each new version breaks backwards compatibility.
 	versionFeature  = 0  // Each new version adds features. Retains backwards compatibility.
-	versionPatch    = 1  // Each new version only fixes bugs. No added features. Retains backwards compatibility.
+	versionPatch    = 0  // Each new version only fixes bugs. No added features. Retains backwards compatibility.
 )
 
 var (
 	versionDescription = []string{
 		"Experimental because the go package syscall/js is still experimental.",
 		"Updated to the experimental go version 1.13 syscall/js package.",
-		"15.0.1 fixed 2 Type-Os in 15.0.0 inline documentation.",
+		"16.0.0 additions to rendererprocess/api/markup. Added rendererprocess/api/jsvalue.",
 		fmt.Sprintf("%d: Backwards Compatibility: Broken from the previous version %d.", versionBreaking, (versionBreaking - 1)),
 		fmt.Sprintf("%d: Features: ", versionFeature),
 		fmt.Sprintf("%d: Bug Patch:", versionPatch),

@@ -6,6 +6,16 @@ import (
 	"path/filepath"
 )
 
+// PathExists returns if a path exists.
+func PathExists(path string) (exists bool) {
+	if _, err := os.Stat(path); err != nil {
+		exists = !os.IsNotExist(err)
+		return
+	}
+	exists = true
+	return
+}
+
 // CopyFile copies a file.
 func CopyFile(src, dest string) (err error) {
 
@@ -55,6 +65,7 @@ func readFile(path string) (bb []byte, err error) {
 			err = fmt.Errorf("readFile: %w", err)
 		}
 	}()
+
 	// read
 	f, err := os.Open(path)
 	if err != nil {

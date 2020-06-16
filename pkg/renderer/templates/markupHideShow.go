@@ -6,7 +6,7 @@ const MarkupHideShowGo = `// +build js, wasm
 package markup
 
 import (
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkViewTools}}"
 )
 
 // Show makes the element visible.

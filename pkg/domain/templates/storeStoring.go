@@ -50,7 +50,6 @@ const LocalBoltStoreStoringGo = `package storing
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 
@@ -233,7 +232,7 @@ func (store *{{.Store}}LocalBoltStore) initialize() (err error) {
 
 		defaults := somepackage.Get{{.Store}}Defaults()
 		for _, default := range defaults {
-			r := types.New{{.Store}}Record()
+			r := record.New{{.Store}}()
 			r.Name = default.Name
 			r.Price = default.Price
 			r.SKU = default.SKU

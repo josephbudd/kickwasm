@@ -1,0 +1,286 @@
+
+/******************************************************************************
+
+    general
+
+******************************************************************************/
+
+html {
+  background: transparent;
+}
+
+body {
+  background: transparent;
+}
+
+/******************************************************************************
+
+    master views
+
+******************************************************************************/
+
+#modalInformationMasterView
+{
+  background: hsla(44, 100%, 19%, 0.8);
+  border-color:black;
+}
+
+#modalInformationMasterView-center
+{
+  background-color:white;
+  border-color:rgb(88, 65, 1);
+}
+
+/******************************************************************************
+
+    panels
+
+******************************************************************************/
+
+div.under-tab-bar  
+{
+  border-color: white;
+  background: transparent;
+  color:white;
+}
+
+/******************************************************************************
+
+    tabs
+
+******************************************************************************/
+
+div.tab-bar > button
+{
+  color:black;
+  border-color: black;
+  background-color:#a09665;
+  box-shadow: 2px 0px black;
+}
+div.tab-bar > button.selected-tab 
+{
+  color:black;
+  border-color: white;
+  background-color:white;
+  box-shadow: 2px 0px lightgrey;
+}
+div.tab-bar > button.under-tab 
+{
+  color:black;
+  background-color:#e9be02;
+  border-color: black;
+  box-shadow: 0px;
+}
+
+/******************************************************************************
+
+    tabs master view
+
+******************************************************************************/
+
+/******************************************************************************
+
+    home
+
+******************************************************************************/
+
+#mainMasterView-home-pad
+{
+  border-color:black;
+}
+
+/******************************************************************************
+
+    slider
+
+******************************************************************************/
+
+#mainMasterView-home-slider-collection > .slider-panel > .slider-panel-pad
+{
+  color:white;
+}
+
+/******************************************************************************
+
+  color levels
+
+******************************************************************************/
+
+/* color level 0 if for the home button pad */
+
+#mainMasterView > h1.heading-of-panel
+{
+  color: black;
+}
+
+button.back-color-level-0
+{
+  background-color:black;
+  color:white;
+  border-color:white;
+}
+button.back-color-level-0:hover
+{
+  color:coral;
+  border-color:coral;
+}
+
+div.pad-color-level-0
+{
+  background-color: black;
+}
+
+
+
+/* color level SchoolButton */
+
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-SchoolButton
+{
+  background-color:hsl(50, 23%, 27%);
+  color:white;
+  padding:5px;
+}
+
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-SchoolButton
+{
+  color: hsl(50, 23%, 27%);
+}
+
+button.back-color-level-SchoolButton
+{
+  background-color:hsl(50, 23%, 27%);
+  color:hsl(40, 37%, 57%);
+  border-color:white;
+}
+button.back-color-level-SchoolButton:hover
+{
+  color:white;
+  border-color:hsl(40, 37%, 57%);
+}
+
+div.pad-color-level-SchoolButton
+{
+  background-color: hsl(50, 23%, 27%);
+}
+
+button.pad-button-color-level-SchoolButton
+{
+  background-color: hsl(40, 37%, 57%);
+  color:black;
+  border-color:black;
+}
+
+button.pad-button-color-level-SchoolButton:hover
+{
+  background-color: hsl(40, 37%, 37%);
+  color:white;
+  border-color:white;
+}
+
+
+/* color level ProveButton */
+
+#mainMasterView-home-slider-collection > .slider-panel > h2.heading-of-panel-level-ProveButton
+{
+  color: hsl(70, 23%, 27%);
+}
+
+#mainMasterView-home-slider-collection > .slider-panel > div.heading-of-panel > h2.cookie-crumb-level-ProveButton
+{
+  background-color: hsl(70, 23%, 27%);
+  color:white;
+  padding:5px;
+}
+
+button.back-color-level-ProveButton
+{
+  background-color:hsl(70, 23%, 27%);
+  color:hsl(60, 37%, 57%);
+  border-color:white;
+}
+button.back-color-level-ProveButton:hover
+{
+  color:white;
+  border-color:hsl(60, 37%, 57%);
+}
+
+div.pad-color-level-ProveButton
+{
+  background-color: hsl(70, 23%, 27%);
+}
+
+button.pad-button-color-level-ProveButton
+{
+  background-color: hsl(60, 37%, 57%);
+  color:black;
+  border-color:black;
+}
+
+button.pad-button-color-level-ProveButton:hover
+{
+  background-color: hsl(60, 37%, 37%);
+  color:white;
+  border-color:white;
+}
+
+
+
+/******************************************************************************
+
+  user content
+
+******************************************************************************/
+
+.user-content a {color:hsla(210, 25%, 80%, 1);}
+.user-content a:hover{color:hsla(0, 25%, 80%, 1);}
+.user-content a:visited{color:hsla(110, 25%, 80%, 1);}
+
+.user-content button
+{
+  border-color:black;
+  color:black;
+  background: #c5b549;
+}
+.user-content button:hover
+{
+  background: #554e20;
+  color:white;
+}
+
+.user-content,
+.user-content th,
+.user-content td
+{
+  color: white;
+}
+
+/******************************************************************************
+
+  modal user content
+
+******************************************************************************/
+
+
+.modal-user-content a {color:black;}
+.modal-user-content a:hover{color:black;}
+.modal-user-content a:visited{color:black;}
+
+.modal-user-content button
+{
+  border-color:black;
+  color:black;
+  background: white;
+}
+.modal-user-content button:hover
+{
+  background: white;
+  color:black;
+}
+
+.modal-user-content,
+.modal-user-content th,
+.modal-user-content td
+{
+  background: white;
+  color:black;
+}

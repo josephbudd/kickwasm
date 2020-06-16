@@ -27,7 +27,7 @@ func NewGracefullyCloseHandler(cancelFunc context.CancelFunc) (handler func(e ev
 func GracefullyClose(cancelFunc context.CancelFunc) {
 	callback.RemoveApplicationOnCloseHandler()
 	title := "Closing"
-	msg := "Closing <q>Spawn Tabs</q>."
+	msg := "Closing <q>Push</q>."
 	display.Inform(msg, title, cancelFunc)
 	return
 }

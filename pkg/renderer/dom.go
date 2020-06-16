@@ -12,11 +12,11 @@ func createDOM(appPaths paths.ApplicationPathsI, builder *project.Builder) (err 
 	folderpaths := appPaths.GetPaths()
 	fileNames := paths.GetFileNames()
 	data := &struct {
-		ApplicationGitPath   string
-		ImportRendererMarkup string
+		ApplicationGitPath      string
+		ImportRendererAPIMarkup string
 	}{
-		ApplicationGitPath:   builder.ImportPath,
-		ImportRendererMarkup: folderpaths.ImportRendererMarkup,
+		ApplicationGitPath:      builder.ImportPath,
+		ImportRendererAPIMarkup: folderpaths.ImportRendererAPIMarkup,
 	}
 	var fname string
 	var oPath string

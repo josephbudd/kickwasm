@@ -8,8 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/josephbudd/kickwasm/examples/push/domain/data/filepaths"
 	"github.com/josephbudd/kickwasm/examples/pushsitepack"
+
+	"github.com/josephbudd/kickwasm/examples/push/domain/data/filepaths"
 )
 
 /*

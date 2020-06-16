@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"strings"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIDOM}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIMarkup}}"
 )
 
 /*
@@ -56,7 +56,7 @@ func (presenter *panelPresenter) defineMembers() (err error) {
 
 	// example:
 
-	import "{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
+	import "{{.ApplicationGitPath}}{{.ImportRendererFrameworkViewTools}}"
 
 	// my spawn template has a name input field and a submit button.
 	// <label for="addCustomerName{{.SpawnID}}">Name</label><input type="text" id="addCustomerName{{.SpawnID}}">
@@ -114,8 +114,8 @@ import "{{.ApplicationGitPath}}{{.ImportDomainStoreRecord}}"
 
 // displayCustomer displays the customer in the add customer form.
 // This short example only uses the customer name field in the form.
-func (presenter *panelPresenter) displayCustomer(record *types.CustomerRecord) {
-	presenter.addCustomerName.SetValue(record.Name)
+func (presenter *panelPresenter) displayCustomer(r *record.CustomerRecord) {
+	presenter.addCustomerName.SetValue(r.Name)
 }
 
 */

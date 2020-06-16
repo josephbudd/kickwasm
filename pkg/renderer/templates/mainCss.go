@@ -128,18 +128,18 @@ div.{{.TabBar}}
 {
   align-content: baseline;
   overflow: hidden;
+  height: 42px;
 }
 div.{{.TabBar}} > button
 {
-  float: left;
   width: max-intrinsic;
   border-width: 1px;
   border-style: solid;
   border-bottom: none;
   border-radius: 4px 4px 0 0;
-  padding:4px 12px;
-  margin:9px 0 0 0;
-  font-size:16px;
+  padding: 4px 12px;
+  margin: 12px 0 0 0;
+  font-size: 16px;
   cursor:pointer;
   border-spacing: 4px;
 }

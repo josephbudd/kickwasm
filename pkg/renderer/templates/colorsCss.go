@@ -56,13 +56,23 @@ div.{{.UnderTabBar}}
 div.{{.TabBar}} > button
 {
   color:black;
-  border-color: white;
+  border-color: black;
   background-color:#a09665;
+  box-shadow: 2px 0px black;
 }
 div.{{.TabBar}} > button.selected-tab 
 {
+  color:black;
+  border-color: white;
   background-color:white;
-  box-shadow: 2px 0px #7c7555;
+  box-shadow: 2px 0px lightgrey;
+}
+div.{{.TabBar}} > button.under-tab 
+{
+  color:black;
+  background-color:#e9be02;
+  border-color: black;
+  box-shadow: 0px;
 }
 
 /******************************************************************************

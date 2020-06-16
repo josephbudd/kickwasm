@@ -1,44 +1,19 @@
 package colorssitepack
 
-import (
-	"os"
-	"path/filepath"
-)
+/*
+	Note Well:
 
-var wd string
+	This colorssitepack package was created by kickwasm.
+	It is only a temporary place holder.
+	You will replace this file with your true colorssitepack package
+	  when you build the renderer process.
+*/
 
-func init() {
-	var err error
-	if wd, err = os.Getwd(); err != nil {
-		wd = ""
-	}
-}
-
-// Contents returns the contents of the file at path and if found.
-func Contents(path string) (contents []byte, found bool) {
-	fullpath := filepath.Join(wd, path)
-	var f *os.File
-	var err error
-	if f, err = os.Open(fullpath); err != nil {
-		return
-	}
-	defer f.Close()
-	var stat os.FileInfo
-	if stat, err = f.Stat(); err != nil {
-		return
-	}
-	contents = make([]byte, stat.Size())
-	if _, err = f.Read(contents); err != nil {
-		contents = nil
-		return
-	}
-	found = true
+func Contents(path string) (markupbb []byte, found bool) {
 	return
 }
 
-// Paths returns a slice of the file paths.
 func Paths() (paths []string) {
 	paths = make([]string, 0)
 	return
 }
-

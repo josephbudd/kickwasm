@@ -90,8 +90,8 @@ func (controller *panelController) defineControlsHandlers() (err error) {
 // example:
 
 import "github.com/josephbudd/kickwasm/examples/push/domain/store/record"
-import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/event"
 import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/display"
+import "github.com/josephbudd/kickwasm/examples/push/rendererprocess/api/event"
 
 func (controller *panelController) handleSubmit(e event.Event) (nilReturn interface{}) {
 	// See rendererprocess/api/event/event.go.

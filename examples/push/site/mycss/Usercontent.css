@@ -35,12 +35,19 @@
   {
     margin-left: -50px;
   }
+  .tab-bar,
+  .do-not-print
+  {
+    display: none !important;
+  }
+  
   /* You may or may not want to use these.
   h1,
   h2
   {
     display: none !important;
-  } */
+  }
+  */
 }
 
 /******************************************************************************

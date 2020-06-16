@@ -31,7 +31,7 @@ type templateData struct {
 
 	ImportDomainLPC              string
 	ImportDomainLPCMessage       string
-	ImportRendererLPC            string
+	ImportRendererFrameworkLPC   string
 	ImportMainProcessLPC         string
 	ImportMainProcessLPCDispatch string
 
@@ -67,7 +67,7 @@ func Create(appPaths paths.ApplicationPathsI, builder *project.Builder) (err err
 
 		ImportDomainLPC:              folderpaths.ImportDomainLPC,
 		ImportDomainLPCMessage:       folderpaths.ImportDomainLPCMessage,
-		ImportRendererLPC:            folderpaths.ImportRendererLPC,
+		ImportRendererFrameworkLPC:   folderpaths.ImportRendererFrameworkLPC,
 		ImportMainProcessLPC:         folderpaths.ImportMainProcessLPC,
 		ImportMainProcessLPCDispatch: folderpaths.ImportMainProcessLPCDispatch,
 

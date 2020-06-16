@@ -122,8 +122,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 	"{{.SitePackImportPath}}"
+
+	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 )
 
 /*
@@ -220,8 +221,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 	"{{.SitePackImportPath}}"
+
+	"{{.ApplicationGitPath}}{{.ImportDomainDataFilepaths}}"
 )
 
 const (

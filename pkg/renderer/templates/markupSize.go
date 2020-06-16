@@ -6,7 +6,9 @@ const MarkupSizeGo = `// +build js, wasm
 package markup
 
 import (
-	"{{.ApplicationGitPath}}{{.ImportRendererWindow}}"
+	"fmt"
+
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIWindow}}"
 )
 
 // InnerWidth returns the innermost width.
@@ -91,18 +93,37 @@ func (e *Element) BorderHeight() (height float64) {
 
 // SetStyleHeight sets an element's style height.
 func (e *Element) SetStyleHeight(height float64) {
-	window.SetStyleHeight(e.element, height)
+	style := e.element.Get(styleAttributeName)
+	style.Set("height", fmt.Sprintf(pxFormatter, height))
 }
 
 // SetStyleWidth sets an element's style width.
 func (e *Element) SetStyleWidth(width float64) {
-	window.SetStyleWidth(e.element, width)
+	style := e.element.Get(styleAttributeName)
+	style.Set("width", fmt.Sprintf(pxFormatter, width))
+}
+
+// SetStyleMinWidth sets an element's style minimum width.
+func (e *Element) SetStyleMinWidth(minwidth float64) {
+	style := e.element.Get(styleAttributeName)
+	style.Set("min-width", fmt.Sprintf(pxFormatter, minwidth))
+}
+
+// SetStyle sets an element's style.
+func (e *Element) SetStyle(styleKey, styleValue string) {
+	style := e.element.Get(styleAttributeName)
+	style.Set(styleKey, styleValue)
 }
 
 // Resizing to full width.
 
-// SetResizeable allows the block element to be resized to fit perfectly inside it's parent's width.
-func (e *Element) SetResizeable() {
+// SetWidthResizeable allows the block element to be resized to fit perfectly inside it's parent's width.
+func (e *Element) SetWidthResizeable() {
 	e.AddClass(resizeMeWidthClassName)
+}
+
+// SetHeightResizeable allows the block element to be resized to fit perfectly inside it's parent's width.
+func (e *Element) SetHeightResizeable() {
+	e.AddClass(resizeMeHeightClassName)
 }
 `

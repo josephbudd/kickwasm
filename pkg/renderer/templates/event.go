@@ -11,18 +11,14 @@ import (
 // Event an event.
 type Event struct {
 	JSEvent      js.Value
-	On           string
 	JSTarget     js.Value
-	CapturePhase bool
 }
 
 // BuildEvent constructs an Event.
-func BuildEvent(jsevent, jstarget js.Value, on string, capturePhase bool, panelUniqueID uint64) (ev Event) {
+func BuildEvent(event, target js.Value) (ev Event) {
 	ev = Event {
-		JSEvent:      jsevent,
-		On:           on,
-		JSTarget:     jstarget,
-		CapturePhase: capturePhase,
+		JSEvent:      event,
+		JSTarget:     target,
 	}
 	return
 }

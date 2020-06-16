@@ -106,6 +106,15 @@ type FileNames struct {
 	PrintDotGo       string
 	ProofsDotGo      string
 	ApplicationDotGo string
+
+	// V 15.1.0
+	MetricsDotGo string
+
+	// V 16
+	WidthDotGo      string
+	TemporaryDotGo  string
+	PermanentDotGo  string
+	SpawnPanelDotGo string
 }
 
 // GetFileNames returns the file names.
@@ -214,5 +223,14 @@ func GetFileNames() *FileNames {
 		PrintDotGo:       "print.go",
 		ProofsDotGo:      "proofs.go",
 		ApplicationDotGo: "Application.go",
+
+		// V 15.1.0
+		MetricsDotGo: "metrics.go",
+
+		// V 16
+		WidthDotGo:      "width.go",
+		TemporaryDotGo:  "temporary.go",
+		PermanentDotGo:  "permanent.go",
+		SpawnPanelDotGo: "spawnpanel.go",
 	}
 }

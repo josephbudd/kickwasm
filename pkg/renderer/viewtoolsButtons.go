@@ -9,6 +9,6 @@ import (
 
 func createViewToolsLocksGo(appPaths paths.ApplicationPathsI) error {
 	folderpaths := appPaths.GetPaths()
-	oPath := filepath.Join(folderpaths.OutputRendererViewTools, "locks.go")
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkViewTools, "locks.go")
 	return appPaths.WriteFile(oPath, []byte(templates.ViewToolsLocks))
 }

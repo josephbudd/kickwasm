@@ -175,8 +175,8 @@ func (r *Refactorer) Refactor() (err error) {
 	// Copy rendererprocess/lpc/client.go
 	refactorPaths := r.rp.Refactor.GetPaths()
 	filenames := r.rp.Refactor.GetFileNames()
-	src := filepath.Join(changesPaths.OutputRendererLPC, filenames.ClientDotGo)
-	dst := filepath.Join(refactorPaths.OutputRendererLPC, filenames.ClientDotGo)
+	src := filepath.Join(changesPaths.OutputRendererFrameworkLPC, filenames.ClientDotGo)
+	dst := filepath.Join(refactorPaths.OutputRendererFrameworkLPC, filenames.ClientDotGo)
 	if err = os.Remove(dst); err != nil {
 		return
 	}
@@ -259,7 +259,7 @@ func (r *Refactorer) refactorPanels(changesBuilder, mergeBuilder *project.Builde
 	var dc *ftools.DCopy
 	// Step 4.a: ./rendererprocess/viewtools/
 	if dc, err = ftools.NewDCopy(
-		changesPaths.OutputRendererViewTools, mergePaths.OutputRendererViewTools,
+		changesPaths.OutputRendererFrameworkViewTools, mergePaths.OutputRendererFrameworkViewTools,
 		true, false, nil); err != nil {
 		return
 	}
@@ -268,7 +268,7 @@ func (r *Refactorer) refactorPanels(changesBuilder, mergeBuilder *project.Builde
 	}
 	// Step 4.b: ./rendererprocess/proofs/
 	if dc, err = ftools.NewDCopy(
-		changesPaths.OutputRendererProofs, mergePaths.OutputRendererProofs,
+		changesPaths.OutputRendererFrameworkProofs, mergePaths.OutputRendererFrameworkProofs,
 		true, false, nil); err != nil {
 		return
 	}
@@ -485,10 +485,12 @@ func (r *Refactorer) refactorPanelGroupFiles(changesBuilder, mergeBuilder *proje
 		// Copy group files from src to dst.
 		for _, panelName = range panelNames {
 			gpsrc = filepath.Join(src, panelName, fileNames.PanelGroupDotGo)
-			gpdst = filepath.Join(dst, panelName, fileNames.PanelGroupDotGo)
-			if err = ftools.CopyFile(gpsrc, gpdst); err != nil {
-				err = fmt.Errorf("additions: %w", err)
-				return
+			if ftools.PathExists(gpsrc) {
+				gpdst = filepath.Join(dst, panelName, fileNames.PanelGroupDotGo)
+				if err = ftools.CopyFile(gpsrc, gpdst); err != nil {
+					err = fmt.Errorf("additions: %w", err)
+					return
+				}
 			}
 		}
 	}
@@ -787,8 +789,19 @@ func copySpawnUnEditables(panelsrc, paneldst string, fileNames *paths.FileNames,
 func getPanelNamesInFolder(path string) (panelNames []string, err error) {
 	var dir *os.File
 	if dir, err = os.Open(path); err != nil {
+		if os.IsNotExist(err) {
+			// If the path no longer exists then there are no more panel names.
+			err = nil
+		}
 		return
 	}
+
+	defer func() {
+		cerr := dir.Close()
+		if err == nil {
+			err = cerr
+		}
+	}()
 
 	var fis []os.FileInfo
 	if fis, err = dir.Readdir(-1); err != nil {

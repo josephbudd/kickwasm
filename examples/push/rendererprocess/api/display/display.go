@@ -80,26 +80,12 @@ func Resize() {
 	viewtools.SizeApp()
 }
 
-// SpawnID
-func SpawnID(brokenID string, spawnPanelID uint64) (fixedID string) {
-	fixedID = viewtools.FixSpawnID(brokenID, spawnPanelID)
+// SpawnID formats an id format string into an id.
+// It replaces "{{.SpawnID}}" with the spawnPanelID.
+// Ex: ("myButton{{.SpawnID}}", 2) becomes ""myButton2"
+func SpawnID(formatter string, spawnPanelID uint64) (fixedID string) {
+	fixedID = viewtools.FixSpawnID(formatter, spawnPanelID)
 	return
-}
-
-// NewSpawnWidgetUniqueID returns a new id for a widget in a spawned panel.
-func NewSpawnWidgetUniqueID() (spawnWidgetID uint64) {
-	spawnWidgetID = viewtools.NewSpawnWidgetUniqueID()
-	return
-}
-
-// SpawnWidget spawns a widget.
-func SpawnWidget(spawnWidgetID uint64, widget, parent js.Value) {
-	viewtools.SpawnWidget(spawnWidgetID, widget, parent)
-}
-
-// UnSpawnWidget unspawns a widget.
-func UnSpawnWidget(spawnWidgetID uint64) {
-	viewtools.UnSpawnWidget(spawnWidgetID)
 }
 
 // Print prints the appliction to the printer.

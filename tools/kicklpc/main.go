@@ -13,7 +13,7 @@ import (
 
 const (
 	applicationName        = "kicklpc"
-	versionBreaking        = 14 // Kicwasm Breaking Version. (Backwards compatibility.)
+	versionBreaking        = 16 // Kicwasm Breaking Version. (Backwards compatibility.)
 	versionFeature         = 0  // Added features. Still backwards compatible.
 	versionPatch           = 0  // Bug fix. No added features.
 	minumunKickwasmVersion = 14 // Minumum kickwasm version.

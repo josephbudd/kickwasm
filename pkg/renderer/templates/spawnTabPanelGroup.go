@@ -9,9 +9,9 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererDOM}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererMarkup}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererViewTools}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIDOM}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIMarkup}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkViewTools}}"
 )
 
 /*

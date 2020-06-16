@@ -28,7 +28,7 @@ func createProof(appPaths paths.ApplicationPathsI, builder *project.Builder) (er
 	folderpaths := appPaths.GetPaths()
 	filenames := appPaths.GetFileNames()
 	fname := filenames.ProofsDotGo
-	oPath := filepath.Join(folderpaths.OutputRendererProofs, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkProofs, fname)
 	err = templates.ProcessTemplate(fname, oPath, templates.ProofsGo, data, appPaths)
 	return
 

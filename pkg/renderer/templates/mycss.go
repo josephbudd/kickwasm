@@ -38,12 +38,19 @@ const MyCSS = `{{$Dot := .}}
   {
     margin-left: -50px;
   }
+  .{{.TabBar}},
+  .{{.DoNotPrint}}
+  {
+    display: none !important;
+  }
+  
   /* You may or may not want to use these.
   h1,
   h2
   {
     display: none !important;
-  } */
+  }
+  */
 }
 
 /******************************************************************************

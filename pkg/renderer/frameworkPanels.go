@@ -23,8 +23,8 @@ func createFrameworkDoPanelsGo(appPaths paths.ApplicationPathsI, builder *projec
 	imports := make([]string, 3, 100)
 	panelNamePath := make(map[string]string)
 	imports[0] = builder.ImportPath + folderpaths.ImportRendererPaneling
-	imports[1] = builder.ImportPath + folderpaths.ImportRendererLPC
-	imports[2] = builder.ImportPath + folderpaths.ImportRendererViewTools
+	imports[1] = builder.ImportPath + folderpaths.ImportRendererFrameworkLPC
+	imports[2] = builder.ImportPath + folderpaths.ImportRendererFrameworkViewTools
 	for _, panelNameFolders := range homePanelNamePathMap {
 		for name, folders := range panelNameFolders {
 			path := filepath.Join(filepath.Join(folders...), name)

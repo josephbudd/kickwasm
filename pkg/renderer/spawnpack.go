@@ -11,7 +11,7 @@ func createSpawnPack(appPaths paths.ApplicationPathsI) (err error) {
 	folderpaths := appPaths.GetPaths()
 	folderNames := appPaths.GetFolderNames()
 	fname := folderNames.SpawnPack + ".go"
-	oPath := filepath.Join(folderpaths.OutputRendererSpawnPack, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkSpawnPack, fname)
 	data := &struct {
 		PackageName string
 	}{

@@ -11,17 +11,17 @@ import (
 func createViewToolsSliderGo(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()
 	fname := "slider.go"
-	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkViewTools, fname)
 	data := &struct {
-		ApplicationGitPath     string
-		ImportRendererCallBack string
-		ImportRendererEvent    string
-		ImportRendererWindow   string
+		ApplicationGitPath              string
+		ImportRendererFrameworkCallBack string
+		ImportRendererAPIEvent          string
+		ImportRendererAPIWindow         string
 	}{
-		ApplicationGitPath:     builder.ImportPath,
-		ImportRendererCallBack: folderpaths.ImportRendererCallBack,
-		ImportRendererEvent:    folderpaths.ImportRendererEvent,
-		ImportRendererWindow:   folderpaths.ImportRendererWindow,
+		ApplicationGitPath:              builder.ImportPath,
+		ImportRendererFrameworkCallBack: folderpaths.ImportRendererFrameworkCallBack,
+		ImportRendererAPIEvent:          folderpaths.ImportRendererAPIEvent,
+		ImportRendererAPIWindow:         folderpaths.ImportRendererAPIWindow,
 	}
 	err = templates.ProcessTemplate(fname, oPath, templates.ViewToolsSlider, data, appPaths)
 	return

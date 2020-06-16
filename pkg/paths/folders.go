@@ -51,6 +51,10 @@ type FolderNames struct {
 	Proofs      string
 	Application string
 	API         string
+
+	// v 15
+
+	JSValue string
 }
 
 // GetFolderNames returns the folder names.
@@ -105,5 +109,9 @@ func GetFolderNames() *FolderNames {
 		Proofs:      "proofs",
 		Application: "application",
 		API:         "api",
+
+		// v 15
+
+		JSValue: "jsvalue",
 	}
 }

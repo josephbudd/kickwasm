@@ -46,18 +46,18 @@ func createTabSpawnPanels(appPaths paths.ApplicationPathsI, builder *project.Bui
 
 					ApplicationGitPath string
 
-					ImportRenderer            string
-					ImportRendererDisplay     string
-					ImportRendererDOM         string
-					ImportRendererEvent       string
-					ImportRendererLPC         string
-					ImportRendererMarkup      string
-					ImportRendererPaneling    string
-					ImportRendererViewTools   string
-					ImportDomainDataLogLevels string
-					ImportDomainLPC           string
-					ImportDomainLPCMessage    string
-					ImportDomainStoreRecord   string
+					ImportRenderer                   string
+					ImportRendererAPIDisplay         string
+					ImportRendererAPIDOM             string
+					ImportRendererAPIEvent           string
+					ImportRendererFrameworkLPC       string
+					ImportRendererAPIMarkup          string
+					ImportRendererPaneling           string
+					ImportRendererFrameworkViewTools string
+					ImportDomainDataLogLevels        string
+					ImportDomainLPC                  string
+					ImportDomainLPCMessage           string
+					ImportDomainStoreRecord          string
 
 					CamelCase       func(string) string
 					LowerCamelCase  func(string) string
@@ -75,18 +75,18 @@ func createTabSpawnPanels(appPaths paths.ApplicationPathsI, builder *project.Bui
 
 					ApplicationGitPath: builder.ImportPath,
 
-					ImportRenderer:            folderpaths.ImportRenderer,
-					ImportRendererDisplay:     folderpaths.ImportRendererDisplay,
-					ImportRendererDOM:         folderpaths.ImportRendererDOM,
-					ImportRendererEvent:       folderpaths.ImportRendererEvent,
-					ImportRendererLPC:         folderpaths.ImportRendererLPC,
-					ImportRendererMarkup:      folderpaths.ImportRendererMarkup,
-					ImportRendererPaneling:    folderpaths.ImportRendererPaneling,
-					ImportRendererViewTools:   folderpaths.ImportRendererViewTools,
-					ImportDomainDataLogLevels: folderpaths.ImportDomainDataLogLevels,
-					ImportDomainLPC:           folderpaths.ImportDomainLPC,
-					ImportDomainLPCMessage:    folderpaths.ImportDomainLPCMessage,
-					ImportDomainStoreRecord:   folderpaths.ImportDomainStoreRecord,
+					ImportRenderer:                   folderpaths.ImportRenderer,
+					ImportRendererAPIDisplay:         folderpaths.ImportRendererAPIDisplay,
+					ImportRendererAPIDOM:             folderpaths.ImportRendererAPIDOM,
+					ImportRendererAPIEvent:           folderpaths.ImportRendererAPIEvent,
+					ImportRendererFrameworkLPC:       folderpaths.ImportRendererFrameworkLPC,
+					ImportRendererAPIMarkup:          folderpaths.ImportRendererAPIMarkup,
+					ImportRendererPaneling:           folderpaths.ImportRendererPaneling,
+					ImportRendererFrameworkViewTools: folderpaths.ImportRendererFrameworkViewTools,
+					ImportDomainDataLogLevels:        folderpaths.ImportDomainDataLogLevels,
+					ImportDomainLPC:                  folderpaths.ImportDomainLPC,
+					ImportDomainLPCMessage:           folderpaths.ImportDomainLPCMessage,
+					ImportDomainStoreRecord:          folderpaths.ImportDomainStoreRecord,
 
 					CamelCase:      cases.CamelCase,
 					LowerCamelCase: cases.LowerCamelCase,

@@ -11,14 +11,14 @@ import (
 func createViewToolsHideShowGo(appPaths paths.ApplicationPathsI, builder *project.Builder) (err error) {
 	folderpaths := appPaths.GetPaths()
 	data := struct {
-		ApplicationGitPath   string
-		ImportRendererMarkup string
+		ApplicationGitPath      string
+		ImportRendererAPIMarkup string
 	}{
-		ApplicationGitPath:   builder.ImportPath,
-		ImportRendererMarkup: folderpaths.ImportRendererMarkup,
+		ApplicationGitPath:      builder.ImportPath,
+		ImportRendererAPIMarkup: folderpaths.ImportRendererAPIMarkup,
 	}
 	fname := "hideshow.go"
-	oPath := filepath.Join(folderpaths.OutputRendererViewTools, fname)
+	oPath := filepath.Join(folderpaths.OutputRendererFrameworkViewTools, fname)
 	err = templates.ProcessTemplate(fname, oPath, templates.ViewToolsHideShow, data, appPaths)
 	return
 }

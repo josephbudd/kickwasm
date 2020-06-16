@@ -6,7 +6,7 @@ const ViewToolsCloser = `// +build js, wasm
 package viewtools
 
 import (
-	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkCallBack}}"
 )
 
 // Quit closes the application renderer.

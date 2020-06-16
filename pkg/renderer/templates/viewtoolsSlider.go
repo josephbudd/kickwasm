@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"{{.ApplicationGitPath}}{{.ImportRendererCallBack}}"
-	"{{.ApplicationGitPath}}{{.ImportRendererEvent}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererAPIEvent}}"
+	"{{.ApplicationGitPath}}{{.ImportRendererFrameworkCallBack}}"
 )
 
 // Back simulates a click on the tall back button at the left of slider panels.
@@ -49,7 +49,7 @@ func initializeSlider() {
 					callback.AddEventHandler(handlePadButtonOnClick, ch, "click", false, 0)
 				}
 			}
-		} else if div == mainMasterviewHomeButtonPad {
+		} else if div.Equal(mainMasterviewHomeButtonPad) {
 			children := div.Get("children")
 			lch := children.Length()
 			for j := 0; j < lch; j++ {
@@ -101,11 +101,11 @@ func handleBack(event js.Value) (nilReturn interface{}) {
 
 // hereIsVisible returns if the current slider panel is actually seen by the user.
 func hereIsVisible() (isVisible bool) {
-	if here == js.Undefined() {
+	if here.IsUndefined() {
 		return
 	}
 	p := here.Get("parentNode")
-	isVisible = (p == mainMasterviewHomeSliderCollection)
+	isVisible = p.Equal(mainMasterviewHomeSliderCollection)
 	return
 }
 `

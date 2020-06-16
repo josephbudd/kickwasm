@@ -2,10 +2,11 @@ package project
 
 // SpawnFolders indicates is a panel is spawned and it's folder path
 type SpawnFolders struct {
-	Position int
-	Spawn    bool
-	Folders  []string
-	HVScroll bool
+	Position    int
+	Spawn       bool
+	Folders     []string
+	HVScroll    bool
+	ParentIsTab bool
 }
 
 // GenerateHomeEmptyInsidePanelNameSpawnedPathMap returns a map of
@@ -19,9 +20,10 @@ func (builder *Builder) GenerateHomeEmptyInsidePanelNameSpawnedPathMap() map[str
 			folderList := make([]string, 1, 10)
 			folderList[0] = homeButton.ID
 			spawnPath := &SpawnFolders{
-				Position: i + j,
-				Spawn:    false,
-				Folders:  folderList,
+				Position:    i + j,
+				Spawn:       false,
+				Folders:     folderList,
+				ParentIsTab: false,
 			}
 			generateHomeEmptyInsidePanelNameSpawnedPathMap(p, spawnPath, panelNameSpawnPath)
 		}
@@ -42,9 +44,10 @@ func generateHomeEmptyInsidePanelNameSpawnedPathMap(panel *Panel, spawnPath *Spa
 		copy(newFolderList, spawnPath.Folders)
 		newFolderList[l] = b.ID
 		newSpawnPath := &SpawnFolders{
-			Position: spawnPath.Position + bi,
-			Spawn:    spawnPath.Spawn,
-			Folders:  newFolderList,
+			Position:    spawnPath.Position + bi,
+			Spawn:       spawnPath.Spawn,
+			Folders:     newFolderList,
+			ParentIsTab: false,
 		}
 		for _, p := range b.Panels {
 			generateHomeEmptyInsidePanelNameSpawnedPathMap(p, newSpawnPath, panelNameSpawnPath)
@@ -56,9 +59,10 @@ func generateHomeEmptyInsidePanelNameSpawnedPathMap(panel *Panel, spawnPath *Spa
 		copy(newFolderList, spawnPath.Folders)
 		newFolderList[l] = t.ID
 		newSpawnPath := &SpawnFolders{
-			Position: spawnPath.Position + ti,
-			Spawn:    t.Spawn,
-			Folders:  newFolderList,
+			Position:    spawnPath.Position + ti,
+			Spawn:       t.Spawn,
+			Folders:     newFolderList,
+			ParentIsTab: true,
 		}
 		for _, p := range t.Panels {
 			generateHomeEmptyInsidePanelNameSpawnedPathMap(p, newSpawnPath, panelNameSpawnPath)
